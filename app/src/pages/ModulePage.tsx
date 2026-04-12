@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '../store/useAppStore'
@@ -9,7 +9,7 @@ import type { Section, QuizQuestion } from '../data/git/modules'
 import {
   ArrowLeft, ArrowRight, Zap,
   ExternalLink, BookOpen, Code2, Lightbulb, Sparkles,
-  LayoutGrid, Workflow
+  LayoutGrid, Workflow, Play, Image, Gamepad2, CheckCircle, Trophy
 } from 'lucide-react'
 import confetti from 'canvas-confetti'
 
@@ -18,110 +18,28 @@ export default function ModulePage() {
   const navigate = useNavigate()
   const { completedModules, completeModule, saveQuizScore, addXP, awardBadge } = useAppStore()
 
-  // Find module in all tracks
-  const allModules = [...GIT_MODULES, ...DOCKER_MODULES, ...K8S_MODULES]
-  const mod = allModules.find((m) => m.id === id)
-
+  // --- STATE HOOKS (Must be at top level) ---
   const [view, setView] = useState<'theory' | 'quiz' | 'result'>('theory')
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({})
   const [submitted, setSubmitted] = useState(false)
   const [xpEarned, setXpEarned] = useState(0)
   const [xpImport, setXpImport] = useState('')
-
   const [prevId, setPrevId] = useState(id)
-  
-  // Shuffled quiz data state
-  type ShuffledQuiz = QuizQuestion & { shuffledOptions: string[], shuffledCorrect: number }
-  const [quizData, setQuizData] = useState<ShuffledQuiz[]>([])
-  
-  // Timer State (15 minutes)
+  const [quizData, setQuizData] = useState<any[]>([])
   const [timeLeft, setTimeLeft] = useState(15 * 60)
 
-  useEffect(() => {
-    let timer: number
-    if (view === 'quiz' && !submitted && timeLeft > 0) {
-      timer = window.setInterval(() => {
-        setTimeLeft((prev) => prev - 1)
-      }, 1000)
-    } else if (timeLeft === 0 && view === 'quiz' && !submitted) {
-      handleSubmitQuiz()
-    }
-    return () => clearInterval(timer)
-  }, [view, submitted, timeLeft])
+  // --- DATA RESOLUTION ---
+  const allModules = useMemo(() => [...GIT_MODULES, ...DOCKER_MODULES, ...K8S_MODULES], [])
+  const mod = allModules.find((m) => m.id === id)
 
-  // Synchronize state when the module ID changes (render phase reset)
-  if (id !== prevId) {
-    setPrevId(id)
-    setView('theory')
-    setQuizAnswers({})
-    setSubmitted(false)
-    setXpEarned(0)
-    setXpImport('')
-    setQuizData([])
-  }
-
-  if (!mod) return (
-    <div className="text-white p-8 card">
-      <h2 className="text-2xl fw-black mb-4">Module not found</h2>
-      <p className="text-muted mb-4">We couldn't find a module with ID: <span className="text-git mono">{id}</span></p>
-      <button onClick={() => navigate('/dashboard')} className="btn btn-primary">Back to Dashboard</button>
-      <div className="mt-8 text-[10px] text-muted opacity-20">
-        Debug: Tracks loaded: Git({GIT_MODULES.length}), Docker({DOCKER_MODULES.length}), K8s({K8S_MODULES.length})
-      </div>
-    </div>
-  )
-
-  const trackModules = mod.track === 'git' ? GIT_MODULES : mod.track === 'docker' ? DOCKER_MODULES : K8S_MODULES
-  const nextId = trackModules[trackModules.findIndex((m) => m.id === id) + 1]?.id
-  const trackColor = mod.track === 'git' ? 'var(--color-git)' : mod.track === 'docker' ? 'var(--color-docker)' : 'var(--color-k8s)'
-
-  const handleCompleteTheory = () => {
-    if (!mod) return
-
-    // Shuffle options once at the start of the quiz session
-    if (mod.quiz) {
-       const randomized = mod.quiz.map(q => {
-          const pairs = q.options.map((opt, i) => ({ opt, isCorrect: i === q.correct }));
-          for (let i = pairs.length - 1; i > 0; i--) {
-             const j = Math.floor(Math.random() * (i + 1));
-             [pairs[i], pairs[j]] = [pairs[j], pairs[i]];
-          }
-          return {
-             ...q,
-             shuffledOptions: pairs.map(p => p.opt),
-             shuffledCorrect: pairs.findIndex(p => p.isCorrect)
-          };
-       });
-       setQuizData(randomized);
-    }
-
-    if (!completedModules.includes(mod.id)) {
-      completeModule(mod.id)
-      
-      // Badge logic
-      if (mod.id === 'git-1') awardBadge({ id: 'git-seedling', emoji: '🌱', title: 'Git Seedling', description: 'Completed your first Git module' })
-      if (mod.id === 'git-9') awardBadge({ id: 'git-branching', emoji: '🌿', title: 'Branching Out', description: 'Completed all Git modules' })
-      
-      if (mod.id === 'docker-1') awardBadge({ id: 'docker-mate', emoji: '⚓', title: 'First Mate', description: 'Mastered the basics of containers' })
-      if (mod.id === 'docker-9') awardBadge({ id: 'docker-harbor', emoji: '🐋', title: 'Harbor Master', description: 'Completed the full Docker curriculum' })
-      
-      if (mod.id === 'k8s-1') awardBadge({ id: 'k8s-kybernitis', emoji: '☸️', title: 'Kybernitis', description: 'Started the Kubernetes journey' })
-      if (mod.id === 'k8s-9') awardBadge({ id: 'k8s-admiral', emoji: '🤴', title: 'Fleet Admiral', description: 'Mastered the art of orchestration' })
-    }
-    if (mod.quiz && mod.quiz.length > 0) {
-      setView('quiz')
-    } else {
-      navigate(nextId ? `/${mod.track}/module/${nextId}` : '/dashboard')
-    }
-  }
-
+  // --- HANDLERS (Defined before Effects) ---
   const handleAnswer = (qId: string, idx: number) => {
     if (submitted) return
     setQuizAnswers((prev) => ({ ...prev, [qId]: idx }))
   }
 
-  const handleSubmitQuiz = () => {
-    if (quizData.length === 0) return
+  const handleSubmitQuiz = useCallback(() => {
+    if (!mod || quizData.length === 0) return
     const correctCount = quizData.filter((q) => quizAnswers[q.id] === q.shuffledCorrect).length
     const scorePct = Math.round((correctCount / quizData.length) * 100)
     const bonus = scorePct === 100 ? 100 : 0
@@ -141,8 +59,86 @@ export default function ModulePage() {
         colors: ['#06d6a0', '#ffb703', '#118ab2', '#ff4b4b']
       })
     }
+  }, [mod, quizData, quizAnswers, saveQuizScore, addXP])
+
+  const handleCompleteTheory = () => {
+    if (!mod) return
+
+    if (mod.quiz) {
+       const randomized = mod.quiz.map(q => {
+          const pairs = q.options.map((opt, i) => ({ opt, isCorrect: i === q.correct }));
+          for (let i = pairs.length - 1; i > 0; i--) {
+             const j = Math.floor(Math.random() * (i + 1));
+             [pairs[i], pairs[j]] = [pairs[j], pairs[i]];
+          }
+          return {
+             ...q,
+             shuffledOptions: pairs.map(p => p.opt),
+             shuffledCorrect: pairs.findIndex(p => p.isCorrect)
+          };
+       });
+       setQuizData(randomized);
+    }
+
+    if (!completedModules.includes(mod.id)) {
+      completeModule(mod.id)
+      
+      if (mod.id === 'git-1') awardBadge({ id: 'git-seedling', emoji: '🌱', title: 'Git Seedling', description: 'Completed your first Git module' })
+      if (mod.id === 'git-9') awardBadge({ id: 'git-branching', emoji: '🌿', title: 'Branching Out', description: 'Completed all Git modules' })
+      if (mod.id === 'docker-1') awardBadge({ id: 'docker-mate', emoji: '⚓', title: 'First Mate', description: 'Mastered the basics of containers' })
+      if (mod.id === 'docker-9') awardBadge({ id: 'docker-harbor', emoji: '🐋', title: 'Harbor Master', description: 'Completed the full Docker curriculum' })
+      if (mod.id === 'k8s-1') awardBadge({ id: 'k8s-kybernitis', emoji: '☸️', title: 'Kybernitis', description: 'Started the Kubernetes journey' })
+      if (mod.id === 'k8s-9') awardBadge({ id: 'k8s-admiral', emoji: '🤴', title: 'Fleet Admiral', description: 'Mastered the art of orchestration' })
+    }
+
+    const trackModules = mod.track === 'git' ? GIT_MODULES : mod.track === 'docker' ? DOCKER_MODULES : K8S_MODULES
+    const nextIdx = trackModules.findIndex((m) => m.id === id) + 1
+    const nId = trackModules[nextIdx]?.id
+
+    if (mod.quiz && mod.quiz.length > 0) {
+      setView('quiz')
+    } else {
+      navigate(nId ? `/${mod.track}/module/${nId}` : '/dashboard')
+    }
   }
 
+  // --- EFFECTS ---
+  useEffect(() => {
+    let timer: number
+    if (view === 'quiz' && !submitted && timeLeft > 0) {
+      timer = window.setInterval(() => {
+        setTimeLeft((prev) => prev - 1)
+      }, 1000)
+    } else if (timeLeft === 0 && view === 'quiz' && !submitted) {
+      handleSubmitQuiz()
+    }
+    return () => clearInterval(timer)
+  }, [view, submitted, timeLeft, handleSubmitQuiz])
+
+  useEffect(() => {
+    if (id !== prevId) {
+      setPrevId(id)
+      setView('theory')
+      setQuizAnswers({})
+      setSubmitted(false)
+      setXpEarned(0)
+      setXpImport('')
+      setQuizData([])
+      setTimeLeft(15 * 60)
+    }
+  }, [id, prevId])
+
+  // --- EARLY RETURN (Must be after ALL hooks) ---
+  if (!mod) return (
+    <div className="text-white p-8 card">
+      <h2 className="text-2xl fw-black mb-4">Module not found</h2>
+      <p className="text-muted mb-4">We couldn't find a module with ID: <span className="text-git mono">{id}</span></p>
+      <button onClick={() => navigate('/dashboard')} className="btn btn-primary">Back to Dashboard</button>
+    </div>
+  )
+
+  const trackModules = mod.track === 'git' ? GIT_MODULES : mod.track === 'docker' ? DOCKER_MODULES : K8S_MODULES
+  const nextId = trackModules[trackModules.findIndex((m) => m.id === id) + 1]?.id
   const correctResults = quizData.length > 0 ? quizData.filter((q) => quizAnswers[q.id] === q.shuffledCorrect).length : 0
   const totalQuestions = quizData.length
   const scorePct = totalQuestions > 0 ? Math.round((correctResults / totalQuestions) * 100) : 0

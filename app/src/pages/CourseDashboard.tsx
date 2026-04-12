@@ -153,7 +153,7 @@ export default function CourseDashboard() {
         </div>
 
         {/* Immersive Track Gallery - MOVED UP */}
-        <div className="flex md:grid md:grid-cols-3 gap-6 mb-16 overflow-x-auto md:overflow-visible py-4 md:py-2 px-4 md:px-0 -mx-4 md:mx-0 snap-x snap-mandatory" style={{ scrollbarWidth: 'none' }}>
+        <div className="flex md:grid md:grid-cols-3 gap-6 mb-24 overflow-x-auto md:overflow-visible py-4 md:py-2 px-4 md:px-0 -mx-4 md:mx-0 snap-x snap-mandatory" style={{ scrollbarWidth: 'none' }}>
           {tracks.map((track) => {
             const progress = getTrackProgress(track.id, track.modules)
             const isActive = activeTrackId === track.id
@@ -211,8 +211,11 @@ export default function CourseDashboard() {
           })}
         </div>
 
+        {/* Explicit Spacer */}
+        <div className="h-24" />
+
         {/* Analytics Section - MOVED DOWN */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-24">
           {/* Skills Radar */}
           <div className="lg:col-span-1 card p-6 bg-surface/40 flex flex-col items-center justify-center min-h-[320px]">
             <div className="w-full flex justify-between items-center mb-4">
@@ -280,6 +283,9 @@ export default function CourseDashboard() {
             </div>
           </div>
         </div>
+
+        {/* Explicit Spacer */}
+        <div className="h-24" />
 
         {/* Selected Track Detail */}
         <AnimatePresence mode="wait">
