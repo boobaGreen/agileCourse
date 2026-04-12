@@ -155,6 +155,9 @@ export default function CourseDashboard() {
         {/* Immersive Track Gallery - MOVED UP */}
         <div className="flex flex-col md:grid md:grid-cols-3 gap-4 md:gap-6 mb-16 md:mb-24 px-0 md:px-0">
           {tracks.map((track) => {
+            const progress = getTrackProgress(track.id, track.modules)
+            const isActive = activeTrackId === track.id
+
             return (
               <motion.div
                 key={track.id}
@@ -167,8 +170,7 @@ export default function CourseDashboard() {
                 style={{ 
                   borderColor: isActive ? track.color : 'var(--color-border)',
                   boxShadow: isActive ? `${track.color}15 0 20px` : 'none',
-                  background: isActive ? `linear-gradient(135deg, var(--color-surface), ${track.color}08)` : 'var(--color-surface)',
-                  ringColor: isActive ? `${track.color}30` : 'transparent'
+                  background: isActive ? `linear-gradient(135deg, var(--color-surface), ${track.color}08)` : 'var(--color-surface)'
                 }}
               >
                 {/* Status Indicator Dot (Mobile) */}
