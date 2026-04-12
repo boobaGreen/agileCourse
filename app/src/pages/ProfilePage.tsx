@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore, BADGES } from '../store/useAppStore'
 import { Zap, CheckCircle, Award, RotateCcw, GitBranch, Package, Ship } from 'lucide-react'
 import { GIT_MODULES } from '../data/git/modules'
@@ -7,6 +8,7 @@ import { K8S_MODULES } from '../data/k8s/modules'
 
 export default function ProfilePage() {
   const { userName, xp, completedModules, quizScores, badges, resetProgress } = useAppStore()
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
 
   const gitCompleted = completedModules.filter((m) => m.startsWith('git-')).length
   const totalGit = GIT_MODULES.length
@@ -33,45 +35,45 @@ export default function ProfilePage() {
       </div>
 
       {/* Hero Stats Card */}
-      <div className="card p-6 flex flex-col sm:flex-row items-center gap-6 mb-8">
-        <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-3xl fw-black text-white shrink-0"
+      <div className="card p-6 md:p-10 flex flex-col sm:flex-row items-center gap-6 mb-10">
+        <div className="w-24 h-24 md:w-32 md:h-32 rounded-3xl flex items-center justify-center text-4xl md:text-6xl fw-black text-white shrink-0 shadow-xl"
           style={{ background: 'linear-gradient(135deg, var(--color-primary), #818cf8)' }}>
           {userName.charAt(0).toUpperCase()}
         </div>
         <div className="flex-1 text-center sm:text-left">
-          <h2 className="text-2xl fw-black text-white mb-1">{userName}</h2>
-          <p className="text-sub text-sm">Agile Internal Learner • Level 1</p>
+          <h2 className="text-3xl md:text-5xl fw-black text-white mb-2 tracking-tight">{userName}</h2>
+          <p className="text-sub text-sm md:text-base fw-bold uppercase tracking-wider">Agile Internal Learner • Level 1</p>
         </div>
         <div className="text-center sm:text-right">
-          <p className="text-4xl fw-black text-xp flex items-center justify-center sm:justify-end gap-2">
-            <Zap size={28} /> {xp}
+          <p className="text-5xl md:text-6xl fw-black text-xp flex items-center justify-center sm:justify-end gap-2 mb-1">
+            <Zap size={36} className="text-xp" /> {xp}
           </p>
-          <p className="text-xs text-muted fw-bold uppercase px-1">Total Experience Points</p>
+          <p className="text-xs md:text-sm text-muted fw-bold uppercase px-1">Total Experience Points</p>
         </div>
       </div>
 
       {/* Grid Stats */}
-      <div className="page-grid-4 mb-8">
+      <div className="page-grid-4 mb-12">
         {[
           { label: 'Git Progress', value: `${gitPct}%`, icon: GitBranch, color: 'var(--color-git)', sub: `${gitCompleted}/${totalGit} modules` },
           { label: 'Docker Progress', value: `${dockerPct}%`, icon: Package, color: 'var(--color-docker)', sub: `${dockerCompleted}/${totalDocker} modules` },
           { label: 'K8s Progress', value: `${k8sPct}%`, icon: Ship, color: 'var(--color-k8s)', sub: `${k8sCompleted}/${totalK8s} modules` },
           { label: 'Avg Quiz', value: `${avgScore}%`, icon: CheckCircle, color: 'var(--color-green)', sub: `${quizCount} attempts` },
         ].map((s, i) => (
-          <div key={i} className="stat-card">
-            <div className="flex items-center gap-2 mb-2">
+          <div key={i} className="stat-card p-6 border border-border/50 bg-surface/50 rounded-2xl">
+            <div className="flex items-center gap-2 mb-3">
               {/* @ts-ignore */}
-              <Zap size={14} style={{ color: s.color }} />
-              <span className="text-muted text-xs fw-bold uppercase">{s.label}</span>
+              <Zap size={16} style={{ color: s.color }} />
+              <span className="text-muted text-xs md:text-sm fw-bold uppercase">{s.label}</span>
             </div>
-            <p className="text-2xl fw-black text-white">{s.value}</p>
-            <p className="text-xs text-sub">{s.sub}</p>
+            <p className="text-3xl md:text-4xl fw-black text-white mb-1">{s.value}</p>
+            <p className="text-xs md:text-sm text-sub">{s.sub}</p>
           </div>
         ))}
       </div>
 
       {/* Learning Progress Table/List */}
-      <div className="page-grid-2 mb-10">
+      <div className="page-grid-3 mb-16">
         {/* Git Tracker */}
         <div className="card p-5">
            <h3 className="text-white fw-bold mb-4 flex items-center gap-2 text-sm">
@@ -128,11 +130,11 @@ export default function ProfilePage() {
             const hasIt = badges.find(eb => eb.id === b.id)
             return (
               <div key={b.id} className={`card p-5 text-center transition-all ${!hasIt ? 'opacity-20 grayscale' : 'border-purple-500/30'}`}>
-                <div className="text-4xl mb-3 animate-float" style={{ animationDelay: `${Math.random()}s` }}>{b.emoji}</div>
-                <h4 className="text-white fw-bold text-xs mb-1">{b.title}</h4>
-                <p className="text-muted text-[10px] uppercase fw-med">{b.description}</p>
+                <div className="text-5xl mb-4 animate-float" style={{ animationDelay: `${Math.random()}s` }}>{b.emoji}</div>
+                <h4 className="text-white fw-black text-sm md:text-base mb-1">{b.title}</h4>
+                <p className="text-muted text-[10px] md:text-xs uppercase fw-bold">{b.description}</p>
                 {hasIt?.earnedAt && (
-                   <div className="mt-3 pt-3 border-t border-border text-[9px] text-sub uppercase tracking-wider">
+                   <div className="mt-4 pt-4 border-t border-border text-[9px] md:text-[10px] text-sub uppercase tracking-wider">
                      Unlocked {new Date(hasIt.earnedAt).toLocaleDateString()}
                    </div>
                 )}
@@ -148,27 +150,67 @@ export default function ProfilePage() {
           <RotateCcw size={18} className="text-red-400" /> Data Management
         </h3>
         <p className="text-sub text-sm mb-6">Resetting your progress will permanently remove all XP, badges, and completed modules.</p>
-        <button onClick={() => { if(confirm('Erase all progress?')) resetProgress() }} className="btn btn-danger text-xs px-6">
+        <button onClick={() => setShowConfirmModal(true)} className="btn btn-danger text-xs px-6">
           Wipe Progress Data
         </button>
       </div>
+
+      {/* Custom Confirmation Modal */}
+      <AnimatePresence>
+        {showConfirmModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div 
+               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+               className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+               onClick={() => setShowConfirmModal(false)}
+            />
+            <motion.div
+               initial={{ scale: 0.95, opacity: 0, y: 20 }}
+               animate={{ scale: 1, opacity: 1, y: 0 }}
+               exit={{ scale: 0.95, opacity: 0, y: 20 }}
+               className="card p-8 max-w-md w-full relative z-10 border border-red-500/30 shadow-2xl"
+               style={{ background: 'var(--color-surface)' }}
+            >
+              <div className="w-14 h-14 rounded-2xl bg-red-500/10 flex items-center justify-center text-red-500 mb-6 mx-auto">
+                <RotateCcw size={28} />
+              </div>
+              <h3 className="text-2xl fw-black text-white text-center mb-2">Erase all progress?</h3>
+              <p className="text-muted text-sm text-center mb-8 leading-relaxed">
+                This action is irreversible. All your <strong className="text-xp">XP</strong>, badges, and completed modules will be 
+                <span className="text-red-400"> permanently wiped</span> from the system.
+              </p>
+              <div className="flex items-center gap-3">
+                <button onClick={() => setShowConfirmModal(false)} className="flex-1 btn bg-surface2 text-white border border-border hover:bg-white/5 transition-colors">
+                  Cancel
+                </button>
+                <button 
+                  onClick={() => { resetProgress(); setShowConfirmModal(false); }} 
+                  className="flex-1 btn bg-red-500/10 text-red-400 border border-red-500/50 hover:bg-red-500 hover:text-white transition-colors"
+                >
+                  Yes, wipe it
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
 
 function ModuleTinyCard({ m, isDone }: { m: any, isDone: boolean }) {
   return (
-    <div className="p-2.5 rounded-xl border flex items-center gap-3 transition-colors"
+    <div className="p-3 md:p-4 rounded-xl border flex items-center gap-3 transition-colors"
       style={{ 
         background: isDone ? 'rgba(34,197,94,0.05)' : 'var(--color-surface2)',
         borderColor: isDone ? 'rgba(34,197,94,0.2)' : 'var(--color-border)',
         opacity: isDone ? 1 : 0.6
       }}
     >
-      <span className="text-lg">{isDone ? '✅' : '⏳'}</span>
+      <span className="text-xl md:text-2xl">{isDone ? '✅' : '⏳'}</span>
       <div className="flex-1 overflow-hidden">
-        <p className={`text-[10px] fw-bold truncate ${isDone ? 'text-green' : 'text-sub'}`}>M{m.order}</p>
-        <p className="text-muted text-[10px] truncate">{m.title}</p>
+        <p className={`text-xs fw-black truncate mb-0.5 ${isDone ? 'text-green' : 'text-sub'}`}>Module {m.order}</p>
+        <p className="text-muted text-xs md:text-sm truncate fw-med">{m.title}</p>
       </div>
     </div>
   )
