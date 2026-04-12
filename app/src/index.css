@@ -20,7 +20,11 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
@@ -219,19 +223,19 @@ body {
   .hide-on-desktop { display: none !important; }
 }
 
-.page-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-.page-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
-.page-grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; }
-.module-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+.page-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; width: 100%; }
+.page-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; width: 100%; }
+.page-grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; width: 100%; }
+.module-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; width: 100%; }
 
 @media (max-width: 900px) {
   .module-grid { grid-template-columns: repeat(2,1fr); }
   .page-grid-4 { grid-template-columns: repeat(2,1fr); }
   .page-grid-3 { grid-template-columns: repeat(2,1fr); }
 }
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .module-grid { grid-template-columns: 1fr; }
-  .page-grid-4 { grid-template-columns: repeat(2,1fr); }
+  .page-grid-4 { grid-template-columns: 1fr; }
   .page-grid-3 { grid-template-columns: 1fr; }
   .page-grid-2 { grid-template-columns: 1fr; }
 }

@@ -129,7 +129,7 @@ export default function CourseDashboard() {
             <p className="text-muted">Welcome back, {userName}. Your DevOps journey continues.</p>
           </div>
           
-          <div className="flex gap-4 w-full md:w-auto">
+          <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
              <div className="flex-1 md:flex-none card p-4 py-3 border-xp/20 bg-xp/5 flex items-center gap-4">
                 <div className="w-10 h-10 rounded-xl bg-xp/20 flex items-center justify-center text-xp">
                   <Zap size={20} />
@@ -217,7 +217,7 @@ export default function CourseDashboard() {
         {/* Analytics Section - MOVED DOWN */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-24">
           {/* Skills Radar */}
-          <div className="lg:col-span-1 card p-6 bg-surface/40 flex flex-col items-center justify-center min-h-[320px]">
+          <div className="lg:col-span-1 card p-6 bg-surface/40 flex flex-col items-center justify-center min-h-[320px] min-w-0">
             <div className="w-full flex justify-between items-center mb-4">
               <h3 className="text-xs fw-black text-muted uppercase tracking-widest flex items-center gap-2">
                 <Target size={14} className="text-primary" /> Skill Radar
@@ -241,7 +241,7 @@ export default function CourseDashboard() {
           </div>
 
           {/* Progress Activity Feed / Heatmap */}
-          <div className="lg:col-span-2 card p-6 bg-surface/40">
+          <div className="lg:col-span-2 card p-6 bg-surface/40 min-w-0">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
               <h3 className="text-xs fw-black text-muted uppercase tracking-widest flex items-center gap-2">
                 <Activity size={14} className="text-green" /> Activity Heatmap

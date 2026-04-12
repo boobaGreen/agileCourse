@@ -96,15 +96,18 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
       {/* Main content area */}
       <div
-        className={`flex-1 flex flex-col transition-all duration-200 main-content-layout ${collapsed ? 'collapsed' : 'expanded'}`}
+        className={`flex-1 flex flex-col min-w-0 transition-all duration-200 main-content-layout ${collapsed ? 'collapsed' : 'expanded'}`}
       >
         {/* Top bar (mobile) */}
-        <div className="hide-on-desktop items-center justify-between px-4 py-3 sticky top-0 z-20"
+        <div className="hide-on-desktop items-center justify-between px-4 py-3 sticky top-0 z-20 w-full"
           style={{ background: 'var(--color-surface)', borderBottom: '1px solid var(--color-border)' }}>
           <button onClick={() => setMobileOpen(true)} className="text-slate-400 hover:text-white bg-transparent border-none cursor-pointer">
             <Menu size={22} />
           </button>
-          <span className="fw-black text-white">DevHarbor</span>
+          <div className="flex items-center gap-2">
+            <span className="text-xl">⚓</span>
+            <span className="fw-black text-white">DevHarbor</span>
+          </div>
           <div className="flex items-center gap-1 text-xp text-sm">
             <Zap size={14} />{xp} XP
           </div>
