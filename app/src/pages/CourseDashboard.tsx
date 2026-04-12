@@ -153,7 +153,7 @@ export default function CourseDashboard() {
         </div>
 
         {/* Immersive Track Gallery - MOVED UP */}
-        <div className="flex md:grid md:grid-cols-3 gap-6 mb-24 overflow-x-auto md:overflow-visible py-4 md:py-2 px-4 md:px-0 -mx-4 md:mx-0 snap-x snap-mandatory" style={{ scrollbarWidth: 'none' }}>
+        <div className="flex md:grid md:grid-cols-3 gap-5 mb-24 overflow-x-auto md:overflow-visible py-6 md:py-2 px-6 md:px-0 -mx-6 md:mx-0 snap-x snap-mandatory hide-scrollbar" style={{ scrollbarWidth: 'none', maskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)' }}>
           {tracks.map((track) => {
             const progress = getTrackProgress(track.id, track.modules)
             const isActive = activeTrackId === track.id
@@ -164,8 +164,8 @@ export default function CourseDashboard() {
                 onClick={() => track.available && setActiveTrackId(track.id)}
                 whileHover={track.available ? { y: -5, scale: 1.02 } : {}}
                 whileTap={track.available ? { scale: 0.98 } : {}}
-                className={`card p-6 cursor-pointer transition-all duration-300 relative overflow-hidden flex-shrink-0 w-[85vw] sm:w-[320px] md:w-auto snap-center ${
-                  isActive ? 'border-2 shadow-xl' : 'opacity-60 grayscale-[0.5] hover:opacity-100 hover:grayscale-0'
+                className={`card p-6 cursor-pointer transition-all duration-300 relative overflow-hidden flex-shrink-0 w-[78vw] sm:w-[300px] md:w-auto snap-center ${
+                  isActive ? 'border-2 shadow-xl scale-100' : 'opacity-60 grayscale-[0.5] hover:opacity-100 hover:grayscale-0 scale-95'
                 } ${!track.available ? 'opacity-30 cursor-not-allowed' : ''}`}
                 style={{ 
                   borderColor: isActive ? track.color : 'var(--color-border)',
