@@ -7,7 +7,7 @@ import { DOCKER_MODULES } from '../data/docker/modules'
 import { K8S_MODULES } from '../data/k8s/modules'
 import { 
   CheckCircle, GitBranch, Package, Ship, ArrowRight, Zap, 
-  Target, Activity, Trophy 
+  Target, Activity, Trophy, Star
 } from 'lucide-react'
 import { 
   Radar, RadarChart, PolarGrid, PolarAngleAxis, 
@@ -215,9 +215,9 @@ export default function CourseDashboard() {
                 {isActive && (
                    <motion.div 
                      layoutId="active-indicator"
-                     className="absolute top-2 right-2 md:top-0 md:right-0 p-2"
+                     className="absolute top-2 right-2 md:top-3 md:right-3 p-1.5 rounded-full"
                    >
-                      <div className="bg-white/10 p-1.5 rounded-full"><ArrowRight size={12} style={{ color: track.color }} /></div>
+                      <Star size={14} fill="currentColor" style={{ color: track.color }} />
                    </motion.div>
                 )}
               </motion.div>
