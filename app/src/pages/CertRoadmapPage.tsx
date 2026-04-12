@@ -70,7 +70,7 @@ const certPaths = [
 ]
 
 export default function CertRoadmapPage() {
-  const { badges } = useAppStore()
+  const { badges, completedModules } = useAppStore()
   const earnedBadgeIds = badges.map(b => b.id)
   const [filter, setFilter] = useState<'all' | 'ready' | 'progress'>('all')
 
@@ -80,11 +80,16 @@ export default function CertRoadmapPage() {
       certs: path.certs.filter(() => {
         const isReady = earnedBadgeIds.includes(path.badge)
         if (filter === 'ready') return isReady
-        if (filter === 'progress') return !isReady
+        if (filter === 'progress') {
+          if (isReady) return false
+          // Check if at least one module of this track has been completed
+          const trackPrefix = path.badge.split('-')[0]
+          return completedModules.some(m => m.startsWith(trackPrefix + '-'))
+        }
         return true
       })
     })).filter(path => path.certs.length > 0)
-  }, [filter, earnedBadgeIds])
+  }, [filter, earnedBadgeIds, completedModules])
 
   return (
     <div className="animate-fade-up w-full max-w-5xl mx-auto">
