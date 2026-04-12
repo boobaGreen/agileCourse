@@ -209,9 +209,14 @@ body {
 
 /* Layout */
 .main-content-layout { margin-left: 0; }
+.hide-on-mobile { display: none !important; }
+.hide-on-desktop { display: flex !important; }
+
 @media (min-width: 768px) {
   .main-content-layout.expanded { margin-left: 240px; }
   .main-content-layout.collapsed { margin-left: 72px; }
+  .hide-on-mobile { display: flex !important; }
+  .hide-on-desktop { display: none !important; }
 }
 
 .page-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }

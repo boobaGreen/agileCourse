@@ -3,15 +3,12 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '../store/useAppStore'
 import {
-  GitBranch, LayoutDashboard, User, Trophy, Award,
-  ChevronLeft, ChevronRight, Zap, Menu, X, Package, Ship
+  LayoutDashboard, User, Trophy, Award,
+  ChevronLeft, ChevronRight, Zap, Menu, X
 } from 'lucide-react'
 
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/git/module/git-1', label: 'Git Course', icon: GitBranch },
-  { path: '/docker/module/docker-1', label: 'Docker Course', icon: Package },
-  { path: '/k8s/module/k8s-1', label: 'K8s Course', icon: Ship },
   { path: '/certifications', label: 'Certifications', icon: Award },
   { path: '/leaderboard', label: 'Leaderboard', icon: Trophy },
   { path: '/profile', label: 'My Profile', icon: User },
@@ -45,7 +42,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <motion.aside
         animate={{ width: sidebarWidth }}
         transition={{ duration: 0.2, ease: 'easeInOut' }}
-        className="hidden md:flex flex-col fixed left-0 top-0 h-full z-30"
+        className="hide-on-mobile flex-col fixed left-0 top-0 h-full z-30"
         style={{
           background: 'var(--color-surface)',
           borderRight: '1px solid var(--color-border)',
@@ -101,10 +98,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       {/* Main content area */}
       <div
         className={`flex-1 flex flex-col transition-all duration-200 main-content-layout ${collapsed ? 'collapsed' : 'expanded'}`}
-        style={{ width: '100%' }}
       >
         {/* Top bar (mobile) */}
-        <div className="md:hidden flex items-center justify-between px-4 py-3 sticky top-0 z-20"
+        <div className="hide-on-desktop items-center justify-between px-4 py-3 sticky top-0 z-20"
           style={{ background: 'var(--color-surface)', borderBottom: '1px solid var(--color-border)' }}>
           <button onClick={() => setMobileOpen(true)} className="text-slate-400 hover:text-white bg-transparent border-none cursor-pointer">
             <Menu size={22} />
@@ -115,7 +111,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        <main className="flex-1 p-4 md:p-8 max-w-5xl mx-auto w-full">
+        <main className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full">
           {children}
         </main>
       </div>

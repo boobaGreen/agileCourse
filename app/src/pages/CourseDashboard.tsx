@@ -5,7 +5,7 @@ import { useAppStore } from '../store/useAppStore'
 import { GIT_MODULES } from '../data/git/modules'
 import { DOCKER_MODULES } from '../data/docker/modules'
 import { K8S_MODULES } from '../data/k8s/modules'
-import { CheckCircle, Lock, GitBranch, Package, Ship, ArrowRight } from 'lucide-react'
+import { CheckCircle, GitBranch, Package, Ship, ArrowRight } from 'lucide-react'
 
 const tracks = [
   { id: 'git', icon: GitBranch, emoji: '🔴', label: 'Git', color: 'var(--color-git)', glow: 'rgba(249,115,22,0.2)', modules: GIT_MODULES, available: true },
@@ -133,28 +133,22 @@ export default function CourseDashboard() {
             </div>
 
             <div className="module-grid">
-              {currentModules.map((mod, i) => {
+              {currentModules.map((mod) => {
                 const isDone = completedModules.includes(mod.id)
-                const isLocked = i > 0 && !completedModules.includes(currentModules[i - 1].id)
                 
                 return (
                   <div
                     key={mod.id}
-                    onClick={() => !isLocked && navigate(`/${activeTrackId}/module/${mod.id}`)}
-                    className={`module-card group ${isDone ? 'done' : ''} ${isLocked ? 'locked' : ''}`}
+                    onClick={() => navigate(`/${activeTrackId}/module/${mod.id}`)}
+                    className={`module-card group ${isDone ? 'done' : ''}`}
                     style={{ 
                       borderColor: isDone ? `${activeTrack.color}60` : undefined,
-                      boxShadow: !isLocked && !isDone ? `hover: ${activeTrack.color}15 0 10px` : undefined
+                      boxShadow: !isDone ? `hover: ${activeTrack.color}15 0 10px` : undefined
                     }}
                   >
                     {isDone && (
                       <div className="absolute top-4 right-4" style={{ color: activeTrack.color }}>
                         <CheckCircle size={20} />
-                      </div>
-                    )}
-                    {isLocked && (
-                      <div className="absolute top-4 right-4 text-muted">
-                        <Lock size={16} />
                       </div>
                     )}
                     
@@ -180,7 +174,6 @@ export default function CourseDashboard() {
                       </div>
                       <button 
                         className="p-1.5 rounded-lg bg-surface2 text-muted group-hover:text-white transition-colors"
-                        disabled={isLocked}
                       >
                          <ArrowRight size={14} />
                       </button>

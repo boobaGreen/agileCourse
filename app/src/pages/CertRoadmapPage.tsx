@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ExternalLink, Award, CheckCircle, Zap } from 'lucide-react'
+import { ExternalLink, Award, CheckCircle } from 'lucide-react'
 import { useAppStore } from '../store/useAppStore'
 
 const certPaths = [
@@ -146,7 +146,4 @@ export default function CertRoadmapPage() {
   )
 }
 
-// Dummy for Zap
-const BookOpen = (props: any) => <Zap {...props} />
-const Container = (props: any) => <Zap {...props} />
-const Anchor = (props: any) => <Zap {...props} />
+
