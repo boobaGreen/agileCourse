@@ -100,7 +100,6 @@ export default function ProfilePage() {
         ].map((s, i) => (
           <div key={i} className="stat-card p-6 border border-border/50 bg-surface/50 rounded-2xl">
             <div className="flex items-center gap-2 mb-3">
-              {/* @ts-expect-error - color prop is dynamic hex string */}
               <Zap size={16} style={{ color: s.color }} />
               <span className="text-muted text-xs md:text-sm fw-bold uppercase">{s.label}</span>
             </div>
