@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore, BADGES } from '../store/useAppStore'
 import { Zap, CheckCircle, Award, RotateCcw, GitBranch, Package, Ship } from 'lucide-react'
@@ -156,10 +157,11 @@ export default function ProfilePage() {
       </div>
 
       {/* Custom Confirmation Modal */}
-      <AnimatePresence>
-        {showConfirmModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div 
+      {createPortal(
+        <AnimatePresence>
+          {showConfirmModal && (
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+              <motion.div 
                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                className="absolute inset-0 bg-black/60 backdrop-blur-sm"
                onClick={() => setShowConfirmModal(false)}
@@ -193,7 +195,9 @@ export default function ProfilePage() {
             </motion.div>
           </div>
         )}
-      </AnimatePresence>
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   )
 }
