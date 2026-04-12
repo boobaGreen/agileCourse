@@ -129,7 +129,7 @@ export const DOCKER_MODULES: Module[] = [
       {
         type: 'concept',
         title: '📦 The Container (The Pizza)',
-        content: 'A container is a **runnable instance** of an image. When you "run" an image, it becomes a container. You can have 10 containers running from the same 1 image. Think of the container as the pizza made from the recipe.'
+        content: 'A container is a **runnable instance** of an image. When you "run" an image, it becomes a container. You can have 10 containers running from the same 1 image. Think of the container as the pizza made from the recipe. Deleting a container does not affect the read-only image it was built from.'
       },
       {
         type: 'concept',
@@ -150,7 +150,10 @@ docker images
 docker run alpine echo "Hello World"
 
 # See running containers
-docker ps`,
+docker ps
+
+# See ALL containers (including stopped ones)
+docker ps -a`,
         language: 'bash'
       }
     ],
@@ -369,7 +372,7 @@ docker run -d \
       {
         type: 'concept',
         title: '🚪 Port Mapping',
-        content: 'By default, containers are isolated. To expose a web app running on port 80 inside the container, we map it to a port on our machine (like 8080).\n\nSyntax: `-p [hostPort]:[containerPort]`'
+        content: 'By default, containers are isolated. To expose a web app running on port 80 inside the container, we map it to a port on our machine.\n\nSyntax: `-p [hostPort]:[containerPort]`\n\nThe `hostPort` is what you type in your browser (e.g., `localhost:3000`).'
       },
       {
         type: 'code',
@@ -439,9 +442,13 @@ volumes:
       },
       {
         type: 'code',
-        title: 'The Magic Command',
-        content: 'Start everything at once:',
-        code: `docker-compose up -d`,
+        title: 'The Magic Commands',
+        content: 'Start everything at once (in the background) and stop it:',
+        code: `# Start and run in background
+docker-compose up -d
+
+# Stop and remove containers and networks
+docker-compose down`,
         language: 'bash'
       }
     ],

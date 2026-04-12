@@ -254,7 +254,7 @@ spec:
       {
         type: 'concept',
         title: '🛡️ The Service (The Entry Point)',
-        content: 'A Service is an abstraction that defines a logical set of Pods and a policy by which to access them. It provides a **stable IP and DNS name**. You talk to the Service, and it load-balances the traffic to the healthy Pods behind it.'
+        content: 'A Service is an abstraction that defines a logical set of Pods and a policy by which to access them. It provides a **stable IP and DNS name**. You talk to the Service, and it load-balances the traffic to the healthy Pods behind it. \n\nHow does it know which Pods to send traffic to? It uses a **Selector** (a set of labels like `app: web`) to find all Pods with matching tags.'
       },
       {
         type: 'concept',

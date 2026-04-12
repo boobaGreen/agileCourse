@@ -53,7 +53,7 @@ export const GIT_MODULES: Module[] = [
       {
         type: 'concept',
         title: 'The three big problems it solves',
-        content: '**1. History** — Every change is recorded. Who changed what, when, and why.\n\n**2. Collaboration** — Multiple people can work on the same codebase without overwriting each other.\n\n**3. Experimentation** — Create branches to try new ideas safely, then merge them (or throw them away).'
+        content: '**1. History** — Every change is recorded. Who changed what, when, and why.\n\n**2. Collaboration** — Multiple people can work on the same codebase without overwriting each other.\n\n**3. Experimentation** — Create branches to try new ideas safely. A branch is an independent line of development diverging from the main codebase. You can experiment on it, then merge it back (or throw it away).'
       },
       {
         type: 'concept',
@@ -260,7 +260,7 @@ git log --oneline`,
       {
         type: 'concept',
         title: '🌿 Branch',
-        content: 'A branch is an **independent line of development**. By default you work on `main` (or `master`). When you want to add a feature or fix a bug without risking the main codebase, you create a new branch.\n\nBranches are **cheap** in Git — creating one takes milliseconds and costs almost no disk space.'
+        content: 'A branch is an **independent line of development**. By default you work on `main`. When you want to add a feature, you create a new branch. A new branch shares all the commit history up to that point without duplicating files.\n\nBranches are **cheap** in Git — creating one takes milliseconds and costs almost no disk space.'
       },
       {
         type: 'concept',
@@ -653,7 +653,7 @@ git diff --staged           # See staged changes`,
 git add <file>              # Stage specific file
 git commit -m "message"     # Save snapshot
 git commit --amend          # Edit last commit (local only!)
-git stash                   # Temporarily shelve changes
+git stash                   # Temporarily save uncommitted changes to switch context
 git stash pop               # Restore stashed changes`,
         language: 'bash'
       },
@@ -691,8 +691,8 @@ git push -u origin <branch> # Push + set upstream`,
         content: 'The lifesavers:',
         code: `git restore <file>          # Discard unstaged changes
 git restore --staged <file> # Unstage a file
-git revert <sha>            # Undo a commit safely (new commit)
-git reset --hard HEAD~1     # Throw away last commit (CAREFUL!)
+git revert <sha>            # Undo a commit safely (creates a new reverse commit)
+git reset --hard HEAD~1     # Throw away last commit and its changes permanently (CAREFUL!)
 git bisect start            # Binary search for a buggy commit`,
         language: 'bash'
       }
