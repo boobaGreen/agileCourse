@@ -13,6 +13,12 @@ import {
 } from 'lucide-react'
 import confetti from 'canvas-confetti'
 
+type GameDataItem = { id: string, label: string }
+type GameDataClassify = { 
+  categories: { id: string, label: string }[], 
+  items: { id: string, label: string, categoryId: string }[] 
+}
+
 export default function ModulePage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -544,7 +550,7 @@ function SectionCard({ section }: { section: Section }) {
       {/* Mini-Games */}
       {section.type === 'game' && section.gameType && (
         <div className="mt-4">
-           <MiniGame gameType={section.gameType} gameData={section.gameData} />
+           <MiniGame gameType={section.gameType} gameData={section.gameData as GameDataItem[] | GameDataClassify} />
         </div>
       )}
     </div>
@@ -594,12 +600,6 @@ function EducationAnimation({ type }: { type: string }) {
       <Zap size={48} />
     </motion.div>
   )
-}
-
-type GameDataItem = { id: string, label: string }
-type GameDataClassify = { 
-  categories: { id: string, label: string }[], 
-  items: { id: string, label: string, categoryId: string }[] 
 }
 
 function MiniGame({ gameType, gameData }: { gameType: string, gameData: GameDataItem[] | GameDataClassify }) {
