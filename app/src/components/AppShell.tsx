@@ -3,14 +3,13 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '../store/useAppStore'
 import {
-  LayoutDashboard, User, Trophy, Award,
+  LayoutDashboard, User, Award,
   ChevronLeft, ChevronRight, Zap, Menu, X
 } from 'lucide-react'
 
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/certifications', label: 'Certifications', icon: Award },
-  { path: '/leaderboard', label: 'Leaderboard', icon: Trophy },
   { path: '/profile', label: 'My Profile', icon: User },
 ]
 
