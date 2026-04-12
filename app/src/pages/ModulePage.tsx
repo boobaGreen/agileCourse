@@ -25,12 +25,30 @@ export default function ModulePage() {
   const [xpEarned, setXpEarned] = useState(0)
   const [xpImport, setXpImport] = useState('')
   const [prevId, setPrevId] = useState(id)
-  const [quizData, setQuizData] = useState<any[]>([])
+  
+  interface ShuffledQuiz extends QuizQuestion {
+    shuffledOptions: string[]
+    shuffledCorrect: number
+  }
+  const [quizData, setQuizData] = useState<ShuffledQuiz[]>([])
   const [timeLeft, setTimeLeft] = useState(15 * 60)
 
   // --- DATA RESOLUTION ---
   const allModules = useMemo(() => [...GIT_MODULES, ...DOCKER_MODULES, ...K8S_MODULES], [])
   const mod = allModules.find((m) => m.id === id)
+  const trackColor = mod?.track === 'git' ? 'var(--color-git)' : mod?.track === 'docker' ? 'var(--color-docker)' : 'var(--color-k8s)'
+
+  // --- STATE SYNC (Render Phase) ---
+  if (id !== prevId) {
+    setPrevId(id)
+    setView('theory')
+    setQuizAnswers({})
+    setSubmitted(false)
+    setXpEarned(0)
+    setXpImport('')
+    setQuizData([])
+    setTimeLeft(15 * 60)
+  }
 
   // --- HANDLERS (Defined before Effects) ---
   const handleAnswer = (qId: string, idx: number) => {
@@ -110,23 +128,11 @@ export default function ModulePage() {
         setTimeLeft((prev) => prev - 1)
       }, 1000)
     } else if (timeLeft === 0 && view === 'quiz' && !submitted) {
-      handleSubmitQuiz()
+      // Small timeout to avoid sync setState warning in effect
+      setTimeout(() => handleSubmitQuiz(), 0)
     }
     return () => clearInterval(timer)
   }, [view, submitted, timeLeft, handleSubmitQuiz])
-
-  useEffect(() => {
-    if (id !== prevId) {
-      setPrevId(id)
-      setView('theory')
-      setQuizAnswers({})
-      setSubmitted(false)
-      setXpEarned(0)
-      setXpImport('')
-      setQuizData([])
-      setTimeLeft(15 * 60)
-    }
-  }, [id, prevId])
 
   // --- EARLY RETURN (Must be after ALL hooks) ---
   if (!mod) return (
@@ -546,15 +552,15 @@ function SectionCard({ section }: { section: Section }) {
 }
 
 function EducationAnimation({ type }: { type: string }) {
-  if (type.includes('SHA')) {
-    const [input, setInput] = useState('Git')
-    const hash = useMemo(() => {
-      // Fake hash for visual demo
-      let h = 0;
-      for (let i = 0; i < input.length; i++) h = ((h << 5) - h) + input.charCodeAt(i) | 0
-      return Math.abs(h).toString(16).padEnd(40, 'f').slice(0, 40)
-    }, [input])
+  const [input, setInput] = useState('Git')
+  const hash = useMemo(() => {
+    // Fake hash for visual demo
+    let h = 0;
+    for (let i = 0; i < input.length; i++) h = ((h << 5) - h) + input.charCodeAt(i) | 0
+    return Math.abs(h).toString(16).padEnd(40, 'f').slice(0, 40)
+  }, [input])
 
+  if (type.includes('SHA')) {
     return (
       <div className="w-full max-w-sm flex flex-col gap-4">
          <div className="text-[10px] text-muted uppercase fw-black tracking-widest text-center">Avalanche Effect Simulator</div>
@@ -590,134 +596,145 @@ function EducationAnimation({ type }: { type: string }) {
   )
 }
 
-function MiniGame({ gameType, gameData }: { gameType: string, gameData: any }) {
-  const [solved, setSolved] = useState(false)
-  const [attempts, setAttempts] = useState(0)
+type GameDataItem = { id: string, label: string }
+type GameDataClassify = { 
+  categories: { id: string, label: string }[], 
+  items: { id: string, label: string, categoryId: string }[] 
+}
 
+function MiniGame({ gameType, gameData }: { gameType: string, gameData: GameDataItem[] | GameDataClassify }) {
   if (gameType === 'drag-order') {
-    const items = gameData as { id: string, label: string }[]
-    const [currentOrder, setCurrentOrder] = useState([...items].sort(() => Math.random() - 0.5))
-    
-    const moveItem = (fromIdx: number, toIdx: number) => {
-      const newOrder = [...currentOrder]
-      const [removed] = newOrder.splice(fromIdx, 1)
-      newOrder.splice(toIdx, 0, removed)
-      setCurrentOrder(newOrder)
-      setAttempts(a => a + 1)
-      
-      const isCorrect = newOrder.every((item, i) => item.id === items[i].id)
-      if (isCorrect) setSolved(true)
-    }
-
-    return (
-      <div className="card p-6 border-purple-500/20 bg-purple-500/5">
-        <div className="text-center mb-6">
-          <h4 className="text-white fw-black uppercase tracking-tight mb-1">Challenge: Order the Workflow</h4>
-          <p className="text-muted text-xs">Drag the steps into the correct chronological sequence.</p>
-        </div>
-
-        <div className="flex flex-col gap-2 mb-6">
-           {currentOrder.map((item, idx) => (
-             <motion.div
-               key={item.id}
-               layout
-               className={`p-3 rounded-xl border flex items-center justify-between cursor-move group transition-all
-                 ${solved ? 'bg-green/10 border-green/30' : 'bg-surface2 border-white/5 hover:border-white/20'}
-               `}
-             >
-                <div className="flex items-center gap-3">
-                   <div className="w-6 h-6 rounded-lg bg-black/20 flex items-center justify-center text-[10px] fw-black text-muted group-hover:text-white">
-                      {idx + 1}
-                   </div>
-                   <span className="text-sm fw-bold text-sub group-hover:text-white">{item.label}</span>
-                </div>
-                {!solved && (
-                  <div className="flex gap-1">
-                    <button onClick={() => idx > 0 && moveItem(idx, idx - 1)} className="p-1 hover:text-white"><Zap size={12} className="rotate-180" /></button>
-                    <button onClick={() => idx < currentOrder.length - 1 && moveItem(idx, idx + 1)} className="p-1 hover:text-white"><Zap size={12} /></button>
-                  </div>
-                )}
-                {solved && <CheckCircle size={14} className="text-green" />}
-             </motion.div>
-           ))}
-        </div>
-
-        {solved && (
-          <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center">
-             <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-green text-black fw-black text-sm">
-                <Trophy size={16} /> Workflow Mastered! (+10 XP)
-             </div>
-          </motion.div>
-        )}
-      </div>
-    )
+    return <DragOrderGame items={gameData as GameDataItem[]} />
   }
 
   if (gameType === 'drag-classify') {
-    const { categories, items } = gameData as { categories: { id: string, label: string }[], items: { id: string, label: string, categoryId: string }[] }
-    const [selections, setSelections] = useState<Record<string, string>>({}) // itemId -> categoryId
-    const [currentItems, setCurrentItems] = useState([...items].sort(() => Math.random() - 0.5))
-
-    const classify = (itemId: string, catId: string) => {
-      const newSels = { ...selections, [itemId]: catId }
-      setSelections(newSels)
-      
-      const allDone = items.length === Object.keys(newSels).length
-      const allCorrect = items.every(item => newSels[item.id] === item.categoryId)
-      if (allDone && allCorrect) setSolved(true)
-    }
-
-    return (
-      <div className="card p-6 border-blue-500/20 bg-blue-500/5">
-        <div className="text-center mb-6">
-          <h4 className="text-white fw-black uppercase tracking-tight mb-1">Challenge: Categorize Components</h4>
-          <p className="text-muted text-xs">Assign each item to its correct architectural layer.</p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4 mb-8">
-           {categories.map(cat => (
-             <div key={cat.id} className="p-4 rounded-xl border border-white/10 bg-black/20 text-center min-h-[120px] flex flex-col items-center gap-3">
-                <span className="text-[10px] fw-black text-white uppercase tracking-widest">{cat.label}</span>
-                <div className="flex flex-wrap justify-center gap-2">
-                   {items.filter(i => selections[i.id] === cat.id).map(i => (
-                     <div key={i.id} className="px-2 py-1 rounded bg-white/10 text-[10px] text-white">
-                        {i.label}
-                     </div>
-                   ))}
-                </div>
-             </div>
-           ))}
-        </div>
-
-        <div className="flex flex-wrap justify-center gap-3">
-           {currentItems.filter(i => !selections[i.id]).map(item => (
-             <div key={item.id} className="p-3 pr-2 rounded-xl bg-surface2 border border-white/5 flex items-center gap-4">
-                <span className="text-xs fw-bold text-white">{item.label}</span>
-                <div className="flex gap-1">
-                   {categories.map(cat => (
-                     <button 
-                       key={cat.id} 
-                       onClick={() => classify(item.id, cat.id)}
-                       className="px-2 py-1 rounded text-[9px] fw-black bg-white/5 hover:bg-primary hover:text-white transition-colors uppercase"
-                     >
-                       {cat.label}
-                     </button>
-                   ))}
-                </div>
-             </div>
-           ))}
-        </div>
-
-        {solved && (
-          <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center mt-6">
-             <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-green text-black fw-black text-sm">
-                <Trophy size={16} /> Architecture Validated! (+15 XP)
-             </div>
-          </motion.div>
-        )}
-      </div>
-    )
+    const data = gameData as GameDataClassify
+    return <DragClassifyGame categories={data.categories} items={data.items} />
   }
 
   return <div className="p-10 text-center text-muted border border-dashed rounded-xl">Game Module Coming Soon...</div>
+}
+
+function DragOrderGame({ items }: { items: { id: string, label: string }[] }) {
+  const [solved, setSolved] = useState(false)
+  const [currentOrder, setCurrentOrder] = useState(() => [...items].sort(() => Math.random() - 0.5))
+  
+  const moveItem = (fromIdx: number, toIdx: number) => {
+    const newOrder = [...currentOrder]
+    const [removed] = newOrder.splice(fromIdx, 1)
+    newOrder.splice(toIdx, 0, removed)
+    setCurrentOrder(newOrder)
+    
+    const isCorrect = newOrder.every((item, i) => item.id === items[i].id)
+    if (isCorrect) setSolved(true)
+  }
+
+  return (
+    <div className="card p-6 border-purple-500/20 bg-purple-500/5">
+      <div className="text-center mb-6">
+        <h4 className="text-white fw-black uppercase tracking-tight mb-1">Challenge: Order the Workflow</h4>
+        <p className="text-muted text-xs">Drag the steps into the correct chronological sequence.</p>
+      </div>
+
+      <div className="flex flex-col gap-2 mb-6">
+         {currentOrder.map((item, idx) => (
+           <motion.div
+             key={item.id}
+             layout
+             className={`p-3 rounded-xl border flex items-center justify-between cursor-move group transition-all
+               ${solved ? 'bg-green/10 border-green/30' : 'bg-surface2 border-white/5 hover:border-white/20'}
+             `}
+           >
+              <div className="flex items-center gap-3">
+                 <div className="w-6 h-6 rounded-lg bg-black/20 flex items-center justify-center text-[10px] fw-black text-muted group-hover:text-white">
+                    {idx + 1}
+                 </div>
+                 <span className="text-sm fw-bold text-sub group-hover:text-white">{item.label}</span>
+              </div>
+              {!solved && (
+                <div className="flex gap-1">
+                  <button onClick={() => idx > 0 && moveItem(idx, idx - 1)} className="p-1 hover:text-white"><Zap size={12} className="rotate-180" /></button>
+                  <button onClick={() => idx < currentOrder.length - 1 && moveItem(idx, idx + 1)} className="p-1 hover:text-white"><Zap size={12} /></button>
+                </div>
+              )}
+              {solved && <CheckCircle size={14} className="text-green" />}
+           </motion.div>
+         ))}
+      </div>
+
+      {solved && (
+        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center">
+           <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-green text-black fw-black text-sm">
+              <Trophy size={16} /> Workflow Mastered! (+10 XP)
+           </div>
+        </motion.div>
+      )}
+    </div>
+  )
+}
+
+function DragClassifyGame({ categories, items }: { categories: { id: string, label: string }[], items: { id: string, label: string, categoryId: string }[] }) {
+  const [solved, setSolved] = useState(false)
+  const [selections, setSelections] = useState<Record<string, string>>({}) // itemId -> categoryId
+  const [currentItems] = useState(() => [...items].sort(() => Math.random() - 0.5))
+
+  const classify = (itemId: string, catId: string) => {
+    const newSels = { ...selections, [itemId]: catId }
+    setSelections(newSels)
+    
+    const allDone = items.length === Object.keys(newSels).length
+    const allCorrect = items.every(item => newSels[item.id] === item.categoryId)
+    if (allDone && allCorrect) setSolved(true)
+  }
+
+  return (
+    <div className="card p-6 border-blue-500/20 bg-blue-500/5">
+      <div className="text-center mb-6">
+        <h4 className="text-white fw-black uppercase tracking-tight mb-1">Challenge: Categorize Components</h4>
+        <p className="text-muted text-xs">Assign each item to its correct architectural layer.</p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 mb-8">
+         {categories.map(cat => (
+           <div key={cat.id} className="p-4 rounded-xl border border-white/10 bg-black/20 text-center min-h-[120px] flex flex-col items-center gap-3">
+              <span className="text-[10px] fw-black text-white uppercase tracking-widest">{cat.label}</span>
+              <div className="flex flex-wrap justify-center gap-2">
+                 {items.filter(i => selections[i.id] === cat.id).map(i => (
+                   <div key={i.id} className="px-2 py-1 rounded bg-white/10 text-[10px] text-white">
+                      {i.label}
+                   </div>
+                 ))}
+              </div>
+           </div>
+         ))}
+      </div>
+
+      <div className="flex flex-wrap justify-center gap-3">
+         {currentItems.filter(i => !selections[i.id]).map(item => (
+           <div key={item.id} className="p-3 pr-2 rounded-xl bg-surface2 border border-white/5 flex items-center gap-4">
+              <span className="text-xs fw-bold text-white">{item.label}</span>
+              <div className="flex gap-1">
+                 {categories.map(cat => (
+                   <button 
+                     key={cat.id} 
+                     onClick={() => classify(item.id, cat.id)}
+                     className="px-2 py-1 rounded text-[9px] fw-black bg-white/5 hover:bg-primary hover:text-white transition-colors uppercase"
+                   >
+                     {cat.label}
+                   </button>
+                 ))}
+              </div>
+           </div>
+         ))}
+      </div>
+
+      {solved && (
+        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center mt-6">
+           <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-green text-black fw-black text-sm">
+              <Trophy size={16} /> Architecture Validated! (+15 XP)
+           </div>
+        </motion.div>
+      )}
+    </div>
+  )
 }
