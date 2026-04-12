@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '../store/useAppStore'
-import { ArrowRight, Sparkles } from 'lucide-react'
+import { ArrowRight, Sparkles, GitBranch, Box, Workflow, Terminal, Database, Code2 } from 'lucide-react'
 
 
 export default function LandingPage() {
@@ -17,25 +17,37 @@ export default function LandingPage() {
     navigate('/dashboard')
   }
 
+  const particles = useMemo(() => {
+    return [...Array(24)].map((_, i) => ({
+      Icon: [GitBranch, Box, Workflow, Terminal, Database, Code2][i % 6],
+      isOdd: i % 2 === 0,
+      left: `${(i * 13) % 100}%`,
+      top: `${(i * 17) % 100}%`,
+      color: i % 3 === 0 ? 'var(--color-git)' : i % 3 === 1 ? 'var(--color-docker)' : 'var(--color-k8s)',
+      duration: 7 + Math.random() * 5,
+      size: 16 + Math.random() * 16,
+    }))
+  }, [])
+
   return (
     <div className="gradient-bg min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
       
-      {/* Background Dots */}
-      <div className="absolute inset-0 pointer-events-none opacity-20">
-        {[...Array(20)].map((_, i) => (
+      {/* Animated Tech Particles Background */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.08]">
+        {particles.map((p, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full"
-            style={{
-              width: Math.random() * 4 + 2,
-              height: Math.random() * 4 + 2,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              background: i % 3 === 0 ? 'var(--color-git)' : i % 3 === 1 ? 'var(--color-docker)' : 'var(--color-k8s)',
+            className="absolute flex items-center justify-center p-2 rounded-xl bg-white/5 backdrop-blur-3xl"
+            style={{ left: p.left, top: p.top, color: p.color }}
+            animate={{ 
+              y: [0, p.isOdd ? -60 : 60, 0], 
+              rotate: [0, p.isOdd ? 45 : -45, 0],
+              opacity: [0.1, 0.6, 0.1]
             }}
-            animate={{ y: [0, -30, 0], opacity: [0.1, 0.4, 0.1] }}
-            transition={{ duration: 4 + Math.random() * 4, repeat: Infinity }}
-          />
+            transition={{ duration: p.duration, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <p.Icon size={p.size} />
+          </motion.div>
         ))}
       </div>
 

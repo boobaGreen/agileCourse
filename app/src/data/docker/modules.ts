@@ -3,7 +3,7 @@ import type { Module } from '../git/modules'
 export const DOCKER_MODULES: Module[] = [
   {
     id: 'docker-1',
-    track: 'git', // We'll update the type but for now the interface says 'git'. I should really update the interface in git/modules.ts
+    track: 'docker',
     order: 1,
     title: 'What is a Container?',
     subtitle: 'Ships, not virtual machines',
@@ -19,12 +19,58 @@ export const DOCKER_MODULES: Module[] = [
       {
         type: 'concept',
         title: '📦 Why not just use a Virtual Machine?',
-        content: '**Virtual Machines (VMs)** include a full copy of an operating system. They are heavy, slow to start, and consume GBs of RAM.\n\n**Containers** share the host machine\'s OS kernel. They are lightweight, start in seconds, and use very little memory. Think of a VM as a whole house and a Container as a specialized room in an apartment building.'
+        content: 'To understand containers, we must understand the old way of doing things: Virtual Machines (VMs).'
       },
       {
-        type: 'analogy',
-        title: '🚢 The Shipping Container Analogy',
-        content: 'Before standard shipping containers, moving goods was a mess. Every ship had to be loaded differently. With standard containers, a crane doesn\'t care if it\'s moving TVs or bananas. Docker does the same for software: the server doesn\'t care if it\'s running Java or Python — it just runs the container.'
+        type: 'flowchart',
+        content: '',
+        diagramSteps: [
+          { label: 'VM\n(Heavy)', icon: '🖥️', color: '#ff4b4b' },
+          { label: 'Hypervisor\n(Full OS)', icon: '🛡️', color: '#ffd166' },
+          { label: 'Container\n(Light)', icon: '🐳', color: '#06d6a0' },
+          { label: 'Docker Engine\n(Shared OS)', icon: '⚙️', color: '#118ab2' }
+        ]
+      },
+      {
+        type: 'table',
+        title: '📊 VM vs Container Comparison',
+        content: 'Instead of running a full Guest OS inside a "fake computer", a Container just shares the host kernel:',
+        tableData: {
+          headers: ['Feature', 'Virtual Machine (VM)', 'Container (Docker)'],
+          rows: [
+            ['**Architecture**', 'Hardware → Hypervisor → **Guest OS** → App', 'Hardware → Host OS → **Docker Engine** → App'],
+            ['**Size**', 'Gigabytes (GBs) per machine', 'Megabytes (MBs) per container'],
+            ['**Startup Time**', 'Minutes (Booting a full OS)', 'Seconds (Just starting a process)'],
+            ['**Isolation**', 'Complete, hardware-level isolation', 'Process-level isolation'],
+            ['**Overhead**', 'High resource consumption', 'Extremely lightweight']
+          ]
+        }
+      },
+      {
+        type: 'flowchart',
+        content: '**The Shipping Container Analogy**\nBefore standard containers, moving software was exactly like moving random-sized cargo. Docker standardized the shape!',
+        diagramSteps: [
+          { label: 'Developer Laptop\n(Pack)', icon: '💻', color: '#118ab2' },
+          { label: 'Standard Docker Image\n(Container)', icon: '📦', color: '#ffb703' },
+          { label: 'Cloud Servers\n(Ship)', icon: '☁️', color: '#06d6a0' },
+          { label: 'Runs Exactly the Same\n(Deliver)', icon: '✅', color: '#118ab2' }
+        ]
+      },
+      {
+        type: 'animation',
+        content: 'Shipping Container visualization'
+      },
+      {
+        type: 'game',
+        title: 'Challenge: The Lifecycle',
+        content: 'Put the steps of the Docker workflow in the correct sequence.',
+        gameType: 'drag-order',
+        gameData: [
+          { id: '1', label: 'Write a Dockerfile' },
+          { id: '2', label: 'Run "docker build" to create an Image' },
+          { id: '3', label: 'Run "docker push" to Registry' },
+          { id: '4', label: 'Run "docker run" to create a Container' }
+        ]
       },
       {
         type: 'tip',
@@ -73,6 +119,16 @@ export const DOCKER_MODULES: Module[] = [
       {
         type: 'intro',
         content: 'Why is the logo a whale? Why is it called Docker? Understanding the culture helps you understand the tool.'
+      },
+      {
+        type: 'flowchart',
+        content: '**The Docker Revolution Timeline**',
+        diagramSteps: [
+          { label: 'Pre-2013\n(Messy VMs)', icon: '🖥️', color: '#ff4b4b' },
+          { label: '2013: dotCloud\n(Open Sourced)', icon: '🔓', color: '#ffb703' },
+          { label: '2015: Docker Inc.\n(Explosion)', icon: '🚀', color: '#118ab2' },
+          { label: 'Today\n(Industry Standard)', icon: '🌍', color: '#06d6a0' }
+        ]
       },
       {
         type: 'concept',
@@ -132,9 +188,47 @@ export const DOCKER_MODULES: Module[] = [
         content: 'A container is a **runnable instance** of an image. When you "run" an image, it becomes a container. You can have 10 containers running from the same 1 image. Think of the container as the pizza made from the recipe. Deleting a container does not affect the read-only image it was built from.'
       },
       {
+        type: 'flowchart',
+        content: '**One Image, Multiple Containers**',
+        diagramSteps: [
+          { label: 'Image\n(Read-Only)', icon: '🖼️', color: '#118ab2' },
+          { label: 'Container A\n(Port 80)', icon: '📦', color: '#06d6a0' },
+          { label: 'Container B\n(Port 81)', icon: '📦', color: '#06d6a0' }
+        ]
+      },
+      {
         type: 'concept',
         title: '🍰 The Layer Cake',
         content: 'Docker images are made of **layers**. Every time you change something in an image, a new small layer is added. If you change your code but not your libraries, Docker only updates the code layer. This makes images incredibly fast to build and share!'
+      },
+      {
+        type: 'flowchart',
+        content: '**Image Architecture (Layers)**',
+        diagramSteps: [
+          { label: 'Base OS\n(Ubuntu 50MB)', icon: '🐧', color: '#ff4b4b' },
+          { label: 'Dependencies\n(Node.js 20MB)', icon: '📚', color: '#ffd166' },
+          { label: 'Your App\n(index.js 2KB)', icon: '💻', color: '#06d6a0' },
+          { label: 'R/W Layer\n(Container)', icon: '✏️', color: '#118ab2' }
+        ]
+      },
+      {
+        type: 'game',
+        title: 'Challenge: Identify the Layer',
+        content: 'Correctly identify where each element belongs in a Docker image stack.',
+        gameType: 'drag-classify',
+        gameData: {
+          categories: [
+            { id: 'readonly', label: 'Read-Only (Image)' },
+            { id: 'writeable', label: 'Writeable (Container)' }
+          ],
+          items: [
+            { id: 'os', label: 'Ubuntu OS', categoryId: 'readonly' },
+            { id: 'node', label: 'Node.js Runtime', categoryId: 'readonly' },
+            { id: 'code', label: 'My index.js', categoryId: 'readonly' },
+            { id: 'logs', label: 'Runtime Log files', categoryId: 'writeable' },
+            { id: 'temp', label: 'Temporary cache', categoryId: 'writeable' }
+          ]
+        }
       },
       {
         type: 'code',
@@ -199,6 +293,30 @@ docker ps -a`,
         content: 'How do you create your own images? You write a **Dockerfile** — a simple text file with instructions on how to build the environment.'
       },
       {
+        type: 'game',
+        title: 'Challenge: Dockerfile Builder',
+        content: 'Order the instructions correctly to create a functional Dockerfile (from base to execution).',
+        gameType: 'drag-order',
+        gameData: [
+          { id: '1', label: 'FROM alpine' },
+          { id: '2', label: 'WORKDIR /app' },
+          { id: '3', label: 'COPY . .' },
+          { id: '4', label: 'RUN npm install' },
+          { id: '5', label: 'CMD ["node", "app.js"]' }
+        ]
+      },
+      {
+        type: 'flowchart',
+        content: '**The Docker Build Pipeline**',
+        diagramSteps: [
+          { label: 'Dockerfile\n(Code)', icon: '📝', color: '#ffd166' },
+          { label: '`docker build`\n(Compile)', icon: '🔨', color: '#ffb703' },
+          { label: 'Image\n(Artifact)', icon: '🖼️', color: '#118ab2' },
+          { label: '`docker run`\n(Execute)', icon: '▶️', color: '#06d6a0' },
+          { label: 'Container\n(Live App)', icon: '📦', color: '#06d6a0' }
+        ]
+      },
+      {
         type: 'code',
         title: 'A simple Dockerfile example',
         content: 'Let\'s package a simple Python app:',
@@ -219,14 +337,29 @@ CMD ["python", "app.py"]`,
         language: 'dockerfile'
       },
       {
-        type: 'concept',
-        title: '🛠️ Common Instructions',
-        content: '**FROM**: The starting point (usually an OS or language runtime)\n**WORKDIR**: The directory where commands will run\n**COPY**: Move files from your computer into the image\n**RUN**: Run a command during the *build* (like installing software)\n**CMD**: The command the container runs *when it starts*'
+        type: 'table',
+        title: '🛠️ Core Instructions Reference',
+        content: 'These five instructions cover 90% of your Dockerfile needs:',
+        tableData: {
+          headers: ['Instruction', 'Purpose', 'When does it execute?'],
+          rows: [
+            ['**FROM**', 'Defines the base image to start from', 'Build Phase (Step 1)'],
+            ['**WORKDIR**', 'Sets the active directory inside the container', 'Build Phase'],
+            ['**COPY**', 'Copies files from your laptop into the image', 'Build Phase'],
+            ['**RUN**', 'Executes shell commands (like `apt install` or `pip install`)', 'Build Phase'],
+            ['**CMD**', 'Defines the default command that runs when the container starts', '**Runtime** (When you `docker run`)']
+          ]
+        }
       },
       {
-        type: 'tip',
-        title: '💡 Build caching',
-        content: 'Docker remembers each line. If you don\'t change the first 3 lines, it won\'t re-run them. This is why you should copy your `requirements.txt` and run `pip install` **before** copying your whole project code!'
+        type: 'flowchart',
+        content: '**Understanding Build Cache**\nDocker caches each layer. If layer 3 changes, only layer 3 and below are rebuilt!',
+        diagramSteps: [
+          { label: 'Layer 1: FROM\n(Cached)', icon: '✅', color: '#06d6a0' },
+          { label: 'Layer 2: COPY reqs\n(Cached)', icon: '✅', color: '#06d6a0' },
+          { label: 'Layer 3: COPY app.py\n(Changed!)', icon: '⚠️', color: '#ff4b4b' },
+          { label: 'Layer 4: CMD\n(Rebuilt)', icon: '⏳', color: '#ffb703' }
+        ]
       }
     ],
     quiz: [
@@ -271,9 +404,29 @@ CMD ["python", "app.py"]`,
         content: 'The official cloud registry for Docker images. You can find "Official Images" for Linux (Ubuntu, Alpine), Databases (PostgreSQL, Redis), and Languages (Node, Python, Go).'
       },
       {
-        type: 'concept',
-        title: '🏷️ Image Tags',
-        content: 'Images have versions called **tags**. For example `python:3.9` and `python:3.10`. The tag `latest` usually points to the most recent version, but it\'s better to use specific numbers for stability!'
+        type: 'flowchart',
+        content: '**The Push & Pull Cycle**',
+        diagramSteps: [
+          { label: 'Developer A\n(Laptop)', icon: '💻', color: '#ffb703' },
+          { label: '`docker push`\n(Upload)', icon: '⬆️', color: '#118ab2' },
+          { label: 'Docker Hub\n(Registry)', icon: '☁️', color: '#06d6a0' },
+          { label: '`docker pull`\n(Download)', icon: '⬇️', color: '#118ab2' },
+          { label: 'Prod Server\n(Cloud)', icon: '☁️', color: '#ffb703' }
+        ]
+      },
+      {
+        type: 'table',
+        title: '🏷️ Image Tags Best Practices',
+        content: 'Versioning your images is crucial for stability:',
+        tableData: {
+          headers: ['Tag Strategy', 'Example', 'When to use', 'Risk Level'],
+          rows: [
+            ['**Specific Version**', '`python:3.9.15`', 'Production environments', '🟢 Low'],
+            ['**Minor Version**', '`python:3.9`', 'Development, accepting small updates', '🟡 Medium'],
+            ['**Floating Version**', '`python:3`', 'Local testing only', '🔴 High'],
+            ['**Latest**', '`python:latest`', 'Trying things quickly', '🔥 Very High (Never use in Prod)']
+          ]
+        }
       },
       {
         type: 'code',
@@ -325,9 +478,29 @@ docker push claudio/my-app:v1.0`,
         content: 'When a container writes a file to its own disk, that file exists in a "writable layer" specific to that container instance. Delete the container, lose the files.'
       },
       {
+        type: 'flowchart',
+        content: '**Ephemeral Data (Dangerous ❌)**',
+        diagramSteps: [
+          { label: 'Database App\n(Running)', icon: '🐘', color: '#ffb703' },
+          { label: 'Writes to\nContainer Disk', icon: '📝', color: '#ff4b4b' },
+          { label: 'Container Dies\n(Crash)', icon: '💥', color: '#ff4b4b' },
+          { label: 'Data is\nGone Forever!', icon: '💀', color: '#000000' }
+        ]
+      },
+      {
         type: 'concept',
         title: '🔗 The Solution: Volumes',
         content: 'Volumes are folders on your **host machine** that are "mounted" into the container. The container thinks it\'s writing to its own disk, but it\'s actually writing to your host machine. If the container dies, the data stays safe on the host.'
+      },
+      {
+        type: 'flowchart',
+        content: '**Persistent Data with Volumes (Safe ✅)**',
+        diagramSteps: [
+          { label: 'Database App\n(Running)', icon: '🐘', color: '#ffb703' },
+          { label: 'Writes to Volume\n(Mapped)', icon: '🔗', color: '#118ab2' },
+          { label: 'Host Machine\n(Laptop/Server)', icon: '💾', color: '#06d6a0' },
+          { label: 'Container Dies\n(Data survives)', icon: '🛡️', color: '#06d6a0' }
+        ]
       },
       {
         type: 'code',
@@ -375,6 +548,15 @@ docker run -d \
         content: 'By default, containers are isolated. To expose a web app running on port 80 inside the container, we map it to a port on our machine.\n\nSyntax: `-p [hostPort]:[containerPort]`\n\nThe `hostPort` is what you type in your browser (e.g., `localhost:3000`).'
       },
       {
+        type: 'flowchart',
+        content: '**How Port Mapping Works (`-p 8080:80`)**',
+        diagramSteps: [
+          { label: 'Browser\n(localhost:8080)', icon: '🌍', color: '#118ab2' },
+          { label: 'Host Port Tracker\n(Docker Daemon)', icon: '🚪', color: '#ffb703' },
+          { label: 'Container Port 80\n(Nginx web server)', icon: '📦', color: '#06d6a0' }
+        ]
+      },
+      {
         type: 'code',
         title: 'Running a web server',
         content: 'Map internal port 80 to external 8080:',
@@ -385,6 +567,15 @@ docker run -d \
         type: 'concept',
         title: '🌐 Docker Networks',
         content: 'Docker can create virtual internal networks where containers can talk to each other by their **name**. A "web" container can talk to a "db" container without exposing the database to the internet.'
+      },
+      {
+        type: 'flowchart',
+        content: '**Internal Docker Network**',
+        diagramSteps: [
+          { label: 'Web Container\n(Wordpress)', icon: '🌐', color: '#06d6a0' },
+          { label: 'Isolated Bridge\n("my-network")', icon: '🔌', color: '#ffb703' },
+          { label: 'DB Container\n(MySQL)', icon: '🗄️', color: '#ff4b4b' }
+        ]
       }
     ],
     quiz: [
@@ -412,9 +603,30 @@ docker run -d \
         content: 'Real applications have a database, a cache, a frontend, and a backend. Managing 4 `docker run` commands manually is a nightmare. Enter Docker Compose.'
       },
       {
-        type: 'concept',
-        title: '📝 The docker-compose.yml',
-        content: 'Compose is a tool for defining and running multi-container Docker applications. You use a YAML file to configure your application\'s services.'
+        type: 'table',
+        title: '📝 The docker-compose.yml Reference',
+        content: 'Compose uses a YAML file to configure services. Here are the core keys:',
+        tableData: {
+          headers: ['Property', 'What it does', 'Example'],
+          rows: [
+            ['`services:`', 'Defines the containers (web, db, redis)', '`services: web:`'],
+            ['`image:`', 'Specifies the Docker Hub image to use', '`image: postgres:15`'],
+            ['`build:`', 'Tells Compose to build a Dockerfile instead of pulling', '`build: ./frontend`'],
+            ['`ports:`', 'Maps host ports to container ports', '`ports: - "5000:80"`'],
+            ['`depends_on:`', 'Boot order (e.g. start DB before Web)', '`depends_on: - db`'],
+            ['`volumes:`', 'Persists data to the host machine', '`volumes: - db-data:/var/lib/xyz`']
+          ]
+        }
+      },
+      {
+        type: 'flowchart',
+        content: '**Multi-service Architecture**\nA single docker-compose project running many containers linked together.',
+        diagramSteps: [
+          { label: 'Web Frontend\n(React)', icon: '🌍', color: '#118ab2' },
+          { label: 'Backend API\n(Node.js)', icon: '⚙️', color: '#06d6a0' },
+          { label: 'Redis Cache\n(Memory)', icon: '⚡', color: '#ff4b4b' },
+          { label: 'Database\n(PostgreSQL)', icon: '🗄️', color: '#ffb703' }
+        ]
       },
       {
         type: 'code',
@@ -439,6 +651,16 @@ volumes:
         type: 'concept',
         title: '📦 Optimization: Multi-stage Builds',
         content: 'To keep production images small, Docker supports **multi-stage builds**. You use one "heavy" image (with build tools) to compile your app, then copy only the final binary into a "lightweight" image (like Alpine Linux) for production. This can reduce image size from 1GB to 50MB!'
+      },
+      {
+        type: 'flowchart',
+        content: '**Multi-stage Build Process**',
+        diagramSteps: [
+          { label: 'Stage 1: Build\n(Heavy Image: 1GB)', icon: '🔨', color: '#ffb703' },
+          { label: 'Copy final binary\n(Extract)', icon: '✂️', color: '#ff4b4b' },
+          { label: 'Stage 2: Runtime\n(Light Image: 50MB)', icon: '🍃', color: '#06d6a0' },
+          { label: 'Lean Prod Container\n(Ship!)', icon: '🚀', color: '#118ab2' }
+        ]
       },
       {
         type: 'code',

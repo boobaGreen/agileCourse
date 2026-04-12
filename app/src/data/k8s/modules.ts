@@ -13,18 +13,22 @@ export const K8S_MODULES: Module[] = [
     funFact: 'The name comes from the Greek word "kybernitis", meaning helmsman or pilot. It is the root of the word "cybernetics".',
     sections: [
       {
-        type: 'intro',
-        content: 'Docker gave us the ship (the container). But what if you have ten thousand ships? You need a captain to coordinate them, scale them, and fix them when they break. That captain is Kubernetes.'
+        type: 'video',
+        title: '🎬 Recommended: What is Kubernetes?',
+        content: 'Observe this clear visual explanation of why K8s was born and how it changed the industry.',
+        videoUrl: 'https://www.youtube.com/watch?v=PH-2FfFD2PU'
       },
       {
-        type: 'concept',
-        title: '🚢 The Orchestrator',
-        content: 'Kubernetes (often called **K8s**) is an open-source platform for automating deployment, scaling, and management of containerized applications. It groups containers that make up an application into logical units for easy management and discovery.'
-      },
-      {
-        type: 'analogy',
-        title: '🎼 The Orchestra Conductor',
-        content: 'Imagine an orchestra. Every musician is a container. They know how to play their instrument. But without a **conductor**, they won\'t play in sync, and if a violinist gets sick, the show stops. The conductor (K8s) makes sure everyone plays together and brings in a new musician if someone fails.'
+        type: 'game',
+        title: 'Challenge: Scaling the Fleet',
+        content: 'In Kubernetes, we don\'t manage individual pods. We manage the "Desired State". Put these scaling operations in the correct order.',
+        gameType: 'drag-order',
+        gameData: [
+          { id: '1', label: 'Define 3 replicas in YAML' },
+          { id: '2', label: 'Submit to API Server (kubectl apply)' },
+          { id: '3', label: 'Scheduler finds available Nodes' },
+          { id: '4', label: 'Kubelet starts 3 containers' }
+        ]
       },
       {
         type: 'tip',
@@ -73,6 +77,16 @@ export const K8S_MODULES: Module[] = [
       {
         type: 'intro',
         content: 'Long before Docker existed, Google was already running everything in containers using an internal tool called **Borg**. In 2014, Google decided to take everything they learned from Borg and create an open-source version. They called it Kubernetes.'
+      },
+      {
+        type: 'flowchart',
+        content: '**The Timeline of Cloud Native Computing**',
+        diagramSteps: [
+          { label: '2003\n(Google Borg)', icon: '🕰️', color: '#ffb703' },
+          { label: '2014\n(K8s Open Sourced)', icon: '🔓', color: '#06d6a0' },
+          { label: '2015\n(CNCF Formed)', icon: '🏛️', color: '#118ab2' },
+          { label: 'Today\n(Industry Standard)', icon: '🌍', color: '#06d6a0' }
+        ]
       },
       {
         type: 'concept',
@@ -137,9 +151,61 @@ export const K8S_MODULES: Module[] = [
         content: 'A Pod is the **smallest deployable unit** in K8s. It contains one or more containers that share the same network (IP address) and storage. \n\n**Analogy**: If a Container is a tenant, a Pod is an apartment. Tenants in the same apartment share the same address and amenities.'
       },
       {
+        type: 'flowchart',
+        content: '**Cluster Architecture**',
+        diagramSteps: [
+          { label: 'Control Plane\n(The Brain)', icon: '🧠', color: '#118ab2' },
+          { label: 'API Server\n(Hub)', icon: '📡', color: '#ffb703' },
+          { label: 'Worker Node 1\n(Muscle)', icon: '🖥️', color: '#06d6a0' },
+          { label: 'Worker Node 2\n(Muscle)', icon: '🖥️', color: '#06d6a0' }
+        ]
+      },
+      {
         type: 'concept',
         title: '🧠 Control Plane vs Worker Nodes',
-        content: '- **Control Plane (The Brain)**: Manages the cluster via several components:\n  - **etcd**: The source of truth. A database that stores all cluster configurations.\n  - **kube-scheduler**: Decides which worker node should run a new pod.\n  - **API Server**: The communication hub for everything in the cluster.\n- **Worker Nodes (The Muscle)**: Actually run the containers. If the brain (Control Plane) goes down, pods keep running, but you cannot change the cluster state until it recovers.'
+        content: '- **Control Plane (The Brain)**: Manages the cluster via several components.\n- **Worker Nodes (The Muscle)**: Actually run the containers. If the brain goes down, pods keep running, but you cannot change the cluster state until it recovers.'
+      },
+      {
+        type: 'table',
+        title: '⚙️ Control Plane Components',
+        content: 'Inside the "Brain" of the cluster are 4 vital organs:',
+        tableData: {
+          headers: ['Component', 'Role / Analogy', 'What hapens if it fails?'],
+          rows: [
+            ['**etcd**', 'Database / Source of Truth. Stores all cluster configs.', 'Cluster state cannot be changed or read reliably.'],
+            ['**kube-scheduler**', 'The Matchmaker. Decides which node runs a new pod.', 'New pods stay in "Pending" state forever.'],
+            ['**kube-apiserver**', 'The Hub. Everything talks through this.', 'Complete loss of control. `kubectl` commands fail.'],
+            ['**Controller Manager**', 'The Manager. Ensure desired state matches actual state.', 'Self-healing stops. Crashing pods are not restarted.']
+          ]
+        }
+      },
+      {
+        type: 'game',
+        title: 'Challenge: Build a Cluster',
+        content: 'Distinguish between the Brain (Control Plane) and the Muscle (Worker Node) by categorizing these components.',
+        gameType: 'drag-classify',
+        gameData: {
+          categories: [
+            { id: 'brain', label: 'Control Plane' },
+            { id: 'muscle', label: 'Worker Node' }
+          ],
+          items: [
+            { id: 'etcd', label: 'etcd', categoryId: 'brain' },
+            { id: 'api', label: 'API Server', categoryId: 'brain' },
+            { id: 'kubelet', label: 'Kubelet', categoryId: 'muscle' },
+            { id: 'proxy', label: 'kube-proxy', categoryId: 'muscle' },
+            { id: 'sched', label: 'Scheduler', categoryId: 'brain' }
+          ]
+        }
+      },
+      {
+        type: 'flowchart',
+        content: '**Inside the Pod (Sidecar Pattern)**',
+        diagramSteps: [
+          { label: 'Main Container\n(App Logic)', icon: '📦', color: '#06d6a0' },
+          { label: 'Shared Network\n(localhost inter-comm)', icon: '🌐', color: '#118ab2' },
+          { label: 'Sidecar Container\n(Logging/Proxy)', icon: '🏍️', color: '#ffb703' }
+        ]
       },
       {
         type: 'tip',
@@ -189,9 +255,33 @@ export const K8S_MODULES: Module[] = [
         content: 'In Kubernetes, you don\'t say "Add another pod". You say "**I want 3 replicas of this app**". If one pod dies, K8s notices the difference between the Desired State (3) and the Actual State (2) and automatically starts a new one (#SelfHealing).'
       },
       {
+        type: 'flowchart',
+        content: '**Self-Healing in Action**',
+        diagramSteps: [
+          { label: 'Desired: 3 Pods\nRunning: 3', icon: '✅', color: '#06d6a0' },
+          { label: '1 Pod Dies\nRunning: 2 ❌', icon: '💥', color: '#ff4b4b' },
+          { label: 'K8s detects\nmismatch', icon: '👀', color: '#ffb703' },
+          { label: 'K8s creates Pod\nRunning: 3 ✨', icon: '✅', color: '#06d6a0' }
+        ]
+      },
+      {
         type: 'concept',
         title: '🔄 Rolling Updates',
         content: 'Deployments allow you to update your app with **zero downtime**. K8s starts a new version pods one by one, and only kills the old ones once the new ones are ready and healthy.'
+      },
+      {
+        type: 'animation',
+        content: 'Rolling Update animation'
+      },
+      {
+        type: 'flowchart',
+        content: '**Rolling Update (Zero Downtime)**',
+        diagramSteps: [
+          { label: 'v1 Pods\n(Old)', icon: '🟦', color: '#118ab2' },
+          { label: 'Start 1 v2 Pod\n(New)', icon: '🟩', color: '#06d6a0' },
+          { label: 'Kill 1 v1 Pod\n(Old)', icon: '❌', color: '#ff4b4b' },
+          { label: 'All v2 Pods\n(Complete)', icon: '✅', color: '#06d6a0' }
+        ]
       },
       {
         type: 'code',
@@ -257,9 +347,45 @@ spec:
         content: 'A Service is an abstraction that defines a logical set of Pods and a policy by which to access them. It provides a **stable IP and DNS name**. You talk to the Service, and it load-balances the traffic to the healthy Pods behind it. \n\nHow does it know which Pods to send traffic to? It uses a **Selector** (a set of labels like `app: web`) to find all Pods with matching tags.'
       },
       {
-        type: 'concept',
+        type: 'flowchart',
+        title: 'Service as a Load Balancer',
+        content: 'The Service provides a stable entry point even if the pods behind it are replaced.',
+        diagramSteps: [
+          { label: 'User Request', icon: '🌍', color: '#118ab2' },
+          { label: 'Service (VIP)', icon: '🛡️', color: '#ffb703' },
+          { label: 'Pods (app=web)', icon: '📦', color: '#06d6a0' }
+        ]
+      },
+      {
+        type: 'game',
+        title: 'Challenge: Route the Traffic',
+        content: 'Identify which Service type is best suited for these scenarios.',
+        gameType: 'drag-classify',
+        gameData: {
+          categories: [
+            { id: 'internal', label: 'Internal Access' },
+            { id: 'external', label: 'Public Access' }
+          ],
+          items: [
+            { id: 'db', label: 'PostgreSQL Database', categoryId: 'internal' },
+            { id: 'web', label: 'React Frontend', categoryId: 'external' },
+            { id: 'api', label: 'Internal Auth Service', categoryId: 'internal' },
+            { id: 'shop', label: 'E-commerce Site', categoryId: 'external' }
+          ]
+        }
+      },
+      {
+        type: 'table',
         title: '🏗️ Types of Services',
-        content: '1. **ClusterIP** (Default): Internal only. Used for Backend/DB.\n2. **NodePort**: Exposes the service on a static port on every Node\'s IP.\n3. **LoadBalancer**: Links to a cloud provider\'s load balancer (AWS/GCP/Azure) to expose the app to the internet.'
+        content: 'Choose the right tool for the job:',
+        tableData: {
+          headers: ['Service Type', 'Scope', 'Best Use Case', 'Cost'],
+          rows: [
+            ['**ClusterIP**', 'Internal cluster only', 'Backend APIs & Databases (hidden)', 'Free (Default)'],
+            ['**NodePort**', 'External (Node IPs)', 'Testing & custom internal routing', 'Free'],
+            ['**LoadBalancer**', 'External (Public IP)', 'Public-facing Web Apps / APIs', '$$$ (Cloud billing)']
+          ]
+        }
       },
       {
         type: 'tip',
@@ -307,9 +433,28 @@ spec:
         content: 'Similar to ConfigMaps but for **sensitive data**: API keys, DB passwords, SSH keys. Kubernetes stores them in base64 encoding (and typically encrypts them at rest in etcd).'
       },
       {
-        type: 'tip',
-        title: '💡 Best Practice',
-        content: 'Use ConfigMaps/Secrets so you can use the **exact same Docker image** for Development, Staging, and Production. Only the K8s objects (and their values) change between environments.'
+        type: 'flowchart',
+        content: '**Same Image, Different Config**',
+        diagramSteps: [
+          { label: 'Docker Image\n(App v1.0)', icon: '📦', color: '#118ab2' },
+          { label: 'ConfigMap\n(Prod DB URL)', icon: '🗺️', color: '#ffb703' },
+          { label: 'Secret\n(Prod Pass)', icon: '🤫', color: '#ff4b4b' },
+          { label: 'Pod (Prod)\nReady', icon: '✅', color: '#06d6a0' }
+        ]
+      },
+      {
+        type: 'table',
+        title: '⚖️ ConfigMap vs Secret',
+        content: 'When to use which K8s object:',
+        tableData: {
+          headers: ['Feature', 'ConfigMap 🗺️', 'Secret 🤫'],
+          rows: [
+            ['**Data Type**', 'Non-sensitive (URLs, Ports, Envs)', 'Sensitive (Passwords, SSH Keys, Tokens)'],
+            ['**Encoding**', 'Plain text', 'Base64 Encoded'],
+            ['**Security**', 'Stored in plain text in etcd', 'Often encrypted at rest in etcd'],
+            ['**Example**', '`DB_HOST=localhost`', '`DB_PASS=S3cr3t!`']
+          ]
+        }
       }
     ],
     quiz: [
@@ -352,6 +497,16 @@ spec:
         content: 'A request for storage by a user. The user say: "I need a 5GB disk with ReadWrite once access". K8s finds a matching **PV** and binds it to the **PVC**.'
       },
       {
+        type: 'flowchart',
+        content: '**PV ↔ PVC Binding process**',
+        diagramSteps: [
+          { label: 'PV\n(50GB Disk)', icon: '🧱', color: '#ffb703' },
+          { label: 'K8s Binding\n(Match!)', icon: '🤝', color: '#118ab2' },
+          { label: 'PVC\n(Needs 50GB)', icon: '🎫', color: '#06d6a0' },
+          { label: 'Pod Mounts\n(Volume)', icon: '📂', color: '#118ab2' }
+        ]
+      },
+      {
         type: 'tip',
         title: '📦 StorageClass',
         content: 'Modern clusters use **Dynamic Provisioning**. You just create a PVC, and the StorageClass automatically creates a new cloud disk (PV) on the fly. No manual admin work needed!'
@@ -387,27 +542,32 @@ spec:
         content: 'How do you actually talk to the cluster? You use **kubectl** (pronounced "kube-control" or "kube-cuttle"). But you don\'t need to install anything — we have free playgrounds!'
       },
       {
-        type: 'code',
-        title: '⌨️ Essential kubectl Commands',
-        content: 'The basics of inspection and debugging:',
-        code: `# See all pods
-kubectl get pods
-
-# Get detailed info about a specific pod
-kubectl describe pod [pod-name]
-
-# Check logs for a crashing app
-kubectl logs [pod-name]
-
-# Open a shell inside a container
-kubectl exec -it [pod-name] -- /bin/bash
-
-# Apply a YAML configuration
-kubectl apply -f deployment.yaml
-
-# Delete everything in a file
-kubectl delete -f deployment.yaml`,
-        language: 'bash'
+        type: 'game',
+        title: 'Challenge: Fix the Cluster',
+        content: 'A Pod is in CrashLoopBackOff! Order the commands you would use to diagnose and fix the issue.',
+        gameType: 'drag-order',
+        gameData: [
+          { id: '1', label: 'kubectl get pods (Identify the victim)' },
+          { id: '2', label: 'kubectl describe pod (Check events)' },
+          { id: '3', label: 'kubectl logs pod (Check error messages)' },
+          { id: '4', label: 'kubectl apply -f fix.yaml (Fix the config)' }
+        ]
+      },
+      {
+        type: 'table',
+        title: '⌨️ The kubectl Command Matrix',
+        content: 'Categorized commands for daily use: Inspect, Manage, and Debug.',
+        tableData: {
+          headers: ['Category', 'Command', 'What it does'],
+          rows: [
+            ['**Inspect** (🟢 Safe)', '`kubectl get pods`', 'Lists all pods in the namespace'],
+            ['**Inspect** (🟢 Safe)', '`kubectl describe pod [name]`', 'Shows detailed configuration and events for a pod'],
+            ['**Debug** (🟡 Medium)', '`kubectl logs [name]`', 'Prints standard output/error (the logs) of the container'],
+            ['**Debug** (🟡 Medium)', '`kubectl exec -it [name] -- sh`', 'Opens an interactive shell inside the container for debugging'],
+            ['**Manage** (🔴 Alta)', '`kubectl apply -f [file.yaml]`', 'Creates or updates resources declaratively'],
+            ['**Manage** (🔴 Alta)', '`kubectl delete pod [name]`', 'Force deletes a pod (usually self-heals if part of a deployment)']
+          ]
+        }
       },
       {
         type: 'concept',

@@ -23,10 +23,24 @@ export interface Module {
 
 export interface Section {
   type: 'intro' | 'concept' | 'diagram' | 'code' | 'analogy' | 'tip'
+    | 'table'          // tabelle comparative
+    | 'flowchart'      // diagrammi di flusso SVG
+    | 'animation'      // animazioni didattiche
+    | 'interactive'    // componenti interattivi
+    | 'game'           // mini-giochi
+    | 'video'          // embed video
+    | 'infographic'    // immagini/infografiche
   title?: string
   content: string
   code?: string
   language?: string
+  // Rich content fields
+  tableData?: { headers: string[], rows: string[][] }
+  diagramSteps?: { label: string, icon?: string, color?: string }[]
+  videoUrl?: string
+  imageUrl?: string
+  gameType?: 'drag-order' | 'drag-classify' | 'choose-path' | 'terminal-sim'
+  gameData?: unknown
 }
 
 export const GIT_MODULES: Module[] = [
@@ -46,9 +60,31 @@ export const GIT_MODULES: Module[] = [
         content: 'Imagine working on a document and needing to undo a change you made three weeks ago. Or needing to work on two different versions of the same file simultaneously. Version control solves all of this — and much more.'
       },
       {
+        type: 'flowchart',
+        content: '**The Timeline in Action**\nA visual trace of every single change you made, forever safely stored.',
+        diagramSteps: [
+          { label: 'Initial File\n(v1.0)', icon: '📄', color: '#ffb703' },
+          { label: 'Added Header\n(v1.1)', icon: '🟢', color: '#06d6a0' },
+          { label: 'Fixed Typo\n(v1.2)', icon: '🟡', color: '#118ab2' },
+          { label: 'Deleted Paragraph\n(v1.3)', icon: '🔴', color: '#ff4b4b' }
+        ]
+      },
+      {
         type: 'analogy',
         title: '📷 Think of it like a game save system',
         content: 'Version control is like a save system in a video game. You can save your progress at any point, go back to an earlier save, or even branch off to explore a different path — without losing your main storyline.'
+      },
+      {
+        type: 'game',
+        title: 'Challenge: File Chaos',
+        content: 'Oh no! The developer didn\'t use Git and now the files are a mess. Can you put them in the correct chronological order to restore the project?',
+        gameType: 'drag-order',
+        gameData: [
+          { id: '1', label: 'project_v1.zip' },
+          { id: '2', label: 'project_final.zip' },
+          { id: '3', label: 'project_final_v2.zip' },
+          { id: '4', label: 'project_REAL_FINAL.zip' }
+        ]
       },
       {
         type: 'concept',
@@ -64,6 +100,15 @@ export const GIT_MODULES: Module[] = [
         type: 'concept',
         title: 'Centralized vs Distributed',
         content: 'Old systems (like SVN) had one central server — if it went down, work stopped. **Git is distributed**: every developer has a full copy of the entire history. No single point of failure.'
+      },
+      {
+        type: 'flowchart',
+        content: '**Git is Distributed**',
+        diagramSteps: [
+          { label: 'GitHub Cloud\n(Remote)', icon: '☁️', color: '#118ab2' },
+          { label: 'Alice\'s Laptop\n(Full Copy)', icon: '👩‍💻', color: '#06d6a0' },
+          { label: 'Bob\'s PC\n(Full Copy)', icon: '👨‍💻', color: '#ffb703' }
+        ]
       },
       {
         type: 'tip',
@@ -168,6 +213,16 @@ export const GIT_MODULES: Module[] = [
         type: 'tip',
         title: '🚀 The platforms it enabled',
         content: 'Git\'s creation led directly to the birth of **GitHub** (2008), **GitLab** (2011), and **Bitbucket** — platforms that transformed how the world builds software together.'
+      },
+      {
+        type: 'flowchart',
+        content: '**Git: A History of Domination**',
+        diagramSteps: [
+          { label: '2005\n(Git Born)', icon: '⚡', color: '#ff4b4b' },
+          { label: '2008\n(GitHub Born)', icon: '🐙', color: '#118ab2' },
+          { label: '2011\n(GitLab)', icon: '🦊', color: '#ffb703' },
+          { label: 'Today\n(The Standard)', icon: '🌍', color: '#06d6a0' }
+        ]
       }
     ],
     quiz: [
@@ -233,6 +288,20 @@ export const GIT_MODULES: Module[] = [
       },
       {
         type: 'concept',
+        title: '🗺️ The 3 Areas of Git',
+        content: 'Every file in your project exists in one of three states. Understanding how files move between these states is the essence of using Git:'
+      },
+      {
+        type: 'flowchart',
+        content: '',
+        diagramSteps: [
+          { label: 'Working Directory\n(Modified)', icon: '📝', color: '#ff4b4b' },
+          { label: 'Staging Area\n(Staged)', icon: '📦', color: '#ffd166' },
+          { label: 'Repository\n(Committed)', icon: '🏛️', color: '#06d6a0' }
+        ]
+      },
+      {
+        type: 'concept',
         title: '📦 Repository (repo)',
         content: 'A repository is the **entire project** — all files, all history, all branches. Think of it as a supercharged folder that remembers everything that ever happened inside it.\n\n- **Local repo**: on your machine\n- **Remote repo**: on a server (GitHub, GitLab, etc.)'
       },
@@ -242,15 +311,45 @@ export const GIT_MODULES: Module[] = [
         content: 'A commit is a **snapshot** of your project at a specific moment. \n\nEach commit has a unique ID called a **SHA Hash** (e.g., `a1b2c3d`). This is a 40-character fingerprint that ensures the integrity of your data. If even one character in one file changes, the hash changes completely.'
       },
       {
+        type: 'animation',
+        content: 'SHA Hash visualization'
+      },
+      {
+        type: 'game',
+        title: 'Interactive Workflow',
+        content: 'Drag the Git operations into the correct order to complete a cycle of work.',
+        gameType: 'drag-order',
+        gameData: [
+          { id: '1', label: 'Modify files in Working Dir' },
+          { id: '2', label: 'Run "git add" to stage' },
+          { id: '3', label: 'Run "git commit" to save' },
+          { id: '4', label: 'Run "git push" to share' }
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Concept Comparison',
+        content: 'Quick reference for core Git terminology.',
+        tableData: {
+          headers: ['Term', 'Analogia', 'Command'],
+          rows: [
+            ['Repository', 'The Library', 'git init'],
+            ['Commit', 'A polaroid photo', 'git commit'],
+            ['Branch', 'A parallel universe', 'git branch'],
+            ['Merge', 'Combining timelines', 'git merge']
+          ]
+        }
+      },
+      {
         type: 'code',
         title: 'Creating a commit',
         content: 'The three-step ritual every developer learns by heart:',
-        code: `# 1. Stage the files you want to save
+        code: `# 1. Move to Staging Area (git add)
 git add filename.txt
 # or stage everything:
 git add .
 
-# 2. Create the snapshot with a message
+# 2. Move to Repository (git commit)
 git commit -m "Add user authentication feature"
 
 # 3. Check what you've got
@@ -268,9 +367,18 @@ git log --oneline`,
         content: 'When your branch is ready, you **merge** it back into main. Git replays the changes and combines them. If two people changed the same line of code differently, Git asks you to resolve the **merge conflict** manually.'
       },
       {
-        type: 'tip',
-        title: '🎯 The mental model',
-        content: '**Repository** = your project\'s database\n**Commit** = one saved state in that database\n**Branch** = a parallel timeline\n**Merge** = combining two timelines into one'
+        type: 'table',
+        title: '🎯 The 4 Pillars Summary',
+        content: 'Here is how to think about the core concepts:',
+        tableData: {
+          headers: ['Concept', 'Analogy', 'Key Command', 'When to use'],
+          rows: [
+            ['**Repository**', 'Database / Vault', '`git init` / `git clone`', 'Starting a new project'],
+            ['**Commit**', 'Save Game Snapshot', '`git commit`', 'Reaching a logical checkpoint'],
+            ['**Branch**', 'Alternate Timeline', '`git branch` / `git switch`', 'Working on a new feature or fix safely'],
+            ['**Merge**', 'Combining Timelines', '`git merge`', 'Bringing a finished feature into the main project']
+          ]
+        }
       }
     ],
     quiz: [
@@ -369,7 +477,40 @@ git branch -d feature/login-page`,
       {
         type: 'concept',
         title: '🔀 Merge vs Rebase — the eternal debate',
-        content: '**Merge** creates a new "merge commit" that joins two branch histories. The history shows exactly when branches joined.\n\n**Rebase** replays your commits on top of another branch, creating a **linear history** as if you had branched off later.\n\n👍 **Use merge for**: shared branches, pull requests, keeping history accurate\n👍 **Use rebase for**: cleaning up local commits before sharing, maintaining a linear history'
+        content: 'Both commands solve the same problem: integrating changes from one branch into another. The difference is **how** they do it.'
+      },
+      {
+        type: 'flowchart',
+        content: '**Merge**: Creates a new "merge commit" that ties the histories together. History is preserved exactly as it happened.',
+        diagramSteps: [
+          { label: 'Feature\nCommits', icon: '🌿', color: '#ffd166' },
+          { label: 'Merge\nCommit', icon: '🔀', color: '#ffb703' },
+          { label: 'Main\nBranch', icon: '🌲', color: '#06d6a0' }
+        ]
+      },
+      {
+        type: 'flowchart',
+        content: '**Rebase**: Replays your commits on top of another branch. Rewrites history to make it look like a single, straight line.',
+        diagramSteps: [
+          { label: 'Base\nBranch', icon: '🌲', color: '#06d6a0' },
+          { label: 'Replayed\nCommits', icon: '🔄', color: '#118ab2' },
+          { label: 'Linear\nHistory', icon: '📏', color: '#118ab2' }
+        ]
+      },
+      {
+        type: 'table',
+        title: '⚖️ Merge vs Rebase Comparison',
+        content: 'When to use which approach:',
+        tableData: {
+          headers: ['Feature', 'Merge 🔀', 'Rebase 🔄'],
+          rows: [
+            ['**History Type**', 'Branching & Non-linear', 'Strictly Linear'],
+            ['**What it does**', 'Creates 1 new merge commit', 'Rewrites existing commits on top of base'],
+            ['**Pros**', 'Shows exact historical truth. Non-destructive.', 'Clean, easy-to-read history. No merge commits.'],
+            ['**Cons**', 'Cluttered history if there are many branches', 'Rewrites history (dangerous if shared with others)'],
+            ['**Rule of Thumb**', 'Use for shared branches and Pull Requests', 'Use to clean up local work before pushing']
+          ]
+        }
       },
       {
         type: 'code',
@@ -462,6 +603,15 @@ git rebase --abort`,
         content: 'Git becomes truly powerful when you connect with teammates. Remote repositories (on GitHub, GitLab, or your company\'s server) are the bridge between local work and team collaboration.'
       },
       {
+        type: 'flowchart',
+        content: '**The Network of Repositories**',
+        diagramSteps: [
+          { label: 'Local Repo\n(Your Laptop)', icon: '💻', color: '#06d6a0' },
+          { label: 'push →\n← pull / fetch', icon: '🔁', color: '#ffd166' },
+          { label: 'Remote Repo\n(GitHub)', icon: '☁️', color: '#118ab2' }
+        ]
+      },
+      {
         type: 'concept',
         title: '🌍 What is a remote?',
         content: 'A remote is simply a **URL pointing to a repository on another machine** (a server). The convention is to call the main remote **"origin"** — the original source.\n\nWhen you clone a repo, Git automatically sets "origin" to the URL you cloned from.'
@@ -490,6 +640,16 @@ git pull --rebase origin main`,
         language: 'bash'
       },
       {
+        type: 'flowchart',
+        content: '**The Pull Request Lifecycle**',
+        diagramSteps: [
+          { label: '1. Push Branch', icon: '🚀', color: '#06d6a0' },
+          { label: '2. Open PR', icon: '📝', color: '#ffd166' },
+          { label: '3. Review Code', icon: '👀', color: '#ffb703' },
+          { label: '4. Merge', icon: '🔀', color: '#118ab2' }
+        ]
+      },
+      {
         type: 'concept',
         title: '📬 Pull Requests (PRs)',
         content: 'A Pull Request is not a Git feature — it\'s a **GitHub/GitLab workflow**. When your branch is ready:\n\n1. Push your branch to the remote\n2. Open a PR: "I want to merge `feature/x` into `main`"\n3. Teammates review the code, leave comments\n4. Once approved, the PR is merged\n\nThis review step is how teams catch bugs and share knowledge before code reaches production.'
@@ -500,9 +660,18 @@ git pull --rebase origin main`,
         content: '**`git fetch`** downloads new commits from the remote but does **not** change your local files. You can inspect what changed before integrating.\n\n**`git pull`** is `fetch + merge` in one command. It downloads and immediately integrates remote changes into your current branch.\n\n💡 Prefer `fetch` + inspect + `merge` when you want more control.'
       },
       {
-        type: 'tip',
+        type: 'table',
         title: '✅ Good collaboration habits',
-        content: '1. Always `git pull` before starting new work\n2. Push small, focused commits — not giant dumps\n3. Write clear commit messages: *what* and *why*, not just *what*\n4. Use branches for every feature or fix, never commit directly to main'
+        content: 'Rules to live by when working in a team:',
+        tableData: {
+          headers: ['Do', 'Don\'t'],
+          rows: [
+            ['`git pull --rebase` before starting work', 'Commit directly to the `main` branch'],
+            ['Push small, focused commits', 'Push giant, monolithic commits'],
+            ['Write clear "Why" commit messages', 'Write "Fix" or "WIP" commit messages'],
+            ['Create a branch for every feature', 'Force push (`--force`) to shared branches']
+          ]
+        }
       }
     ],
     quiz: [
@@ -565,9 +734,28 @@ git pull --rebase origin main`,
         content: 'Gitflow (by Vincent Driessen, 2010) defines a rigid branching model:\n\n- **main** — production-ready code only\n- **develop** — integration branch for features\n- **feature/x** — individual features\n- **release/x** — release preparation\n- **hotfix/x** — urgent production fixes\n\n✅ Good for: versioned software, scheduled releases\n❌ Not ideal for: continuous deployment, small teams'
       },
       {
+        type: 'flowchart',
+        content: '**Gitflow Architecture**',
+        diagramSteps: [
+          { label: 'Feature\n(Dev)', icon: '🌿', color: '#ffb703' },
+          { label: 'Develop\n(Integrate)', icon: '🔄', color: '#118ab2' },
+          { label: 'Release\n(Test)', icon: '📦', color: '#ffd166' },
+          { label: 'Main\n(Prod)', icon: '🌲', color: '#06d6a0' }
+        ]
+      },
+      {
         type: 'concept',
         title: '🚀 Trunk-Based Development',
         content: 'Everyone commits to `main` (the "trunk") very frequently — sometimes multiple times per day. Feature flags hide unfinished work.\n\n- Short-lived branches (< 1 day ideally)\n- Automated tests guard the trunk\n- Continuous integration is a must\n\n✅ Good for: fast-moving teams, SaaS products, CI/CD pipelines\n✅ Used by Google, Netflix, Facebook, Spotify'
+      },
+      {
+        type: 'flowchart',
+        content: '**Trunk-Based Architecture**',
+        diagramSteps: [
+          { label: 'Short Feature\n(< 1 day)', icon: '⚡', color: '#ffb703' },
+          { label: 'Automated\nTesting', icon: '🤖', color: '#118ab2' },
+          { label: 'Main Trunk\n(Always Ready)', icon: '🌲', color: '#06d6a0' }
+        ]
       },
       {
         type: 'concept',
@@ -575,9 +763,28 @@ git pull --rebase origin main`,
         content: 'A simplified workflow perfect for most teams:\n\n1. Create a branch from main\n2. Add commits\n3. Open a Pull Request\n4. Review & discuss\n5. Merge to main\n6. Deploy immediately\n\nSimple, powerful, and the most common flow on GitHub.'
       },
       {
-        type: 'tip',
-        title: '🎯 Which should you use?',
-        content: '**New team / small project?** → GitHub Flow (simple, effective)\n\n**Product with versioned releases?** → Gitflow\n\n**Continuous deployment / large team?** → Trunk-based development\n\nFor data engineering pipelines and internal tooling, **GitHub Flow** or **trunk-based** are almost always the right choice.'
+        type: 'table',
+        title: '🎯 Which workflow should you use?',
+        content: 'Use this decision matrix based on your team and product:',
+        tableData: {
+          headers: ['Criteria', 'Gitflow 🌊', 'GitHub Flow 🔀', 'Trunk-Based 🚀'],
+          rows: [
+            ['**Team Size**', 'Large enterprise teams', 'Small to medium teams', 'High-performing fast teams'],
+            ['**Release Cadence**', 'Scheduled (e.g. Monthly)', 'Continuous / Ad-hoc', 'Continuous Deployment'],
+            ['**Product Type**', 'Versioned Apps (iOS/Android)', 'SaaS / Internal Tools', 'SaaS / Cloud Native'],
+            ['**Complexity**', 'High (Many long-lived branches)', 'Low (Simple branching)', 'Medium (Relies on feature flags)'],
+            ['**Verdict**', 'Declining in popularity', '✅ Best for most teams', '✅ The industry ideal']
+          ]
+        }
+      },
+      {
+        type: 'flowchart',
+        content: '**Industry Adoption Map**\nWho actually uses what in the real world?',
+        diagramSteps: [
+          { label: 'Google / Meta\n(Trunk-Based)', icon: '🚀', color: '#ff4b4b' },
+          { label: 'Cloud Startups\n(GitHub Flow)', icon: '☁️', color: '#06d6a0' },
+          { label: 'Bank / Enterprise\n(Gitflow)', icon: '🏛️', color: '#118ab2' }
+        ]
       }
     ],
     quiz: [
@@ -683,18 +890,32 @@ git push -u origin <branch> # Push + set upstream`,
       {
         type: 'concept',
         title: '📍 Understanding HEAD',
-        content: 'In Git, **HEAD** is a pointer to the currently checked-out commit or branch. Think of it as a "You Are Here" icon on a map. When you commit, HEAD moves forward. When you switch branches, HEAD moves to the tip of that branch.'
+        content: 'In Git, **HEAD** is a pointer to the currently checked-out commit or branch. Think of it as a "You Are Here" icon on a map.'
       },
       {
-        type: 'code',
-        title: '⏪ Undoing Things',
-        content: 'The lifesavers:',
-        code: `git restore <file>          # Discard unstaged changes
-git restore --staged <file> # Unstage a file
-git revert <sha>            # Undo a commit safely (creates a new reverse commit)
-git reset --hard HEAD~1     # Throw away last commit and its changes permanently (CAREFUL!)
-git bisect start            # Binary search for a buggy commit`,
-        language: 'bash'
+        type: 'flowchart',
+        content: '**How HEAD moves when you switch branches**',
+        diagramSteps: [
+          { label: 'Branch `main`\n(Commit A)', icon: '🌲', color: '#000000' },
+          { label: 'HEAD\n(You are here)', icon: '📍', color: '#ffb703' },
+          { label: 'Switch to\n`feature`', icon: '🏃', color: '#118ab2' },
+          { label: 'Branch `feature`\n(Commit B)', icon: '🌿', color: '#06d6a0' }
+        ]
+      },
+      {
+        type: 'table',
+        title: '⏪ Undoing Things safely',
+        content: 'Not all undo commands are created equal. Pay attention to the risk level:',
+        tableData: {
+          headers: ['Command', 'What it does', 'Risk Level'],
+          rows: [
+            ['`git restore <file>`', 'Discards unstaged changes in a file', '🟢 Low (loses uncommitted work)'],
+            ['`git restore --staged <file>`', 'Removes a file from the Staging Area', '🟢 Safe (no code lost)'],
+            ['`git revert <sha>`', 'Creates a new commit that does the exact opposite of <sha>', '🟢 Safe (history is preserved)'],
+            ['`git commit --amend`', 'Adds staged changes to the previous commit', '🟡 Medium (rewrites last commit)'],
+            ['`git reset --hard HEAD~1`', 'Moves branch pointer back AND deletes all changes', '🔴 HIGH (changes are gone forever!)']
+          ]
+        }
       }
     ],
     quiz: [

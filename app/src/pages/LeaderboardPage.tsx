@@ -66,28 +66,68 @@ export default function LeaderboardPage() {
         </div>
         
         <div className="flex flex-col">
-          {entries.map((entry, i) => (
-            <motion.div
-              key={entry.name}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.05 }}
-              className={`flex items-center px-6 py-4 border-b last:border-0 border-border group transition-colors ${entry.name === userName ? 'bg-primary/5' : 'hover:bg-white/5'}`}
-            >
-              <div className="w-12 text-sm fw-black text-muted">
-                {i < 3 ? medals[i] : `#${i + 1}`}
-              </div>
-              <div className="flex-1">
-                <p className={`text-sm fw-bold ${entry.name === userName ? 'text-white' : 'text-sub'}`}>
-                  {entry.name}
-                  {entry.name === userName && <span className="ml-2 tag badge-pill bg-purple-500/20 text-purple-400">You</span>}
-                </p>
-              </div>
-              <div className="w-20 text-right text-xp fw-black text-sm flex items-center justify-end gap-1">
-                 <Zap size={14} /> {entry.xp}
-              </div>
-            </motion.div>
-          ))}
+          {entries.map((entry, i) => {
+            const isFirst = i === 0;
+            const isMe = entry.name === userName;
+
+            return (
+              <motion.div
+                key={entry.name}
+                initial={{ opacity: 0, x: -20, filter: 'blur(10px)' }}
+                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                transition={{ 
+                  delay: i * 0.08,
+                  duration: 0.5,
+                  ease: "easeOut"
+                }}
+                className={`flex items-center px-6 py-5 border-b last:border-0 border-white/5 group transition-all relative
+                  ${isMe ? 'bg-primary/10' : 'hover:bg-white/[0.03]'}
+                  ${isFirst ? 'border-l-4 border-l-xp' : ''}
+                `}
+              >
+                {isFirst && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-xp/10 to-transparent pointer-events-none" />
+                )}
+                
+                <div className="w-12 text-sm fw-black text-muted flex items-center">
+                  {i < 3 ? (
+                    <motion.span 
+                      animate={isFirst ? { scale: [1, 1.2, 1], rotate: [0, 5, -5, 0] } : {}}
+                      transition={{ repeat: Infinity, duration: 3 }}
+                      className="text-xl"
+                    >
+                      {medals[i]}
+                    </motion.span>
+                  ) : (
+                    <span className="opacity-40">#{i + 1}</span>
+                  )}
+                </div>
+                
+                <div className="flex-1 flex items-center gap-3">
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs fw-black
+                    ${isFirst ? 'bg-xp text-black' : 'bg-surface2 text-sub'}
+                  `}>
+                    {entry.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <p className={`text-sm fw-bold ${isMe || isFirst ? 'text-white' : 'text-sub'}`}>
+                      {entry.name}
+                      {isMe && <span className="ml-2 px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-400 text-[9px] uppercase fw-black">You</span>}
+                    </p>
+                    {isFirst && <p className="text-[9px] text-xp uppercase fw-black tracking-widest mt-0.5">Grand Master</p>}
+                  </div>
+                </div>
+
+                <div className="w-24 text-right">
+                   <div className="flex justify-end items-center gap-1.5">
+                     <Zap size={14} className={isFirst ? "text-xp animate-pulse" : "text-sub"} />
+                     <span className={`text-sm fw-black ${isFirst ? 'text-xp text-lg' : 'text-white'}`}>{entry.xp}</span>
+                   </div>
+                   <p className="text-[9px] text-muted uppercase fw-bold">Points</p>
+                </div>
+              </motion.div>
+            )
+          })}
         </div>
 
         {entries.length === 0 && (

@@ -19,6 +19,7 @@ export interface UserProgress {
   badges: Badge[]
   streakDays: number
   lastActiveDate: string
+  activityLog: Record<string, number> // YYYY-MM-DD -> XP gained
 }
 
 interface AppStore extends UserProgress {
@@ -52,6 +53,7 @@ const defaultState: UserProgress = {
   badges: [],
   streakDays: 0,
   lastActiveDate: '',
+  activityLog: {},
 }
 
 export const useAppStore = create<AppStore>()(
@@ -61,20 +63,39 @@ export const useAppStore = create<AppStore>()(
 
       setUserName: (name) => set({ userName: name }),
 
-      addXP: (amount) => set((s) => ({ xp: s.xp + amount })),
+      addXP: (amount) => set((s) => {
+        const today = new Date().toISOString().split('T')[0]
+        const currentActivity = s.activityLog[today] || 0
+        return { 
+          xp: s.xp + amount,
+          activityLog: { ...s.activityLog, [today]: currentActivity + amount }
+        }
+      }),
 
       completeModule: (moduleId) =>
         set((s) => {
           if (s.completedModules.includes(moduleId)) return s
+          const today = new Date().toISOString().split('T')[0]
+          const currentActivity = s.activityLog[today] || 0
           const updated = [...s.completedModules, moduleId]
-          return { completedModules: updated, xp: s.xp + 50 }
+          return { 
+            completedModules: updated, 
+            xp: s.xp + 50,
+            activityLog: { ...s.activityLog, [today]: currentActivity + 50 }
+          }
         }),
 
       saveQuizScore: (moduleId, score) =>
-        set((s) => ({
-          quizScores: { ...s.quizScores, [moduleId]: score },
-          xp: s.xp + score * 10,
-        })),
+        set((s) => {
+          const today = new Date().toISOString().split('T')[0]
+          const currentActivity = s.activityLog[today] || 0
+          const reward = score * 10
+          return {
+            quizScores: { ...s.quizScores, [moduleId]: score },
+            xp: s.xp + reward,
+            activityLog: { ...s.activityLog, [today]: currentActivity + reward }
+          }
+        }),
 
       awardBadge: (badge) =>
         set((s) => {

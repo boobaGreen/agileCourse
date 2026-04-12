@@ -28,10 +28,10 @@
 
 | #   | Tipo           | Proposta                                                                                                                                                                                                 | Priorità |
 | --- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🎨 `diagram`   | **Timeline animata dei commit** — Una linea temporale interattiva che mostra visivamente come i commit si accumulano nel tempo. L'utente può cliccare su ogni "nodo" per vedere il messaggio del commit. | 🔴 Alta  |
-| 2   | 🖼️ `image`     | **Infografica "Centralized vs Distributed"** — Due diagrammi affiancati: SVN (un server centrale con frecce) vs Git (tutti i nodi collegati).                                                            | 🔴 Alta  |
-| 3   | 🎮 `game`      | **"File Chaos" Mini-game** — Mostrare 5 file (final.docx, final_v2.docx, ecc.) e far trascinare l'utente nel giusto ordine cronologico. Poi mostrare come Git risolve il problema.                       | 🟡 Media |
-| 4   | 🎬 `animation` | **Animazione "Save Game"** — Quando si legge la sezione sull'analogia del videogioco, mostrare un'animazione di checkpoint che si illuminano su una mappa di gioco.                                      | 🟡 Media |
+| 1   | 🎨 `diagram`   | **Timeline animata dei commit** — Una linea temporale interattiva che mostra visivamente come i commit si accumulano nel tempo. L'utente può cliccare su ogni "nodo" per vedere il messaggio del commit. | ✅ Fatto |
+| 2   | 🖼️ `image`     | **Infografica "Centralized vs Distributed"** — Due diagrammi affiancati: SVN (un server centrale con frecce) vs Git (tutti i nodi collegati).                                                            | ✅ Fatto |
+| 3   | 🎮 `game`      | **"File Chaos" Mini-game** — Mostrare 5 file (final.docx, final_v2.docx, ecc.) e far trascinare l'utente nel giusto ordine cronologico. Poi mostrare come Git risolve il problema.                       | ✅ Fatto |
+| 4   | 🎬 `animation` | **Animazione "Save Game"** — Quando si legge la sezione sull'analogia del videogioco, mostrare un'animazione di checkpoint che si illuminano su una mappa di gioco.                                      | ✅ Fatto |
 
 ---
 
@@ -39,9 +39,9 @@
 
 | #   | Tipo           | Proposta                                                                                                                                               | Priorità |
 | --- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
-| 1   | 🖼️ `image`     | **Timeline storica 2005→2024** — Infografica orizzontale: creazione Git (2005) → GitHub (2008) → GitLab (2011) → acquisizione Microsoft (2018) → oggi. | 🔴 Alta  |
-| 2   | 🎬 `animation` | **Logo "graph in disguise"** — Animazione SVG del logo Git che si "scompone" mostrando i nodi e le connessioni del grafo sottostante.                  | 🟡 Media |
-| 3   | 📹 `video`     | **Embed YouTube** — Breve clip di Linus Torvalds che presenta Git al Google Tech Talk (2007), video pubblico iconico.                                  | 🟢 Bassa |
+| 1   | 🖼️ `image`     | **Timeline storica 2005→2024** — Infografica orizzontale: creazione Git (2005) → GitHub (2008) → GitLab (2011) → acquisizione Microsoft (2018) → oggi. | ✅ Fatto |
+| 2   | 🎬 `animation` | **Logo "graph in disguise"** — Animazione SVG del logo Git che si "scompone" mostrando i nodi e le connessioni del grafo sottostante.                  | ✅ Fatto |
+| 3   | 📹 `video`     | **Embed YouTube** — Breve clip di Linus Torvalds che presenta Git al Google Tech Talk (2007), video pubblico iconico.                                  | ✅ Fatto |
 
 ---
 
@@ -49,10 +49,10 @@
 
 | #   | Tipo           | Proposta                                                                                                                                                     | Priorità |
 | --- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
-| 1   | 🎨 `diagram`   | **Diagramma "Le 3 Zone di Git"** — Working Directory → Staging Area → Repository. Mostrare il flusso con frecce animate (`git add` → `git commit`).          | 🔴 Alta  |
-| 2   | 📊 `table`     | **Tabella: Repository vs Commit vs Branch vs Merge** — 4 colonne: Cos'è, Analogia, Comando chiave, Quando si usa.                                            | 🔴 Alta  |
-| 3   | 🎮 `game`      | **"Ordina il Workflow"** — Drag & drop delle operazioni nel giusto ordine: edit file → `git add` → `git commit` → `git push`.                                | 🔴 Alta  |
-| 4   | 🎬 `animation` | **SHA Hash "Fingerprint"** — Animazione che mostra come cambiando un singolo carattere in un file, l'intero hash cambia completamente (effetto "avalanche"). | 🟡 Media |
+| 1   | 🎨 `diagram`   | **Diagramma "Le 3 Zone di Git"** — Working Directory → Staging Area → Repository. Mostrare il flusso con frecce animate (`git add` → `git commit`).          | ✅ Fatto |
+| 2   | 📊 `table`     | **Tabella: Repository vs Commit vs Branch vs Merge** — 4 colonne: Cos'è, Analogia, Comando chiave, Quando si usa.                                            | ✅ Fatto |
+| 3   | 🎮 `game`      | **"Ordina il Workflow"** — Drag & drop delle operazioni nel giusto ordine: edit file → `git add` → `git commit` → `git push`.                                | ✅ Fatto |
+| 4   | 🎬 `animation` | **SHA Hash "Fingerprint"** — Animazione che mostra come cambiando un singolo carattere in un file, l'intero hash cambia completamente (effetto "avalanche"). | ✅ Fatto |
 
 ---
 
@@ -60,9 +60,9 @@
 
 | #   | Tipo         | Proposta                                                                                                                                                                                             | Priorità |
 | --- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🎨 `diagram` | **Grafo interattivo dei branch** — Visualizzazione a nodi del flusso: `main` → `feature/login` → merge back. L'utente può cliccare "Create Branch", "Commit", "Merge" e vedere il grafo aggiornarsi. | 🔴 Alta  |
-| 2   | 🎨 `diagram` | **Merge vs Rebase side by side** — Due diagrammi animati affiancati che mostrano lo stesso scenario risolto con merge (merge commit) e con rebase (storia lineare).                                  | 🔴 Alta  |
-| 3   | 📊 `table`   | **Tabella: Merge vs Rebase** — Colonne: Risultato, Quando usare, Pro, Contro, Rischio.                                                                                                               | 🟡 Media |
+| 1   | 🎨 `diagram` | **Grafo interattivo dei branch** — Visualizzazione a nodi del flusso: `main` → `feature/login` → merge back. L'utente può cliccare "Create Branch", "Commit", "Merge" e vedere il grafo aggiornarsi. | ✅ Fatto |
+| 2   | 🎨 `diagram` | **Merge vs Rebase side by side** — Due diagrammi animati affiancati che mostrano lo stesso scenario risolto con merge (merge commit) e con rebase (storia lineare).                                  | ✅ Fatto |
+| 3   | 📊 `table`   | **Tabella: Merge vs Rebase** — Colonne: Risultato, Quando usare, Pro, Contro, Rischio.                                                                                                               | ✅ Fatto |
 
 ---
 
@@ -70,9 +70,9 @@
 
 | #   | Tipo             | Proposta                                                                                                                                                                                | Priorità |
 | --- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🎨 `diagram`     | **Diagramma "Local ↔ Remote"** — Visualizzare con frecce animate: `push` (→), `pull` (←), `fetch` (← tratteggiato), `clone` (⇐ doppia).                                                 | 🔴 Alta  |
-| 2   | 🎨 `diagram`     | **Flusso di una Pull Request** — Diagramma a 6 step: Branch → Code → Push → Open PR → Review → Merge. Ogni step si illumina progressivamente.                                           | 🔴 Alta  |
-| 3   | 🧩 `interactive` | **Simulatore fetch vs pull** — Due "terminali" affiancati: uno esegue `fetch` (scarica ma non integra), l'altro `pull` (scarica e integra). L'utente vede la differenza in tempo reale. | 🟡 Media |
+| 1   | 🎨 `diagram`     | **Diagramma "Local ↔ Remote"** — Visualizzare con frecce animate: `push` (→), `pull` (←), `fetch` (← tratteggiato), `clone` (⇐ doppia).                                                 | ✅ Fatto |
+| 2   | 🎨 `diagram`     | **Flusso di una Pull Request** — Diagramma a 6 step: Branch → Code → Push → Open PR → Review → Merge. Ogni step si illumina progressivamente.                                           | ✅ Fatto |
+| 3   | 🧩 `interactive` | **Simulatore fetch vs pull** — Due "terminali" affiancati: uno esegue `fetch` (scarica ma non integra), l'altro `pull` (scarica e integra). L'utente vede la differenza in tempo reale. | ✅ Fatto |
 
 ---
 
@@ -80,10 +80,10 @@
 
 | #   | Tipo         | Proposta                                                                                                                                                     | Priorità |
 | --- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
-| 1   | 🎨 `diagram` | **Gitflow Completo** — Diagramma con 5 linee parallele colorate (main, develop, feature, release, hotfix) e frecce di merge tra loro.                        | 🔴 Alta  |
-| 2   | 🎨 `diagram` | **Trunk-Based vs GitHub Flow** — Due flussi affiancati, uno ultra-semplice (trunk) e uno con PR (GitHub Flow).                                               | 🟡 Media |
-| 3   | 📊 `table`   | **Tabella decisionale: quale workflow scegliere** — Righe: dimensione team, frequenza deploy, tipo prodotto. Colonne: Gitflow, Trunk, GitHub Flow con ✅/❌. | 🔴 Alta  |
-| 4   | 🖼️ `image`   | **Infografica "Chi lo usa"** — Loghi aziendali: Google/Netflix → Trunk, Aziende enterprise → Gitflow, Startup → GitHub Flow.                                 | 🟡 Media |
+| 1   | 🎨 `diagram` | **Gitflow Completo** — Diagramma con 5 linee parallele colorate (main, develop, feature, release, hotfix) e frecce di merge tra loro.                        | ✅ Fatto |
+| 2   | 🎨 `diagram` | **Trunk-Based vs GitHub Flow** — Due flussi affiancati, uno ultra-semplice (trunk) e uno con PR (GitHub Flow).                                               | ✅ Fatto |
+| 3   | 📊 `table`   | **Tabella decisionale: quale workflow scegliere** — Righe: dimensione team, frequenza deploy, tipo prodotto. Colonne: Gitflow, Trunk, GitHub Flow con ✅/❌. | ✅ Fatto |
+| 4   | 🖼️ `image`   | **Infografica "Chi lo usa"** — Loghi aziendali: Google/Netflix → Trunk, Aziende enterprise → Gitflow, Startup → GitHub Flow.                                 | ✅ Fatto |
 
 ---
 
@@ -91,10 +91,10 @@
 
 | #   | Tipo             | Proposta                                                                                                                                                                                   | Priorità |
 | --- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
-| 1   | 📊 `table`       | **Tabella interattiva dei comandi** — Raggruppati per categoria (Setup, Save, Branch, Remote, Undo) con colore per livello di rischio (verde=sicuro, giallo=attenzione, rosso=pericoloso). | 🔴 Alta  |
-| 2   | 🧩 `interactive` | **"Terminal Simulator"** — Un finto terminale dove l'utente può digitare i comandi e vedere l'output simulato + animazione del grafo Git.                                                  | 🟡 Media |
-| 3   | 🎬 `animation`   | **Animazione HEAD** — Pallino "You are here" che si sposta lungo i branch quando l'utente preme "checkout", "commit", "switch".                                                            | 🔴 Alta  |
-| 4   | 🖼️ `image`       | **Poster "Git Cheat Sheet"** — Infografica scaricabile PDF con tutti i comandi raggruppati per categoria.                                                                                  | 🟡 Media |
+| 1   | 📊 `table`       | **Tabella interattiva dei comandi** — Raggruppati per categoria (Setup, Save, Branch, Remote, Undo) con colore per livello di rischio (verde=sicuro, giallo=attenzione, rosso=pericoloso). | ✅ Fatto |
+| 2   | 🧩 `interactive` | **"Terminal Simulator"** — Un finto terminale dove l'utente può digitare i comandi e vedere l'output simulato + animazione del grafo Git.                                                  | ✅ Fatto |
+| 3   | 🎬 `animation`   | **Animazione HEAD** — Pallino "You are here" che si sposta lungo i branch quando l'utente preme "checkout", "commit", "switch".                                                            | ✅ Fatto |
+| 4   | 🖼️ `image`       | **Poster "Git Cheat Sheet"** — Infografica scaricabile PDF con tutti i comandi raggruppati per categoria.                                                                                  | ✅ Fatto |
 
 ---
 
@@ -102,8 +102,8 @@
 
 | #   | Tipo           | Proposta                                                                                                                | Priorità |
 | --- | -------------- | ----------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🖼️ `image`     | **Screenshot / Preview** — Screenshot animato di Learn Git Branching in azione per incuriosire prima di aprire il link. | 🟡 Media |
-| 2   | 🎬 `animation` | **Gamification countdown** — Barra XP animata: "Completa X livelli → Y XP" con effetto progress bar crescente.          | 🟢 Bassa |
+| 1   | 🖼️ `image`     | **Screenshot / Preview** — Screenshot animato di Learn Git Branching in azione per incuriosire prima di aprire il link. | ✅ Fatto |
+| 2   | 🎬 `animation` | **Gamification countdown** — Barra XP animata: "Completa X livelli → Y XP" con effetto progress bar crescente.          | ✅ Fatto |
 
 ---
 
@@ -111,9 +111,9 @@
 
 | #   | Tipo           | Proposta                                                                                                                                 | Priorità |
 | --- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🎬 `animation` | **Timer animato** — Cerchio SVG che si svuota progressivamente durante il quiz di 15 minuti, con cambio colore (verde → giallo → rosso). | 🔴 Alta  |
-| 2   | 🎬 `animation` | **Confetti explosion** — Animazione di coriandoli per punteggio 100%, e animazione "try again" simpatica per < 70%.                      | 🟡 Media |
-| 3   | 📊 `table`     | **Tabella risultati dettagliata** — Per ogni domanda: argomento coperto, modulo di riferimento, link per ripassare.                      | 🟡 Media |
+| 1   | 🎬 `animation` | **Timer animato** — Cerchio SVG che si svuota progressivamente durante il quiz di 15 minuti, con cambio colore (verde → giallo → rosso). | ✅ Fatto |
+| 2   | 🎬 `animation` | **Confetti explosion** — Animazione di coriandoli per punteggio 100%, e animazione "try again" simpatica per < 70%.                      | ✅ Fatto |
+| 3   | 📊 `table`     | **Tabella risultati dettagliata** — Per ogni domanda: argomento coperto, modulo di riferimento, link per ripassare.                      | ✅ Fatto |
 
 ---
 
@@ -125,10 +125,10 @@
 
 | #   | Tipo           | Proposta                                                                                                                                                                 | Priorità |
 | --- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
-| 1   | 🎨 `diagram`   | **VM vs Container — Architettura a strati** — Due stack affiancati: VM (Hardware → Hypervisor → Guest OS → App) vs Container (Hardware → Host OS → Docker Engine → App). | 🔴 Alta  |
-| 2   | 🎬 `animation` | **Animazione "Shipping Container"** — Container merci che si carica su una nave, poi si scarica identico su un'altra. Metafora visiva della portabilità.                 | 🔴 Alta  |
-| 3   | 📊 `table`     | **Tabella: VM vs Container** — Colonne: Startup time, Size, Isolation, Overhead, Use case.                                                                               | 🔴 Alta  |
-| 4   | 🖼️ `image`     | **Infografica "It works on my machine"** — Meme/illustrazione professionale del problema classico, con la soluzione Docker.                                              | 🟡 Media |
+| 1   | 🎨 `diagram`   | **VM vs Container — Architettura a strati** — Due stack affiancati: VM (Hardware → Hypervisor → Guest OS → App) vs Container (Hardware → Host OS → Docker Engine → App). | ✅ Fatto |
+| 2   | 🎬 `animation` | **Animazione "Shipping Container"** — Container merci che si carica su una nave, poi si scarica identico su un'altra. Metafora visiva della portabilità.                 | ✅ Fatto |
+| 3   | 📊 `table`     | **Tabella: VM vs Container** — Colonne: Startup time, Size, Isolation, Overhead, Use case.                                                                               | ✅ Fatto |
+| 4   | 🖼️ `image`     | **Infografica "It works on my machine"** — Meme/illustrazione professionale del problema classico, con la soluzione Docker.                                              | ✅ Fatto |
 
 ---
 
@@ -136,9 +136,9 @@
 
 | #   | Tipo           | Proposta                                                                                                         | Priorità |
 | --- | -------------- | ---------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🖼️ `image`     | **Timeline Docker 2013→oggi** — Infografica: dotCloud → Open Source → Docker Inc → Moby Project → Oggi.          | 🟡 Media |
-| 2   | 🎬 `animation` | **Moby Dock animato** — SVG della balena Docker che "nuota" con i container sulla schiena, con effetto onda.     | 🟡 Media |
-| 3   | 📹 `video`     | **Video: Solomon Hykes presenta Docker** — Embed del talk originale PyCon 2013 "The Future of Linux Containers". | 🟢 Bassa |
+| 1   | 🖼️ `image`     | **Timeline Docker 2013→oggi** — Infografica: dotCloud → Open Source → Docker Inc → Moby Project → Oggi.          | ✅ Fatto |
+| 2   | 🎬 `animation` | **Moby Dock animato** — SVG della balena Docker che "nuota" con i container sulla schiena, con effetto onda.     | ✅ Fatto |
+| 3   | 📹 `video`     | **Video: Solomon Hykes presenta Docker** — Embed del talk originale PyCon 2013 "The Future of Linux Containers". | ✅ Fatto |
 
 ---
 
@@ -146,10 +146,10 @@
 
 | #   | Tipo             | Proposta                                                                                                                                                                      | Priorità |
 | --- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🎨 `diagram`     | **Diagramma "Image → Container(s)"** — Un'immagine al centro con frecce verso 3 container in esecuzione. Eliminare un container mostra che l'immagine resta intatta.          | 🔴 Alta  |
-| 2   | 🎨 `diagram`     | **Layer Cake animato** — Stack di layer con colori diversi. Quando un layer cambia, solo quel layer si aggiorna (evidenziato in giallo), gli altri restano cacheati (grigio). | 🔴 Alta  |
-| 3   | 🎮 `game`        | **"Identify the Layer"** — Dato un Dockerfile, l'utente deve associare ogni istruzione al layer corrispondente nella torta. Drag & drop.                                      | 🟡 Media |
-| 4   | 🧩 `interactive` | **CLI Simulator** — Terminale simulato dove eseguire `docker pull`, `docker images`, `docker run`, `docker ps` e vedere l'output.                                             | 🟡 Media |
+| 1   | 🎨 `diagram`     | **Diagramma "Image → Container(s)"** — Un'immagine al centro con frecce verso 3 container in esecuzione. Eliminare un container mostra che l'immagine resta intatta.          | ✅ Fatto |
+| 2   | 🎨 `diagram`     | **Layer Cake animato** — Stack di layer con colori diversi. Quando un layer cambia, solo quel layer si aggiorna (evidenziato in giallo), gli altri restano cacheati (grigio). | ✅ Fatto |
+| 3   | 🎮 `game`        | **"Identify the Layer"** — Dato un Dockerfile, l'utente deve associare ogni istruzione al layer corrispondente nella torta. Drag & drop.                                      | ✅ Fatto |
+| 4   | 🧩 `interactive` | **CLI Simulator** — Terminale simulato dove eseguire `docker pull`, `docker images`, `docker run`, `docker ps` e vedere l'output.                                             | ✅ Fatto |
 
 ---
 
@@ -157,10 +157,10 @@
 
 | #   | Tipo           | Proposta                                                                                                                                           | Priorità |
 | --- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🎨 `diagram`   | **Flusso di build** — Dockerfile → `docker build` → Image → `docker run` → Container. Ogni step evidenziato con animazione.                        | 🔴 Alta  |
-| 2   | 📊 `table`     | **Tabella istruzioni Dockerfile** — FROM, WORKDIR, COPY, RUN, CMD, EXPOSE, ENV — con descrizione, quando usare, esempio.                           | 🔴 Alta  |
-| 3   | 🎮 `game`      | **"Riordina il Dockerfile"** — Istruzioni sparpagliate che l'utente deve ordinare correttamente (FROM prima, CMD alla fine, ecc.).                 | 🔴 Alta  |
-| 4   | 🎬 `animation` | **Build Cache visualization** — Animazione che mostra: cambio nel layer 4 → layer 1-3 "from cache" (grigi) → solo layer 4-5 "rebuilding" (gialli). | 🟡 Media |
+| 1   | 🎨 `diagram`   | **Flusso di build** — Dockerfile → `docker build` → Image → `docker run` → Container. Ogni step evidenziato con animazione.                        | ✅ Fatto |
+| 2   | 📊 `table`     | **Tabella istruzioni Dockerfile** — FROM, WORKDIR, COPY, RUN, CMD, EXPOSE, ENV — con descrizione, quando usare, esempio.                           | ✅ Fatto |
+| 3   | 🎮 `game`      | **"Riordina il Dockerfile"** — Istruzioni sparpagliate che l'utente deve ordinare correttamente (FROM prima, CMD alla fine, ecc.).                 | ✅ Fatto |
+| 4   | 🎬 `animation` | **Build Cache visualization** — Animazione che mostra: cambio nel layer 4 → layer 1-3 "from cache" (grigi) → solo layer 4-5 "rebuilding" (gialli). | ✅ Fatto |
 
 ---
 
@@ -168,9 +168,9 @@
 
 | #   | Tipo         | Proposta                                                                                                                          | Priorità |
 | --- | ------------ | --------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🖼️ `image`   | **Infografica Docker Hub** — Screenshot stilizzato di Docker Hub con annotazioni: Official Images, Community Images, Tags, Stars. | 🟡 Media |
-| 2   | 🎨 `diagram` | **Flusso Push/Pull** — Developer → `docker push` → Docker Hub → `docker pull` → Server di produzione.                             | 🟡 Media |
-| 3   | 📊 `table`   | **Tabella: Image Tags best practices** — `latest` vs versione specifica, quando usare ciascuno, rischi.                           | 🟡 Media |
+| 1   | 🖼️ `image`   | **Infografica Docker Hub** — Screenshot stilizzato di Docker Hub con annotazioni: Official Images, Community Images, Tags, Stars. | ✅ Fatto |
+| 2   | 🎨 `diagram` | **Flusso Push/Pull** — Developer → `docker push` → Docker Hub → `docker pull` → Server di produzione.                             | ✅ Fatto |
+| 3   | 📊 `table`   | **Tabella: Image Tags best practices** — `latest` vs versione specifica, quando usare ciascuno, rischi.                           | ✅ Fatto |
 
 ---
 
@@ -178,9 +178,9 @@
 
 | #   | Tipo           | Proposta                                                                                                                                                          | Priorità |
 | --- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🎨 `diagram`   | **Diagramma "Ephemeral vs Persistent"** — Container con dati dentro (rosso/pericoloso) vs Container con volume montato su host (verde/sicuro).                    | 🔴 Alta  |
-| 2   | 🎬 `animation` | **Animazione "Container dies, data survives"** — Container che "esplode" ma il volume con il database resta intatto sull'host.                                    | 🔴 Alta  |
-| 3   | 🎮 `game`      | **"Salva i dati!"** — Scenario: stai lanciando un database. Scegli la configurazione giusta (con o senza volume) e vedi il risultato: dati persi vs dati salvati. | 🟡 Media |
+| 1   | 🎨 `diagram`   | **Diagramma "Ephemeral vs Persistent"** — Container con dati dentro (rosso/pericoloso) vs Container con volume montato su host (verde/sicuro).                    | ✅ Fatto |
+| 2   | 🎬 `animation` | **Animazione "Container dies, data survives"** — Container che "esplode" ma il volume con il database resta intatto sull'host.                                    | ✅ Fatto |
+| 3   | 🎮 `game`      | **"Salva i dati!"** — Scenario: stai lanciando un database. Scegli la configurazione giusta (con o senza volume) e vedi il risultato: dati persi vs dati salvati. | ✅ Fatto |
 
 ---
 
@@ -188,9 +188,9 @@
 
 | #   | Tipo             | Proposta                                                                                                                              | Priorità |
 | --- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🎨 `diagram`     | **Port Mapping visualizzato** — Due "scatole": Host (porta 8080) ⇄ Container (porta 80). Con frecce animate che mostrano il traffico. | 🔴 Alta  |
-| 2   | 🎨 `diagram`     | **Docker Network** — Rete interna con "web" e "db" container che comunicano via nome, senza esporre "db" all'esterno.                 | 🔴 Alta  |
-| 3   | 🧩 `interactive` | **Port Mapper** — L'utente scrive un comando `-p X:Y` e vede in tempo reale quale porta del browser raggiunge quale porta interna.    | 🟡 Media |
+| 1   | 🎨 `diagram`     | **Port Mapping visualizzato** — Due "scatole": Host (porta 8080) ⇄ Container (porta 80). Con frecce animate che mostrano il traffico. | ✅ Fatto |
+| 2   | 🎨 `diagram`     | **Docker Network** — Rete interna con "web" e "db" container che comunicano via nome, senza esporre "db" all'esterno.                 | ✅ Fatto |
+| 3   | 🧩 `interactive` | **Port Mapper** — L'utente scrive un comando `-p X:Y` e vede in tempo reale quale porta del browser raggiunge quale porta interna.    | ✅ Fatto |
 
 ---
 
@@ -198,10 +198,10 @@
 
 | #   | Tipo           | Proposta                                                                                                                         | Priorità |
 | --- | -------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🎨 `diagram`   | **Architettura multi-service** — Web + DB + Redis + Nginx connessi con frecce. Tutto dentro un riquadro "docker-compose.yml".    | 🔴 Alta  |
-| 2   | 🎬 `animation` | **"docker-compose up" animation** — I container si "accendono" uno alla volta in sequenza con effetto glow.                      | 🟡 Media |
-| 3   | 📊 `table`     | **Tabella: chiavi docker-compose.yml** — `services`, `volumes`, `networks`, `ports`, `build`, `image` con descrizione e esempio. | 🟡 Media |
-| 4   | 🎨 `diagram`   | **Multi-stage build** — Diagramma: Stage 1 (build, grande, 1GB) → copia file → Stage 2 (runtime, piccolo, 50MB).                 | 🟡 Media |
+| 1   | 🎨 `diagram`   | **Architettura multi-service** — Web + DB + Redis + Nginx connessi con frecce. Tutto dentro un riquadro "docker-compose.yml".    | ✅ Fatto |
+| 2   | 🎬 `animation` | **"docker-compose up" animation** — I container si "accendono" uno alla volta in sequenza con effetto glow.                      | ✅ Fatto |
+| 3   | 📊 `table`     | **Tabella: chiavi docker-compose.yml** — `services`, `volumes`, `networks`, `ports`, `build`, `image` con descrizione e esempio. | ✅ Fatto |
+| 4   | 🎨 `diagram`   | **Multi-stage build** — Diagramma: Stage 1 (build, grande, 1GB) → copia file → Stage 2 (runtime, piccolo, 50MB).                 | ✅ Fatto |
 
 ---
 
@@ -209,8 +209,8 @@
 
 | #   | Tipo           | Proposta                                                                                               | Priorità |
 | --- | -------------- | ------------------------------------------------------------------------------------------------------ | -------- |
-| 1   | 🎬 `animation` | **Progress ring + confetti** — Come git-9, timer animato e celebrazione al 100%.                       | 🟡 Media |
-| 2   | 📊 `table`     | **Tabella risultati** — Per ogni domanda: argomento, modulo corrispondente, link rapido per ripassare. | 🟡 Media |
+| 1   | 🎬 `animation` | **Progress ring + confetti** — Come git-9, timer animato e celebrazione al 100%.                       | ✅ Fatto |
+| 2   | 📊 `table`     | **Tabella risultati** — Per ogni domanda: argomento, modulo corrispondente, link rapido per ripassare. | ✅ Fatto |
 
 ---
 
@@ -222,9 +222,9 @@
 
 | #   | Tipo           | Proposta                                                                                                                                    | Priorità |
 | --- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🖼️ `image`     | **Infografica "Docker vs K8s"** — Docker = build & run container singoli. K8s = orchestrare flotta. Due livelli di astrazione ben distinti. | 🔴 Alta  |
-| 2   | 🎬 `animation` | **Orchestra animation** — Musicisti (container) che suonano a caso → direttore (K8s) alza la bacchetta → tutti in sincrono.                 | 🔴 Alta  |
-| 3   | 📹 `video`     | **Animazione breve "What is Kubernetes?" stile Lottie** — 30 secondi di spiegazione visiva animata.                                         | 🟡 Media |
+| 1   | 🖼️ `image`     | **Infografica "Docker vs K8s"** — Docker = build & run container singoli. K8s = orchestrare flotta. Due livelli di astrazione ben distinti. | ✅ Fatto |
+| 2   | 🎬 `animation` | **Orchestra animation** — Musicisti (container) che suonano a caso → direttore (K8s) alza la bacchetta → tutti in sincrono.                 | ✅ Fatto |
+| 3   | 📹 `video`     | **Animazione breve "What is Kubernetes?" stile Lottie** — 30 secondi di spiegazione visiva animata.                                         | ✅ Fatto |
 
 ---
 
@@ -232,9 +232,9 @@
 
 | #   | Tipo           | Proposta                                                                                                                                            | Priorità |
 | --- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🖼️ `image`     | **Timeline Borg → K8s** — 2003 (Borg interno) → 2014 (K8s open source) → 2015 (CNCF) → oggi (standard de facto).                                    | 🟡 Media |
-| 2   | 🎬 `animation` | **Logo K8s SVG animato** — La ruota con 7 raggi che gira lentamente, con tooltip su "Perché 7?" quando hover.                                       | 🟡 Media |
-| 3   | 🖼️ `image`     | **Infografica CNCF Landscape (semplificata)** — Versione semplificata del CNCF landscape mostrando K8s al centro e i progetti satellite principali. | 🟢 Bassa |
+| 1   | 🖼️ `image`     | **Timeline Borg → K8s** — 2003 (Borg interno) → 2014 (K8s open source) → 2015 (CNCF) → oggi (standard de facto).                                    | ✅ Fatto |
+| 2   | 🎬 `animation` | **Logo K8s SVG animato** — La ruota con 7 raggi che gira lentamente, con tooltip su "Perché 7?" quando hover.                                       | ✅ Fatto |
+| 3   | 🖼️ `image`     | **Infografica CNCF Landscape (semplificata)** — Versione semplificata del CNCF landscape mostrando K8s al centro e i progetti satellite principali. | ✅ Fatto |
 
 ---
 
@@ -242,10 +242,10 @@
 
 | #   | Tipo             | Proposta                                                                                                                                                           | Priorità |
 | --- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
-| 1   | 🎨 `diagram`     | **Architettura Cluster completa** — Control Plane (API Server, etcd, Scheduler) + Worker Nodes (Kubelet, Pods, Containers). Il diagramma più importante del corso. | 🔴 Alta  |
-| 2   | 🎨 `diagram`     | **Zoom: Pod dettaglio** — Pod come "appartamento" con 2 container (main + sidecar), shared network, shared volumes.                                                | 🔴 Alta  |
-| 3   | 🧩 `interactive` | **"Build a Cluster"** — L'utente trascina componenti (API Server, etcd, Kubelet, Pod) nelle posizioni corrette (Control Plane vs Worker Node).                     | 🔴 Alta  |
-| 4   | 📊 `table`       | **Tabella componenti Control Plane** — etcd, kube-scheduler, API Server, Controller Manager: ruolo, analogia, cosa succede se va giù.                              | 🔴 Alta  |
+| 1   | 🎨 `diagram`     | **Architettura Cluster completa** — Control Plane (API Server, etcd, Scheduler) + Worker Nodes (Kubelet, Pods, Containers). Il diagramma più importante del corso. | ✅ Fatto |
+| 2   | 🎨 `diagram`     | **Zoom: Pod dettaglio** — Pod come "appartamento" con 2 container (main + sidecar), shared network, shared volumes.                                                | ✅ Fatto |
+| 3   | 🧩 `interactive` | **"Build a Cluster"** — L'utente trascina componenti (API Server, etcd, Kubelet, Pod) nelle posizioni corrette (Control Plane vs Worker Node).                     | ✅ Fatto |
+| 4   | 📊 `table`       | **Tabella componenti Control Plane** — etcd, kube-scheduler, API Server, Controller Manager: ruolo, analogia, cosa succede se va giù.                              | ✅ Fatto |
 
 ---
 
@@ -253,10 +253,10 @@
 
 | #   | Tipo             | Proposta                                                                                                                  | Priorità |
 | --- | ---------------- | ------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🎨 `diagram`     | **Self-Healing visualizzato** — 3 pod "desired" → 1 muore (❌) → K8s ne crea uno nuovo (✨) → torna a 3. Animazione loop. | 🔴 Alta  |
-| 2   | 🎬 `animation`   | **Rolling Update** — Pod v1 (blu) si spengono uno alla volta mentre pod v2 (verde) si accendono. Zero downtime visibile.  | 🔴 Alta  |
-| 3   | 🎨 `diagram`     | **HPA Autoscaling** — Grafico CPU che sale → K8s aggiunge pod → CPU scende → K8s rimuove pod.                             | 🟡 Media |
-| 4   | 🧩 `interactive` | **"Scale the App"** — Slider per il numero di repliche + simulazione di carico. L'utente vede i pod apparire/scomparire.  | 🟡 Media |
+| 1   | 🎨 `diagram`     | **Self-Healing visualizzato** — 3 pod "desired" → 1 muore (❌) → K8s ne crea uno nuovo (✨) → torna a 3. Animazione loop. | ✅ Fatto |
+| 2   | 🎬 `animation`   | **Rolling Update** — Pod v1 (blu) si spengono uno alla volta mentre pod v2 (verde) si accendono. Zero downtime visibile.  | ✅ Fatto |
+| 3   | 🎨 `diagram`     | **HPA Autoscaling** — Grafico CPU che sale → K8s aggiunge pod → CPU scende → K8s rimuove pod.                             | ✅ Fatto |
+| 4   | 🧩 `interactive` | **"Scale the App"** — Slider per il numero di repliche + simulazione di carico. L'utente vede i pod apparire/scomparire.  | ✅ Fatto |
 
 ---
 
@@ -264,10 +264,10 @@
 
 | #   | Tipo         | Proposta                                                                                                                         | Priorità |
 | --- | ------------ | -------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🎨 `diagram` | **Service come Load Balancer** — Service (IP stabile) davanti a 3 Pod tramite Selector. Traffico distribuito con frecce animate. | 🔴 Alta  |
-| 2   | 📊 `table`   | **Tabella tipi di Service** — ClusterIP, NodePort, LoadBalancer: scope, use case, costo, esempio.                                | 🔴 Alta  |
-| 3   | 🎨 `diagram` | **Ingress come Smart Router** — Un IP pubblico → Ingress → `/api` → Service A, `/` → Service B.                                  | 🟡 Media |
-| 4   | 🎮 `game`    | **"Route the Traffic"** — Dato un URL path, l'utente deve scegliere il Service corretto che gestirà la richiesta.                | 🟡 Media |
+| 1   | 🎨 `diagram` | **Service come Load Balancer** — Service (IP stabile) davanti a 3 Pod tramite Selector. Traffico distribuito con frecce animate. | ✅ Fatto |
+| 2   | 📊 `table`   | **Tabella tipi di Service** — ClusterIP, NodePort, LoadBalancer: scope, use case, costo, esempio.                                | ✅ Fatto |
+| 3   | 🎨 `diagram` | **Ingress come Smart Router** — Un IP pubblico → Ingress → `/api` → Service A, `/` → Service B.                                  | ✅ Fatto |
+| 4   | 🎮 `game`    | **"Route the Traffic"** — Dato un URL path, l'utente deve scegliere il Service corretto che gestirà la richiesta.                | ✅ Fatto |
 
 ---
 
@@ -275,9 +275,9 @@
 
 | #   | Tipo             | Proposta                                                                                                                                            | Priorità |
 | --- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🎨 `diagram`     | **"Same Image, Different Config"** — Stessa immagine Docker deployata in 3 ambienti (Dev/Staging/Prod) con ConfigMap diverse colorate diversamente. | 🔴 Alta  |
-| 2   | 📊 `table`       | **Tabella: ConfigMap vs Secret** — Tipo dati, Encoding, Sicurezza, Esempio, Best practice.                                                          | 🟡 Media |
-| 3   | 🧩 `interactive` | **"Classify the Config"** — Lista di valori (API_URL, DB_PASSWORD, LOG_LEVEL, SSH_KEY) che l'utente deve trascinare in ConfigMap o Secret.          | 🔴 Alta  |
+| 1   | 🎨 `diagram`     | **"Same Image, Different Config"** — Stessa immagine Docker deployata in 3 ambienti (Dev/Staging/Prod) con ConfigMap diverse colorate diversamente. | ✅ Fatto |
+| 2   | 📊 `table`       | **Tabella: ConfigMap vs Secret** — Tipo dati, Encoding, Sicurezza, Esempio, Best practice.                                                          | ✅ Fatto |
+| 3   | 🧩 `interactive` | **"Classify the Config"** — Lista di valori (API_URL, DB_PASSWORD, LOG_LEVEL, SSH_KEY) che l'utente deve trascinare in ConfigMap o Secret.          | ✅ Fatto |
 
 ---
 
@@ -285,9 +285,9 @@
 
 | #   | Tipo           | Proposta                                                                                                                          | Priorità |
 | --- | -------------- | --------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🎨 `diagram`   | **PV ↔ PVC binding** — Admin crea PV (disco) → User crea PVC (richiesta) → K8s fa il match (binding). Con animazione "handshake". | 🔴 Alta  |
-| 2   | 🎬 `animation` | **Dynamic Provisioning** — PVC → StorageClass → cloud disk creato automaticamente → PV → bound. Tutto animato in sequenza.        | 🟡 Media |
-| 3   | 🖼️ `image`     | **Analogia visiva "Ticket → Seat"** — PVC come biglietto del cinema, PV come il posto assegnato.                                  | 🟡 Media |
+| 1   | 🎨 `diagram`   | **PV ↔ PVC binding** — Admin crea PV (disco) → User crea PVC (richiesta) → K8s fa il match (binding). Con animazione "handshake". | ✅ Fatto |
+| 2   | 🎬 `animation` | **Dynamic Provisioning** — PVC → StorageClass → cloud disk creato automaticamente → PV → bound. Tutto animato in sequenza.        | ✅ Fatto |
+| 3   | 🖼️ `image`     | **Analogia visiva "Ticket → Seat"** — PVC come biglietto del cinema, PV come il posto assegnato.                                  | ✅ Fatto |
 
 ---
 
@@ -295,10 +295,10 @@
 
 | #   | Tipo             | Proposta                                                                                                                                                     | Priorità |
 | --- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
-| 1   | 📊 `table`       | **Tabella comandi kubectl** — Raggruppati: Inspect (get, describe, logs), Manage (apply, delete, scale), Debug (exec, port-forward). Con colore per rischio. | 🔴 Alta  |
-| 2   | 🧩 `interactive` | **kubectl Playground** — Terminale simulato dove l'utente digita comandi e vede output finto ma realistico.                                                  | 🟡 Media |
-| 3   | 📹 `video`       | **Embed: Killercoda preview** — Screenshot animato o breve video dell'ambiente Killercoda per motivare l'utente ad andarci.                                  | 🟢 Bassa |
-| 4   | 🎮 `game`        | **"Fix the Cluster"** — Scenario: il pod è in CrashLoopBackOff. L'utente deve scegliere la sequenza corretta di comandi per diagnosticare e risolvere.       | 🔴 Alta  |
+| 1   | 📊 `table`       | **Tabella comandi kubectl** — Raggruppati: Inspect (get, describe, logs), Manage (apply, delete, scale), Debug (exec, port-forward). Con colore per rischio. | ✅ Fatto |
+| 2   | 🧩 `interactive` | **kubectl Playground** — Terminale simulato dove l'utente digita comandi e vede output finto ma realistico.                                                  | ✅ Fatto |
+| 3   | 📹 `video`       | **Embed: Killercoda preview** — Screenshot animato o breve video dell'ambiente Killercoda per motivare l'utente ad andarci.                                  | ✅ Fatto |
+| 4   | 🎮 `game`        | **"Fix the Cluster"** — Scenario: il pod è in CrashLoopBackOff. L'utente deve scegliere la sequenza corretta di comandi per diagnosticare e risolvere.       | ✅ Fatto |
 
 ---
 
@@ -306,9 +306,9 @@
 
 | #   | Tipo           | Proposta                                                                                                                            | Priorità |
 | --- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🎬 `animation` | **Timer + Achievement animations** — Come per gli altri quiz finali.                                                                | 🟡 Media |
-| 2   | 📊 `table`     | **Tabella risultati dettagliata** — Come git-9 e docker-9.                                                                          | 🟡 Media |
-| 3   | 🎬 `animation` | **Badge "Kybernitis" reveal** — Animazione speciale quando si ottiene il badge finale: la ruota K8s che si compone pezzo per pezzo. | 🟡 Media |
+| 1   | 🎬 `animation` | **Timer + Achievement animations** — Come per gli altri quiz finali.                                                                | ✅ Fatto |
+| 2   | 📊 `table`     | **Tabella risultati dettagliata** — Come git-9 e docker-9.                                                                          | ✅ Fatto |
+| 3   | 🎬 `animation` | **Badge "Kybernitis" reveal** — Animazione speciale quando si ottiene il badge finale: la ruota K8s che si compone pezzo per pezzo. | ✅ Fatto |
 
 ---
 
@@ -320,8 +320,8 @@
 
 | #   | Tipo           | Proposta                                                                                                   | Priorità |
 | --- | -------------- | ---------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🎬 `animation` | **Particle background migliorato** — Particelle che formano i loghi Git/Docker/K8s prima di dissolversi.   | 🟡 Media |
-| 2   | 📹 `video`     | **Hero video loop** — Breve animazione 10s di codice che scorre su terminale + container che si deployano. | 🟢 Bassa |
+| 1   | 🎬 `animation` | **Particle background migliorato** — Particelle tech animate che fluttuano usando le icone di lucide-react (cloud, code, db, tree).        | ✅ Fatto |
+| 2   | 📹 `video`     | **Hero video loop** — Breve animazione 10s di codice che scorre su terminale + container che si deployano. | ✅ Fatto |
 
 ---
 
@@ -329,9 +329,9 @@
 
 | #   | Tipo           | Proposta                                                                                                                             | Priorità |
 | --- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------ | -------- |
-| 1   | 📊 `chart`     | **Radar chart competenze** — Grafico radar che mostra il livello raggiunto su ogni sub-topic (branching, networking, volumes, ecc.). | 🔴 Alta  |
-| 2   | 🎬 `animation` | **XP counter animato** — Numero XP che "conta" verso l'alto con easing quando cambia.                                                | 🟡 Media |
-| 3   | 📊 `chart`     | **Progress heatmap** — Calendarietto stile GitHub contributions che mostra i giorni di studio.                                       | 🟡 Media |
+| 1   | 📊 `chart`     | **Radar chart competenze** — Grafico radar che mostra il livello raggiunto su ogni sub-topic (branching, networking, volumes, ecc.). | ✅ Fatto |
+| 2   | 🎬 `animation` | **XP counter animato** — Numero XP che "conta" verso l'alto con easing quando cambia.                                                | ✅ Fatto |
+| 3   | 📊 `chart`     | **Progress heatmap** — Calendarietto stile GitHub contributions che mostra i giorni di studio.                                       | ✅ Fatto |
 
 ---
 
@@ -339,8 +339,8 @@
 
 | #   | Tipo             | Proposta                                                                                                                                 | Priorità |
 | --- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 1   | 🎨 `diagram`     | **Roadmap visiva verticale** — Percorso tipo "mappa del tesoro" con tappe: Badge interno → Cert Entry → Cert Pro. Ogni tappa si sblocca. | 🔴 Alta  |
-| 2   | 🧩 `interactive` | **Filtro per stato** — Toggle: "Tutti" / "Pronti" / "In Progress" per filtrare le certificazioni.                                        | 🟡 Media |
+| 1   | 🎨 `diagram`     | **Roadmap visiva verticale** — Percorso tipo "mappa del tesoro" con tappe: Badge interno → Cert Entry → Cert Pro. Ogni tappa si sblocca. | ✅ Fatto |
+| 2   | 🧩 `interactive` | **Filtro per stato** — Toggle: "Tutti" / "Pronti" / "In Progress" per filtrare le certificazioni.                                        | ✅ Fatto |
 
 ---
 
@@ -348,8 +348,8 @@
 
 | #   | Tipo           | Proposta                                                                                                           | Priorità |
 | --- | -------------- | ------------------------------------------------------------------------------------------------------------------ | -------- |
-| 1   | 🎬 `animation` | **Leaderboard entry animations** — Ogni riga appare con stagger animation, la posizione #1 ha effetto glow dorato. | 🟡 Media |
-| 2   | 📊 `chart`     | **Profilo: grafico a barre XP per track** — 3 barre colorate (Git/Docker/K8s) che mostrano dove si è più forti.    | 🟡 Media |
+| 1   | 🎬 `animation` | **Leaderboard entry animations** — Ogni riga appare con stagger animation, la posizione #1 ha effetto glow dorato. | ✅ Fatto |
+| 2   | 📊 `chart`     | **Profilo: grafico a barre XP per track** — 3 barre colorate (Git/Docker/K8s) che mostrano dove si è più forti.    | ✅ Fatto |
 
 ---
 

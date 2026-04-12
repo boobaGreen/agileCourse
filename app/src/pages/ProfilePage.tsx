@@ -1,11 +1,15 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore, BADGES } from '../store/useAppStore'
-import { Zap, CheckCircle, Award, RotateCcw, GitBranch, Package, Ship } from 'lucide-react'
+import { Zap, CheckCircle, Award, RotateCcw, GitBranch, Package, Ship, BarChart3 } from 'lucide-react'
 import { GIT_MODULES } from '../data/git/modules'
 import { DOCKER_MODULES } from '../data/docker/modules'
 import { K8S_MODULES } from '../data/k8s/modules'
+import { 
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, 
+  Tooltip, ResponsiveContainer, Cell 
+} from 'recharts'
 
 export default function ProfilePage() {
   const { userName, xp, completedModules, quizScores, badges, resetProgress } = useAppStore()
@@ -28,6 +32,12 @@ export default function ProfilePage() {
     ? Math.round(Object.values(quizScores).reduce((a, b) => a + b, 0) / quizCount * 10)
     : 0
 
+  const trackXPData = useMemo(() => [
+    { name: 'Git', xp: completedModules.filter(m => m.startsWith('git-')).length * 50, color: 'var(--color-git)' },
+    { name: 'Docker', xp: completedModules.filter(m => m.startsWith('docker-')).length * 50, color: 'var(--color-docker)' },
+    { name: 'Kubernetes', xp: completedModules.filter(m => m.startsWith('k8s-')).length * 50, color: 'var(--color-k8s)' },
+  ], [completedModules])
+
   return (
     <div className="animate-fade-up w-full">
       <div className="mb-8">
@@ -36,20 +46,46 @@ export default function ProfilePage() {
       </div>
 
       {/* Hero Stats Card */}
-      <div className="card p-6 md:p-10 flex flex-col sm:flex-row items-center gap-6 mb-10">
-        <div className="w-24 h-24 md:w-32 md:h-32 rounded-3xl flex items-center justify-center text-4xl md:text-6xl fw-black text-white shrink-0 shadow-xl"
+      <div className="card p-6 md:p-10 flex flex-col sm:flex-row items-center gap-6 mb-10 overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 blur-[100px] rounded-full -mr-32 -mt-32 pointer-events-none" />
+        
+        <div className="w-24 h-24 md:w-32 md:h-32 rounded-3xl flex items-center justify-center text-4xl md:text-6xl fw-black text-white shrink-0 shadow-xl z-10"
           style={{ background: 'linear-gradient(135deg, var(--color-primary), #818cf8)' }}>
           {userName.charAt(0).toUpperCase()}
         </div>
-        <div className="flex-1 text-center sm:text-left">
+        <div className="flex-1 text-center sm:text-left z-10">
           <h2 className="text-3xl md:text-5xl fw-black text-white mb-2 tracking-tight">{userName}</h2>
           <p className="text-sub text-sm md:text-base fw-bold uppercase tracking-wider">Agile Internal Learner • Level 1</p>
         </div>
-        <div className="text-center sm:text-right">
+        <div className="text-center sm:text-right z-10">
           <p className="text-5xl md:text-6xl fw-black text-xp flex items-center justify-center sm:justify-end gap-2 mb-1">
             <Zap size={36} className="text-xp" /> {xp}
           </p>
           <p className="text-xs md:text-sm text-muted fw-bold uppercase px-1">Total Experience Points</p>
+        </div>
+      </div>
+
+      {/* Track XP Chart */}
+      <div className="card p-6 mb-10 bg-surface/40">
+        <h3 className="text-xs fw-black text-muted uppercase tracking-widest flex items-center gap-2 mb-6">
+          <BarChart3 size={14} className="text-primary" /> Track XP Distribution
+        </h3>
+        <div className="w-full h-[200px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={trackXPData} layout="vertical" margin={{ left: -20, right: 20 }}>
+              <XAxis type="number" hide />
+              <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: 'white', fontWeight: 'bold', fontSize: 12 }} />
+              <Tooltip 
+                cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                contentStyle={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: '12px' }}
+              />
+              <Bar dataKey="xp" radius={[0, 4, 4, 0]} barSize={30}>
+                {trackXPData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
 

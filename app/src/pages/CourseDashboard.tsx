@@ -1,11 +1,18 @@
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useSpring, useTransform } from 'framer-motion'
 import { useAppStore } from '../store/useAppStore'
 import { GIT_MODULES } from '../data/git/modules'
 import { DOCKER_MODULES } from '../data/docker/modules'
 import { K8S_MODULES } from '../data/k8s/modules'
-import { CheckCircle, GitBranch, Package, Ship, ArrowRight, Zap } from 'lucide-react'
+import { 
+  CheckCircle, GitBranch, Package, Ship, ArrowRight, Zap, 
+  Target, Activity, Trophy 
+} from 'lucide-react'
+import { 
+  Radar, RadarChart, PolarGrid, PolarAngleAxis, 
+  ResponsiveContainer 
+} from 'recharts'
 
 const tracks = [
   { id: 'git', icon: GitBranch, emoji: '🔴', label: 'Git', color: 'var(--color-git)', glow: 'rgba(249,115,22,0.2)', modules: GIT_MODULES, available: true },
@@ -13,19 +20,96 @@ const tracks = [
   { id: 'k8s', icon: Ship, emoji: '☸️', label: 'Kubernetes', color: 'var(--color-k8s)', glow: 'rgba(167,139,250,0.2)', modules: K8S_MODULES, available: true },
 ]
 
+function AnimatedCounter({ value }: { value: number }) {
+  const spring = useSpring(0, { mass: 1, stiffness: 100, damping: 30 })
+  const displayValue = useTransform(spring, (current) => Math.round(current))
+
+  useEffect(() => {
+    spring.set(value)
+  }, [value, spring])
+
+  return <motion.span>{displayValue}</motion.span>
+}
+
 export default function CourseDashboard() {
-  const { userName, xp, completedModules, badges } = useAppStore()
+  const { userName, xp, completedModules, activityLog, badges } = useAppStore()
   const [activeTrackId, setActiveTrackId] = useState('git')
   const navigate = useNavigate()
 
   const activeTrack = tracks.find(t => t.id === activeTrackId) || tracks[0]
   const currentModules = activeTrack.modules
   
-  // Calculate progress for ALL tracks (for the gallery)
   const getTrackProgress = (tId: string, mods: { id: string }[]) => {
     const done = completedModules.filter((m) => m.startsWith(`${tId}-`)).length
     return mods.length > 0 ? Math.round((done / mods.length) * 100) : 0
   }
+
+  // Calculate skill data for radar chart
+  const radarData = useMemo(() => {
+    const skills = [
+      { subject: 'Architecture', value: 0, fullMark: 100 },
+      { subject: 'Workflows', value: 0, fullMark: 100 },
+      { subject: 'Networking', value: 0, fullMark: 100 },
+      { subject: 'Persistence', value: 0, fullMark: 100 },
+      { subject: 'Ops & Scale', value: 0, fullMark: 100 },
+    ]
+
+    // Dynamic calculation based on module content
+    const getSkillValue = (track: string, moduleFilter: (id: string) => boolean, maxModules = 2) => {
+      const relevant = completedModules.filter(m => m.startsWith(track) && moduleFilter(m))
+      return (relevant.length / maxModules) * 100
+    }
+
+    // Calculating each skill by combining relevant track progress (max 100)
+    skills[0].value = Math.min(100, 
+      getSkillValue('git', m => m === 'git-1' || m === 'git-3') * 0.5 + 
+      getSkillValue('docker', m => m === 'docker-1' || m === 'docker-2') * 0.5
+    )
+    
+    skills[1].value = Math.min(100, 
+      getSkillValue('git', m => m.includes('4') || m.includes('5')) * 0.6 + 
+      getSkillValue('docker', m => m === 'docker-4', 1) * 0.4
+    )
+    
+    skills[2].value = Math.min(100, 
+      getSkillValue('docker', m => m === 'docker-7', 1) * 0.5 + 
+      getSkillValue('k8s', m => m === 'k8s-5' || m === 'k8s-4') * 0.5
+    )
+    
+    skills[3].value = Math.min(100, 
+      getSkillValue('docker', m => m === 'docker-6', 1) * 0.5 + 
+      getSkillValue('k8s', m => m === 'k8s-7' || m === 'k8s-6', 2) * 0.5
+    )
+    
+    skills[4].value = Math.min(100, 
+      getSkillValue('k8s', m => m === 'k8s-1' || m === 'k8s-3' || m === 'k8s-8', 3)
+    )
+    
+    return skills
+  }, [completedModules])
+
+  // Process heatmap data (fixed 1-year range)
+  const heatmapData = useMemo(() => {
+    const data = []
+    const now = new Date()
+    const weeksToShow = 52
+    for (let i = weeksToShow * 7; i >= 0; i--) {
+      const d = new Date()
+      d.setDate(now.getDate() - i)
+      const dateStr = d.toISOString().split('T')[0]
+      data.push({
+        date: dateStr,
+        count: activityLog[dateStr] || 0
+      })
+    }
+    
+    // Group into weeks
+    const weeks = []
+    for (let i = 0; i < data.length; i += 7) {
+      weeks.push(data.slice(i, i + 7))
+    }
+    return weeks
+  }, [activityLog])
 
   return (
     <div className="relative">
@@ -37,27 +121,39 @@ export default function CourseDashboard() {
       
       <div className="animate-fade-up relative z-10">
         {/* Welcome Header */}
-        <div className="mb-8 flex justify-between items-end">
+        <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
           <div>
             <h1 className="text-4xl fw-black text-white mb-1">
               Mission <span style={{ color: activeTrack.color }}>Control</span>
             </h1>
-            <p className="text-muted">Welcome back, {userName}. Choose your training track.</p>
+            <p className="text-muted">Welcome back, {userName}. Your DevOps journey continues.</p>
           </div>
-          <div className="hidden md:flex gap-4">
-             <div className="text-right">
-                <p className="text-[10px] text-muted uppercase fw-bold">Global XP</p>
-                <p className="text-xl fw-black text-xp">{xp}</p>
+          
+          <div className="flex gap-4 w-full md:w-auto">
+             <div className="flex-1 md:flex-none card p-4 py-3 border-xp/20 bg-xp/5 flex items-center gap-4">
+                <div className="w-10 h-10 rounded-xl bg-xp/20 flex items-center justify-center text-xp">
+                  <Zap size={20} />
+                </div>
+                <div>
+                  <p className="text-[10px] text-muted uppercase fw-bold">Global XP</p>
+                  <p className="text-xl fw-black text-xp"><AnimatedCounter value={xp} /></p>
+                </div>
              </div>
-             <div className="text-right">
-                <p className="text-[10px] text-muted uppercase fw-bold">Badges</p>
-                <p className="text-xl fw-black text-white">{badges.length}</p>
+             
+             <div className="flex-1 md:flex-none card p-4 py-3 border-purple-500/20 bg-purple-500/5 flex items-center gap-4">
+                <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400">
+                  <Trophy size={20} />
+                </div>
+                <div>
+                  <p className="text-[10px] text-muted uppercase fw-bold">Badges</p>
+                  <p className="text-xl fw-black text-white">{badges.length}</p>
+                </div>
              </div>
           </div>
         </div>
 
-        {/* Immersive Track Gallery */}
-        <div className="flex md:grid md:grid-cols-3 gap-6 mb-10 overflow-x-auto md:overflow-visible py-4 md:py-2 px-4 md:px-0 -mx-4 md:mx-0 snap-x snap-mandatory" style={{ scrollbarWidth: 'none' }}>
+        {/* Immersive Track Gallery - MOVED UP */}
+        <div className="flex md:grid md:grid-cols-3 gap-6 mb-16 overflow-x-auto md:overflow-visible py-4 md:py-2 px-4 md:px-0 -mx-4 md:mx-0 snap-x snap-mandatory" style={{ scrollbarWidth: 'none' }}>
           {tracks.map((track) => {
             const progress = getTrackProgress(track.id, track.modules)
             const isActive = activeTrackId === track.id
@@ -82,7 +178,7 @@ export default function CourseDashboard() {
                      layoutId="active-indicator"
                      className="absolute top-0 right-0 p-2"
                    >
-                     <div className="bg-white/10 p-1 rounded-full"><ArrowRight size={12} style={{ color: track.color }} /></div>
+                      <div className="bg-white/10 p-1 rounded-full"><ArrowRight size={12} style={{ color: track.color }} /></div>
                    </motion.div>
                 )}
 
@@ -113,6 +209,76 @@ export default function CourseDashboard() {
               </motion.div>
             )
           })}
+        </div>
+
+        {/* Analytics Section - MOVED DOWN */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-16">
+          {/* Skills Radar */}
+          <div className="lg:col-span-1 card p-6 bg-surface/40 flex flex-col items-center justify-center min-h-[320px]">
+            <div className="w-full flex justify-between items-center mb-4">
+              <h3 className="text-xs fw-black text-muted uppercase tracking-widest flex items-center gap-2">
+                <Target size={14} className="text-primary" /> Skill Radar
+              </h3>
+            </div>
+            <div className="w-full h-[220px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
+                  <PolarGrid stroke="rgba(255,255,255,0.05)" />
+                  <PolarAngleAxis dataKey="subject" tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold' }} />
+                  <Radar
+                    name="Skills"
+                    dataKey="value"
+                    stroke={activeTrack.color}
+                    fill={activeTrack.color}
+                    fillOpacity={0.3}
+                  />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Progress Activity Feed / Heatmap */}
+          <div className="lg:col-span-2 card p-6 bg-surface/40">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+              <h3 className="text-xs fw-black text-muted uppercase tracking-widest flex items-center gap-2">
+                <Activity size={14} className="text-green" /> Activity Heatmap
+              </h3>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              <div className="flex gap-1 overflow-x-auto pb-4" style={{ scrollbarWidth: 'none' }}>
+                {heatmapData.map((week, weekIdx) => (
+                  <div key={weekIdx} className="flex flex-col gap-1">
+                    {week.map((day, dayIdx) => {
+                      const count = day.count
+                      return (
+                        <div 
+                          key={dayIdx} 
+                          title={`${day.date}: ${count} XP`}
+                          className="w-3 h-3 rounded-sm transition-colors duration-500" 
+                          style={{ 
+                            background: count > 300 ? activeTrack.color : count > 100 ? `${activeTrack.color}80` : count > 0 ? `${activeTrack.color}40` : 'rgba(255,255,255,0.05)'
+                          }}
+                        />
+                      )
+                    })}
+                  </div>
+                ))}
+              </div>
+              <div className="flex items-center justify-between text-[10px] text-muted fw-bold">
+                <span>1 YEAR OF ACTIVITY</span>
+                <div className="flex items-center gap-2">
+                  <span>Less</span>
+                  <div className="flex gap-1">
+                    <div className="w-2.5 h-2.5 rounded-sm bg-white/5" />
+                    <div className="w-2.5 h-2.5 rounded-sm opacity-50" style={{ background: activeTrack.color }} />
+                    <div className="w-2.5 h-2.5 rounded-sm" style={{ background: activeTrack.color }} />
+                  </div>
+                  <span>More</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Selected Track Detail */}

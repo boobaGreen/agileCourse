@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '../store/useAppStore'
@@ -8,8 +8,10 @@ import { K8S_MODULES } from '../data/k8s/modules'
 import type { Section, QuizQuestion } from '../data/git/modules'
 import {
   ArrowLeft, ArrowRight, Zap,
-  ExternalLink, BookOpen, Code2, Lightbulb, Sparkles
+  ExternalLink, BookOpen, Code2, Lightbulb, Sparkles,
+  LayoutGrid, Workflow
 } from 'lucide-react'
+import confetti from 'canvas-confetti'
 
 export default function ModulePage() {
   const { id } = useParams<{ id: string }>()
@@ -31,6 +33,21 @@ export default function ModulePage() {
   // Shuffled quiz data state
   type ShuffledQuiz = QuizQuestion & { shuffledOptions: string[], shuffledCorrect: number }
   const [quizData, setQuizData] = useState<ShuffledQuiz[]>([])
+  
+  // Timer State (15 minutes)
+  const [timeLeft, setTimeLeft] = useState(15 * 60)
+
+  useEffect(() => {
+    let timer: number
+    if (view === 'quiz' && !submitted && timeLeft > 0) {
+      timer = window.setInterval(() => {
+        setTimeLeft((prev) => prev - 1)
+      }, 1000)
+    } else if (timeLeft === 0 && view === 'quiz' && !submitted) {
+      handleSubmitQuiz()
+    }
+    return () => clearInterval(timer)
+  }, [view, submitted, timeLeft])
 
   // Synchronize state when the module ID changes (render phase reset)
   if (id !== prevId) {
@@ -115,6 +132,15 @@ export default function ModulePage() {
     setXpEarned(earned)
     setSubmitted(true)
     setView('result')
+
+    if (scorePct === 100) {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#06d6a0', '#ffb703', '#118ab2', '#ff4b4b']
+      })
+    }
   }
 
   const correctResults = quizData.length > 0 ? quizData.filter((q) => quizAnswers[q.id] === q.shuffledCorrect).length : 0
@@ -233,8 +259,26 @@ export default function ModulePage() {
                 <h2 className="text-xl fw-black text-white">Knowledge Check</h2>
                 <p className="text-muted text-sm">{quizData.length} questions to verify your understanding</p>
               </div>
-              <div className="bg-surface2 px-4 py-2 rounded-xl text-xs fw-bold text-sub">
-                {Object.keys(quizAnswers).length} / {quizData.length} Answered
+              <div className="flex gap-4 items-center">
+                <div className="flex items-center gap-3">
+                  <div className="relative w-12 h-12 flex items-center justify-center">
+                    <svg className="w-12 h-12 transform -rotate-90">
+                      <circle cx="24" cy="24" r="20" stroke="currentColor" strokeWidth="4" fill="transparent" className="text-surface2" />
+                      <circle cx="24" cy="24" r="20" stroke="currentColor" strokeWidth="4" fill="transparent"
+                        strokeDasharray={2 * Math.PI * 20}
+                        strokeDashoffset={2 * Math.PI * 20 * (1 - timeLeft / 900)}
+                        className="transition-all duration-1000 ease-linear"
+                        style={{ color: timeLeft > 300 ? '#06d6a0' : timeLeft > 60 ? '#ffb703' : '#ff4b4b' }} 
+                      />
+                    </svg>
+                    <span className="absolute text-[10px] fw-black text-white">
+                      {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, '0')}
+                    </span>
+                  </div>
+                </div>
+                <div className="bg-surface2 px-4 py-2 rounded-xl text-xs fw-bold text-sub">
+                  {Object.keys(quizAnswers).length} / {quizData.length} Answered
+                </div>
               </div>
             </div>
 
@@ -352,6 +396,12 @@ function SectionCard({ section }: { section: Section }) {
     code: Code2,
     tip: Lightbulb,
     analogy: Lightbulb,
+    table: LayoutGrid,
+    flowchart: Workflow,
+    video: Play,
+    infographic: Image,
+    animation: Zap,
+    game: Gamepad2
   }
   const Icon = icons[section.type] || BookOpen
 
@@ -397,6 +447,281 @@ function SectionCard({ section }: { section: Section }) {
           </pre>
         </div>
       )}
+
+      {/* Table rendering */}
+      {section.type === 'table' && section.tableData && (
+        <div className="mt-4 overflow-x-auto rounded-xl border border-white/10">
+          <table className="w-full text-xs sm:text-sm">
+            <thead>
+              <tr className="bg-white/5">
+                {section.tableData.headers.map((h, hi) => (
+                  <th key={hi} className="px-3 sm:px-4 py-3 text-left text-white fw-bold uppercase tracking-wider text-[10px] sm:text-[11px] border-b border-white/10">
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {section.tableData.rows.map((row, ri) => (
+                <tr key={ri} className={`${ri % 2 === 0 ? 'bg-white/[0.02]' : ''} hover:bg-white/5 transition-colors`}>
+                  {row.map((cell, ci) => (
+                    <td key={ci} className={`px-3 sm:px-4 py-3 text-sub border-b border-white/5 ${ci === 0 ? 'text-white fw-bold' : ''}`}>
+                      {cell.split(/\*\*(.*?)\*\*/g).map((part, pi) =>
+                        pi % 2 === 1 ? <strong key={pi} className="text-white">{part}</strong> : part
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* Flowchart / diagram rendering */}
+      {section.type === 'flowchart' && section.diagramSteps && (
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-1 sm:gap-2">
+          {section.diagramSteps.map((step, si) => (
+            <React.Fragment key={si}>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: si * 0.1 }}
+                className="flex flex-col items-center gap-2 px-5 sm:px-7 py-4 sm:py-5 rounded-2xl border border-white/10 bg-white/[0.03] min-w-fit max-w-[180px] text-center shadow-lg"
+                style={{ borderColor: step.color ? `${step.color}50` : undefined }}
+              >
+                {step.icon && <span className="text-2xl sm:text-3xl mb-1">{step.icon}</span>}
+                <span className="text-[11px] sm:text-sm fw-bold text-white leading-tight whitespace-pre-line">{step.label}</span>
+              </motion.div>
+              {si < section.diagramSteps!.length - 1 && (
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: si * 0.1 + 0.05 }}
+                  className="text-muted text-lg sm:text-xl"
+                >
+                  →
+                </motion.span>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+      )}
+
+      {/* Video Content */}
+      {section.type === 'video' && section.videoUrl && (
+        <div className="mt-4 aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+          <iframe
+            className="w-full h-full"
+            src={section.videoUrl.replace('watch?v=', 'embed/')}
+            title="Educational Video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      )}
+
+      {/* Infographic / Image */}
+      {section.type === 'infographic' && section.imageUrl && (
+        <div className="mt-4 rounded-xl overflow-hidden border border-white/10 bg-surface2 relative group">
+           <img src={section.imageUrl} alt="Module Infographic" className="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform duration-500" />
+           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+              <span className="text-xs text-white fw-bold">Click to expand</span>
+           </div>
+        </div>
+      )}
+
+      {/* Specialized Animations */}
+      {section.type === 'animation' && (
+        <div className="mt-4 p-6 rounded-2xl border border-white/5 bg-surface2/30 flex items-center justify-center overflow-hidden min-h-[150px]">
+           <EducationAnimation type={section.content} />
+        </div>
+      )}
+
+      {/* Mini-Games */}
+      {section.type === 'game' && section.gameType && (
+        <div className="mt-4">
+           <MiniGame gameType={section.gameType} gameData={section.gameData} />
+        </div>
+      )}
     </div>
   )
+}
+
+function EducationAnimation({ type }: { type: string }) {
+  if (type.includes('SHA')) {
+    const [input, setInput] = useState('Git')
+    const hash = useMemo(() => {
+      // Fake hash for visual demo
+      let h = 0;
+      for (let i = 0; i < input.length; i++) h = ((h << 5) - h) + input.charCodeAt(i) | 0
+      return Math.abs(h).toString(16).padEnd(40, 'f').slice(0, 40)
+    }, [input])
+
+    return (
+      <div className="w-full max-w-sm flex flex-col gap-4">
+         <div className="text-[10px] text-muted uppercase fw-black tracking-widest text-center">Avalanche Effect Simulator</div>
+         <input 
+           value={input} 
+           onChange={e => setInput(e.target.value)}
+           className="bg-black/20 border border-white/10 rounded-lg p-2 text-white text-center text-sm"
+           placeholder="Type something..."
+         />
+         <div className="bg-surface p-4 rounded-lg border border-primary/20 flex flex-col items-center">
+            <span className="text-[10px] text-primary fw-black uppercase mb-2">SHA-1 HASH (Snapshot ID)</span>
+            <span className="mono text-[11px] text-xp break-all text-center leading-relaxed">
+              {hash.split('').map((char, i) => (
+                <motion.span key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.01 }} className={/[a-f]/.test(char) ? 'text-primary' : ''}>
+                  {char}
+                </motion.span>
+              ))}
+            </span>
+         </div>
+      </div>
+    )
+  }
+
+  // Fallback icon animation
+  return (
+    <motion.div 
+      animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
+      transition={{ repeat: Infinity, duration: 3 }}
+      className="text-primary"
+    >
+      <Zap size={48} />
+    </motion.div>
+  )
+}
+
+function MiniGame({ gameType, gameData }: { gameType: string, gameData: any }) {
+  const [solved, setSolved] = useState(false)
+  const [attempts, setAttempts] = useState(0)
+
+  if (gameType === 'drag-order') {
+    const items = gameData as { id: string, label: string }[]
+    const [currentOrder, setCurrentOrder] = useState([...items].sort(() => Math.random() - 0.5))
+    
+    const moveItem = (fromIdx: number, toIdx: number) => {
+      const newOrder = [...currentOrder]
+      const [removed] = newOrder.splice(fromIdx, 1)
+      newOrder.splice(toIdx, 0, removed)
+      setCurrentOrder(newOrder)
+      setAttempts(a => a + 1)
+      
+      const isCorrect = newOrder.every((item, i) => item.id === items[i].id)
+      if (isCorrect) setSolved(true)
+    }
+
+    return (
+      <div className="card p-6 border-purple-500/20 bg-purple-500/5">
+        <div className="text-center mb-6">
+          <h4 className="text-white fw-black uppercase tracking-tight mb-1">Challenge: Order the Workflow</h4>
+          <p className="text-muted text-xs">Drag the steps into the correct chronological sequence.</p>
+        </div>
+
+        <div className="flex flex-col gap-2 mb-6">
+           {currentOrder.map((item, idx) => (
+             <motion.div
+               key={item.id}
+               layout
+               className={`p-3 rounded-xl border flex items-center justify-between cursor-move group transition-all
+                 ${solved ? 'bg-green/10 border-green/30' : 'bg-surface2 border-white/5 hover:border-white/20'}
+               `}
+             >
+                <div className="flex items-center gap-3">
+                   <div className="w-6 h-6 rounded-lg bg-black/20 flex items-center justify-center text-[10px] fw-black text-muted group-hover:text-white">
+                      {idx + 1}
+                   </div>
+                   <span className="text-sm fw-bold text-sub group-hover:text-white">{item.label}</span>
+                </div>
+                {!solved && (
+                  <div className="flex gap-1">
+                    <button onClick={() => idx > 0 && moveItem(idx, idx - 1)} className="p-1 hover:text-white"><Zap size={12} className="rotate-180" /></button>
+                    <button onClick={() => idx < currentOrder.length - 1 && moveItem(idx, idx + 1)} className="p-1 hover:text-white"><Zap size={12} /></button>
+                  </div>
+                )}
+                {solved && <CheckCircle size={14} className="text-green" />}
+             </motion.div>
+           ))}
+        </div>
+
+        {solved && (
+          <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center">
+             <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-green text-black fw-black text-sm">
+                <Trophy size={16} /> Workflow Mastered! (+10 XP)
+             </div>
+          </motion.div>
+        )}
+      </div>
+    )
+  }
+
+  if (gameType === 'drag-classify') {
+    const { categories, items } = gameData as { categories: { id: string, label: string }[], items: { id: string, label: string, categoryId: string }[] }
+    const [selections, setSelections] = useState<Record<string, string>>({}) // itemId -> categoryId
+    const [currentItems, setCurrentItems] = useState([...items].sort(() => Math.random() - 0.5))
+
+    const classify = (itemId: string, catId: string) => {
+      const newSels = { ...selections, [itemId]: catId }
+      setSelections(newSels)
+      
+      const allDone = items.length === Object.keys(newSels).length
+      const allCorrect = items.every(item => newSels[item.id] === item.categoryId)
+      if (allDone && allCorrect) setSolved(true)
+    }
+
+    return (
+      <div className="card p-6 border-blue-500/20 bg-blue-500/5">
+        <div className="text-center mb-6">
+          <h4 className="text-white fw-black uppercase tracking-tight mb-1">Challenge: Categorize Components</h4>
+          <p className="text-muted text-xs">Assign each item to its correct architectural layer.</p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 mb-8">
+           {categories.map(cat => (
+             <div key={cat.id} className="p-4 rounded-xl border border-white/10 bg-black/20 text-center min-h-[120px] flex flex-col items-center gap-3">
+                <span className="text-[10px] fw-black text-white uppercase tracking-widest">{cat.label}</span>
+                <div className="flex flex-wrap justify-center gap-2">
+                   {items.filter(i => selections[i.id] === cat.id).map(i => (
+                     <div key={i.id} className="px-2 py-1 rounded bg-white/10 text-[10px] text-white">
+                        {i.label}
+                     </div>
+                   ))}
+                </div>
+             </div>
+           ))}
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-3">
+           {currentItems.filter(i => !selections[i.id]).map(item => (
+             <div key={item.id} className="p-3 pr-2 rounded-xl bg-surface2 border border-white/5 flex items-center gap-4">
+                <span className="text-xs fw-bold text-white">{item.label}</span>
+                <div className="flex gap-1">
+                   {categories.map(cat => (
+                     <button 
+                       key={cat.id} 
+                       onClick={() => classify(item.id, cat.id)}
+                       className="px-2 py-1 rounded text-[9px] fw-black bg-white/5 hover:bg-primary hover:text-white transition-colors uppercase"
+                     >
+                       {cat.label}
+                     </button>
+                   ))}
+                </div>
+             </div>
+           ))}
+        </div>
+
+        {solved && (
+          <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center mt-6">
+             <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-green text-black fw-black text-sm">
+                <Trophy size={16} /> Architecture Validated! (+15 XP)
+             </div>
+          </motion.div>
+        )}
+      </div>
+    )
+  }
+
+  return <div className="p-10 text-center text-muted border border-dashed rounded-xl">Game Module Coming Soon...</div>
 }

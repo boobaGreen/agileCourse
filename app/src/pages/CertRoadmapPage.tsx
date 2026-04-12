@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion'
-import { ExternalLink, Award, CheckCircle } from 'lucide-react'
+import { useState, useMemo } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ExternalLink, Award, CheckCircle, Filter, Zap, Clock } from 'lucide-react'
 import { useAppStore } from '../store/useAppStore'
 
 const certPaths = [
@@ -71,76 +72,145 @@ const certPaths = [
 export default function CertRoadmapPage() {
   const { badges } = useAppStore()
   const earnedBadgeIds = badges.map(b => b.id)
+  const [filter, setFilter] = useState<'all' | 'ready' | 'progress'>('all')
+
+  const filteredPaths = useMemo(() => {
+    return certPaths.map(path => ({
+      ...path,
+      certs: path.certs.filter(cert => {
+        const isReady = earnedBadgeIds.includes(path.badge)
+        if (filter === 'ready') return isReady
+        if (filter === 'progress') return !isReady
+        return true
+      })
+    })).filter(path => path.certs.length > 0)
+  }, [filter, earnedBadgeIds])
 
   return (
-    <div className="animate-fade-up w-full">
-      <div className="mb-8">
-        <h1 className="text-3xl fw-black text-white flex items-center gap-3">
-          <Award size={28} className="text-k8s" /> Professional Roadmap
-        </h1>
-        <p className="text-muted mt-1">Your internal badges are the first step to global certifications</p>
+    <div className="animate-fade-up w-full max-w-5xl mx-auto">
+      <div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+        <div>
+          <h1 className="text-4xl fw-black text-white flex items-center gap-3">
+            <Award size={32} className="text-k8s" /> Career <span className="text-primary">Roadmap</span>
+          </h1>
+          <p className="text-muted mt-1">Scale the DevOps mountain from internal fundamentals to global mastery.</p>
+        </div>
+
+        <div className="flex bg-surface/50 p-1 rounded-xl border border-white/5 gap-1">
+          {[
+            { id: 'all', label: 'All Exams', icon: Filter },
+            { id: 'ready', label: 'Ready', icon: CheckCircle },
+            { id: 'progress', label: 'In Progress', icon: Clock },
+          ].map((btn) => (
+            <button
+              key={btn.id}
+              onClick={() => setFilter(btn.id as any)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs fw-bold transition-all ${
+                filter === btn.id 
+                  ? 'bg-primary text-white shadow-lg' 
+                  : 'text-muted hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <btn.icon size={14} /> {btn.label}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="card p-6 border-primary/20 bg-primary/5 mb-10 leading-relaxed text-sub text-sm">
-        DevHarbor curriculum is designed in alignment with the **Linux Foundation (CNCF)** and 
-        **Cloud provider** standards. Below is the mapping of your current progress to official industry certifications.
-      </div>
+      <div className="relative pl-8 md:pl-0">
+        {/* Central vertical line */}
+        <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-primary/50 via-purple-500/50 to-k8s/50 opacity-20 hidden md:block" />
+        <div className="absolute left-4 md:hidden top-0 bottom-0 w-1 bg-border opacity-20" />
 
-      <div className="flex flex-col gap-12 mb-20">
-        {certPaths.map((path, i) => (
-          <motion.div
-            key={path.category}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-          >
-            <div className="flex items-center gap-4 mb-6">
-              <h2 className="text-xl fw-black text-white">{path.category}</h2>
-              <div className="flex-1 h-px bg-border opacity-50" />
-            </div>
+        <div className="flex flex-col gap-12 relative z-10">
+          <AnimatePresence mode="popLayout">
+            {filteredPaths.map((path, pathIdx) => (
+              <div key={path.category} className="relative">
+                {/* Category Header (Center) */}
+                <div className="flex justify-center mb-10">
+                   <div className="bg-surface2 px-6 py-2 rounded-full border border-white/10 shadow-xl relative z-20">
+                     <h2 className="text-sm fw-black text-white uppercase tracking-[0.3em]" style={{ color: path.color }}>
+                       {path.category}
+                     </h2>
+                   </div>
+                </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {path.certs.map((cert) => {
-                const isReady = earnedBadgeIds.includes(path.badge)
-                return (
-                  <div key={cert.name} className="card p-5 group hover:border-white/20 transition-all flex flex-col gap-3">
-                    <div className="flex justify-between items-start">
-                      <span className="badge-pill bg-surface text-muted mono">EXAM: {cert.level}</span>
-                      {isReady && (
-                        <div className="text-green flex items-center gap-1 text-[10px] fw-black uppercase">
-                          <CheckCircle size={10} /> Prepared
+                <div className="flex flex-col gap-8">
+                  {path.certs.map((cert, certIdx) => {
+                    const isReady = earnedBadgeIds.includes(path.badge)
+                    const isEven = certIdx % 2 === 0
+                    
+                    return (
+                      <motion.div
+                        key={cert.name}
+                        layout
+                        initial={{ opacity: 0, x: isEven ? -50 : 50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        className={`flex w-full ${isEven ? 'md:justify-start' : 'md:justify-end'} justify-start`}
+                      >
+                        <div className={`relative w-full md:w-[45%] group`}>
+                          {/* Connection Dot */}
+                          <div className={`absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-4 border-surface shadow-lg z-30
+                            ${isEven ? 'md:-right-[11%] -left-[30px] md:left-auto' : 'md:-left-[11.5%] -left-[30px]'}
+                          `} style={{ backgroundColor: isReady ? 'var(--color-green)' : 'var(--color-border)' }} />
+
+                          {/* Connection Line (Desktop) */}
+                          <div className={`absolute top-1/2 -translate-y-1/2 h-1 bg-white/5 hidden md:block
+                            ${isEven ? 'left-full w-[11%]' : 'right-full w-[11%]'}
+                          `} />
+
+                          <div className={`card p-6 border-white/10 hover:border-white/20 transition-all bg-surface/80 backdrop-blur-sm relative`}>
+                            <div className="flex justify-between items-start mb-4">
+                              <span className="badge-pill bg-surface2 text-muted mono text-[10px]">LVL: {cert.level}</span>
+                              {isReady ? (
+                                <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ repeat: Infinity, duration: 2 }} className="text-green flex items-center gap-1 text-[10px] fw-black uppercase">
+                                  <CheckCircle size={12} /> Ready to test
+                                </motion.div>
+                              ) : (
+                                <div className="text-sub flex items-center gap-1 text-[10px] fw-black uppercase">
+                                  <Clock size={12} /> Training...
+                                </div>
+                              )}
+                            </div>
+                            
+                            <h3 className="text-xl fw-black text-white group-hover:text-primary transition-colors mb-2">{cert.name}</h3>
+                            <p className="text-muted text-xs leading-relaxed mb-4">{cert.description}</p>
+                            
+                            <div className="flex flex-wrap gap-2 mb-6">
+                               {cert.topics.map(t => (
+                                 <span key={t} className="text-[9px] fw-bold bg-white/5 border border-border px-2 py-0.5 rounded-full text-sub">{t}</span>
+                               ))}
+                            </div>
+
+                            <div className="pt-4 border-t border-border flex items-center justify-between">
+                               <div className="flex items-center gap-2 text-[10px] text-muted">
+                                 <Zap size={10} style={{ color: path.color }} />
+                                 Requires: <span className="text-sub fw-bold">#{path.badge}</span>
+                               </div>
+                               <a href={cert.url} target="_blank" rel="noopener" className="btn btn-primary h-8 px-3 text-[10px] gap-1">
+                                 Syllabus <ExternalLink size={10} />
+                               </a>
+                            </div>
+                          </div>
                         </div>
-                      )}
-                    </div>
-                    
-                    <h3 className="text-lg fw-bold text-white group-hover:text-primary transition-colors">{cert.name}</h3>
-                    <p className="text-muted text-xs leading-relaxed flex-1">{cert.description}</p>
-                    
-                    <div className="flex flex-wrap gap-2 my-2">
-                       {cert.topics.map(t => (
-                         <span key={t} className="text-[9px] fw-bold bg-white/5 border border-border px-2 py-0.5 rounded-full text-sub">{t}</span>
-                       ))}
-                    </div>
-
-                    <div className="pt-4 border-t border-border flex items-center justify-between">
-                       <div className="flex items-center gap-1 text-[10px] text-muted">
-                         Badge req: <span className="text-sub fw-bold">#{path.badge}</span>
-                       </div>
-                       <a href={cert.url} target="_blank" rel="noopener" className="text-primary hover:underline text-xs fw-bold flex items-center gap-1">
-                         Official Site <ExternalLink size={12} />
-                       </a>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          </motion.div>
-        ))}
+                      </motion.div>
+                    )
+                  })}
+                </div>
+              </div>
+            ))}
+          </AnimatePresence>
+        </div>
       </div>
       
-      <div className="text-center p-8 text-muted text-[10px] opacity-40">
-        DevHarbor is an internal tool to help you grow. Official exam vouchers and training materials 
-        remain subject to company policy and official vendor availability.
+      <div className="mt-20 card p-8 bg-blue-500/5 border-blue-500/10 text-center">
+        <p className="text-blue-400 text-sm fw-bold mb-2">💡 Pro Tip</p>
+        <p className="text-sub text-sm max-w-2xl mx-auto leading-relaxed">
+          Official exam vouchers are often covered by our professional development budget. 
+          Once you've unlocked the <span className="text-white fw-bold">Ready</span> status for an exam, 
+          reach out to your mentor to request the certification attempt!
+        </p>
       </div>
     </div>
   )
