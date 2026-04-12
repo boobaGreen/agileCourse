@@ -1,0 +1,8 @@
+argomenti: 
+
+docker
+kubernetes
+
+training portal 
+
+controllare permessi per holaspoirit
