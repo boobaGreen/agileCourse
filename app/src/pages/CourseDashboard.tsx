@@ -5,7 +5,7 @@ import { useAppStore } from '../store/useAppStore'
 import { GIT_MODULES } from '../data/git/modules'
 import { DOCKER_MODULES } from '../data/docker/modules'
 import { K8S_MODULES } from '../data/k8s/modules'
-import { CheckCircle, GitBranch, Package, Ship, ArrowRight } from 'lucide-react'
+import { CheckCircle, GitBranch, Package, Ship, ArrowRight, Zap } from 'lucide-react'
 
 const tracks = [
   { id: 'git', icon: GitBranch, emoji: '🔴', label: 'Git', color: 'var(--color-git)', glow: 'rgba(249,115,22,0.2)', modules: GIT_MODULES, available: true },
@@ -57,7 +57,7 @@ export default function CourseDashboard() {
         </div>
 
         {/* Immersive Track Gallery */}
-        <div className="flex md:grid md:grid-cols-3 gap-4 mb-10 overflow-x-auto pb-4 snap-x snap-mandatory" style={{ scrollbarWidth: 'none' }}>
+        <div className="flex md:grid md:grid-cols-3 gap-6 mb-10 overflow-x-auto md:overflow-visible py-4 md:py-2 px-4 md:px-0 -mx-4 md:mx-0 snap-x snap-mandatory" style={{ scrollbarWidth: 'none' }}>
           {tracks.map((track) => {
             const progress = getTrackProgress(track.id, track.modules)
             const isActive = activeTrackId === track.id
@@ -68,7 +68,7 @@ export default function CourseDashboard() {
                 onClick={() => track.available && setActiveTrackId(track.id)}
                 whileHover={track.available ? { y: -5, scale: 1.02 } : {}}
                 whileTap={track.available ? { scale: 0.98 } : {}}
-                className={`card p-5 cursor-pointer transition-all duration-300 relative overflow-hidden flex-shrink-0 w-[85vw] sm:w-[300px] md:w-auto snap-center ${
+                className={`card p-6 cursor-pointer transition-all duration-300 relative overflow-hidden flex-shrink-0 w-[85vw] sm:w-[320px] md:w-auto snap-center ${
                   isActive ? 'border-2 shadow-xl' : 'opacity-60 grayscale-[0.5] hover:opacity-100 hover:grayscale-0'
                 } ${!track.available ? 'opacity-30 cursor-not-allowed' : ''}`}
                 style={{ 
@@ -152,30 +152,30 @@ export default function CourseDashboard() {
                       </div>
                     )}
                     
-                    <div className="flex items-center gap-3 mb-2">
-                       <div className="w-10 h-10 rounded-xl bg-surface2 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                    <div className="flex items-center gap-4 mb-4">
+                       <div className="w-12 h-12 rounded-xl bg-surface2 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
                         {mod.emoji}
                        </div>
-                       <div>
-                         <span className="text-[10px] text-muted mono block uppercase">Module {mod.order}</span>
-                         <h3 className="text-white fw-bold text-sm leading-tight">{mod.title}</h3>
+                       <div className="flex-1">
+                         <span className="text-[11px] md:text-xs text-muted mono block uppercase mb-0.5">Module {mod.order}</span>
+                         <h3 className="text-white fw-black text-base md:text-lg leading-tight line-clamp-1">{mod.title}</h3>
                        </div>
                     </div>
                     
-                    <p className="text-muted text-[11px] leading-relaxed mb-4 line-clamp-2">
+                    <p className="text-muted text-xs md:text-sm leading-relaxed mb-6 line-clamp-2">
                       {mod.subtitle}
                     </p>
 
-                    <div className="mt-auto flex justify-between items-center py-3 border-t border-white/5">
-                      <div className="flex items-center gap-1.5 text-[10px] text-muted">
+                    <div className="mt-auto flex justify-between items-center pt-4 border-t border-white/5">
+                      <div className="flex items-center gap-2 text-xs md:text-sm text-sub">
                         <span>⏱ {mod.duration}</span>
                         <span>•</span>
-                        <span className="fw-bold" style={{ color: activeTrack.color }}>+{mod.xpReward} XP</span>
+                        <span className="fw-black flex items-center gap-1" style={{ color: activeTrack.color }}><Zap size={12}/> {mod.xpReward} XP</span>
                       </div>
                       <button 
-                        className="p-1.5 rounded-lg bg-surface2 text-muted group-hover:text-white transition-colors"
+                        className="p-2.5 rounded-lg bg-surface2 text-muted group-hover:bg-white/10 group-hover:text-white transition-colors"
                       >
-                         <ArrowRight size={14} />
+                         <ArrowRight size={16} />
                       </button>
                     </div>
                   </div>
