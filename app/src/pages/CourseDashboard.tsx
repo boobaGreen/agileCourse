@@ -153,46 +153,49 @@ export default function CourseDashboard() {
         </div>
 
         {/* Immersive Track Gallery - MOVED UP */}
-        <div className="flex md:grid md:grid-cols-3 gap-5 mb-24 overflow-x-auto md:overflow-visible py-6 md:py-2 px-6 md:px-0 -mx-6 md:mx-0 snap-x snap-mandatory hide-scrollbar" style={{ scrollbarWidth: 'none', maskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)' }}>
+        <div className="flex flex-col md:grid md:grid-cols-3 gap-4 md:gap-6 mb-16 md:mb-24 px-0 md:px-0">
           {tracks.map((track) => {
-            const progress = getTrackProgress(track.id, track.modules)
-            const isActive = activeTrackId === track.id
-            
             return (
               <motion.div
                 key={track.id}
                 onClick={() => track.available && setActiveTrackId(track.id)}
-                whileHover={track.available ? { y: -5, scale: 1.02 } : {}}
+                whileHover={track.available ? { y: -2, scale: 1.01 } : {}}
                 whileTap={track.available ? { scale: 0.98 } : {}}
-                className={`card p-6 cursor-pointer transition-all duration-300 relative overflow-hidden flex-shrink-0 w-[78vw] sm:w-[300px] md:w-auto snap-center ${
-                  isActive ? 'border-2 shadow-xl scale-100' : 'opacity-60 grayscale-[0.5] hover:opacity-100 hover:grayscale-0 scale-95'
+                className={`card relative overflow-hidden transition-all duration-300 cursor-pointer flex items-center md:flex-col md:items-start p-4 md:p-6 ${
+                  isActive ? 'border-2 shadow-lg ring-1 transition-all' : 'opacity-60 hover:opacity-100 grayscale-[0.3] hover:grayscale-0'
                 } ${!track.available ? 'opacity-30 cursor-not-allowed' : ''}`}
                 style={{ 
                   borderColor: isActive ? track.color : 'var(--color-border)',
-                  boxShadow: isActive ? `${track.color}20 0 15px` : 'none',
-                  background: isActive ? `linear-gradient(135deg, var(--color-surface), ${track.color}08)` : 'var(--color-surface)'
+                  boxShadow: isActive ? `${track.color}15 0 20px` : 'none',
+                  background: isActive ? `linear-gradient(135deg, var(--color-surface), ${track.color}08)` : 'var(--color-surface)',
+                  ringColor: isActive ? `${track.color}30` : 'transparent'
                 }}
               >
-                {isActive && (
-                   <motion.div 
-                     layoutId="active-indicator"
-                     className="absolute top-0 right-0 p-2"
-                   >
-                      <div className="bg-white/10 p-1 rounded-full"><ArrowRight size={12} style={{ color: track.color }} /></div>
-                   </motion.div>
-                )}
+                {/* Status Indicator Dot (Mobile) */}
+                <div className={`md:hidden w-1.5 h-8 rounded-full mr-4 transition-all duration-500 ${isActive ? 'scale-y-110 shadow-[0_0_10px_currentColor]' : 'scale-y-75 opacity-20'}`} 
+                  style={{ backgroundColor: track.color, color: track.color }} 
+                />
 
-                <div className="flex items-center gap-4 mb-4">
-                  <span className="text-4xl animate-float" style={{ animationDelay: `${tracks.indexOf(track)*0.2}s` }}>
+                <div className="flex items-center gap-4 flex-1 md:w-full">
+                  <span className="text-3xl md:text-4xl animate-float shrink-0" style={{ animationDelay: `${tracks.indexOf(track)*0.2}s` }}>
                     {track.emoji}
                   </span>
-                  <div>
-                    <h3 className="text-lg fw-black text-white uppercase tracking-tight">{track.label}</h3>
-                    <p className="text-[10px] text-muted fw-bold uppercase">{track.modules.length} Modules</p>
+                  <div className="flex-1">
+                    <h3 className="text-base md:text-lg fw-black text-white uppercase tracking-tight">{track.label}</h3>
+                    <p className="hidden md:block text-[10px] text-muted fw-bold uppercase">{track.modules.length} Modules</p>
+                    
+                    {/* Compact stats for mobile */}
+                    <div className="md:hidden flex items-center gap-3 mt-1">
+                      <div className="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
+                        <motion.div className="h-full" style={{ background: track.color, width: `${progress}%` }} initial={{ width: 0 }} animate={{ width: `${progress}%` }} />
+                      </div>
+                      <span className="text-[10px] fw-black" style={{ color: track.color }}>{progress}%</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="mt-4">
+                {/* Progress Detail (Desktop) */}
+                <div className="hidden md:block mt-6 w-full">
                    <div className="flex justify-between items-center mb-1.5">
                       <span className="text-[10px] text-muted fw-bold">TRACK PROGRESS</span>
                       <span className="text-xs fw-black" style={{ color: track.color }}>{progress}%</span>
@@ -206,6 +209,15 @@ export default function CourseDashboard() {
                       />
                    </div>
                 </div>
+
+                {isActive && (
+                   <motion.div 
+                     layoutId="active-indicator"
+                     className="absolute top-2 right-2 md:top-0 md:right-0 p-2"
+                   >
+                      <div className="bg-white/10 p-1.5 rounded-full"><ArrowRight size={12} style={{ color: track.color }} /></div>
+                   </motion.div>
+                )}
               </motion.div>
             )
           })}
