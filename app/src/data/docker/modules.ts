@@ -250,7 +250,7 @@ CMD ["python", "app.py"]`,
   },
   {
     id: 'docker-5',
-    track: 'git',
+    track: 'docker',
     order: 5,
     title: 'Docker Hub & Registry',
     subtitle: 'The App Store for Containers',
@@ -304,7 +304,7 @@ docker push claudio/my-app:v1.0`,
   },
   {
     id: 'docker-6',
-    track: 'git',
+    track: 'docker',
     order: 6,
     title: 'Volumes & Persistence',
     subtitle: 'Where does the data go?',
@@ -354,7 +354,7 @@ docker run -d \
   },
   {
     id: 'docker-7',
-    track: 'git',
+    track: 'docker',
     order: 7,
     title: 'Networking & Ports',
     subtitle: 'Talking to the outside world',
@@ -396,7 +396,7 @@ docker run -d \
   },
   {
     id: 'docker-8',
-    track: 'git',
+    track: 'docker',
     order: 8,
     title: 'Docker Compose',
     subtitle: 'YAML orchestration for multi-container apps',
@@ -433,6 +433,11 @@ volumes:
         language: 'yaml'
       },
       {
+        type: 'concept',
+        title: '📦 Optimization: Multi-stage Builds',
+        content: 'To keep production images small, Docker supports **multi-stage builds**. You use one "heavy" image (with build tools) to compile your app, then copy only the final binary into a "lightweight" image (like Alpine Linux) for production. This can reduce image size from 1GB to 50MB!'
+      },
+      {
         type: 'code',
         title: 'The Magic Command',
         content: 'Start everything at once:',
@@ -457,7 +462,7 @@ volumes:
   },
   {
     id: 'docker-9',
-    track: 'git',
+    track: 'docker',
     order: 9,
     title: 'Final Docker Quiz',
     subtitle: 'The Whale Master Certification',

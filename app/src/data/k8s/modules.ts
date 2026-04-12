@@ -139,7 +139,7 @@ export const K8S_MODULES: Module[] = [
       {
         type: 'concept',
         title: '🧠 Control Plane vs Worker Nodes',
-        content: '- **Control Plane (The Brain)**: Manages the cluster (decides what runs where).\n- **Worker Nodes (The Muscle)**: Actually run the containers.'
+        content: '- **Control Plane (The Brain)**: Manages the cluster via several components:\n  - **etcd**: The source of truth. A database that stores all cluster configurations.\n  - **kube-scheduler**: Decides which worker node should run a new pod.\n  - **API Server**: The communication hub for everything in the cluster.\n- **Worker Nodes (The Muscle)**: Actually run the containers. If the brain (Control Plane) goes down, pods keep running, but you cannot change the cluster state until it recovers.'
       },
       {
         type: 'tip',
@@ -215,6 +215,11 @@ spec:
       - name: nginx
         image: nginx:1.21`,
         language: 'yaml'
+      },
+      {
+        type: 'tip',
+        title: '📈 Autoscaling with HPA',
+        content: 'Kubernetes can scale automatically based on usage. The **Horizontal Pod Autoscaler (HPA)** monitors CPU or memory and increases/decreases the number of pod replicas (horizontal scaling) to match the load.'
       }
     ],
     quiz: [

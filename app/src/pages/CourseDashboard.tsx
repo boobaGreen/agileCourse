@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '../store/useAppStore'
 import { GIT_MODULES } from '../data/git/modules'
 import { DOCKER_MODULES } from '../data/docker/modules'
 import { K8S_MODULES } from '../data/k8s/modules'
-import { CheckCircle, Lock, Zap, Award, GitBranch, Package, Ship, ArrowRight } from 'lucide-react'
+import { CheckCircle, Lock, GitBranch, Package, Ship, ArrowRight } from 'lucide-react'
 
 const tracks = [
   { id: 'git', icon: GitBranch, emoji: '🔴', label: 'Git', color: 'var(--color-git)', glow: 'rgba(249,115,22,0.2)', modules: GIT_MODULES, available: true },
@@ -21,125 +21,177 @@ export default function CourseDashboard() {
   const activeTrack = tracks.find(t => t.id === activeTrackId) || tracks[0]
   const currentModules = activeTrack.modules
   
-  const trackCompleted = completedModules.filter((m) => m.startsWith(`${activeTrackId}-`)).length
-  const totalModules = currentModules.length
-  const progressPct = totalModules > 0 ? Math.round((trackCompleted / totalModules) * 100) : 0
+  // Calculate progress for ALL tracks (for the gallery)
+  const getTrackProgress = (tId: string, mods: { id: string }[]) => {
+    const done = completedModules.filter((m) => m.startsWith(`${tId}-`)).length
+    return mods.length > 0 ? Math.round((done / mods.length) * 100) : 0
+  }
 
   return (
-    <div className="animate-fade-up">
-      {/* Welcome Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl fw-black text-white mb-1">
-          Hey {userName} 👋
-        </h1>
-        <p className="text-muted">Ready to level up your engineering skills?</p>
-      </div>
-
-      {/* Stats Dashboard */}
-      <div className="page-grid-4 mb-8">
-        {[
-          { label: 'Total XP', value: xp, icon: Zap, color: 'var(--color-xp)' },
-          { label: 'Modules Done', value: completedModules.length, icon: CheckCircle, color: '#22c55e' },
-          { label: 'Badges', value: badges.length, icon: Award, color: 'var(--color-k8s)' },
-          { label: 'Current Progress', value: `${progressPct}%`, icon: activeTrack.icon, color: activeTrack.color },
-        ].map((stat) => (
-          <div key={stat.label} className="stat-card">
-            <stat.icon size={18} style={{ color: stat.color }} />
-            <p className="text-2xl fw-black text-white">{stat.value}</p>
-            <p className="text-muted text-xs fw-med">{stat.label}</p>
+    <div className="relative">
+      {/* Dynamic Background Glow */}
+      <div 
+        className="absolute -top-24 -left-24 w-96 h-96 rounded-full blur-[120px] opacity-20 pointer-events-none transition-all duration-1000"
+        style={{ background: activeTrack.color }}
+      />
+      
+      <div className="animate-fade-up relative z-10">
+        {/* Welcome Header */}
+        <div className="mb-8 flex justify-between items-end">
+          <div>
+            <h1 className="text-4xl fw-black text-white mb-1">
+              Mission <span style={{ color: activeTrack.color }}>Control</span>
+            </h1>
+            <p className="text-muted">Welcome back, {userName}. Choose your training track.</p>
           </div>
-        ))}
-      </div>
+          <div className="hidden md:flex gap-4">
+             <div className="text-right">
+                <p className="text-[10px] text-muted uppercase fw-bold">Global XP</p>
+                <p className="text-xl fw-black text-xp">{xp}</p>
+             </div>
+             <div className="text-right">
+                <p className="text-[10px] text-muted uppercase fw-bold">Badges</p>
+                <p className="text-xl fw-black text-white">{badges.length}</p>
+             </div>
+          </div>
+        </div>
 
-      {/* Track Selector Tab */}
-      <div className="flex gap-2 mb-8 bg-surface2/50 p-1.5 rounded-2xl w-fit">
-        {tracks.map((track) => (
-          <button
-            key={track.id}
-            onClick={() => track.available && setActiveTrackId(track.id)}
-            className={`px-6 py-2.5 rounded-xl text-sm fw-bold flex items-center gap-2 transition-all cursor-pointer ${
-              activeTrackId === track.id 
-                ? 'bg-surface2 text-white shadow-lg border border-border' 
-                : 'text-muted hover:text-sub'
-            } ${!track.available ? 'opacity-30 cursor-not-allowed' : ''}`}
-          >
-            <track.icon size={16} />
-            {track.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Selected Track Detail */}
-      <div className="animate-fade-up" key={activeTrackId}>
-        <div className="flex flex-col gap-4">
-          <div className="card p-5" style={{ borderColor: `${activeTrack.color}30` }}>
-            <div className="flex justify-between items-center mb-4">
-              <div className="flex items-center gap-3">
-                <span className="text-3xl">{activeTrack.emoji}</span>
-                <div>
-                  <h2 className="text-xl fw-black text-white">{activeTrack.label} Curriculum</h2>
-                  <p className="text-xs text-muted">Master the fundamentals of {activeTrack.label}</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-xs text-muted uppercase fw-bold mb-1">Track Progress</p>
-                <p className="text-xl fw-black" style={{ color: activeTrack.color }}>{progressPct}%</p>
-              </div>
-            </div>
-            <div className="progress-bar">
+        {/* Immersive Track Gallery */}
+        <div className="flex md:grid md:grid-cols-3 gap-4 mb-10 overflow-x-auto pb-4 snap-x snap-mandatory" style={{ scrollbarWidth: 'none' }}>
+          {tracks.map((track) => {
+            const progress = getTrackProgress(track.id, track.modules)
+            const isActive = activeTrackId === track.id
+            
+            return (
               <motion.div
-                className="progress-fill"
-                style={{ background: activeTrack.color }}
-                initial={{ width: 0 }}
-                animate={{ width: `${progressPct}%` }}
-              />
-            </div>
-          </div>
+                key={track.id}
+                onClick={() => track.available && setActiveTrackId(track.id)}
+                whileHover={track.available ? { y: -5, scale: 1.02 } : {}}
+                whileTap={track.available ? { scale: 0.98 } : {}}
+                className={`card p-5 cursor-pointer transition-all duration-300 relative overflow-hidden flex-shrink-0 w-[85vw] sm:w-[300px] md:w-auto snap-center ${
+                  isActive ? 'border-2 shadow-xl' : 'opacity-60 grayscale-[0.5] hover:opacity-100 hover:grayscale-0'
+                } ${!track.available ? 'opacity-30 cursor-not-allowed' : ''}`}
+                style={{ 
+                  borderColor: isActive ? track.color : 'var(--color-border)',
+                  boxShadow: isActive ? `${track.color}20 0 15px` : 'none',
+                  background: isActive ? `linear-gradient(135deg, var(--color-surface), ${track.color}08)` : 'var(--color-surface)'
+                }}
+              >
+                {isActive && (
+                   <motion.div 
+                     layoutId="active-indicator"
+                     className="absolute top-0 right-0 p-2"
+                   >
+                     <div className="bg-white/10 p-1 rounded-full"><ArrowRight size={12} style={{ color: track.color }} /></div>
+                   </motion.div>
+                )}
 
-          <div className="module-grid">
-            {currentModules.map((mod, i) => {
-              const isDone = completedModules.includes(mod.id)
-              const isLocked = i > 0 && !completedModules.includes(currentModules[i - 1].id)
-              
-              return (
-                <div
-                  key={mod.id}
-                  onClick={() => !isLocked && navigate(`/${activeTrackId}/module/${mod.id}`)}
-                  className={`module-card ${isDone ? 'done' : ''} ${isLocked ? 'locked' : ''}`}
-                  style={{ borderColor: isDone ? `${activeTrack.color}60` : undefined }}
-                >
-                  {isDone && (
-                    <div className="absolute top-3 right-3" style={{ color: activeTrack.color }}>
-                      <CheckCircle size={18} />
-                    </div>
-                  )}
-                  {isLocked && (
-                    <div className="absolute top-3 right-3 text-muted">
-                      <Lock size={16} />
-                    </div>
-                  )}
-                  
-                  <div className="flex items-center gap-3 mb-1">
-                    <span className="text-2xl">{mod.emoji}</span>
-                    <span className="text-xs text-muted mono">M{mod.order}</span>
-                  </div>
-                  
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="text-4xl animate-float" style={{ animationDelay: `${tracks.indexOf(track)*0.2}s` }}>
+                    {track.emoji}
+                  </span>
                   <div>
-                    <h3 className="text-white fw-bold text-sm mb-1">{mod.title}</h3>
-                    <p className="text-muted text-xs line-clamp-2">{mod.subtitle}</p>
-                  </div>
-
-                  <div className="flex justify-between mt-auto pt-3 border-t" style={{ borderColor: 'var(--color-border)' }}>
-                    <span className="text-xs text-muted">⏱ {mod.duration}</span>
-                    <span className="text-xs fw-black" style={{ color: activeTrack.color }}>+{mod.xpReward} XP</span>
+                    <h3 className="text-lg fw-black text-white uppercase tracking-tight">{track.label}</h3>
+                    <p className="text-[10px] text-muted fw-bold uppercase">{track.modules.length} Modules</p>
                   </div>
                 </div>
-              )
-            })}
-          </div>
+
+                <div className="mt-4">
+                   <div className="flex justify-between items-center mb-1.5">
+                      <span className="text-[10px] text-muted fw-bold">TRACK PROGRESS</span>
+                      <span className="text-xs fw-black" style={{ color: track.color }}>{progress}%</span>
+                   </div>
+                   <div className="progress-bar h-1.5 bg-white/5">
+                      <motion.div 
+                        className="progress-fill" 
+                        style={{ background: track.color }}
+                        initial={{ width: 0 }}
+                        animate={{ width: `${progress}%` }}
+                      />
+                   </div>
+                </div>
+              </motion.div>
+            )
+          })}
         </div>
 
-        </div>
+        {/* Selected Track Detail */}
+        <AnimatePresence mode="wait">
+          <motion.div 
+            key={activeTrackId}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex items-center gap-2 mb-6">
+              <div className="h-px flex-1 bg-border opacity-50" />
+              <h2 className="text-[10px] md:text-xs fw-black text-muted uppercase tracking-[0.2em] px-4">
+                Curriculum: <span style={{ color: activeTrack.color }}>{activeTrack.label}</span>
+              </h2>
+              <div className="h-px flex-1 bg-border opacity-50" />
+            </div>
+
+            <div className="module-grid">
+              {currentModules.map((mod, i) => {
+                const isDone = completedModules.includes(mod.id)
+                const isLocked = i > 0 && !completedModules.includes(currentModules[i - 1].id)
+                
+                return (
+                  <div
+                    key={mod.id}
+                    onClick={() => !isLocked && navigate(`/${activeTrackId}/module/${mod.id}`)}
+                    className={`module-card group ${isDone ? 'done' : ''} ${isLocked ? 'locked' : ''}`}
+                    style={{ 
+                      borderColor: isDone ? `${activeTrack.color}60` : undefined,
+                      boxShadow: !isLocked && !isDone ? `hover: ${activeTrack.color}15 0 10px` : undefined
+                    }}
+                  >
+                    {isDone && (
+                      <div className="absolute top-4 right-4" style={{ color: activeTrack.color }}>
+                        <CheckCircle size={20} />
+                      </div>
+                    )}
+                    {isLocked && (
+                      <div className="absolute top-4 right-4 text-muted">
+                        <Lock size={16} />
+                      </div>
+                    )}
+                    
+                    <div className="flex items-center gap-3 mb-2">
+                       <div className="w-10 h-10 rounded-xl bg-surface2 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                        {mod.emoji}
+                       </div>
+                       <div>
+                         <span className="text-[10px] text-muted mono block uppercase">Module {mod.order}</span>
+                         <h3 className="text-white fw-bold text-sm leading-tight">{mod.title}</h3>
+                       </div>
+                    </div>
+                    
+                    <p className="text-muted text-[11px] leading-relaxed mb-4 line-clamp-2">
+                      {mod.subtitle}
+                    </p>
+
+                    <div className="mt-auto flex justify-between items-center py-3 border-t border-white/5">
+                      <div className="flex items-center gap-1.5 text-[10px] text-muted">
+                        <span>⏱ {mod.duration}</span>
+                        <span>•</span>
+                        <span className="fw-bold" style={{ color: activeTrack.color }}>+{mod.xpReward} XP</span>
+                      </div>
+                      <button 
+                        className="p-1.5 rounded-lg bg-surface2 text-muted group-hover:text-white transition-colors"
+                        disabled={isLocked}
+                      >
+                         <ArrowRight size={14} />
+                      </button>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </div>
   )
 }

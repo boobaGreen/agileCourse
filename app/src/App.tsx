@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAppStore } from './store/useAppStore'
-import LandingPage from './pages/LandingPage'
-import CourseDashboard from './pages/CourseDashboard'
-import ModulePage from './pages/ModulePage'
-import ProfilePage from './pages/ProfilePage'
-import LeaderboardPage from './pages/LeaderboardPage'
-import CertRoadmapPage from './pages/CertRoadmapPage'
-import AppShell from './components/AppShell'
+import LandingPage from './pages/LandingPage.tsx'
+import CourseDashboard from './pages/CourseDashboard.tsx'
+import ModulePage from './pages/ModulePage.tsx'
+import ProfilePage from './pages/ProfilePage.tsx'
+import LeaderboardPage from './pages/LeaderboardPage.tsx'
+import CertRoadmapPage from './pages/CertRoadmapPage.tsx'
+import AppShell from './components/AppShell.tsx'
 
 function App() {
   const userName = useAppStore((s) => s.userName)

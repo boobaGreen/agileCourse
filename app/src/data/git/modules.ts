@@ -57,6 +57,11 @@ export const GIT_MODULES: Module[] = [
       },
       {
         type: 'concept',
+        title: '💾 The "Commit": A Snapshot in Time',
+        content: 'In Git, you don\'t just save files. You create a **Commit**. A commit is a snapshot of your entire project at a specific moment. It doesn\'t just store the changes; it remembers the author, the date, and a message explaining *why* the change happened.'
+      },
+      {
+        type: 'concept',
         title: 'Centralized vs Distributed',
         content: 'Old systems (like SVN) had one central server — if it went down, work stopped. **Git is distributed**: every developer has a full copy of the entire history. No single point of failure.'
       },
@@ -233,8 +238,8 @@ export const GIT_MODULES: Module[] = [
       },
       {
         type: 'concept',
-        title: '📸 Commit',
-        content: 'A commit is a **snapshot** of your project at a specific moment. Not just the files — but who changed them, when, and why (the message).\n\nEach commit has a unique ID (a SHA hash, like `a1b2c3d`) that lets you reference it precisely.'
+        title: '📸 Commit & SHA Hash',
+        content: 'A commit is a **snapshot** of your project at a specific moment. \n\nEach commit has a unique ID called a **SHA Hash** (e.g., `a1b2c3d`). This is a 40-character fingerprint that ensures the integrity of your data. If even one character in one file changes, the hash changes completely.'
       },
       {
         type: 'code',
@@ -674,6 +679,11 @@ git pull origin main        # Download + merge
 git push origin <branch>    # Push branch
 git push -u origin <branch> # Push + set upstream`,
         language: 'bash'
+      },
+      {
+        type: 'concept',
+        title: '📍 Understanding HEAD',
+        content: 'In Git, **HEAD** is a pointer to the currently checked-out commit or branch. Think of it as a "You Are Here" icon on a map. When you commit, HEAD moves forward. When you switch branches, HEAD moves to the tip of that branch.'
       },
       {
         type: 'code',

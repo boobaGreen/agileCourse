@@ -100,8 +100,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
       {/* Main content area */}
       <div
-        className="flex-1 flex flex-col transition-all duration-200"
-        style={{ marginLeft: collapsed ? 72 : 240, width: '100%' }}
+        className={`flex-1 flex flex-col transition-all duration-200 main-content-layout ${collapsed ? 'collapsed' : 'expanded'}`}
+        style={{ width: '100%' }}
       >
         {/* Top bar (mobile) */}
         <div className="md:hidden flex items-center justify-between px-4 py-3 sticky top-0 z-20"
