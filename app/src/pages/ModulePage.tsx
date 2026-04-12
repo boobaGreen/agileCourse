@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '../store/useAppStore'
@@ -42,6 +42,39 @@ export default function ModulePage() {
   const [xpEarned, setXpEarned] = useState(0)
   const [xpImport, setXpImport] = useState('')
 
+  // Reset local state when navigating between modules
+  useEffect(() => {
+    setView('theory')
+    setQuizAnswers({})
+    setSubmitted(false)
+    setXpEarned(0)
+    setXpImport('')
+  }, [id])
+
+  // Dynamically shuffle options so they are never in the same order
+  type ShuffledQuiz = QuizQuestion & { shuffledOptions: string[], shuffledCorrect: number }
+  const [quizData, setQuizData] = useState<ShuffledQuiz[]>([])
+
+  useEffect(() => {
+    if (mod?.quiz) {
+       const randomized = mod.quiz.map(q => {
+          const pairs = q.options.map((opt, i) => ({ opt, isCorrect: i === q.correct }));
+          for (let i = pairs.length - 1; i > 0; i--) {
+             const j = Math.floor(Math.random() * (i + 1));
+             [pairs[i], pairs[j]] = [pairs[j], pairs[i]];
+          }
+          return {
+             ...q,
+             shuffledOptions: pairs.map(p => p.opt),
+             shuffledCorrect: pairs.findIndex(p => p.isCorrect)
+          };
+       });
+       setQuizData(randomized);
+    } else {
+       setQuizData([]);
+    }
+  }, [mod?.id]);
+
   const handleCompleteTheory = () => {
     if (!completedModules.includes(mod.id)) {
       completeModule(mod.id)
@@ -69,9 +102,9 @@ export default function ModulePage() {
   }
 
   const handleSubmitQuiz = () => {
-    if (!mod.quiz) return
-    const correctCount = mod.quiz.filter((q) => quizAnswers[q.id] === q.correct).length
-    const scorePct = Math.round((correctCount / mod.quiz.length) * 100)
+    if (quizData.length === 0) return
+    const correctCount = quizData.filter((q) => quizAnswers[q.id] === q.shuffledCorrect).length
+    const scorePct = Math.round((correctCount / quizData.length) * 100)
     const bonus = scorePct === 100 ? 100 : 0
     const earned = correctCount * 10 + bonus
     
@@ -82,10 +115,10 @@ export default function ModulePage() {
     setView('result')
   }
 
-  const correctResults = mod.quiz ? mod.quiz.filter((q) => quizAnswers[q.id] === q.correct).length : 0
-  const totalQuestions = mod.quiz ? mod.quiz.length : 0
+  const correctResults = quizData.length > 0 ? quizData.filter((q) => quizAnswers[q.id] === q.shuffledCorrect).length : 0
+  const totalQuestions = quizData.length
   const scorePct = totalQuestions > 0 ? Math.round((correctResults / totalQuestions) * 100) : 0
-  const allAnswered = mod.quiz ? mod.quiz.every((q) => quizAnswers[q.id] !== undefined) : false
+  const allAnswered = quizData.length > 0 ? quizData.every((q) => quizAnswers[q.id] !== undefined) : false
 
   return (
     <div className="animate-fade-up w-full">
@@ -191,27 +224,27 @@ export default function ModulePage() {
           </motion.div>
         )}
 
-        {view === 'quiz' && mod.quiz && (
+        {view === 'quiz' && quizData.length > 0 && (
           <motion.div key="quiz" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="w-full">
             <div className="card p-5 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h2 className="text-xl fw-black text-white">Knowledge Check</h2>
-                <p className="text-muted text-sm">{mod.quiz.length} questions to verify your understanding</p>
+                <p className="text-muted text-sm">{quizData.length} questions to verify your understanding</p>
               </div>
               <div className="bg-surface2 px-4 py-2 rounded-xl text-xs fw-bold text-sub">
-                {Object.keys(quizAnswers).length} / {mod.quiz.length} Answered
+                {Object.keys(quizAnswers).length} / {quizData.length} Answered
               </div>
             </div>
 
             <div className="flex flex-col gap-6">
-              {mod.quiz.map((q, idx) => (
+              {quizData.map((q, idx) => (
                 <div key={q.id} className="card">
                   <p className="text-white fw-bold mb-5 flex gap-3">
                     <span className="text-muted mono">Q{idx+1}</span>
                     {q.question}
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {q.options.map((opt, oi) => (
+                    {q.shuffledOptions.map((opt, oi) => (
                       <button
                         key={oi}
                         onClick={() => handleAnswer(q.id, oi)}
@@ -242,7 +275,7 @@ export default function ModulePage() {
           </motion.div>
         )}
 
-        {view === 'result' && mod.quiz && (
+        {view === 'result' && quizData.length > 0 && (
           <motion.div key="result" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="w-full max-w-3xl mx-auto">
             <div className="score-banner mb-8">
               <div className="text-6xl mb-4">
@@ -259,17 +292,17 @@ export default function ModulePage() {
 
             {/* Answer Review Section */}
             <div className="flex flex-col gap-4 mb-10">
-              {mod.quiz.map((q, idx) => (
+              {quizData.map((q, idx) => (
                 <div key={q.id} className="card p-5" style={{ 
-                    borderColor: quizAnswers[q.id] === q.correct ? 'rgba(34,197,94,0.3)' : 'rgba(239,68,68,0.3)'
+                    borderColor: quizAnswers[q.id] === q.shuffledCorrect ? 'rgba(34,197,94,0.3)' : 'rgba(239,68,68,0.3)'
                 }}>
                   <p className="text-white fw-bold mb-4 flex gap-3">
                     <span className="text-muted mono">Q{idx+1}</span>
                     {q.question}
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4">
-                    {q.options.map((opt, oi) => {
-                       const isCorrect = oi === q.correct;
+                    {q.shuffledOptions.map((opt, oi) => {
+                       const isCorrect = oi === q.shuffledCorrect;
                        const isSelected = oi === quizAnswers[q.id];
                        return (
                          <div
