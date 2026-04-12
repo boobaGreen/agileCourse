@@ -6,8 +6,9 @@ import { Zap, CheckCircle, Award, RotateCcw, GitBranch, Package, Ship, BarChart3
 import { GIT_MODULES } from '../data/git/modules'
 import { DOCKER_MODULES } from '../data/docker/modules'
 import { K8S_MODULES } from '../data/k8s/modules'
+import type { Module } from '../data/git/modules'
 import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, 
+  BarChart, Bar, XAxis, YAxis, 
   Tooltip, ResponsiveContainer, Cell 
 } from 'recharts'
 
@@ -99,7 +100,7 @@ export default function ProfilePage() {
         ].map((s, i) => (
           <div key={i} className="stat-card p-6 border border-border/50 bg-surface/50 rounded-2xl">
             <div className="flex items-center gap-2 mb-3">
-              {/* @ts-ignore */}
+              {/* @ts-expect-error - color prop is dynamic hex string */}
               <Zap size={16} style={{ color: s.color }} />
               <span className="text-muted text-xs md:text-sm fw-bold uppercase">{s.label}</span>
             </div>
@@ -163,11 +164,11 @@ export default function ProfilePage() {
           <Award size={20} className="text-k8s" /> Achievement Gallery
         </h3>
         <div className="page-grid-4">
-          {Object.values(BADGES).map((b) => {
+          {Object.values(BADGES).map((b, i) => {
             const hasIt = badges.find(eb => eb.id === b.id)
             return (
               <div key={b.id} className={`card p-5 text-center transition-all ${!hasIt ? 'opacity-20 grayscale' : 'border-purple-500/30'}`}>
-                <div className="text-5xl mb-4 animate-float" style={{ animationDelay: `${Math.random()}s` }}>{b.emoji}</div>
+                <div className="text-5xl mb-4 animate-float" style={{ animationDelay: `${i * 0.15}s` }}>{b.emoji}</div>
                 <h4 className="text-white fw-black text-sm md:text-base mb-1">{b.title}</h4>
                 <p className="text-muted text-[10px] md:text-xs uppercase fw-bold">{b.description}</p>
                 {hasIt?.earnedAt && (
@@ -238,7 +239,7 @@ export default function ProfilePage() {
   )
 }
 
-function ModuleTinyCard({ m, isDone }: { m: any, isDone: boolean }) {
+function ModuleTinyCard({ m, isDone }: { m: Module, isDone: boolean }) {
   return (
     <div className="p-3 md:p-4 rounded-xl border flex items-center gap-3 transition-colors"
       style={{ 

@@ -77,7 +77,7 @@ export default function CertRoadmapPage() {
   const filteredPaths = useMemo(() => {
     return certPaths.map(path => ({
       ...path,
-      certs: path.certs.filter(cert => {
+      certs: path.certs.filter(() => {
         const isReady = earnedBadgeIds.includes(path.badge)
         if (filter === 'ready') return isReady
         if (filter === 'progress') return !isReady
@@ -104,7 +104,7 @@ export default function CertRoadmapPage() {
           ].map((btn) => (
             <button
               key={btn.id}
-              onClick={() => setFilter(btn.id as any)}
+              onClick={() => setFilter(btn.id as 'all' | 'ready' | 'progress')}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs fw-bold transition-all ${
                 filter === btn.id 
                   ? 'bg-primary text-white shadow-lg' 
@@ -124,7 +124,7 @@ export default function CertRoadmapPage() {
 
         <div className="flex flex-col gap-12 relative z-10">
           <AnimatePresence mode="popLayout">
-            {filteredPaths.map((path, pathIdx) => (
+            {filteredPaths.map((path) => (
               <div key={path.category} className="relative">
                 {/* Category Header (Center) */}
                 <div className="flex justify-center mb-10">
