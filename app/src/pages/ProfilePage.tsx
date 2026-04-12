@@ -73,7 +73,7 @@ export default function ProfilePage() {
         </h3>
         <div className="w-full h-[200px]">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={trackXPData} layout="vertical" margin={{ left: -20, right: 20 }}>
+            <BarChart data={trackXPData} layout="vertical" margin={{ left: 80, right: 20 }}>
               <XAxis type="number" hide />
               <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: 'white', fontWeight: 'bold', fontSize: 12 }} />
               <Tooltip 
