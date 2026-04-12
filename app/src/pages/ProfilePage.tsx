@@ -90,7 +90,7 @@ export default function ProfilePage() {
         {/* Docker Tracker */}
         <div className="card p-5">
            <h3 className="text-white fw-bold mb-4 flex items-center gap-2 text-sm">
-            <Container size={16} className="text-docker" /> Docker Curriculum
+            <Package size={16} className="text-docker" /> Docker Curriculum
           </h3>
           <div className="progress-bar mb-4">
             <motion.div className="progress-fill" style={{ background: 'var(--color-docker)' }} initial={{ width: 0 }} animate={{ width: `${dockerPct}%` }} />
