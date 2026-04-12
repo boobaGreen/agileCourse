@@ -371,19 +371,24 @@ spec:
     id: 'k8s-8',
     track: 'k8s',
     order: 8,
-    title: 'Interacting with K8s',
-    subtitle: 'kubectl: The Swiss Army Knife of K8s',
+    title: 'Hands-on Labs: kubectl & Playgrounds',
+    subtitle: 'Free browser-based Kubernetes clusters to practice on',
     emoji: '🛠️',
-    duration: '12 min',
-    xpReward: 50,
+    duration: '45+ min',
+    xpReward: 80,
+    externalLink: {
+      label: 'Open Killercoda K8s Scenarios',
+      url: 'https://killercoda.com/playgrounds/scenario/kubernetes',
+      xpPrompt: 'How many scenarios/exercises did you complete? Enter the number to earn XP!'
+    },
     sections: [
       {
         type: 'intro',
-        content: 'How do you actually talk to the cluster? You use **kubectl** (pronounced "kube-control" or "kube-cuttle"). It\'s the command-line tool for communicating with the K8s API server.'
+        content: 'How do you actually talk to the cluster? You use **kubectl** (pronounced "kube-control" or "kube-cuttle"). But you don\'t need to install anything — we have free playgrounds!'
       },
       {
         type: 'code',
-        title: 'Essential Commands',
+        title: '⌨️ Essential kubectl Commands',
         content: 'The basics of inspection and debugging:',
         code: `# See all pods
 kubectl get pods
@@ -405,9 +410,19 @@ kubectl delete -f deployment.yaml`,
         language: 'bash'
       },
       {
+        type: 'concept',
+        title: '🌐 Tool 1: Killercoda (Guided Scenarios)',
+        content: '**Killercoda** is the gold standard for Kubernetes practice. It gives you a **real, live cluster** in your browser — completely free.\n\n- Pre-built scenarios: "Kubernetes Basics", "Deployments", "Services", "CKAD Prep"\n- Each scenario has step-by-step instructions with verification\n- Real `kubectl` access — everything you type actually runs on a real cluster\n- No time limit on individual scenarios\n\n🔗 **URL**: https://killercoda.com/playgrounds/scenario/kubernetes\n\n💡 **Recommended starting scenarios:**\n1. "Kubernetes Playground" (free-form practice)\n2. "Create a Pod" (Beginner)\n3. "Deploy and Scale" (Intermediate)\n4. "Network Policies" (Advanced)'
+      },
+      {
+        type: 'concept',
+        title: '🎮 Tool 2: Play with Kubernetes (PWK)',
+        content: '**Play with Kubernetes** is the K8s equivalent of Play with Docker. A free, browser-based environment.\n\n- Get a multi-node cluster in seconds\n- Sessions last **4 hours**\n- Perfect for experimenting with YAML files from modules 3-7\n- Can simulate multi-node scenarios (failover, scheduling)\n\n🔗 **URL**: https://labs.play-with-k8s.com'
+      },
+      {
         type: 'tip',
-        title: '🎮 Hands-on Platform: Killercoda',
-        content: 'Ready to try it for real? We recommend **Killercoda** for interactive scenarios. It provides a real Kubernetes cluster in the browser for free. Start with the "Kubernetes Basics" scenarios!'
+        title: '🎯 Which playground should I use?',
+        content: '**First time with kubectl?** → Killercoda (guided, step-by-step)\n\n**Want free-form practice?** → Play with Kubernetes (blank cluster)\n\n**Preparing for CKA/CKAD?** → Killercoda has dedicated exam-prep scenarios\n\n🏆 Complete at least 3 Killercoda scenarios before moving to the Final Challenge!'
       }
     ],
     quiz: [

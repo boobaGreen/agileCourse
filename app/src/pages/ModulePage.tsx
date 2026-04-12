@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '../store/useAppStore'
@@ -7,7 +7,7 @@ import { DOCKER_MODULES } from '../data/docker/modules'
 import { K8S_MODULES } from '../data/k8s/modules'
 import type { Section, QuizQuestion } from '../data/git/modules'
 import {
-  ArrowLeft, ArrowRight, CheckCircle, Zap,
+  ArrowLeft, ArrowRight, Zap,
   ExternalLink, BookOpen, Code2, Lightbulb, Sparkles
 } from 'lucide-react'
 
@@ -19,7 +19,30 @@ export default function ModulePage() {
   // Find module in all tracks
   const allModules = [...GIT_MODULES, ...DOCKER_MODULES, ...K8S_MODULES]
   const mod = allModules.find((m) => m.id === id)
+
+  const [view, setView] = useState<'theory' | 'quiz' | 'result'>('theory')
+  const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({})
+  const [submitted, setSubmitted] = useState(false)
+  const [xpEarned, setXpEarned] = useState(0)
+  const [xpImport, setXpImport] = useState('')
+
+  const [prevId, setPrevId] = useState(id)
   
+  // Shuffled quiz data state
+  type ShuffledQuiz = QuizQuestion & { shuffledOptions: string[], shuffledCorrect: number }
+  const [quizData, setQuizData] = useState<ShuffledQuiz[]>([])
+
+  // Synchronize state when the module ID changes (render phase reset)
+  if (id !== prevId) {
+    setPrevId(id)
+    setView('theory')
+    setQuizAnswers({})
+    setSubmitted(false)
+    setXpEarned(0)
+    setXpImport('')
+    setQuizData([])
+  }
+
   if (!mod) return (
     <div className="text-white p-8 card">
       <h2 className="text-2xl fw-black mb-4">Module not found</h2>
@@ -33,30 +56,13 @@ export default function ModulePage() {
 
   const trackModules = mod.track === 'git' ? GIT_MODULES : mod.track === 'docker' ? DOCKER_MODULES : K8S_MODULES
   const nextId = trackModules[trackModules.findIndex((m) => m.id === id) + 1]?.id
-  
   const trackColor = mod.track === 'git' ? 'var(--color-git)' : mod.track === 'docker' ? 'var(--color-docker)' : 'var(--color-k8s)'
 
-  const [view, setView] = useState<'theory' | 'quiz' | 'result'>('theory')
-  const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({})
-  const [submitted, setSubmitted] = useState(false)
-  const [xpEarned, setXpEarned] = useState(0)
-  const [xpImport, setXpImport] = useState('')
+  const handleCompleteTheory = () => {
+    if (!mod) return
 
-  // Reset local state when navigating between modules
-  useEffect(() => {
-    setView('theory')
-    setQuizAnswers({})
-    setSubmitted(false)
-    setXpEarned(0)
-    setXpImport('')
-  }, [id])
-
-  // Dynamically shuffle options so they are never in the same order
-  type ShuffledQuiz = QuizQuestion & { shuffledOptions: string[], shuffledCorrect: number }
-  const [quizData, setQuizData] = useState<ShuffledQuiz[]>([])
-
-  useEffect(() => {
-    if (mod?.quiz) {
+    // Shuffle options once at the start of the quiz session
+    if (mod.quiz) {
        const randomized = mod.quiz.map(q => {
           const pairs = q.options.map((opt, i) => ({ opt, isCorrect: i === q.correct }));
           for (let i = pairs.length - 1; i > 0; i--) {
@@ -70,12 +76,8 @@ export default function ModulePage() {
           };
        });
        setQuizData(randomized);
-    } else {
-       setQuizData([]);
     }
-  }, [mod?.id]);
 
-  const handleCompleteTheory = () => {
     if (!completedModules.includes(mod.id)) {
       completeModule(mod.id)
       
@@ -344,7 +346,7 @@ export default function ModulePage() {
 }
 
 function SectionCard({ section }: { section: Section }) {
-  const icons: Record<string, any> = {
+  const icons: Record<string, React.ElementType> = {
     intro: BookOpen,
     concept: Sparkles,
     code: Code2,
@@ -365,9 +367,15 @@ function SectionCard({ section }: { section: Section }) {
       <div className="text-sub text-sm leading-relaxed">
         {section.content.split('\n').map((line, i) => (
           <p key={i} className="mb-2 last:mb-0">
-             {line.split(/\*\*(.*?)\*\*/g).map((part, pi) => 
-               pi % 2 === 1 ? <strong key={pi} className="text-white">{part}</strong> : part
-             )}
+             {line.split(/\*\*(.*?)\*\*/g).map((part, pi) => {
+               if (pi % 2 === 1) return <strong key={pi} className="text-white">{part}</strong>
+               // Split plain text segments by URLs and render them as links
+               return part.split(/(https?:\/\/[^\s),]+)/g).map((seg, si) =>
+                 /^https?:\/\//.test(seg)
+                   ? <a key={`${pi}-${si}`} href={seg} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline break-all">{seg}</a>
+                   : <React.Fragment key={`${pi}-${si}`}>{seg}</React.Fragment>
+               )
+             })}
           </p>
         ))}
       </div>

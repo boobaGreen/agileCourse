@@ -468,9 +468,50 @@ docker-compose down`,
     ]
   },
   {
-    id: 'docker-9',
+    id: 'docker-8b',
     track: 'docker',
     order: 9,
+    title: 'Hands-on Labs: Docker Playground',
+    subtitle: 'Free browser-based environments to practice Docker',
+    emoji: '🎮',
+    duration: '45+ min',
+    xpReward: 80,
+    externalLink: {
+      label: 'Open Play with Docker',
+      url: 'https://labs.play-with-docker.com',
+      xpPrompt: 'How many labs/exercises did you complete? Enter the number to earn XP!'
+    },
+    sections: [
+      {
+        type: 'intro',
+        content: 'Reading about Docker is one thing — running real containers is another. In this module we introduce **three completely free** resources to get your hands dirty without installing anything heavy.'
+      },
+      {
+        type: 'concept',
+        title: '🌐 Tool 1: Play with Docker (PWD)',
+        content: '**Play with Docker** gives you a free, temporary Docker environment **right in your browser**. No installation, no setup.\n\n- Get a fresh Linux VM with Docker pre-installed\n- Create multiple instances (nodes) to simulate multi-node setups\n- Each session lasts **4 hours** — more than enough to experiment\n- Perfect for trying all the commands from modules 1-8\n\n🔗 **URL**: https://labs.play-with-docker.com'
+      },
+      {
+        type: 'concept',
+        title: '📚 Tool 2: Play with Docker Classroom',
+        content: '**Docker Classroom** is the guided, structured version of PWD. It provides complete **step-by-step labs** with explanations.\n\n- Labs organized by difficulty: Beginner → Intermediate → Advanced\n- Topics include: first container, images, volumes, networking, Compose, Swarm\n- Each lab has built-in quizzes and verification steps\n- 100% free, browser-based\n\n🔗 **URL**: https://training.play-with-docker.com\n\n💡 **Recommended starting labs:**\n1. "Your First Linux Containers" (Beginner)\n2. "Doing More With Docker Images" (Beginner)\n3. "Docker Networking Hands-on Lab" (Intermediate)\n4. "Docker Compose with Swarm Secrets" (Advanced)'
+      },
+      {
+        type: 'concept',
+        title: '💻 Tool 3: Docker Desktop (Local)',
+        content: '**Docker Desktop** (also called **Docker Personal**) is the official Docker application for your local machine.\n\n✅ **Free for**: personal use, education, open source, small businesses (< 250 employees & < $10M revenue)\n⚠️ **Paid plans required for**: large enterprise use\n\n- Download: https://www.docker.com/products/docker-desktop/\n- Available for Windows, Mac (Intel & Apple Silicon), Linux\n- Includes Docker Engine, Docker CLI, Docker Compose, Kubernetes (single-node)\n- GUI dashboard for managing containers, images, and volumes'
+      },
+      {
+        type: 'tip',
+        title: '🎯 Which should I start with?',
+        content: '**Just exploring?** → Play with Docker (zero install, instant)\n\n**Want structured learning?** → Play with Docker Classroom (guided labs)\n\n**Ready for daily use?** → Docker Desktop on your machine\n\n🏆 We recommend completing at least 3 Classroom labs before moving to the Final Quiz!'
+      }
+    ]
+  },
+  {
+    id: 'docker-9',
+    track: 'docker',
+    order: 10,
     title: 'Final Docker Quiz',
     subtitle: 'The Whale Master Certification',
     emoji: '🏅',

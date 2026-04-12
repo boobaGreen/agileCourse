@@ -735,35 +735,45 @@ git bisect start            # Binary search for a buggy commit`,
     id: 'git-8',
     track: 'git',
     order: 8,
-    title: 'External Spotlight: Learn Git Branching',
-    subtitle: 'The best visual Git game on the internet',
+    title: 'Hands-on Labs: Git Games',
+    subtitle: 'Two free interactive tools to master Git by playing',
     emoji: '🎮',
-    duration: '30+ min',
-    xpReward: 50,
+    duration: '45+ min',
+    xpReward: 80,
     externalLink: {
       label: 'Open Learn Git Branching',
       url: 'https://learngitbranching.js.org',
-      xpPrompt: 'How many levels did you complete? Enter the number to earn XP!'
+      xpPrompt: 'How many total levels did you complete across both tools? Enter the number to earn XP!'
     },
     sections: [
       {
         type: 'intro',
-        content: '**Learn Git Branching** is widely considered the best interactive Git learning tool in the world. It visualizes branches, commits, merges, and rebases in real time as you type commands.'
+        content: 'Theory is important, but Git truly clicks when you **play with it**. In this module we spotlight two completely free, interactive tools that will cement your Git skills through hands-on practice.'
       },
       {
         type: 'concept',
-        title: '🕹️ What you\'ll do',
-        content: '- Complete challenges level by level\n- Type real Git commands and watch the branch graph change live\n- Topics: commits, branches, merging, rebasing, cherry-pick, interactive rebase, detached HEAD, remote branches, pull/push'
+        title: '🌐 Tool 1: Learn Git Branching (Browser)',
+        content: '**Learn Git Branching** is widely considered the best interactive Git learning tool in the world. It runs entirely in your browser — no installation needed.\n\n- Visualizes branches, commits, merges, and rebases **in real time** as you type commands\n- Progressive level system from basics to advanced (cherry-pick, interactive rebase, detached HEAD, remote branches)\n- Available in multiple languages\n\n🔗 **URL**: https://learngitbranching.js.org'
       },
       {
         type: 'concept',
-        title: '📖 Recommended levels for beginners',
+        title: '📖 Learn Git Branching: Recommended Path',
         content: '**Main track (Basics):**\n1. Introduction Sequence (4 levels)\n2. Ramping Up (4 levels)\n3. Moving Work Around (4 levels)\n\n**Then try:**\n4. Remote (8 levels) — if you\'ve completed module 5 here'
+      },
+      {
+        type: 'concept',
+        title: '🎮 Tool 2: Oh My Git! (Desktop Game)',
+        content: '**Oh My Git!** is a free, open-source **desktop game** that teaches Git through a playful card-based interface.\n\n- **Download** (Windows/Mac/Linux): https://ohmygit.org\n- Uses a unique **playing card metaphor**: Git commands are represented as cards you play\n- Real-time visualization of the internal Git state (commit graph, HEAD, staging area)\n- Built with the Godot game engine — feels like a real video game!\n- Includes a built-in terminal for those who want to type commands directly\n\n💡 **Best for**: visual learners who prefer a game-like experience over a command-line puzzle.'
+      },
+      {
+        type: 'concept',
+        title: '🆚 Which tool should I use?',
+        content: '**Learn Git Branching** → Best if you prefer typing commands and want to master the CLI. Browser-based, no install.\n\n**Oh My Git!** → Best if you prefer a visual, game-like experience with cards and animations. Requires download.\n\n🎯 **Our recommendation**: Try both! Learn Git Branching first for command mastery, then Oh My Git for a different perspective on the same concepts.'
       },
       {
         type: 'tip',
         title: '🏆 Earn XP',
-        content: 'Complete as many levels as you can, then come back here and report your highest level to earn internal XP. We track it on the leaderboard!'
+        content: 'Complete as many levels as you can in either (or both!) tools, then come back here and report your highest total level count to earn internal XP. We track it on the leaderboard!'
       }
     ]
   },
