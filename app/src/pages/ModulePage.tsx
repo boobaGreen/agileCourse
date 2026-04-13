@@ -10,7 +10,7 @@ import {
   ArrowLeft, ArrowRight, Zap,
   ExternalLink, BookOpen, Code2, Lightbulb, Sparkles,
   LayoutGrid, Workflow, Play, Image, Gamepad2, CheckCircle, Trophy,
-  RefreshCcw, GitMerge, Repeat, AlertTriangle, Users,
+  AlertTriangle, Users,
   Laptop, Cloud, Search, ArrowUp
 } from 'lucide-react'
 import confetti from 'canvas-confetti'
@@ -579,7 +579,6 @@ function SectionCard({ section }: { section: Section }) {
 
 function EducationAnimation({ type }: { type: string }) {
   const [input, setInput] = useState('Git')
-  const [scenario, setScenario] = useState<'original' | 'merge' | 'rebase'>('original')
   const [step, setStep] = useState(0)
 
   const hash = useMemo(() => {
