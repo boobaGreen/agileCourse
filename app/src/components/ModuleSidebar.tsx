@@ -43,7 +43,7 @@ export default function ModuleSidebar({
                 navigate(`/${m.track}/module/${m.id}`)
                 if (onItemClick) onItemClick()
               }}
-              className={`flex items-center gap-3 p-3 rounded-2xl text-left transition-all group relative overflow-hidden ${
+              className={`flex items-center gap-3 p-3 rounded-2xl text-left transition-all group relative overflow-clip ${
                 isActive 
                   ? 'bg-white/10 text-white shadow-lg' 
                   : 'text-sub hover:bg-white/5 hover:text-white'
@@ -62,11 +62,11 @@ export default function ModuleSidebar({
               )}
               
               <div className="relative z-10 flex items-center justify-between w-full">
-                <div className="flex items-center gap-3 overflow-hidden">
+                <div className="flex items-center gap-3 min-w-0">
                   <span className="text-xl shrink-0">{m.emoji}</span>
                   <div className="flex flex-col min-w-0 pr-2">
                     <span className="text-[10px] text-muted mono block uppercase mb-1">Module {m.order}</span>
-                    <h4 className="text-[13px] fw-black text-white leading-tight line-clamp-2">{m.title}</h4>
+                    <h4 className="text-[13px] fw-black text-white leading-snug line-clamp-2">{m.title}</h4>
                   </div>
                 </div>
                 

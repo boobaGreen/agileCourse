@@ -219,7 +219,7 @@ body {
 .hide-on-desktop { display: flex !important; }
 
 @media (min-width: 768px) {
-  .main-content-layout.expanded { margin-left: 240px; }
+  .main-content-layout.expanded { margin-left: 272px; }
   .main-content-layout.collapsed { margin-left: 72px; }
   .hide-on-mobile { display: flex !important; }
   .hide-on-desktop { display: none !important; }

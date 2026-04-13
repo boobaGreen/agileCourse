@@ -22,7 +22,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate()
   const { userName, xp, badges } = useAppStore()
 
-  const sidebarWidth = collapsed ? 72 : 240
+  const sidebarWidth = collapsed ? 72 : 272
 
   return (
     <div className="flex min-h-screen gradient-bg">
