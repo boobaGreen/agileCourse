@@ -47,22 +47,44 @@ export default function ProfilePage() {
       </div>
 
       {/* Hero Stats Card */}
-      <div className="card p-6 md:p-10 flex flex-col sm:flex-row items-center gap-6 mb-10 overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 blur-[100px] rounded-full -mr-32 -mt-32 pointer-events-none" />
+      <div className="card p-8 md:p-12 md:py-16 flex flex-col items-center justify-center mb-10 overflow-hidden relative text-center border-t border-t-white/10">
+        {/* Glow effect centered behind avatar */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] max-w-md h-64 bg-primary/10 blur-[100px] rounded-full pointer-events-none" />
         
-        <div className="w-24 h-24 md:w-32 md:h-32 rounded-3xl flex items-center justify-center text-4xl md:text-6xl fw-black text-white shrink-0 shadow-xl z-10"
-          style={{ background: 'linear-gradient(135deg, var(--color-primary), #818cf8)' }}>
-          {userName.charAt(0).toUpperCase()}
+        {/* Avatar */}
+        <div className="relative mb-6 z-10 group">
+          <div className="absolute inset-0 bg-gradient-to-tr from-git via-docker to-k8s rounded-full blur-xl opacity-40 group-hover:opacity-70 transition-opacity duration-700" />
+          <div className="relative w-28 h-28 md:w-32 md:h-32 rounded-full bg-surface border-4 border-surface2 flex items-center justify-center text-5xl md:text-6xl flex-col shadow-[0_0_40px_rgba(0,0,0,0.5)]">
+             <span className="animate-float">🧑‍🚀</span>
+          </div>
         </div>
-        <div className="flex-1 text-center sm:text-left z-10">
-          <h2 className="text-3xl md:text-5xl fw-black text-white mb-2 tracking-tight">{userName}</h2>
-          <p className="text-sub text-sm md:text-base fw-bold uppercase tracking-wider">Agile Internal Learner • Level 1</p>
+        
+        {/* Name and Tag */}
+        <div className="z-10 mb-10 w-full">
+          <h2 className="text-4xl md:text-6xl fw-black text-white mb-4 tracking-tight">{userName}</h2>
+          <div className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 shadow-sm">
+             <span className="w-2 h-2 rounded-full bg-green animate-pulse" />
+             <span className="text-xs fw-bold text-sub uppercase tracking-wider">Agile Internal Learner</span>
+          </div>
         </div>
-        <div className="text-center sm:text-right z-10">
-          <p className="text-5xl md:text-6xl fw-black text-xp flex items-center justify-center sm:justify-end gap-2 mb-1">
-            <Zap size={36} className="text-xp" /> {xp}
-          </p>
-          <p className="text-xs md:text-sm text-muted fw-bold uppercase px-1">Total Experience Points</p>
+
+        {/* Stats Divider */}
+        <div className="flex items-center justify-center gap-10 md:gap-16 w-full max-w-lg border-t border-white/5 pt-8 z-10">
+          <div className="text-center w-32">
+            <p className="text-muted text-[10px] md:text-xs fw-black uppercase tracking-widest mb-2">Total Experience</p>
+            <p className="text-4xl md:text-5xl fw-black text-xp flex items-center justify-center gap-2">
+              <Zap size={28} className="text-xp" /> {xp}
+            </p>
+          </div>
+          
+          <div className="w-px h-16 bg-white/10 hidden sm:block" />
+          
+          <div className="text-center w-32">
+            <p className="text-muted text-[10px] md:text-xs fw-black uppercase tracking-widest mb-2">Current Level</p>
+            <p className="text-4xl md:text-5xl fw-black text-white">
+              {Math.floor(xp / 100) + 1}
+            </p>
+          </div>
         </div>
       </div>
 
