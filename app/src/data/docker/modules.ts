@@ -429,17 +429,29 @@ CMD ["python", "app.py"]`,
         }
       },
       {
+        type: 'game',
+        title: 'Challenge: Tag Strategy',
+        content: 'Classify each Docker image tag to the correct environment.',
+        gameType: 'drag-classify',
+        gameData: {
+          categories: [
+            { id: 'safe', label: 'Production Safe' },
+            { id: 'risky', label: 'Risky / Dev Only' }
+          ],
+          items: [
+            { id: 'exact', label: 'python:3.9.15', categoryId: 'safe' },
+            { id: 'minor', label: 'python:3.9', categoryId: 'safe' },
+            { id: 'major', label: 'python:3', categoryId: 'risky' },
+            { id: 'latest', label: 'python:latest', categoryId: 'risky' },
+            { id: 'alpine', label: 'node:18.17-alpine', categoryId: 'safe' }
+          ]
+        }
+      },
+      {
         type: 'code',
         title: 'Pushing your own image',
         content: 'Share your work with the world (or your team):',
-        code: `# 1. Tag your image with your username
-docker tag my-app claudio/my-app:v1.0
-
-# 2. Login
-docker login
-
-# 3. Push!
-docker push claudio/my-app:v1.0`,
+        code: `# 1. Tag your image with your username\ndocker tag my-app claudio/my-app:v1.0\n\n# 2. Login\ndocker login\n\n# 3. Push!\ndocker push claudio/my-app:v1.0`,
         language: 'bash'
       }
     ],
@@ -576,6 +588,20 @@ docker run -d \
           { label: 'Isolated Bridge\n("my-network")', icon: '🔌', color: '#ffb703' },
           { label: 'DB Container\n(MySQL)', icon: '🗄️', color: '#ff4b4b' }
         ]
+      },
+      {
+        type: 'table',
+        title: '🔌 Docker Network Types',
+        content: 'Docker provides several network drivers for different use cases:',
+        tableData: {
+          headers: ['Driver', 'Scope', 'Use Case', 'Container-to-Container'],
+          rows: [
+            ['**bridge**', 'Single host (default)', 'Isolated app networks on one machine', '✅ By container name'],
+            ['**host**', 'Single host', 'Maximum performance; container shares host network directly', '❌ No isolation'],
+            ['**overlay**', 'Multi-host (Swarm)', 'Connecting containers across multiple Docker hosts', '✅ Across nodes'],
+            ['**none**', 'Disabled', 'Complete network isolation (security, batch jobs)', '❌ No network']
+          ]
+        }
       }
     ],
     quiz: [
@@ -666,12 +692,21 @@ volumes:
         type: 'code',
         title: 'The Magic Commands',
         content: 'Start everything at once (in the background) and stop it:',
-        code: `# Start and run in background
-docker-compose up -d
-
-# Stop and remove containers and networks
-docker-compose down`,
+        code: `# Start and run in background\ndocker-compose up -d\n\n# Stop containers (keep them)\ndocker-compose stop\n\n# Stop and REMOVE containers + networks\ndocker-compose down\n\n# Force kill all containers immediately\ndocker-compose kill`,
         language: 'bash'
+      },
+      {
+        type: 'table',
+        title: '⚖️ Compose Lifecycle: stop vs down vs kill',
+        content: 'These three commands look similar but have very different consequences:',
+        tableData: {
+          headers: ['Command', 'What it does', 'Containers', 'Networks', 'Volumes'],
+          rows: [
+            ['**stop**', 'Gracefully stops containers (SIGTERM)', '🟡 Kept (stopped)', '✅ Kept', '✅ Kept'],
+            ['**down**', 'Stops AND removes containers + networks', '❌ Removed', '❌ Removed', '✅ Kept (unless `--volumes`)'],
+            ['**kill**', 'Forcefully kills containers (SIGKILL)', '🟡 Kept (killed)', '✅ Kept', '✅ Kept']
+          ]
+        }
       }
     ],
     quiz: [
@@ -769,10 +804,15 @@ docker-compose down`,
       },
       {
         id: 'docker-9-q4',
-        question: 'How do you stop all containers in a Compose file?',
-        options: ['docker-compose stop', 'docker-compose down', 'docker-compose kill', 'docker-compose quit'],
+        question: 'What is the difference between `docker-compose stop` and `docker-compose down`?',
+        options: [
+          'There is no difference',
+          '`stop` only stops containers; `down` stops AND removes containers and networks',
+          '`stop` removes volumes; `down` keeps them',
+          '`stop` is for single containers; `down` is for multiple'
+        ],
         correct: 1,
-        explanation: '`docker-compose down` stops and REMOVES containers, networks, and images (but not volumes by default).'
+        explanation: '`docker-compose stop` gracefully stops containers but keeps them. `docker-compose down` stops and REMOVES containers, networks (but keeps volumes unless you add `--volumes`).'
       },
       {
         id: 'docker-9-q5',
@@ -785,6 +825,121 @@ docker-compose down`,
         ],
         correct: 1,
         explanation: 'Multi-stage builds let you use one image to build your app and another smaller one to run it, resulting in a tiny production image.'
+      },
+      {
+        id: 'docker-9-q6',
+        question: 'What does the `-d` flag mean in `docker run -d`?',
+        options: [
+          'Debug mode',
+          'Detached mode — runs the container in the background',
+          'Delete mode — removes the container when it stops',
+          'Development mode'
+        ],
+        correct: 1,
+        explanation: '`-d` (detached) runs the container in the background so your terminal stays free. Without it, the container logs stream to your terminal.'
+      },
+      {
+        id: 'docker-9-q7',
+        question: 'What is the purpose of Docker volumes?',
+        options: [
+          'To increase container CPU performance',
+          'To persist data outside the container so it survives container deletion',
+          'To limit the amount of disk space a container can use',
+          'To share network connections between containers'
+        ],
+        correct: 1,
+        explanation: 'Volumes map a folder on the host machine into the container. When the container dies, data on the host volume survives.'
+      },
+      {
+        id: 'docker-9-q8',
+        question: 'Which image tag strategy is safest for production?',
+        options: [
+          'python:latest',
+          'python:3',
+          'python:3.9.15',
+          'python (no tag)'
+        ],
+        correct: 2,
+        explanation: 'Using a specific version tag (3.9.15) guarantees reproducibility. `latest` or major version tags can change unexpectedly and break production.'
+      },
+      {
+        id: 'docker-9-q9',
+        question: 'What is Docker Hub?',
+        options: [
+          'A Git repository for Docker source code',
+          'A central public registry for finding and sharing Docker images',
+          'A Docker Desktop plugin',
+          'A monitoring tool for containers'
+        ],
+        correct: 1,
+        explanation: 'Docker Hub is the official image registry — like an "App Store" for container images. It hosts official images for databases, runtimes, and OS distributions.'
+      },
+      {
+        id: 'docker-9-q10',
+        question: 'What happens to data inside a container when the container is deleted (without volumes)?',
+        options: [
+          'It is moved to Docker Hub',
+          'It is permanently lost',
+          'It is saved to the host automatically',
+          'It is moved to another container'
+        ],
+        correct: 1,
+        explanation: 'Without volumes, container data lives in the ephemeral writable layer. Delete the container and everything is gone forever.'
+      },
+      {
+        id: 'docker-9-q11',
+        question: 'What is the `WORKDIR` instruction in a Dockerfile?',
+        options: [
+          'Sets the working directory on the host machine',
+          'Sets the default directory inside the container for subsequent instructions',
+          'Creates a new Docker volume',
+          'Defines the startup directory for Docker Compose'
+        ],
+        correct: 1,
+        explanation: '`WORKDIR /app` sets `/app` as the current directory inside the container. All following `COPY`, `RUN`, and `CMD` instructions operate relative to this path.'
+      },
+      {
+        id: 'docker-9-q12',
+        question: 'In Docker networking, what does the `bridge` driver do?',
+        options: [
+          'Connects containers across multiple physical hosts',
+          'Creates an isolated network on a single host where containers can communicate by name',
+          'Shares the host\'s network stack directly with the container',
+          'Disables all networking for the container'
+        ],
+        correct: 1,
+        explanation: 'The bridge driver (the default) creates an isolated virtual network. Containers on the same bridge can talk to each other using container names as hostnames.'
+      },
+      {
+        id: 'docker-9-q13',
+        question: 'What does `docker exec -it <container> sh` do?',
+        options: [
+          'Stops the container',
+          'Opens an interactive shell session inside a running container',
+          'Builds a new image from the container',
+          'Shows the container logs'
+        ],
+        correct: 1,
+        explanation: '`exec` runs a command inside a running container. `-it` makes it interactive with a terminal. `sh` starts a shell — useful for debugging live containers.'
+      },
+      {
+        id: 'docker-9-q14',
+        question: 'What does `depends_on` do in a docker-compose.yml file?',
+        options: [
+          'Automatically installs dependencies inside the container',
+          'Controls the start order: ensures one service starts before another',
+          'Links the container to Docker Hub',
+          'Specifies which Dockerfile to use'
+        ],
+        correct: 1,
+        explanation: '`depends_on: [db]` ensures the db service starts before the web service. Note: it only controls start ORDER, not readiness — the db may not be accepting connections yet.'
+      },
+      {
+        id: 'docker-9-q15',
+        question: 'What is the name of the Docker mascot whale?',
+        options: ['Blue', 'Moby Dock', 'Willy', 'Container Whale'],
+        correct: 1,
+        explanation: 'The Docker whale is officially named Moby Dock, symbolizing the platform that carries the heavy load of your containerized applications.'
       }
     ]
   }

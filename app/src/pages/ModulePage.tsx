@@ -171,7 +171,7 @@ export default function ModulePage() {
         {view === 'theory' && (
           <motion.div key="theory" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="w-full">
             {/* Module Hero Card */}
-            <div className="card mb-6 mb-8" style={{ borderColor: `${trackColor}40` }}>
+            <div className="card mb-8" style={{ borderColor: `${trackColor}40` }}>
               <div className="flex items-start gap-4 flex-col sm:flex-row">
                 <span className="text-4xl sm:text-5xl animate-float">{mod.emoji}</span>
                 <div className="flex-1">
@@ -458,8 +458,11 @@ function SectionCard({ section }: { section: Section }) {
 
       {/* Table rendering */}
       {section.type === 'table' && section.tableData && (
-        <div className="mt-4 overflow-x-auto rounded-xl border border-white/10">
-          <table className="w-full text-xs sm:text-sm">
+        <div className="mt-4 relative group">
+          {/* Scroll hint gradient for mobile */}
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-black/80 to-transparent pointer-events-none sm:hidden rounded-r-xl z-10" />
+          <div className="overflow-x-auto rounded-xl border border-white/10 relative z-0">
+            <table className="w-full text-xs sm:text-sm">
             <thead>
               <tr className="bg-white/5">
                 {section.tableData.headers.map((h, hi) => (
@@ -483,6 +486,7 @@ function SectionCard({ section }: { section: Section }) {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 
@@ -590,15 +594,74 @@ function EducationAnimation({ type }: { type: string }) {
     )
   }
 
+  if (type.toLowerCase().includes('rolling') || type.toLowerCase().includes('update')) {
+    return (
+      <div className="w-full max-w-sm flex flex-col gap-6 items-center">
+        <div className="text-[10px] text-muted uppercase fw-black tracking-widest text-center">Rolling Update Visualization</div>
+        <div className="flex gap-4">
+          {[0, 1, 2].map((i) => (
+            <motion.div
+              key={i}
+              initial={{ backgroundColor: '#118ab2', y: 0 }}
+              animate={{ backgroundColor: ['#118ab2', '#ffb703', '#06d6a0'], y: [0, -10, 0] }}
+              transition={{ delay: i * 2, duration: 2, repeat: Infinity, repeatDelay: 4 }}
+              className="w-12 h-16 rounded-lg flex items-center justify-center text-white fw-black shadow-lg"
+            >
+              <motion.span
+                animate={{ opacity: [1, 0, 1] }}
+                transition={{ delay: i * 2, duration: 2, repeat: Infinity, repeatDelay: 4 }}
+              >
+                v1
+              </motion.span>
+              <motion.span
+                className="absolute"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 1, 1] }}
+                transition={{ delay: i * 2, duration: 2, repeat: Infinity, repeatDelay: 4 }}
+              >
+                v2
+              </motion.span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  if (type.toLowerCase().includes('container') || type.toLowerCase().includes('shipping')) {
+    return (
+      <div className="w-full max-w-sm flex flex-col gap-6 items-center">
+        <div className="text-[10px] text-muted uppercase fw-black tracking-widest text-center">Build Once, Run Anywhere</div>
+        <div className="flex items-center gap-4 w-full justify-between relative px-4">
+          <div className="text-3xl">💻</div>
+          
+          <motion.div 
+            className="absolute left-10 text-2xl z-10"
+            animate={{ x: [0, 200], y: [0, -20, 0] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            📦
+          </motion.div>
+          
+          <div className="flex-1 border-b-2 border-dashed border-white/20 mx-4" />
+          <div className="text-3xl">☁️</div>
+        </div>
+      </div>
+    )
+  }
+
   // Fallback icon animation
   return (
-    <motion.div 
-      animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
-      transition={{ repeat: Infinity, duration: 3 }}
-      className="text-primary"
-    >
-      <Zap size={48} />
-    </motion.div>
+    <div className="flex flex-col items-center gap-3">
+      <motion.div 
+        animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
+        transition={{ repeat: Infinity, duration: 3 }}
+        className="text-primary"
+      >
+        <Zap size={48} />
+      </motion.div>
+      <span className="text-xs text-muted fw-bold">Interactive Element</span>
+    </div>
   )
 }
 
@@ -694,13 +757,13 @@ function DragClassifyGame({ categories, items }: { categories: { id: string, lab
         <p className="text-muted text-xs">Assign each item to its correct architectural layer.</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
          {categories.map(cat => (
            <div key={cat.id} className="p-4 rounded-xl border border-white/10 bg-black/20 text-center min-h-[120px] flex flex-col items-center gap-3">
-              <span className="text-[10px] fw-black text-white uppercase tracking-widest">{cat.label}</span>
+              <span className="text-[10px] sm:text-xs fw-black text-white uppercase tracking-widest">{cat.label}</span>
               <div className="flex flex-wrap justify-center gap-2">
                  {items.filter(i => selections[i.id] === cat.id).map(i => (
-                   <div key={i.id} className="px-2 py-1 rounded bg-white/10 text-[10px] text-white">
+                   <div key={i.id} className="px-2 py-1 rounded bg-white/10 text-[10px] sm:text-xs text-white">
                       {i.label}
                    </div>
                  ))}
@@ -711,14 +774,14 @@ function DragClassifyGame({ categories, items }: { categories: { id: string, lab
 
       <div className="flex flex-wrap justify-center gap-3">
          {currentItems.filter(i => !selections[i.id]).map(item => (
-           <div key={item.id} className="p-3 pr-2 rounded-xl bg-surface2 border border-white/5 flex items-center gap-4">
-              <span className="text-xs fw-bold text-white">{item.label}</span>
-              <div className="flex gap-1">
+           <div key={item.id} className="p-3 pr-2 rounded-xl bg-surface2 border border-white/5 flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
+              <span className="text-xs fw-bold text-white text-center sm:text-left">{item.label}</span>
+              <div className="flex gap-1 flex-wrap justify-center">
                  {categories.map(cat => (
                    <button 
                      key={cat.id} 
                      onClick={() => classify(item.id, cat.id)}
-                     className="px-2 py-1 rounded text-[9px] fw-black bg-white/5 hover:bg-primary hover:text-white transition-colors uppercase"
+                     className="px-3 py-1.5 rounded text-[10px] sm:text-xs fw-black bg-white/5 hover:bg-primary hover:text-white transition-colors uppercase"
                    >
                      {cat.label}
                    </button>

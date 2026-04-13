@@ -13,6 +13,16 @@ export const K8S_MODULES: Module[] = [
     funFact: 'The name comes from the Greek word "kybernitis", meaning helmsman or pilot. It is the root of the word "cybernetics".',
     sections: [
       {
+        type: 'concept',
+        title: '🚢 What is Kubernetes?',
+        content: 'Kubernetes (often abbreviated as "K8s") is an open-source system for automating deployment, scaling, and management of containerized applications.\n\nOriginally designed by Google and now maintained by the Cloud Native Computing Foundation, it acts as the "operating system" for your cloud infrastructure.'
+      },
+      {
+        type: 'concept',
+        title: '🐳 Why not just use Docker?',
+        content: 'Docker is great for running a single container on a single machine. But what happens when you have 100 containers spreading across 10 servers?\n\n- How do they talk to each other?\n- What if a server crashes?\n- How do you update them without downtime?\n\n**Docker builds the containers; Kubernetes orchestrates them.**'
+      },
+      {
         type: 'video',
         title: '🎬 Recommended: What is Kubernetes?',
         content: 'Observe this clear visual explanation of why K8s was born and how it changed the industry.',
@@ -307,9 +317,16 @@ spec:
         language: 'yaml'
       },
       {
-        type: 'tip',
+        type: 'concept',
         title: '📈 Autoscaling with HPA',
-        content: 'Kubernetes can scale automatically based on usage. The **Horizontal Pod Autoscaler (HPA)** monitors CPU or memory and increases/decreases the number of pod replicas (horizontal scaling) to match the load.'
+        content: 'Kubernetes can scale automatically based on usage. The **Horizontal Pod Autoscaler (HPA)** monitors metrics like CPU or Memory and automatically increases or decreases the number of pod replicas (horizontal scaling) to match the load.'
+      },
+      {
+        type: 'code',
+        title: 'HPA YAML Example',
+        content: 'Automatically scale between 2 and 10 pods when CPU hits 70%:',
+        code: `apiVersion: autoscaling/v2\nkind: HorizontalPodAutoscaler\nmetadata:\n  name: web-app-hpa\nspec:\n  scaleTargetRef:\n    apiVersion: apps/v1\n    kind: Deployment\n    name: web-app\n  minReplicas: 2\n  maxReplicas: 10\n  metrics:\n  - type: Resource\n    resource:\n      name: cpu\n      target:\n        type: Utilization\n        averageUtilization: 70`,
+        language: 'yaml'
       }
     ],
     quiz: [
@@ -391,6 +408,13 @@ spec:
         type: 'tip',
         title: '🌐 Ingress',
         content: 'If you have many services, giving each one an expensive cloud LoadBalancer is wasteful. An **Ingress** acts as a Smart Router (like NGINX) that handles multiple services behind one IP based on the URL path (e.g., `/api` goes to service A, `/` goes to service B).'
+      },
+      {
+        type: 'code',
+        title: 'A Service YAML',
+        content: 'This Service load-balances port 80 traffic to all pods with the `app: web` label on their port 8080.',
+        code: `apiVersion: v1\nkind: Service\nmetadata:\n  name: my-web-service\nspec:\n  type: ClusterIP\n  selector:\n    app: web\n  ports:\n    - protocol: TCP\n      port: 80\n      targetPort: 8080`,
+        language: 'yaml'
       }
     ],
     quiz: [
@@ -455,6 +479,13 @@ spec:
             ['**Example**', '`DB_HOST=localhost`', '`DB_PASS=S3cr3t!`']
           ]
         }
+      },
+      {
+        type: 'code',
+        title: 'A ConfigMap YAML Example',
+        content: 'Defining environment variables and consuming them in a Pod:',
+        code: `apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: app-config\ndata:\n  API_URL: "https://api.example.com"\n  LOG_LEVEL: "info"\n---\n# Consuming it in a Deployment\napiVersion: apps/v1\nkind: Deployment\n# ... inside the container spec ...\n        envFrom:\n        - configMapRef:\n            name: app-config`,
+        language: 'yaml'
       }
     ],
     quiz: [
@@ -665,6 +696,171 @@ spec:
         ],
         correct: 1,
         explanation: 'K8s worker nodes can survive a control plane failure long enough to keep apps running, but you lose management capabilities until the brain is back online.'
+      },
+      {
+        id: 'k8s-9-q6',
+        question: 'What is a "Pod" in Kubernetes?',
+        options: [
+          'A physical server',
+          'The smallest deployable computing unit, which can contain one or more containers',
+          'A networking interface',
+          'A storage volume'
+        ],
+        correct: 1,
+        explanation: 'The Pod is the atomic unit of Kubernetes. While usually containing a single container, it can hold multiple tightly-coupled containers.'
+      },
+      {
+        id: 'k8s-9-q7',
+        question: 'Which component is known as the "Brain" of the worker node?',
+        options: ['etcd', 'kube-proxy', 'kubelet', 'scheduler'],
+        correct: 2,
+        explanation: 'kubelet runs on every worker node. It registers the node with the cluster and ensures containers described in PodSpecs are running and healthy.'
+      },
+      {
+        id: 'k8s-9-q8',
+        question: 'What is the primary difference between a Deployment and a Pod?',
+        options: [
+          'Deployments are for databases; Pods are for web servers',
+          'Pods declare desired state; Deployments are the actual running instances',
+          'Deployments manage the lifecycle, replication, and updates of Pods',
+          'There is no difference'
+        ],
+        correct: 2,
+        explanation: 'You rarely create Pods directly. Deployments supervise Pods, ensuring the right number are running and handling updates without downtime.'
+      },
+      {
+        id: 'k8s-9-q9',
+        question: 'What is a "Rolling Update"?',
+        options: [
+          'Replacing all instances of an application at exactly the same time',
+          'Gradually replacing old Pods with new Pods to ensure zero downtime',
+          'Restarting the Kubernetes Control Plane',
+          'Updating the underlying host Operating System'
+        ],
+        correct: 1,
+        explanation: 'Rolling updates allow Deployments\' updates to take place with zero downtime by incrementally updating Pods instances with new ones.'
+      },
+      {
+        id: 'k8s-9-q10',
+        question: 'Which Service type provides an internal IP only reachable from within the cluster?',
+        options: ['LoadBalancer', 'NodePort', 'ClusterIP', 'ExternalName'],
+        correct: 2,
+        explanation: 'ClusterIP is the default Service type. It exposes the Service on a cluster-internal IP, making it only reachable from within the cluster.'
+      },
+      {
+        id: 'k8s-9-q11',
+        question: 'What is the purpose of an Ingress?',
+        options: [
+          'To create a new Node in the cluster',
+          'To act as a smart HTTP/S router that directs outside traffic to multiple internal Services',
+          'To store sensitive passwords',
+          'To monitor CPU usage'
+        ],
+        correct: 1,
+        explanation: 'Ingress manages external access to the services in a cluster, typically HTTP. It can provide load balancing, SSL termination, and name-based virtual hosting.'
+      },
+      {
+        id: 'k8s-9-q12',
+        question: 'Where should you store a database password in Kubernetes?',
+        options: ['ConfigMap', 'Secret', 'Deployment YAML', 'Docker Image'],
+        correct: 1,
+        explanation: 'Secrets are designed specifically to hold sensitive information. ConfigMaps are for non-sensitive configuration data.'
+      },
+      {
+        id: 'k8s-9-q13',
+        question: 'What is the function of "kube-proxy"?',
+        options: [
+          'It is a VPN service',
+          'It maintains network rules on nodes allowing network communication to your Pods',
+          'It proxies API requests to etcd',
+          'It creates Docker images'
+        ],
+        correct: 1,
+        explanation: 'kube-proxy runs on each node and is responsible for implementing the Kubernetes Service concept (routing traffic to the right Pod).'
+      },
+      {
+        id: 'k8s-9-q14',
+        question: 'Why would you use a "StatefulSet" instead of a "Deployment"?',
+        options: [
+          'For stateless web applications',
+          'When your application requires stable network IDs and persistent storage (e.g. Databases)',
+          'When you need horizontal autoscaling',
+          'StatefulSets are deprecated'
+        ],
+        correct: 1,
+        explanation: 'Unlike a Deployment, a StatefulSet maintains a sticky identity for each of its Pods, essential for clustered databases like Kafka or MySQL.'
+      },
+      {
+        id: 'k8s-9-q15',
+        question: 'What does a "DaemonSet" ensure?',
+        options: [
+          'That a copy of a Pod runs on ALL (or some) Nodes in the cluster',
+          'That only one Pod runs in the entire cluster',
+          'That background jobs run on a specific schedule',
+          'That external traffic is routed to the Master node'
+        ],
+        correct: 0,
+        explanation: 'DaemonSets are perfect for logging, monitoring, and networking agents that must run exactly once on every single node.'
+      },
+      {
+        id: 'k8s-9-q16',
+        question: 'What is a "PersistentVolumeClaim (PVC)"?',
+        options: [
+          'A request for CPU resources',
+          'A request for storage by a user/Pod',
+          'A claim for a specific IP address',
+          'A networking plugin'
+        ],
+        correct: 1,
+        explanation: 'A PVC is a request for storage, abstracting the details of how the storage is provisioned from how it is consumed by the application.'
+      },
+      {
+        id: 'k8s-9-q17',
+        question: 'What is "kubectl"?',
+        options: [
+          'A type of pod',
+          'The Kubernetes command-line tool',
+          'A load balancer',
+          'A graphical dashboard'
+        ],
+        correct: 1,
+        explanation: 'kubectl is the command line utility used to communicate with the Kubernetes API server and manage the cluster.'
+      },
+      {
+        id: 'k8s-9-q18',
+        question: 'In Kubernetes, what is a "Namespace"?',
+        options: [
+          'A physical separation of hardware',
+          'A virtual cluster backed by the same physical cluster, used for isolation',
+          'A type of DNS server',
+          'A network interface for Pods'
+        ],
+        correct: 1,
+        explanation: 'Namespaces provide a mechanism for isolating groups of resources within a single cluster (e.g. `dev`, `staging`, `prod` namespaces).'
+      },
+      {
+        id: 'k8s-9-q19',
+        question: 'What happens when a node fails in a Kubernetes cluster?',
+        options: [
+          'The pods on it are lost forever',
+          'The scheduler detects the failure and reschedules the affected Pods onto healthy nodes',
+          'The Control Plane reboots the entire cluster',
+          'You must manually re-create the node'
+        ],
+        correct: 1,
+        explanation: 'Kubernetes constantly monitors nodes. If one fails, the Control Plane ensures the desired state is met by creating new Pods on other available nodes.'
+      },
+      {
+        id: 'k8s-9-q20',
+        question: 'What is "Helm"?',
+        options: [
+          'The new name for Kubernetes',
+          'A package manager for Kubernetes (like apt or npm)',
+          'A secure network overlay',
+          'The Kubernetes native database'
+        ],
+        correct: 1,
+        explanation: 'Helm helps you manage Kubernetes applications. Helm Charts help you define, install, and upgrade even the most complex Kubernetes application.'
       }
     ]
   }

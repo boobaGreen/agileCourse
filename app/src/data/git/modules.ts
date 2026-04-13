@@ -210,6 +210,12 @@ export const GIT_MODULES: Module[] = [
         content: 'Think of Git\'s distributed model like the internet itself: no central authority, every node independent, but all connected. Just like the internet was designed to survive failures, Git was designed so no single server failure can stop your team.'
       },
       {
+        type: 'video',
+        title: '🎬 Recommended: Git Explained in 100 Seconds',
+        content: 'A quick, entertaining visual overview of Git and its core ideas — perfect as a complement to this module.',
+        videoUrl: 'https://www.youtube.com/watch?v=hwP7WQkmECE'
+      },
+      {
         type: 'tip',
         title: '🚀 The platforms it enabled',
         content: 'Git\'s creation led directly to the birth of **GitHub** (2008), **GitLab** (2011), and **Bitbucket** — platforms that transformed how the world builds software together.'
@@ -541,6 +547,11 @@ git rebase --continue
 # If you want to abort:
 git rebase --abort`,
         language: 'bash'
+      },
+      {
+        type: 'concept',
+        title: '⏩ Fast-Forward Merge',
+        content: 'A **fast-forward merge** happens when the target branch (e.g. `main`) has had **no new commits** since you branched off. In this case, Git doesn\'t need to create a merge commit — it simply moves the branch pointer forward to the tip of your feature branch.\n\nThis results in a perfectly linear history, as if you had committed directly to `main`. Git does fast-forward merges automatically when possible.\n\n💡 You can force a merge commit even in fast-forward scenarios with `git merge --no-ff feature/x` — useful for keeping a record of the feature branch in history.'
       },
       {
         type: 'tip',
@@ -916,6 +927,31 @@ git push -u origin <branch> # Push + set upstream`,
             ['`git reset --hard HEAD~1`', 'Moves branch pointer back AND deletes all changes', '🔴 HIGH (changes are gone forever!)']
           ]
         }
+      },
+      {
+        type: 'concept',
+        title: '🚫 .gitignore — Keeping Secrets Out',
+        content: '`.gitignore` is a special file at the root of your repository that tells Git which files and folders to **completely ignore**. Files listed here will never be tracked, staged, or committed.\n\n**Common entries:**\n- `node_modules/` — dependency folder (huge, auto-generated)\n- `.env` — environment variables with secrets (API keys, DB passwords)\n- `dist/` or `build/` — compiled output (regenerated on build)\n- `__pycache__/` — Python bytecode cache\n- `*.log` — log files\n- `.DS_Store` — macOS metadata files\n\n💡 **Always create a `.gitignore` before your first commit.** You can find pre-built templates at https://github.com/github/gitignore for every language.'
+      },
+      {
+        type: 'concept',
+        title: '🔌 Detached HEAD — Lost in Time',
+        content: 'Normally, HEAD points to a **branch name** (like `main`), which in turn points to the latest commit. But if you checkout a specific commit hash directly (e.g., `git checkout a1b2c3d`), HEAD points directly to that commit instead of a branch. This is called a **detached HEAD** state.\n\n**Why is it risky?** Any new commits you make in this state are not on any branch. If you switch away, those commits become "orphaned" and may be garbage-collected.\n\n**How to get out:**\n- `git switch main` — return to a branch (abandoning detached commits)\n- `git switch -c new-branch` — save your detached work by creating a new branch from the current position'
+      },
+      {
+        type: 'concept',
+        title: '🍒 git cherry-pick — Surgical Commit Transplant',
+        content: '`git cherry-pick <sha>` takes a **single specific commit** from any branch and applies its changes to your current branch.\n\n**When is it useful?**\n- A teammate fixed a critical bug on `feature-x`, but you need the fix on `main` NOW — without merging the entire unfinished branch.\n- You accidentally committed to the wrong branch and want to move specific commits.\n\n**Syntax:**\n```\ngit cherry-pick a1b2c3d\n```\n\n⚠️ Cherry-pick creates a **new commit** with a different SHA. It does not move the original commit.'
+      },
+      {
+        type: 'concept',
+        title: '🔍 git bisect — Binary Search for Bugs',
+        content: '`git bisect` is a debugging power tool. It performs a **binary search** through your commit history to find the exact commit that introduced a bug.\n\n**How it works:**\n1. `git bisect start` — begin the bisect session\n2. `git bisect bad` — mark the current commit as broken\n3. `git bisect good <sha>` — mark a known working commit\n4. Git checks out a commit halfway between good and bad\n5. You test, then mark `good` or `bad`\n6. Repeat — Git halves the search space each time\n7. `git bisect reset` — return to normal when done\n\n💡 For a repo with 1024 commits, bisect finds the culprit in just **10 steps** instead of checking all 1024!'
+      },
+      {
+        type: 'concept',
+        title: "📦 Bare Repository — The Server's Version",
+        content: 'A **bare repository** is a repository that has **no working directory** — no editable files, just the `.git` database (objects, refs, config). It is created with `git init --bare`.\n\n**Why does it exist?** Bare repos are designed to be used as **remote/server repositories** — they are what GitHub, GitLab, and Bitbucket use internally. You push to them and fetch from them, but you never edit files directly inside them.\n\n**Key differences from a normal repo:**\n- No `working directory` (you cannot `git checkout` files)\n- No `staging area`\n- Convention: named `my-project.git` (ending with `.git`)\n- Only accepts `push` and allows `fetch`/`clone`'
       }
     ],
     quiz: [
