@@ -180,7 +180,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Badge Trophy Case */}
-      <div className="mb-10">
+      <div className="mb-10" id="badges">
         <h3 className="text-white fw-bold mb-6 flex items-center gap-2">
           <Award size={20} className="text-k8s" /> Achievement Gallery
         </h3>

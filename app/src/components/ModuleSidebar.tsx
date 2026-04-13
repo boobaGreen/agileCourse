@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { CheckCircle, ChevronRight, Lock } from 'lucide-react'
+import { CheckCircle, ChevronRight } from 'lucide-react'
 import type { Module } from '../data/git/modules'
 
 interface ModuleSidebarProps {
@@ -32,15 +32,13 @@ export default function ModuleSidebar({
       </div>
       
       <div className="flex flex-col gap-1.5 overflow-y-auto pr-1" style={{ scrollbarWidth: 'none' }}>
-        {modules.map((m, i) => {
+        {modules.map((m) => {
           const isCompleted = completedIds.includes(m.id)
           const isActive = m.id === currentId
-          const isLocked = i > 0 && !completedIds.includes(modules[i-1].id) && !isCompleted && !isActive
 
           return (
             <button
               key={m.id}
-              disabled={isLocked}
               onClick={() => {
                 navigate(`/${m.track}/module/${m.id}`)
                 if (onItemClick) onItemClick()
@@ -48,9 +46,7 @@ export default function ModuleSidebar({
               className={`flex items-center gap-3 p-3 rounded-2xl text-left transition-all group relative overflow-hidden ${
                 isActive 
                   ? 'bg-white/10 text-white shadow-lg' 
-                  : isLocked 
-                    ? 'opacity-30 cursor-not-allowed grayscale' 
-                    : 'text-sub hover:bg-white/5 hover:text-white'
+                  : 'text-sub hover:bg-white/5 hover:text-white'
               }`}
               style={{
                 borderColor: isActive ? `${trackColor}40` : 'transparent',
@@ -86,8 +82,6 @@ export default function ModuleSidebar({
                     >
                       <ChevronRight size={16} className="text-primary" />
                     </motion.div>
-                  ) : isLocked ? (
-                    <Lock size={14} className="text-muted" />
                   ) : (
                     <div className="w-5 h-5 rounded-full border border-white/10" />
                   )}

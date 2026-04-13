@@ -297,6 +297,18 @@ export const GIT_MODULES: Module[] = [
         ],
         correct: 1,
         explanation: 'The geometric Git logo represents a graph — Git\'s actual internal data structure. Nodes are commits, lines are the relationships between them.'
+      },
+      {
+        id: 'git-2-q5',
+        question: 'Unlike older version control systems that store file changes as a list of "diffs", Git stores your data as:',
+        options: [
+          'A series of text instructions',
+          'A stream of snapshots (mini-filesystems)',
+          'A collection of ZIP files',
+          'A spreadsheet of changes'
+        ],
+        correct: 1,
+        explanation: 'Git thinks of its data more like a series of snapshots of a miniature filesystem. Every time you commit, Git takes a picture of what all your files look like at that moment.'
       }
     ]
   },
@@ -573,6 +585,30 @@ git rebase --abort`,
         ],
         correct: 1,
         explanation: 'Rebase rewrites commit history. If others have already based their work on those commits, rebasing will create divergent histories and cause major confusion.'
+      },
+      {
+        id: 'git-4-q4',
+        question: 'What is a "fast-forward" merge?',
+        options: [
+          'A merge that happens extremely quickly due to high internet speed',
+          'A merge where Git simply moves the branch pointer forward because there are no conflicting changes on main',
+          'A merge that automatically deletes the feature branch',
+          'A merge that requires a special license'
+        ],
+        correct: 1,
+        explanation: 'If main hasn\'t changed since you branched off, Git simply moves main\'s pointer to your latest commit. No merge commit is needed.'
+      },
+      {
+        id: 'git-4-q5',
+        question: 'Why are Pull Requests (PRs) used in professional teams?',
+        options: [
+          'Because Git cannot merge files without a PR',
+          'To allow for code review, discussion, and automated testing before code is integrated',
+          'To make the repository larger',
+          'To slow down the development process'
+        ],
+        correct: 1,
+        explanation: 'PRs provide a platform for human review and automated quality checks, ensuring that only high-quality code enters the main branch.'
       }
     ]
   },
@@ -706,6 +742,25 @@ git push origin main`,
         ],
         correct: 1,
         explanation: 'A Pull Request is a platform feature, not a Git command. It\'s a formal request saying "please review my changes and merge this branch." The review process is central to modern team workflows.'
+      },
+      {
+        id: 'git-5-q4',
+        question: 'Which command is "safer" because it downloads remote data but does not modify your local code until you are ready?',
+        options: ['git pull', 'git fetch', 'git push', 'git update'],
+        correct: 1,
+        explanation: '`git fetch` downloads the latest data from the remote server so you can inspect it. It doesn\'t force a merge, so it won\'t create conflicts or change your files until you manually run merge or rebase.'
+      },
+      {
+        id: 'git-5-q5',
+        question: 'What happens if you try to `git push` but a teammate has already pushed other changes to the same branch on the server?',
+        options: [
+          'Git automatically merges them for you on the server',
+          'Git rejects your push (Rejected: non-fast-forward)',
+          'Your changes overwrite the teammate\'s changes',
+          'Git deletes the remote branch'
+        ],
+        correct: 1,
+        explanation: 'Git is protective. If the remote history has moved forward since your last pull, it will reject your push. You must `git pull` first, resolve any conflicts, and then push.'
       }
     ]
   },
@@ -809,6 +864,20 @@ git push origin main`,
         options: ['Gitflow', 'Trunk-based / GitHub Flow', 'Email + ZIP files', 'Centralized SVN'],
         correct: 1,
         explanation: 'For continuous deployment, GitHub Flow or trunk-based development work best. Gitflow\'s complexity is overkill for teams that don\'t do versioned releases.'
+      },
+      {
+        id: 'git-6-q4',
+        question: 'What is the simplest workflow for web teams using Pull Requests on platforms like GitHub?',
+        options: ['GitHub Flow', 'Gitflow Evolution', 'Centralized Workflow', 'Linear Flow'],
+        correct: 0,
+        explanation: 'GitHub Flow is the industry standard for simplicity: create a branch, commit work, open a PR, review, merge, and deploy.'
+      },
+      {
+        id: 'git-6-q5',
+        question: 'In the Gitflow model, which branch is created specifically to fix an urgent bug in the production environment?',
+        options: ['bugfix/x', 'hotfix/x', 'urgent/x', 'patch/x'],
+        correct: 1,
+        explanation: 'The hotfix branch is used to quickly patch production without waiting for the next release cycle.'
       }
     ]
   },
@@ -855,11 +924,12 @@ git status                  # What's happening?`,
         title: '📸 The Daily Saving Loop',
         content: 'Use these commands hundreds of times a day:',
         tableData: {
-          headers: ['Command', 'Purpose', 'Visual Effect'],
+          headers: ['Command', 'Purpose', 'Example'],
           rows: [
-            ['`git add .`', 'Stages all changes', 'Moves files to the "Waiting Room"'],
-            ['`git commit -m`','Saves snapshot', 'Creates a permanent history dot'],
-            ['`git commit --amend`','Fix last commit', 'Replaces the previous dot']
+            ['`git add .`', 'Stages all changes in the current folder', '`git add .`'],
+            ['`git add <file>`', 'Stages only a specific file (recommended)', '`git add index.html`'],
+            ['`git commit -m "msg"`','Saves snapshot with a descriptive message', '`git commit -m "Fix login bug"`'],
+            ['`git commit --amend -m "..."`','Fixes the last commit using staged files', '`git commit --amend -m "Fix typo"`']
           ]
         }
       }
@@ -871,6 +941,39 @@ git status                  # What's happening?`,
         options: ['Working Directory', 'Staging Area', 'Local Repository', 'Remote Server'],
         correct: 1,
         explanation: 'The Staging Area (or Index) is where you pick which changes to include in your next snapshot (commit).'
+      },
+      {
+        id: 'git-7-q2',
+        question: 'What command is used to move your modifications from the Working Directory into the Staging Area?',
+        options: ['git commit', 'git status', 'git push', 'git add'],
+        correct: 3,
+        explanation: 'The `git add` command stages your changes, placing them in the "waiting room" before they become a permanent commit.'
+      },
+      {
+        id: 'git-7-q3',
+        question: 'What is the primary function of the `git commit --amend` command?',
+        options: ['To delete the last commit permanently', 'To edit the previous commit by merging new staged changes or rewriting the message', 'To automatically push your commit to the cloud', 'To undo everything and empty the staging area'],
+        correct: 1,
+        explanation: '`git commit --amend` modifies the very last commit, which is incredibly useful for instantly fixing a typo or adding a forgotten file.'
+      },
+      {
+        id: 'git-7-q4',
+        question: 'Which status color usually represents a file that is staged and ready to be committed?',
+        options: ['Red', 'Green', 'Yellow', 'Blue'],
+        correct: 1,
+        explanation: 'In the `git status` output, files listed in green are staged and ready for the next commit, while red files are modified but not yet staged.'
+      },
+      {
+        id: 'git-7-q5',
+        question: 'What is an "atomic commit" in professional Git usage?',
+        options: [
+          'A commit that contains every change made during a whole week',
+          'A small, focused commit that handles only one specific task or fix',
+          'A commit that automatically deletes itself after merge',
+          'A very large commit that requires special permissions'
+        ],
+        correct: 1,
+        explanation: 'Atomic commits are better because they make debugging, reverting, and reviewing much easier for the entire team.'
       }
     ]
   },
@@ -901,13 +1004,10 @@ git status                  # What's happening?`,
         animationType: 'git-undo-lab'
       },
       {
-        type: 'code',
+        type: 'animation',
         title: '📦 The Emergency Stash',
         content: 'Need to switch branches but your work isn\'t ready to commit?',
-        code: `git stash           # Hide changes away
-git stash list      # See stashed work
-git stash pop       # Bring changes back`,
-        language: 'bash'
+        animationType: 'git-stash-lab'
       },
       {
         type: 'concept',
@@ -922,6 +1022,25 @@ git stash pop       # Bring changes back`,
         options: ['git reset --hard', 'git revert', 'git checkout', 'git clean'],
         correct: 1,
         explanation: '`git revert` creates a new "inverse" commit. It keeps the history intact, making it the safest choice for collaboration.'
+      },
+      {
+        id: 'git-8-q2',
+        question: 'You have unfinished work but need to switch branches immediately. Which command "hides" your changes safely?',
+        options: ['git hide', 'git stash', 'git pause', 'git commit --later'],
+        correct: 1,
+        explanation: '`git stash` takes your uncommitted changes and puts them on a temporary "shelf" so you can switch branches with a clean workspace.'
+      },
+      {
+        id: 'git-8-q3',
+        question: 'What happens if you checkout a specific commit hash (e.g., git checkout a1b2c3d) instead of a branch?',
+        options: [
+          'The commit is deleted from history',
+          'You enter a "Detached HEAD" state',
+          'A new branch is created automatically',
+          'Git prevents the operation for safety'
+        ],
+        correct: 1,
+        explanation: 'When you checkout a commit directly, HEAD points to that commit instead of a branch. This is called the Detached HEAD state.'
       }
     ]
   },
@@ -930,54 +1049,116 @@ git stash pop       # Bring changes back`,
     track: 'git',
     order: 9,
     title: 'Power User Tools',
-    subtitle: 'Surgical commits, ignoring files, and debugging',
+    subtitle: 'Surgical fixes and specialized debugging',
     emoji: '🍒',
-    duration: '10 min',
+    duration: '15 min',
     xpReward: 90,
+    funFact: 'Git Bisect is so fast it can find a bug in 100,000 commits in just 17 steps. It is the closest thing to real-life time travel debugging.',
     sections: [
       {
         type: 'intro',
-        content: 'Advanced tools to keep your repo clean and find bugs with surgical precision.'
+        content: 'Basic Git is for daily saving. Power Git is for when things get complicated. These tools are your "surgical instruments" for maintaining a professional repository.'
+      },
+      {
+        type: 'concept',
+        title: '🍒 Cherry-picking: The Surgical Harvest',
+        content: 'Imagine there is a critical bugfix on a messy "experimental" branch. You don\'t want to merge the whole messy branch, you just want that **one specific fix**. \n\n**Cherry-pick** lets you grab a commit from anywhere and apply it to your current branch. It\'s like picking the best fruit from a tree without taking the whole branch.'
       },
       {
         type: 'animation',
-        title: '🍒 Cherry-picking',
-        content: 'Drag a specific commit from one branch and "copy" it into your current branch.',
+        title: '🧪 Cherry-Pick Simulation',
+        content: 'See how to surgically move a single commit between branches.',
         animationType: 'git-cherry-pick-lab'
       },
       {
-        type: 'concept',
-        title: '🔍 git bisect — Binary Search for Bugs',
-        content: 'Bisect performs a binary search through history to find the exact commit that broke the code. In 10 steps, it can find a bug in 1000 commits!'
+         type: 'concept',
+         title: '🔀 Merge vs Rebase: The History Debate',
+         content: 'When joining branches, you have two philosophies:\n\n1. **Merge**: "Preserve the historical truth." It creates a merge commit showing exactly when branches rejoined.\n2. **Rebase**: "Maintain a clean, linear history." It rewrites your commits to look like they were built on top of the latest version of the main branch.\n\n**Beginner Tip**: Keep it simple. Merge is safer for teams; Rebase is better for keeping a clean personal history.'
       },
       {
-        type: 'code',
-        title: '🚫 .gitignore Essentials',
-        content: 'Tell Git what to ignore (secrets, big binaries, logs):',
-        code: `node_modules/
-.env                 # SECRETS (Never commit!)
-dist/
-*.log`,
-        language: 'bash'
+        type: 'animation',
+        title: '🧪 The Rebase vs Merge Lab',
+        content: 'Compare the two ways of joining work and see how the timeline changes.',
+        animationType: 'git-merge-rebase-lab'
       },
       {
         type: 'concept',
-        title: '📦 Bare Repository',
-        content: 'A repository with no working directory — only the Git database. This is what servers like GitHub use internally.'
+        title: '🔍 git bisect: The Needle in the Haystack',
+        content: '**The Problem**: A bug was introduced somewhere in the last 100 commits, but you don\'t know which one. Testing each one manually would take hours.\n\n**The Solution**: `git bisect` uses **Binary Search**. It picks a commit in the middle and asks you "Is it broken?". Based on your answer, it eliminates half the commits and repeats. It finds the culprit with surgical precision in minutes.'
+      },
+      {
+        type: 'animation',
+        title: '🕹️ Bisect Logic Game',
+        content: 'Play the binary search game to find the bug in a timeline of commits.',
+        animationType: 'git-bisect-lab'
+      },
+      {
+        type: 'concept',
+        title: '🚫 .gitignore: Cleanliness & Security',
+        content: 'Not everything belongs in Git. You should **always** ignore:\n\n1. **Secrets**: Passwords, API keys (using `.env`).\n2. **Large Bulky Folders**: `node_modules`. These make clone times slow.\n3. **Build Artifacts**: Computed files (`dist/`, `build/`).\n\nIgnoring them keeps your repository fast, light, and secure.'
+      },
+      {
+        type: 'animation',
+        title: '📦 The .gitignore Builder',
+        content: 'Practice identifying which files should be tracked and which should be ignored.',
+        animationType: 'git-ignore-lab'
       }
     ],
     quiz: [
       {
         id: 'git-9-q1',
-        question: 'What is the purpose of `git cherry-pick`?',
+        question: 'In which scenario is `git cherry-pick` the most useful?',
         options: [
-          'To merge an entire branch',
-          'To copy a single specific commit into the current branch',
-          'To delete a commit',
-          'To rename a branch'
+          'When you want to merge two entire branches together',
+          'When you want to take a specific bugfix commit from a feature branch into production',
+          'When you want to delete a commit from history',
+          'When you want to rename your current branch'
         ],
         correct: 1,
-        explanation: 'Cherry-pick lets you surgically apply the changes from one specific commit from anywhere in history to your current branch.'
+        explanation: 'Cherry-picking is "surgical." It\'s best when you need just one or two specific changes from another branch without bringing in all the other work.'
+      },
+      {
+        id: 'git-9-q2',
+        question: 'What is the main advantage of using `git bisect`?',
+        options: [
+          'It automatically fixes the bug for you',
+          'It finds the exact commit that introduced a bug using binary search',
+          'It highlights syntax errors in your code',
+          'It deletes bad code automatically'
+        ],
+        correct: 1,
+        explanation: '`git bisect` is a debugging tool. It helps you find the "culprit" commit by narrowing down the history using a "search and eliminate" strategy.'
+      },
+      {
+        id: 'git-9-q3',
+        question: 'Which of these files should NEVER be committed to Git for security reasons?',
+        options: ['index.html', 'style.css', '.env (API Keys)', 'README.md'],
+        correct: 2,
+        explanation: 'Files like `.env` contain sensitive secrets like passwords or API keys. If committed, they could be leaked to anyone with access to the repo (especially on GitHub!).'
+      },
+      {
+        id: 'git-9-q4',
+        question: 'What happens to the timeline when you use `git rebase`?',
+        options: [
+          'It creates a big "Merge Commit" node',
+          'It rewrites history to create a clean, linear line of commits',
+          'It deletes the feature branch permanently',
+          'It sends an email to the team leader'
+        ],
+        correct: 1,
+        explanation: 'Rebasing "re-bases" your work on top of the latest commit, making it look like you started your work just now. This results in a cleaner, straight-line history.'
+      },
+      {
+        id: 'git-9-q5',
+        question: 'Why do we ignore `node_modules` or `dist/` folders in `.gitignore`?',
+        options: [
+          'Because they are illegal to share',
+          'Because they are large, generated files that can easily be rebuilt on other machines',
+          'Because Git cannot compress them',
+          'Because they cause merge conflicts 100% of the time'
+        ],
+        correct: 1,
+        explanation: 'Generated files are bulky and slow down Git. Since anyone can run `npm install` or `npm run build` to get them back, we don\'t waste space saving them in history.'
       }
     ]
   },

@@ -10,8 +10,8 @@ import {
   ArrowLeft, ArrowRight, Zap,
   ExternalLink, BookOpen, Code2, Lightbulb, Sparkles,
   LayoutGrid, Workflow, Play, Image, Gamepad2, CheckCircle, Trophy,
-  AlertTriangle, Users,
-  Laptop, Cloud, Search, ArrowUp
+  AlertTriangle, Users, RefreshCcw, Terminal as TermIcon,
+  Laptop, Cloud, Search, ShieldCheck, ArrowUp
 } from 'lucide-react'
 import confetti from 'canvas-confetti'
 
@@ -314,7 +314,7 @@ export default function ModulePage() {
               ))}
             </div>
 
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="mt-14 flex flex-col sm:flex-row items-center justify-between gap-6 pb-12">
               <button onClick={() => setView('theory')} className="btn btn-ghost">
                 <ArrowLeft size={16} /> Review Theory
               </button>
@@ -379,7 +379,7 @@ export default function ModulePage() {
               ))}
             </div>
 
-            <div className="flex justify-between gap-4">
+            <div className="mt-14 flex flex-col sm:flex-row justify-between gap-6 pb-12">
               <button onClick={() => { setView('theory'); setSubmitted(false); setQuizAnswers({}); }} className="btn btn-ghost">
                 Reset & Retry
               </button>
@@ -563,7 +563,7 @@ function SectionCard({ section }: { section: Section }) {
       {/* Specialized Animations */}
       {section.type === 'animation' && (
         <div className="mt-4 p-6 rounded-2xl border border-white/5 bg-surface2/30 flex items-center justify-center overflow-hidden min-h-[150px]">
-           <EducationAnimation type={section.content} />
+           <EducationAnimation type={section.animationType || section.content} />
         </div>
       )}
 
@@ -1102,6 +1102,18 @@ function EducationAnimation({ type }: { type: string }) {
     return <HashLab />
   }
 
+  if (type === 'git-stash-lab') {
+    return <StashLab />
+  }
+
+  if (type === 'git-bisect-lab') {
+    return <BisectLab />
+  }
+
+  if (type === 'git-ignore-lab') {
+    return <IgnoreLab />
+  }
+
   // Fallback icon animation
   return (
     <div className="flex flex-col items-center gap-3">
@@ -1119,7 +1131,7 @@ function EducationAnimation({ type }: { type: string }) {
 
 // --- SIMULATION COMPONENTS (Isolated to fix hook violations) ---
 
-const ManualVsGitLab = () => {
+function ManualVsGitLab() {
   const [count, setCount] = useState(1)
   return (
     <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/5">
@@ -1158,7 +1170,7 @@ const ManualVsGitLab = () => {
   )
 }
 
-const HashLab = () => {
+function HashLab() {
   const [text, setText] = useState('Type something...')
   const hash = Array.from(text).reduce((acc, char) => (acc << 5) - acc + char.charCodeAt(0), 0).toString(16).padEnd(7, '0').slice(0, 7)
   
@@ -1189,270 +1201,722 @@ const HashLab = () => {
   )
 }
 
-const MergeRebaseLab = () => {
+function MergeRebaseLab() {
   const [mode, setMode] = useState<'merge' | 'rebase'>('merge')
-  return (
-    <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/5">
-       <div className="flex justify-center gap-4">
-          <button onClick={() => setMode('merge')} className={`px-4 py-2 rounded-xl text-[10px] fw-black border transition-all ${mode === 'merge' ? 'bg-git border-git text-white' : 'bg-surface2 border-white/10 text-muted'}`}>SIMULATE MERGE</button>
-          <button onClick={() => setMode('rebase')} className={`px-4 py-2 rounded-xl text-[10px] fw-black border transition-all ${mode === 'rebase' ? 'bg-primary border-primary text-white' : 'bg-surface2 border-white/10 text-muted'}`}>SIMULATE REBASE</button>
-       </div>
-       
-       <div className="h-48 bg-black/40 rounded-2xl flex items-center justify-center p-4">
-          <svg viewBox="0 0 400 150" className="w-full h-full">
-             <line x1="50" y1="100" x2="350" y2="100" stroke="rgba(255,255,255,0.1)" strokeWidth="2" />
-             <circle cx="80" cy="100" r="5" fill="#4fd1c5" />
-             <circle cx="160" cy="100" r="5" fill="#4fd1c5" />
-             
-             <AnimatePresence mode="wait">
-                {mode === 'merge' ? (
-                   <motion.g key="merge" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                      <path d="M 160 100 Q 220 40 280 40" fill="none" stroke="#118ab2" strokeWidth="2" />
-                      <circle cx="280" cy="40" r="5" fill="#118ab2" />
-                      <path d="M 280 40 Q 320 100 320 100" fill="none" stroke="#118ab2" strokeWidth="2" strokeDasharray="4 2" />
-                      <circle cx="320" cy="100" r="6" fill="#ffd166" />
-                      <text x="320" y="125" textAnchor="middle" className="text-[8px] fw-black" fill="#ffd166">MERGE COMMIT</text>
-                   </motion.g>
-                ) : (
-                   <motion.g key="rebase" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                      <circle cx="240" cy="100" r="5" fill="#118ab2" />
-                      <circle cx="320" cy="100" r="5" fill="#118ab2" />
-                      <text x="280" y="80" textAnchor="middle" className="text-[8px] fw-black" fill="#118ab2">REPLAYED ON TOP</text>
-                      <motion.circle 
-                         animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
-                         transition={{ repeat: Infinity }}
-                         cx="240" cy="100" r="10" stroke="#118ab2" fill="none" 
-                      />
-                   </motion.g>
-                )}
-             </AnimatePresence>
-          </svg>
-       </div>
-    </div>
-  )
-}
-
-const RemoteSyncLab = () => {
-  const [status, setStatus] = useState<'idle' | 'pushing'>('idle')
-  const [localPending, setLocalPending] = useState(1)
-  const [remoteCount, setRemoteCount] = useState(2)
-
-  const handlePush = () => {
-     if (localPending === 0) return
-     setStatus('pushing')
-     setTimeout(() => {
-        setRemoteCount(r => r + localPending)
-        setLocalPending(0)
-        setStatus('idle')
-     }, 1500)
-  }
-
-  return (
-    <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/5">
-       <div className="flex justify-center gap-4">
-          <button disabled={status !== 'idle' || localPending === 0} onClick={handlePush} className="px-6 py-2 rounded-xl bg-git text-white text-[10px] fw-black disabled:opacity-20 flex items-center gap-2 transition-all hover:scale-105 active:scale-95">
-             <ArrowUp size={14} /> GIT PUSH
-          </button>
-       </div>
-
-       <div className="flex items-center justify-between px-10 h-40 relative">
-          <div className="flex flex-col items-center gap-2">
-             <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center relative">
-                <Laptop size={32} className="text-git" />
-                {localPending > 0 && <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-danger text-[10px] fw-black flex items-center justify-center border-2 border-surface">{localPending}</div>}
-             </div>
-             <span className="text-[9px] fw-black text-muted uppercase">Your PC</span>
-          </div>
-
-          <div className="flex-1 h-[2px] bg-white/5 mx-4 relative overflow-hidden">
-             <AnimatePresence>
-                {status === 'pushing' && (
-                   <motion.div 
-                      initial={{ x: '-100%' }}
-                      animate={{ x: '100%' }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-git to-transparent w-full h-full"
-                   />
-                )}
-             </AnimatePresence>
-          </div>
-
-          <div className="flex flex-col items-center gap-2 text-primary">
-             <div className="w-16 h-16 rounded-2xl bg-primary/5 border border-primary/20 flex flex-col items-center justify-center relative">
-                <Cloud size={32} />
-                <div className="text-[10px] fw-black mt-1">{remoteCount}</div>
-             </div>
-             <span className="text-[9px] fw-black text-muted uppercase">GitHub</span>
-          </div>
-       </div>
-    </div>
-  )
-}
-
-const StageLab = () => {
   const [step, setStep] = useState(0)
+
   const steps = [
-    { title: 'Working Dir', desc: 'Your workspace. Changes are untracked.', color: 'var(--color-danger)' },
-    { title: 'Staging Area', desc: 'The waiting room for commits.', color: 'var(--color-primary)' },
-    { title: 'Repository', desc: 'Official version history.', color: 'var(--color-git)' }
+    {
+      title: "1. The Split",
+      desc: "Problem: Your team made a change (C2) while you were working on features (A, B). Now you are out of sync. How do you join them back?",
+      cmd: "# Preparing to integrate...",
+      commits: { main: ['C1', 'C2'], feature: ['A', 'B'] }
+    },
+    {
+       title: "2. The Integration",
+       desc: mode === 'merge' 
+         ? "MERGE: This is the 'Honest' way. It creates a new 'Merge Commit' (M) that shows exactly when branches rejoined. Safe and historical." 
+         : "REBASE: This is the 'Clean' way. It moves your work (A, B) to the very end of the line, as if you just started. No messy merge nodes!",
+       cmd: mode === 'merge' ? "git merge feature" : "git rebase main",
+       commits: mode === 'merge' 
+         ? { main: ['C1', 'C2', 'M'], feature: ['A', 'B'] } 
+         : { main: ['C1', 'C2', "A'", "B'"], feature: [] }
+    }
   ]
 
+  const currentStep = steps[step] || steps[0]
+
   return (
-    <div className="w-full flex flex-col items-center gap-6 p-6">
-       <div className="flex justify-center gap-4 w-full max-w-lg">
-          {steps.map((s, i) => (
-            <motion.div 
-               key={i} 
-               animate={{ opacity: step === i ? 1 : 0.4, scale: step === i ? 1.05 : 0.95 }}
-               className="flex-1 p-4 rounded-2xl border border-white/10 bg-surface2 flex flex-col items-center gap-2 text-center"
-               onClick={() => setStep(i)}
-            >
-               <span className="text-[8px] fw-black uppercase tracking-tighter" style={{ color: s.color }}>{s.title}</span>
-               <p className="text-[9px] leading-tight opacity-70">{s.desc}</p>
-            </motion.div>
-          ))}
+    <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/10 shadow-2xl">
+       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-2">
+          <div className="flex flex-col">
+             <span className="text-xs text-primary fw-black uppercase tracking-widest leading-none mb-2">Integration Lab • Step {step + 1}</span>
+             <h3 className="text-xl fw-black text-white">{currentStep.title}</h3>
+          </div>
+          <div className="flex gap-2 bg-black/40 p-1.5 rounded-2xl border border-white/10">
+             <button 
+               onClick={() => { setMode('merge'); setStep(0); }} 
+               className={`px-5 py-2.5 rounded-xl text-xs fw-bold transition-all ${mode === 'merge' ? 'bg-git text-white shadow-lg shadow-git/20' : 'text-muted hover:text-white'}`}
+             >
+               Merge Path
+             </button>
+             <button 
+               onClick={() => { setMode('rebase'); setStep(0); }} 
+               className={`px-5 py-2.5 rounded-xl text-xs fw-bold transition-all ${mode === 'rebase' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-muted hover:text-white'}`}
+             >
+               Rebase Path
+             </button>
+          </div>
        </div>
-       <div className="w-full max-w-lg h-32 bg-black/40 rounded-3xl border border-white/5 relative flex items-center justify-center overflow-hidden">
-          <motion.div 
-             animate={{ x: (step - 1) * 150 }}
-             className="flex gap-10"
-          >
-             <div className="w-16 h-16 rounded-xl bg-danger/20 border border-danger/40 shadow-lg shadow-danger/20 flex items-center justify-center"><LayoutGrid size={24} className="text-danger" /></div>
-             <div className="w-16 h-16 rounded-xl bg-primary/20 border border-primary/40 shadow-lg shadow-primary/20 flex items-center justify-center"><Workflow size={24} className="text-primary" /></div>
-             <div className="w-16 h-16 rounded-xl bg-git/20 border border-git/40 shadow-lg shadow-git/20 flex items-center justify-center"><BookOpen size={24} className="text-git" /></div>
-          </motion.div>
+
+       <div className="w-full bg-black/60 rounded-2xl p-5 border border-white/10 flex flex-col gap-4">
+          <div className="flex justify-between items-start">
+             <p className="text-sm text-white/90 leading-relaxed fw-medium max-w-[75%]">{currentStep.desc}</p>
+             <div className="flex gap-2">
+                <button disabled={step === 0} onClick={() => setStep(s => s - 1)} className="p-2 rounded-xl bg-surface2 border border-white/10 text-white disabled:opacity-30 hover:bg-white/10 transition-all"><ArrowLeft size={16} /></button>
+                <button disabled={step === steps.length - 1} onClick={() => setStep(s => s + 1)} className={`px-4 py-2 rounded-xl text-white shadow-lg transition-all text-xs fw-bold flex gap-2 items-center ${mode === 'merge' ? 'bg-git shadow-git/20' : 'bg-primary shadow-primary/20'} disabled:opacity-30`}>Next <ArrowRight size={16} /></button>
+             </div>
+          </div>
+          <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3">
+             <TermIcon size={18} className="text-muted" />
+             <code className={`text-sm font-mono fw-bold ${mode === 'merge' ? 'text-git' : 'text-primary'}`}>
+                <span className="text-muted opacity-50 mr-2">$</span>
+                {currentStep.cmd}
+             </code>
+          </div>
+       </div>
+
+       {/* Timeline Visualization */}
+       <div className="bg-surface2/40 rounded-2xl border border-white/5 p-10 h-[240px] relative overflow-hidden flex flex-col justify-center">
+          {/* Main Timeline */}
+          <div className="relative flex items-center gap-4 mb-12">
+             <span className="w-24 text-[10px] fw-black text-muted uppercase tracking-widest text-right mr-4">Main Line</span>
+             <div className="flex items-center gap-4 relative">
+                <AnimatePresence mode="popLayout">
+                   {currentStep.commits.main.map((c) => (
+                     <motion.div 
+                       key={c}
+                       layoutId={`commit-${c}`}
+                       initial={{ scale: 0, opacity: 0 }}
+                       animate={{ scale: 1, opacity: 1 }}
+                       exit={{ scale: 0, opacity: 0 }}
+                       className={`w-10 h-10 rounded-full border-2 flex items-center justify-center font-mono text-[10px] fw-bold shadow-xl transition-all ${
+                         c === 'M' ? 'bg-git/20 border-git text-git' : 
+                         c.includes("'") ? 'bg-primary/20 border-primary text-primary' :
+                         'bg-surface border-white/10 text-white'
+                       }`}
+                     >
+                        {c}
+                     </motion.div>
+                   ))}
+                </AnimatePresence>
+                <div className="absolute left-[-200px] right-[-200px] h-0.5 bg-white/5 -z-10 top-1/2" />
+             </div>
+          </div>
+
+          {/* Feature Timeline */}
+          <div className="relative flex items-center gap-4">
+             <span className="w-24 text-[10px] fw-black text-muted uppercase tracking-widest text-right mr-4">Your Feature</span>
+             <div className="flex items-center gap-4 relative">
+                <AnimatePresence mode="popLayout">
+                   {currentStep.commits.feature.map((c) => (
+                     <motion.div 
+                       key={c}
+                       layoutId={`commit-${c}`}
+                       initial={{ y: 0, opacity: 0 }}
+                       animate={{ y: 0, opacity: 1 }}
+                       exit={{ y: -60, opacity: 0, scale: 0.5 }}
+                       className="w-10 h-10 rounded-full bg-surface border-2 border-primary/40 text-primary flex items-center justify-center font-mono text-[10px] fw-bold"
+                     >
+                        {c}
+                     </motion.div>
+                   ))}
+                </AnimatePresence>
+                <div className="absolute left-[-200px] right-[-200px] h-0.5 bg-white/5 -z-10 top-1/2" />
+                
+                {mode === 'merge' && step === 1 && (
+                  <motion.div 
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: 1 }}
+                    className="absolute -top-[48px] left-[110px]"
+                  >
+                     <svg width="40" height="48">
+                        <path d="M 0 48 Q 20 24 40 0" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="2" strokeDasharray="4 2" />
+                     </svg>
+                  </motion.div>
+                )}
+             </div>
+          </div>
        </div>
     </div>
   )
 }
 
-const HeadLab = () => {
-    const [step, setStep] = useState(0)
-    const steps = [
-      { 
-        title: "Initial State", 
-        desc: "HEAD points to the 'main' branch, which points to commit C1.", 
-        pos: { main: 0, head: 'main' } 
-      },
-      { 
-        title: "New Commit", 
-        desc: "You made C2. 'main' moved to C2, and HEAD followed 'main'.", 
-        pos: { main: 1, head: 'main' } 
-      },
-      { 
-        title: "Detached HEAD", 
-        desc: "You checked out C1 directly. HEAD now points to the commit, NOT a branch!", 
-        pos: { main: 1, head: 0 } 
-      }
-    ]
+function RemoteSyncLab() {
+  const [step, setStep] = useState(0)
+
+
+  const steps = [
+    {
+      title: "1. Divergence",
+      desc: "You have a new local commit (C2), but your teammate has already pushed (T1) to the server. You are out of sync!",
+      cmd: "# Team check...",
+      local: ['C1', 'C2'],
+      remote: ['C1', 'T1'],
+      tracking: ['C1']
+    },
+    {
+      title: "2. The Fetch",
+      desc: "Git downloads the teammate's commit (T1) into your 'Remote Tracking' branch (origin/main) so you can see it safely.",
+      cmd: "git fetch origin",
+      local: ['C1', 'C2'],
+      remote: ['C1', 'T1'],
+      tracking: ['C1', 'T1']
+    },
+    {
+      title: "3. The Integration",
+      desc: "You merge the remote changes into your local branch. Now your history contains both your work (C2) and theirs (T1).",
+      cmd: "git merge origin/main",
+      local: ['C1', 'T1', 'C2'],
+      remote: ['C1', 'T1'],
+      tracking: ['C1', 'T1']
+    },
+    {
+       title: "4. The Push",
+       desc: "Now that you are up-to-date, you can safely push your commit (C2) to the server for the whole team to see.",
+       cmd: "git push origin",
+       local: ['C1', 'T1', 'C2'],
+       remote: ['C1', 'T1', 'C2'],
+       tracking: ['C1', 'T1', 'C2']
+    }
+  ]
+
+  const current = steps[step]
+
+  return (
+    <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/10 shadow-2xl">
+       <div className="flex justify-between items-center mb-2">
+          <div className="flex flex-col">
+             <span className="text-xs text-secondary fw-black uppercase tracking-widest leading-none mb-2">Network Lab • Step {step + 1}</span>
+             <h3 className="text-xl fw-black text-white">{current.title}</h3>
+          </div>
+          <div className="flex gap-2">
+             <button disabled={step === 0} onClick={() => setStep(s => s - 1)} className="p-3 rounded-xl bg-surface2 border border-white/10 text-white disabled:opacity-30 hover:bg-white/10 transition-all"><ArrowLeft size={18} /></button>
+             <button disabled={step === steps.length - 1} onClick={() => setStep(s => s + 1)} className="px-5 py-3 rounded-xl bg-secondary text-black shadow-lg shadow-secondary/20 hover:scale-105 active:scale-95 transition-all text-sm fw-bold flex gap-2 items-center">Next <ArrowRight size={18} /></button>
+          </div>
+       </div>
+
+       <div className="w-full bg-black/60 rounded-2xl p-5 border border-white/10 flex flex-col gap-4">
+          <p className="text-sm text-white/90 leading-relaxed fw-medium">{current.desc}</p>
+          <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3">
+             <TermIcon size={18} className="text-muted" />
+             <code className="text-sm font-mono text-secondary fw-bold">
+                <span className="text-muted opacity-50 mr-2">$</span>
+                {current.cmd}
+             </code>
+          </div>
+       </div>
+
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4 pt-4 relative">
+          {/* Local Machine */}
+          <div className="bg-surface2/30 rounded-2xl p-6 border border-white/5 flex flex-col gap-6">
+             <div className="flex items-center gap-3 border-b border-white/5 pb-4">
+                <div className="p-2 rounded-lg bg-git/10 text-git">
+                   <Laptop size={18} />
+                </div>
+                <span className="text-[10px] fw-black text-muted uppercase tracking-widest">Local Repository</span>
+             </div>
+             
+             <div className="flex flex-col gap-8">
+                <div className="flex flex-col gap-2">
+                   <span className="text-[8px] fw-black text-muted/60 uppercase">Main Branch</span>
+                   <div className="flex flex-wrap gap-2">
+                      <AnimatePresence mode="popLayout">
+                         {current.local.map(c => (
+                           <motion.div 
+                              key={c} layoutId={`local-${c}`} 
+                              initial={{ scale: 0 }} animate={{ scale: 1 }}
+                              className={`w-8 h-8 rounded-lg flex items-center justify-center font-mono text-[9px] fw-bold border ${c === 'C2' ? 'bg-git border-git text-white' : 'bg-surface border-white/10 text-muted'}`}
+                           >
+                              {c}
+                           </motion.div>
+                         ))}
+                      </AnimatePresence>
+                   </div>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                   <span className="text-[8px] fw-black text-secondary/60 uppercase">Origin/Main (Tracking)</span>
+                   <div className="flex flex-wrap gap-2 opacity-50">
+                      <AnimatePresence mode="popLayout">
+                         {current.tracking.map(c => (
+                           <motion.div 
+                              key={c} layoutId={`track-${c}`}
+                              initial={{ scale: 0 }} animate={{ scale: 1 }}
+                              className="w-8 h-8 rounded-lg border border-dashed border-secondary/40 flex items-center justify-center font-mono text-[9px] fw-bold text-secondary"
+                           >
+                              {c}
+                           </motion.div>
+                         ))}
+                      </AnimatePresence>
+                   </div>
+                </div>
+             </div>
+          </div>
+
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:flex flex-col items-center gap-2 z-20">
+             <div className="w-10 h-10 rounded-full bg-black/60 border border-white/10 backdrop-blur-xl flex items-center justify-center text-muted">
+                {step === 1 ? <ArrowLeft className="animate-pulse text-secondary" /> : step === 3 ? <ArrowRight className="animate-pulse text-git" /> : <ShieldCheck size={20} />}
+             </div>
+          </div>
+
+          {/* GitHub Remote */}
+          <div className="bg-secondary/5 rounded-2xl p-6 border border-secondary/20 flex flex-col gap-6">
+             <div className="flex items-center gap-3 border-b border-secondary/10 pb-4">
+                <div className="p-2 rounded-lg bg-secondary/10 text-secondary">
+                   <Cloud size={18} />
+                </div>
+                <span className="text-[10px] fw-black text-secondary/60 uppercase tracking-widest">GitHub (Remote)</span>
+             </div>
+
+             <div className="flex flex-col gap-2 h-full justify-center">
+                <div className="flex flex-wrap gap-3 justify-center">
+                   <AnimatePresence mode="popLayout">
+                      {current.remote.map(c => (
+                        <motion.div 
+                           key={c} layoutId={`remote-${c}`}
+                           initial={{ scale: 0 }} animate={{ scale: 1 }}
+                           className={`w-12 h-12 rounded-xl flex items-center justify-center font-mono text-[11px] fw-bold border-2 ${c === 'T1' ? 'bg-secondary/20 border-secondary text-secondary' : 'bg-black/40 border-white/5 text-muted'}`}
+                        >
+                           {c}
+                        </motion.div>
+                      ))}
+                   </AnimatePresence>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+  )
+}
+
+function StageLab() {
+    const [staged, setStaged] = useState<string[]>([])
+    const [committed, setCommitted] = useState<string[]>([])
+    const [files] = useState(['file1.js', 'file2.css', 'file3.html'])
+    
+    const isStaged = (f: string) => staged.includes(f)
+    const isCommitted = (f: string) => committed.includes(f)
+    
+    const handleAdd = (f: string) => {
+      if (isStaged(f)) return
+      setStaged([...staged, f])
+    }
+    
+    const handleCommit = () => {
+      if (staged.length === 0) return
+      setCommitted([...committed, ...staged])
+      setStaged([])
+    }
+
+    const handleReset = () => {
+      setStaged([])
+      setCommitted([])
+    }
 
     return (
-      <div className="w-full flex flex-col items-center gap-6 p-4">
-        <div className="w-full max-w-lg flex items-center justify-between mb-4">
-           <div className="flex flex-col">
-              <span className="text-[10px] text-primary fw-black uppercase tracking-widest leading-none mb-1">HEAD Simulation • Step {step + 1}</span>
-              <h3 className="text-sm fw-black text-white">{steps[step].title}</h3>
+      <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/5 shadow-2xl">
+        <div className="grid grid-cols-3 gap-4 h-64">
+           {/* Working Directory */}
+           <div className="flex flex-col gap-3">
+              <span className="text-[10px] fw-black text-danger uppercase tracking-widest text-center">Working Dir</span>
+              <div className="flex-1 bg-black/40 rounded-2xl border border-danger/20 p-3 flex flex-col gap-2 relative">
+                 {files.filter(f => !isStaged(f) && !isCommitted(f)).map(f => (
+                   <motion.button 
+                     layoutId={`file-${f}`}
+                     key={f}
+                     onClick={() => handleAdd(f)}
+                     className="w-full p-3 bg-surface2 border border-danger/30 rounded-xl text-[10px] fw-bold font-mono text-white flex items-center gap-2 hover:bg-danger/20 hover:scale-105 active:scale-95 transition-all shadow-lg"
+                   >
+                     📄 {f}
+                   </motion.button>
+                 ))}
+                 {files.filter(f => !isStaged(f) && !isCommitted(f)).length === 0 && (
+                   <div className="absolute inset-0 flex items-center justify-center text-[9px] text-muted fw-bold opacity-50">Empty</div>
+                 )}
+              </div>
            </div>
-           <div className="flex gap-2">
-              <button disabled={step === 0} onClick={() => setStep(s => s - 1)} className="p-2 rounded-xl bg-white/5 border border-white/10 text-white disabled:opacity-20 hover:bg-white/10 transition-all"><ArrowLeft size={16} /></button>
-              <button disabled={step === steps.length - 1} onClick={() => setStep(s => s + 1)} className="px-4 py-2 rounded-xl bg-primary text-white shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all text-xs fw-bold"><ArrowRight size={16} /></button>
+
+           {/* Staging Area */}
+           <div className="flex flex-col gap-3">
+              <span className="text-[10px] fw-black text-primary uppercase tracking-widest text-center">Staging</span>
+              <div className="flex-1 bg-black/40 rounded-2xl border border-primary/20 p-3 flex flex-col gap-2 relative">
+                 {staged.map(f => (
+                   <motion.div 
+                     layoutId={`file-${f}`}
+                     key={f}
+                     className="w-full p-3 bg-surface2 border border-primary/30 rounded-xl text-[10px] fw-bold font-mono text-white flex items-center gap-2 shadow-lg"
+                   >
+                     📄 {f}
+                   </motion.div>
+                 ))}
+                 {staged.length === 0 && (
+                   <div className="absolute inset-0 flex items-center justify-center text-[9px] text-muted fw-bold opacity-50">Empty</div>
+                 )}
+              </div>
+           </div>
+
+           {/* Repository */}
+           <div className="flex flex-col gap-3">
+              <span className="text-[10px] fw-black text-git uppercase tracking-widest text-center">Repository</span>
+              <div className="flex-1 bg-black/40 rounded-2xl border border-git/20 p-3 flex flex-col gap-2 relative">
+                 {committed.map((f, i) => (
+                   <motion.div 
+                     layoutId={`file-${f}`}
+                     key={f}
+                     className="w-full p-3 bg-git border border-git rounded-xl text-[10px] fw-bold font-mono text-white flex items-center gap-2 shadow-lg shadow-git/20"
+                     style={{ zIndex: i }}
+                   >
+                     <CheckCircle size={12} className="text-white/80" /> {f}
+                   </motion.div>
+                 ))}
+                 {committed.length === 0 && (
+                   <div className="absolute inset-0 flex items-center justify-center text-[9px] text-muted fw-bold opacity-50">Empty</div>
+                 )}
+              </div>
            </div>
         </div>
-
-        <div className="w-full max-w-lg bg-black/40 rounded-3xl border border-white/5 p-8 relative min-h-[160px] flex flex-col items-center justify-center gap-10">
-           <div className="flex gap-12 relative">
-              <div className="absolute top-1/2 left-4 right-4 h-0.5 bg-white/10 -translate-y-1/2" />
-              {[0, 1].map(i => (
-                <div key={i} className="flex flex-col items-center gap-3 relative">
-                   <div className="w-10 h-10 rounded-full bg-surface2 border border-white/10 flex items-center justify-center text-xs fw-bold font-mono">C{i+1}</div>
-                   {steps[step].pos.main === i && (
-                     <motion.div layoutId="main-label" className="absolute -bottom-8 px-2 py-1 rounded bg-git text-[8px] fw-black text-white">MAIN</motion.div>
-                   )}
-                   {steps[step].pos.head === i && (
-                     <motion.div layoutId="head-label" className="absolute -top-8 px-2 py-1 rounded bg-primary text-[8px] fw-black text-white">HEAD 📍</motion.div>
-                   )}
-                </div>
-              ))}
+        
+        <div className="flex justify-between items-start px-2 mt-4">
+           <div className="text-[12px] text-white/70 max-w-[200px] leading-relaxed fw-med">
+             {staged.length === 0 && committed.length === 0 && "1. Click a file in the Working Directory to add it to staging."}
+             {staged.length > 0 && "2. Hit 'Git Commit' to save staged files to the repository permanently."}
+             {committed.length > 0 && staged.length === 0 && "3. Committed! Files are safely stored."}
            </div>
-           {steps[step].pos.head === 'main' && (
-              <motion.div layoutId="head-label" className="absolute top-12 right-1/4 -translate-y-full px-2 py-1 rounded bg-primary text-[8px] fw-black text-white">HEAD 📍</motion.div>
-           )}
-           <p className="text-[10px] text-muted text-center max-w-xs">{steps[step].desc}</p>
+           <div className="flex gap-2">
+             <button 
+               onClick={handleReset}
+               className="p-3 rounded-xl bg-surface2 text-muted hover:text-white transition-all border border-white/5 active:scale-95"
+               title="Reset Lab"
+             >
+               <RefreshCcw size={16} />
+             </button>
+             <button 
+               disabled={staged.length === 0} 
+               onClick={handleCommit} 
+               className="px-6 py-3 rounded-xl bg-git text-white text-[12px] fw-black disabled:opacity-20 flex items-center gap-2 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-git/20"
+             >
+               GIT COMMIT
+             </button>
+           </div>
         </div>
       </div>
     )
 }
 
-const UndoSandbox = () => {
+function HeadLab() {
+    const [step, setStep] = useState(0)
+    const steps = [
+      { 
+        title: "Initial State", 
+        desc: "HEAD points to the 'main' branch, which points to commit C1.", 
+        pos: { main: 0, head: 'main' },
+        cmd: "# On branch main"
+      },
+      { 
+        title: "New Commit", 
+        desc: "You made C2. 'main' moved to C2, and HEAD followed 'main'.", 
+        pos: { main: 1, head: 'main' },
+        cmd: "git commit -m 'Add C2'"
+      },
+      { 
+        title: "Detached HEAD", 
+        desc: "You checked out C1 directly. HEAD now points to the commit, NOT a branch!", 
+        pos: { main: 1, head: 0 },
+        cmd: "git checkout C1"
+      }
+    ]
+
+    return (
+      <div className="w-full flex flex-col items-center gap-6 p-6 bg-surface/30 rounded-3xl border border-white/10 shadow-2xl">
+        <div className="w-full flex items-center justify-between mb-2">
+           <div className="flex flex-col">
+              <span className="text-xs text-primary fw-black uppercase tracking-widest leading-none mb-2">HEAD Simulation • Step {step + 1}</span>
+              <h3 className="text-xl fw-black text-white">{steps[step].title}</h3>
+           </div>
+           <div className="flex gap-2">
+              <button disabled={step === 0} onClick={() => setStep(s => s - 1)} className="p-3 rounded-xl bg-surface2 border border-white/10 text-white disabled:opacity-30 hover:bg-white/10 transition-all"><ArrowLeft size={18} /></button>
+              <button disabled={step === steps.length - 1} onClick={() => setStep(s => s + 1)} className="px-5 py-3 rounded-xl bg-primary text-white shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all text-sm fw-bold flex gap-2 items-center">Next <ArrowRight size={18} /></button>
+           </div>
+        </div>
+
+        {/* Narrative & Command Panel */}
+        <div className="w-full bg-black/60 rounded-2xl p-5 border border-white/10 flex flex-col gap-4">
+           <p className="text-sm text-white/90 leading-relaxed fw-medium">{steps[step].desc}</p>
+           <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3">
+              <TermIcon size={18} className="text-muted" />
+              <code className="text-sm font-mono text-git fw-bold">
+                 <span className="text-muted opacity-50 mr-2">$</span>
+                 {steps[step].cmd}
+              </code>
+           </div>
+        </div>
+
+        {/* Visualization */}
+        <div className="w-full bg-surface2/40 rounded-2xl border border-white/5 p-12 relative min-h-[220px] flex flex-col items-center justify-center gap-12 mt-2">
+           <div className="flex gap-24 relative">
+              <div className="absolute top-1/2 left-6 right-6 h-1 bg-white/10 -translate-y-1/2 rounded-full" />
+              {[0, 1].map(i => (
+                <div key={i} className="flex flex-col items-center gap-4 relative">
+                   <div className={`w-16 h-16 rounded-full border-4 flex items-center justify-center text-lg fw-black font-mono shadow-xl transition-all ${step >= i ? 'bg-surface border-git text-white shadow-git/20 scale-100' : 'bg-surface2 border-white/5 text-muted opacity-30 scale-90'}`}>C{i+1}</div>
+                   {steps[step].pos.main === i && (
+                     <motion.div layoutId="main-label" className="absolute -bottom-12 px-4 py-2 rounded-lg bg-git text-[11px] fw-black text-white shadow-lg">MAIN</motion.div>
+                   )}
+                   {steps[step].pos.head === i && (
+                     <motion.div layoutId="head-label" className="absolute -top-12 px-4 py-2 rounded-lg bg-primary text-[11px] fw-black text-white shadow-lg shadow-primary/20 z-10">HEAD 📍</motion.div>
+                   )}
+                </div>
+              ))}
+           </div>
+           
+           {steps[step].pos.head === 'main' && (
+              <motion.div layoutId="head-label" className="absolute top-6 right-8 px-4 py-2 rounded-lg bg-primary text-[11px] fw-black text-white shadow-lg shadow-primary/20 z-10">
+                 HEAD 📍 (attached to Main)
+              </motion.div>
+           )}
+        </div>
+      </div>
+    )
+}
+
+function UndoSandbox() {
   const [mode, setMode] = useState<'revert' | 'reset'>('revert')
-  const [commits] = useState(['C1', 'C2', 'C3 (Error)'])
+  const [step, setStep] = useState(0)
+  
+  const scenarios = {
+    revert: [
+      {
+        title: "1. Healthy State",
+        desc: "You are working normally. History is clean and stable.",
+        cmd: "# on branch main",
+        commits: ['C1', 'C2']
+      },
+      {
+        title: "2. The Mistake",
+        desc: "You accidentally committed code that breaks the build (C3).",
+        cmd: "git commit -m 'Oops, bug!'",
+        commits: ['C1', 'C2', 'C3 (Error)']
+      },
+      {
+        title: "3. Safe Revert",
+        desc: "You run revert. Git creates a NEW commit (C4) that undoes C3's changes. History is preserved.",
+        cmd: "git revert HEAD",
+        commits: ['C1', 'C2', 'C3 (Error)', 'C4 (Fix)']
+      }
+    ],
+    reset: [
+      {
+        title: "1. Healthy State",
+        desc: "You are working normally. History is clean and stable.",
+        cmd: "# on branch main",
+        commits: ['C1', 'C2']
+      },
+      {
+        title: "2. The Mistake",
+        desc: "You accidentally committed code that breaks the build (C3).",
+        cmd: "git commit -m 'Oops, bug!'",
+        commits: ['C1', 'C2', 'C3 (Error)']
+      },
+      {
+        title: "3. Hard Reset",
+        desc: "You run reset --hard. The timeline moves back to C2, and C3 is physically deleted from history.",
+        cmd: "git reset --hard HEAD~1",
+        commits: ['C1', 'C2']
+      }
+    ]
+  }
+
+  const currentScenario = scenarios[mode]
+  const currentStep = currentScenario[step] || currentScenario[0]
 
   return (
-    <div className="w-full flex flex-col gap-6 p-6">
-       <div className="flex justify-center gap-4">
-          <button onClick={() => setMode('revert')} className={`px-4 py-2 rounded-xl text-[10px] fw-black transition-all ${mode === 'revert' ? 'bg-primary text-white' : 'bg-surface2 text-muted'}`}>SIMULATE REVERT</button>
-          <button onClick={() => setMode('reset')} className={`px-4 py-2 rounded-xl text-[10px] fw-black transition-all ${mode === 'reset' ? 'bg-danger text-white' : 'bg-surface2 text-muted'}`}>SIMULATE RESET</button>
+    <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/10 shadow-2xl">
+       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-2">
+          <div className="flex flex-col">
+             <span className="text-xs text-primary fw-black uppercase tracking-widest leading-none mb-2">Time Travel Simulation</span>
+             <h3 className="text-xl fw-black text-white">{currentStep.title}</h3>
+          </div>
+          <div className="flex gap-2 bg-black/40 p-1.5 rounded-2xl border border-white/10">
+             <button 
+               onClick={() => { setMode('revert'); setStep(0); }} 
+               className={`px-5 py-2.5 rounded-xl text-xs fw-bold transition-all ${mode === 'revert' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-muted hover:text-white'}`}
+             >
+               Revert Path
+             </button>
+             <button 
+               onClick={() => { setMode('reset'); setStep(0); }} 
+               className={`px-5 py-2.5 rounded-xl text-xs fw-bold transition-all ${mode === 'reset' ? 'bg-danger text-white shadow-lg shadow-danger/20' : 'text-muted hover:text-white'}`}
+             >
+               Reset Path
+             </button>
+          </div>
        </div>
-       <div className="bg-black/40 rounded-3xl p-8 border border-white/5 flex flex-col items-center gap-8 relative overflow-hidden">
-          <div className="flex gap-6">
+
+       {/* Narrative & Command Panel */}
+        <div className="w-full bg-black/60 rounded-2xl p-5 border border-white/10 flex flex-col gap-4">
+           <div className="flex justify-between items-start">
+              <p className="text-sm text-white/90 leading-relaxed fw-medium max-w-[70%]">
+                 {currentStep.desc}
+              </p>
+              <div className="flex gap-2">
+                 <button 
+                   disabled={step === 0} 
+                   onClick={() => setStep(s => s - 1)} 
+                   className="p-2 rounded-xl bg-surface2 border border-white/10 text-white disabled:opacity-30 hover:bg-white/10 transition-all"
+                 >
+                   <ArrowLeft size={16} />
+                 </button>
+                 <button 
+                   disabled={step === currentScenario.length - 1} 
+                   onClick={() => setStep(s => s + 1)} 
+                   className={`px-4 py-2 rounded-xl text-white shadow-lg transition-all text-xs fw-bold flex gap-2 items-center ${mode === 'revert' ? 'bg-primary shadow-primary/20' : 'bg-danger shadow-danger/20'} disabled:opacity-30`}
+                 >
+                   Next <ArrowRight size={16} />
+                 </button>
+              </div>
+           </div>
+           <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3">
+              <TermIcon size={18} className="text-muted" />
+              <code className={`text-sm font-mono fw-bold ${mode === 'revert' ? 'text-primary' : 'text-danger'}`}>
+                 <span className="text-muted opacity-50 mr-2">$</span>
+                 {currentStep.cmd}
+              </code>
+           </div>
+        </div>
+
+       <div className="bg-surface2/40 rounded-3xl border border-white/5 p-12 flex flex-col items-center justify-center gap-8 relative min-h-[220px]">
+          <div className="flex items-center relative w-full justify-center">
              <AnimatePresence mode="popLayout">
-                {(mode === 'revert' ? [...commits, 'C4 (Fix)'] : commits.slice(0, 2)).map((c, i) => (
-                  <motion.div 
-                    layout
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0, opacity: 0 }}
-                    key={c}
-                    className={`w-12 h-12 rounded-2xl border flex items-center justify-center text-[10px] fw-black font-mono shadow-xl ${i === 2 && mode === 'revert' ? 'border-danger/30 bg-danger/10 text-danger/50 line-through' : 'border-white/10 bg-surface2 text-white/90'}`}
-                  >
-                     {c}
+                {currentStep.commits.map((c, i) => (
+                  <motion.div key={c} layout className="flex items-center">
+                    <motion.div 
+                      layout
+                      initial={{ scale: 0, opacity: 0, rotate: -45 }}
+                      animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                      exit={{ scale: 0, opacity: 0, y: 50, rotate: 90, filter: 'blur(10px)' }}
+                      transition={{ type: 'spring', damping: 20 }}
+                      className={`w-20 h-20 rounded-full border-4 flex flex-col items-center justify-center text-[10px] fw-black font-mono shadow-xl relative z-10 transition-colors ${
+                        c.includes('Error')
+                           ? 'border-danger/40 bg-danger/10 text-danger/60 ' + (step === 2 && mode === 'revert' ? 'line-through' : '')
+                           : c.includes('Fix')
+                              ? 'border-primary bg-primary/20 text-primary shadow-primary/20' 
+                              : 'border-git/50 bg-surface text-white shadow-git/10'
+                      }`}
+                    >
+                       <span className="text-base">{c.split(' ')[0]}</span>
+                       {c.includes('(') && <span className="text-[8px] opacity-70 uppercase tracking-widest mt-1">{c.split(' ')[1]?.replace(/[()]/g, '')}</span>}
+                    </motion.div>
+                    
+                    {i < currentStep.commits.length - 1 && (
+                      <motion.div layout initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0 }} className="text-white/20 px-3">
+                         <div className="h-1 w-8 bg-white/10 rounded-full" />
+                      </motion.div>
+                    )}
                   </motion.div>
                 ))}
              </AnimatePresence>
           </div>
-          <p className="text-[10px] text-muted text-center max-w-xs">
-             {mode === 'revert' ? 'Revert adds a new commit to undo changes, preserving history.' : 'Reset --hard permanently deletes commits. Be careful!'}
-          </p>
        </div>
+
     </div>
   )
 }
 
-const CherryPickLab = () => {
-  const [isPicked, setIsPicked] = useState(false)
-  return (
-     <div className="w-full flex flex-col gap-10 p-8 bg-surface/30 rounded-3xl border border-white/5">
-        <div className="flex flex-col gap-10">
-           <div className="relative">
-              <span className="text-[9px] fw-black text-git uppercase tracking-widest absolute -top-4">Main Branch</span>
-              <div className="h-16 bg-black/40 rounded-2xl border border-white/5 flex items-center px-6 gap-6">
-                 <div className="w-8 h-8 rounded-lg bg-surface2 border border-white/10 flex items-center justify-center text-[10px] text-muted font-mono opacity-50">C1</div>
-                 <div className="w-8 h-8 rounded-lg bg-surface2 border border-white/10 flex items-center justify-center text-[10px] text-muted font-mono opacity-50">C2</div>
-                 <AnimatePresence>
-                    {isPicked && (
-                       <motion.div initial={{ scale: 0, x: 50 }} animate={{ scale: 1, x: 0 }} className="w-8 h-8 rounded-lg bg-xp border border-xp text-black flex items-center justify-center text-[10px] fw-black font-mono">C*</motion.div>
-                    )}
-                 </AnimatePresence>
-              </div>
-           </div>
+function CherryPickLab() {
+  const [step, setStep] = useState(0)
+  const steps = [
+    { 
+      title: "1. The Scenario", 
+      desc: "Problem: You fixed a critical bug (Fix) on the 'Experimental' branch, but the rest of that branch is a mess. You only want the fix!", 
+      main: ['C1', 'C2'],
+      feat: ['A', 'B', 'Fix'],
+      cmd: "git log --oneline"
+    },
+    { 
+      title: "2. The Harvest", 
+      desc: "Instead of merging the whole experimental branch, you 'Cherry-pick' just the Fix commit. Surgical precision!", 
+      main: ['C1', 'C2'],
+      feat: ['A', 'B', 'Fix'],
+      activeHash: 'Fix',
+      cmd: "git cherry-pick [Fix-Hash]"
+    },
+    { 
+      title: "3. Clean Result", 
+      desc: "The fix is now in your main branch as a new commit (Fix*). Your experimental branch stays messy, but your main branch is patched.", 
+      main: ['C1', 'C2', 'Fix*'],
+      feat: ['A', 'B', 'Fix'],
+      cmd: "# Done!"
+    }
+  ]
 
-           <div className="relative">
-              <span className="text-[9px] fw-black text-primary uppercase tracking-widest absolute -top-4">Feature Branch</span>
-              <div className="h-16 bg-black/40 rounded-2xl border border-white/5 flex items-center px-6 gap-6">
-                 <div className="w-8 h-8 rounded-lg bg-surface2 border border-white/10 flex items-center justify-center text-[10px] text-muted font-mono opacity-50">A</div>
-                 <div className="w-8 h-8 rounded-lg bg-surface2 border border-white/10 flex items-center justify-center text-[10px] text-muted font-mono opacity-50">B</div>
-                 <motion.button 
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={() => setIsPicked(true)}
-                    className={`w-8 h-8 rounded-lg flex items-center justify-center text-[10px] fw-black transition-all shadow-lg ${isPicked ? 'bg-xp text-black cursor-default' : 'bg-primary text-white hover:shadow-primary/40'}`}
-                 >
-                    {isPicked ? <CheckCircle size={14} className="text-black" /> : 'C'}
-                 </motion.button>
-              </div>
-           </div>
-        </div>
-     </div>
+  return (
+    <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/10 shadow-2xl">
+       <div className="w-full flex items-center justify-between mb-2">
+          <div className="flex flex-col">
+             <span className="text-xs text-xp fw-black uppercase tracking-widest leading-none mb-2">Cherry-Pick Simulation • Step {step + 1}</span>
+             <h3 className="text-xl fw-black text-white">{steps[step].title}</h3>
+          </div>
+          <div className="flex gap-2">
+             <button disabled={step === 0} onClick={() => setStep(s => s - 1)} className="p-3 rounded-xl bg-surface2 border border-white/10 text-white disabled:opacity-30 hover:bg-white/10 transition-all"><ArrowLeft size={18} /></button>
+             <button disabled={step === steps.length - 1} onClick={() => setStep(s => s + 1)} className="px-5 py-3 rounded-xl bg-xp text-black shadow-lg shadow-xp/20 hover:scale-105 active:scale-95 transition-all text-sm fw-bold flex gap-2 items-center">Next <ArrowRight size={18} /></button>
+          </div>
+       </div>
+
+       <div className="w-full bg-black/60 rounded-2xl p-5 border border-white/10 flex flex-col gap-4">
+          <p className="text-sm text-white/90 leading-relaxed fw-medium">{steps[step].desc}</p>
+          <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3">
+             <TermIcon size={18} className="text-muted" />
+             <code className="text-sm font-mono text-xp fw-bold">
+                <span className="text-muted opacity-50 mr-2">$</span>
+                {steps[step].cmd}
+             </code>
+          </div>
+       </div>
+
+       <div className="flex flex-col gap-10 mt-4 p-8 bg-surface2/20 rounded-2xl border border-white/5 relative overflow-hidden">
+          {/* Main Branch Line */}
+          <div className="relative">
+             <div className="flex items-center gap-6 relative z-10">
+                <span className="w-20 text-[10px] fw-black text-git uppercase tracking-widest">Main</span>
+                <div className="flex items-center gap-4">
+                   <AnimatePresence mode="popLayout">
+                      {steps[step].main.map((c, i) => (
+                        <div key={c} className="flex items-center">
+                           <motion.div 
+                              layoutId={`main-${c}`}
+                              initial={{ scale: 0, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              className={`w-10 h-10 rounded-lg flex items-center justify-center font-mono text-[10px] fw-bold border-2 ${c === 'C*' ? 'bg-xp border-xp text-black shadow-lg shadow-xp/30' : 'bg-surface border-white/10 text-muted'}`}
+                           >
+                              {c}
+                           </motion.div>
+                           {i < steps[step].main.length - 1 && <div className="w-6 h-0.5 bg-white/5" />}
+                        </div>
+                      ))}
+                   </AnimatePresence>
+                </div>
+             </div>
+             <div className="absolute left-[84px] right-0 h-0.5 bg-white/5 top-1/2 -z-0" />
+          </div>
+
+          {/* Feature Branch Line */}
+          <div className="relative">
+             <div className="flex items-center gap-6 relative z-10">
+                <span className="w-20 text-[10px] fw-black text-primary uppercase tracking-widest">Feat</span>
+                <div className="flex items-center gap-4">
+                   {steps[step].feat.map((c, i) => (
+                     <div key={c} className="flex items-center">
+                        <motion.div 
+                           className={`w-10 h-10 rounded-lg flex items-center justify-center font-mono text-[10px] fw-bold border-2 transition-all ${
+                             steps[step].activeHash === c 
+                               ? 'bg-xp border-xp text-black scale-110 shadow-xl z-20' 
+                               : 'bg-surface2 border-white/5 text-muted opacity-40'
+                           }`}
+                        >
+                           {c}
+                        </motion.div>
+                        {i < steps[step].feat.length - 1 && <div className="w-6 h-0.5 bg-white/5" />}
+                     </div>
+                   ))}
+                </div>
+             </div>
+             <div className="absolute left-[84px] right-0 h-0.5 bg-white/5 top-1/2 -z-0" />
+          </div>
+
+          {/* Connection Line */}
+          <div className="absolute left-[104px] top-[48px] bottom-[48px] w-0.5 bg-white/5 border-l border-dashed border-white/10" />
+       </div>
+    </div>
   )
 }
 
@@ -1581,6 +2045,307 @@ function DragClassifyGame({ categories, items }: { categories: { id: string, lab
            </div>
         </motion.div>
       )}
+    </div>
+  )
+}
+function StashLab() {
+  const [step, setStep] = useState(0)
+  const steps = [
+    { 
+      title: "1. Muddy Work", 
+      desc: "You have unfinished files. You must switch branches to fix a bug, but you aren't ready to commit.", 
+      wd: ['feat_progress.js', 'style_fix.css'],
+      stash: [],
+      cmd: "# I'm not ready to commit yet..."
+    },
+    { 
+      title: "2. Git Stash", 
+      desc: "You 'stash' your changes. Git takes them and puts them on a hidden shelf, leaving your workspace clean.", 
+      wd: [],
+      stash: ['feat_progress.js', 'style_fix.css'],
+      cmd: "git stash"
+    },
+    { 
+      title: "3. Clean Context", 
+      desc: "Now your workspace is clean. You can safely switch branches, do your other work, and come back.", 
+      wd: [],
+      stash: ['feat_progress.js', 'style_fix.css'],
+      cmd: "git checkout hotfix-branch"
+    },
+    { 
+      title: "4. Git Stash Pop", 
+      desc: "Back on main, you 'pop' the stash. Your work safely returns to your folders exactly where you left it.", 
+      wd: ['feat_progress.js', 'style_fix.css'],
+      stash: [],
+      cmd: "git stash pop"
+    }
+  ]
+
+  return (
+    <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/10 shadow-2xl">
+       <div className="w-full flex items-center justify-between mb-2">
+          <div className="flex flex-col">
+             <span className="text-xs text-primary fw-black uppercase tracking-widest leading-none mb-2">Stash Simulation • Step {step + 1}</span>
+             <h3 className="text-xl fw-black text-white">{steps[step].title}</h3>
+          </div>
+          <div className="flex gap-2">
+             <button disabled={step === 0} onClick={() => setStep(s => s - 1)} className="p-3 rounded-xl bg-surface2 border border-white/10 text-white disabled:opacity-30 hover:bg-white/10 transition-all"><ArrowLeft size={18} /></button>
+             <button disabled={step === steps.length - 1} onClick={() => setStep(s => s + 1)} className="px-5 py-3 rounded-xl bg-primary text-white shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all text-sm fw-bold flex gap-2 items-center">Next <ArrowRight size={18} /></button>
+          </div>
+       </div>
+
+       <div className="w-full bg-black/60 rounded-2xl p-5 border border-white/10 flex flex-col gap-4">
+          <p className="text-sm text-white/90 leading-relaxed fw-medium">{steps[step].desc}</p>
+          <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3">
+             <TermIcon size={18} className="text-muted" />
+             <code className="text-sm font-mono text-git fw-bold">
+                <span className="text-muted opacity-50 mr-2">$</span>
+                {steps[step].cmd}
+             </code>
+          </div>
+       </div>
+
+       <div className="grid grid-cols-2 gap-6 mt-2">
+          {/* Working Dir Column */}
+          <div className="flex flex-col gap-3">
+             <span className="text-[10px] fw-black text-muted uppercase tracking-widest text-center">Working Directory</span>
+             <div className="bg-surface2/40 rounded-2xl border border-white/5 p-6 min-h-[160px] flex flex-col gap-3 items-center justify-center">
+                <AnimatePresence mode="popLayout">
+                   {steps[step].wd.map(f => (
+                     <motion.div 
+                       layoutId={`stash-file-${f}`}
+                       key={f} 
+                       initial={{ scale: 0, opacity: 0 }}
+                       animate={{ scale: 1, opacity: 1 }}
+                       exit={{ y: 20, opacity: 0 }}
+                       className="w-full p-3 bg-surface border border-white/10 rounded-xl text-[10px] fw-bold font-mono text-white flex items-center gap-2"
+                     >
+                        📄 {f}
+                     </motion.div>
+                   ))}
+                </AnimatePresence>
+                {steps[step].wd.length === 0 && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.3 }} className="text-[10px] fw-bold italic text-muted">Clean Workspace ✨</motion.div>
+                )}
+             </div>
+          </div>
+
+          {/* Stash Shelf Column */}
+          <div className="flex flex-col gap-3">
+             <span className="text-[10px] fw-black text-primary uppercase tracking-widest text-center">Git Stash (Hidden Shelf)</span>
+             <div className="bg-primary/5 rounded-2xl border border-primary/10 p-6 min-h-[160px] flex flex-col gap-3 items-center justify-center">
+                <AnimatePresence mode="popLayout">
+                   {steps[step].stash.map(f => (
+                     <motion.div 
+                       layoutId={`stash-file-${f}`}
+                       key={f} 
+                       initial={{ y: -20, opacity: 0 }}
+                       animate={{ scale: 1, opacity: 1, y: 0 }}
+                       exit={{ scale: 0, opacity: 0 }}
+                       className="w-full p-3 bg-primary/20 border border-primary/30 rounded-xl text-[10px] fw-bold font-mono text-white flex items-center gap-2"
+                     >
+                        📦 {f}
+                     </motion.div>
+                   ))}
+                </AnimatePresence>
+                {steps[step].stash.length === 0 && (
+                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.2 }} className="text-[10px] fw-bold italic text-white/50">Shelf Empty</motion.div>
+                )}
+             </div>
+          </div>
+       </div>
+    </div>
+  )
+}
+function BisectLab() {
+  const [step, setStep] = useState(0)
+  const marked: Partial<Record<number, 'good' | 'bad'>> = useMemo(() => {
+    if (step === 1) return { 1: 'good', 7: 'bad', 4: 'bad' }
+    if (step === 2) return { 1: 'good', 7: 'bad', 4: 'bad', 2: 'good' }
+    if (step === 3 || step === 4) return { 1: 'good', 7: 'bad', 4: 'bad', 2: 'good', 3: 'bad' }
+    return { 1: 'good', 7: 'bad' }
+  }, [step])
+
+  const steps = [
+    {
+      title: "1. The Bug Hunter",
+      desc: "A bug was introduced somewhere! Commit 1 is 'Good' (Green), but Commit 7 is 'Bad' (Red). Let's find the exact culprit.",
+      cmd: "git bisect start",
+      focus: null
+    },
+    {
+      title: "2. The Middle Ground",
+      desc: "Git picks the middle commit (4) for you to test. You run your tests and find it's also 'Bad'.",
+      cmd: "git bisect bad",
+      focus: 4
+    },
+    {
+      title: "3. Narrowing Down",
+      desc: "Since 4 is Bad, the bug must be between 1 and 4. Git now suggests Commit 2. You test it and it's 'Good'!",
+      cmd: "git bisect good",
+      focus: 2
+    },
+    {
+       title: "4. The Final Check",
+       desc: "The search is almost over. Git picks Commit 3. You test it and it's 'Bad'. That's it!",
+       cmd: "git bisect bad",
+       focus: 3
+    },
+    {
+       title: "5. Culprit Found!",
+       desc: "Commit 3 is the first 'Bad' commit. You found the needle in the haystack! Now you can fix it.",
+       cmd: "a1b2c3d is the first bad commit",
+       focus: 3
+    }
+  ]
+
+  const current = steps[step]
+
+  return (
+    <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/10 shadow-2xl">
+       <div className="flex justify-between items-center mb-2">
+          <div className="flex flex-col">
+             <span className="text-xs text-primary fw-black uppercase tracking-widest leading-none mb-2">Bisect Lab • Step {step + 1}</span>
+             <h3 className="text-xl fw-black text-white">{current.title}</h3>
+          </div>
+          <div className="flex gap-2">
+             <button disabled={step === 0} onClick={() => setStep(s => s - 1)} className="p-3 rounded-xl bg-surface2 border border-white/10 text-white disabled:opacity-30 hover:bg-white/10 transition-all"><ArrowLeft size={18} /></button>
+             <button disabled={step === steps.length - 1} onClick={() => setStep(s => s + 1)} className="px-5 py-3 rounded-xl bg-primary text-white shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all text-sm fw-bold flex gap-2 items-center">Next <ArrowRight size={18} /></button>
+          </div>
+       </div>
+
+       <div className="w-full bg-black/60 rounded-2xl p-5 border border-white/10 flex flex-col gap-4">
+          <p className="text-sm text-white/90 leading-relaxed fw-medium">{current.desc}</p>
+          <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3">
+             <TermIcon size={18} className="text-muted" />
+             <code className="text-sm font-mono text-primary fw-bold">
+                <span className="text-muted opacity-50 mr-2">$</span>
+                {current.cmd}
+             </code>
+          </div>
+       </div>
+
+       <div className="bg-surface2/40 rounded-2xl border border-white/5 p-10 mt-4 relative flex items-center justify-between gap-2 overflow-hidden">
+          <div className="absolute top-1/2 left-10 right-10 h-1 bg-white/5 -translate-y-1/2 rounded-full" />
+          {[1, 2, 3, 4, 5, 6, 7].map(i => (
+            <div key={i} className="flex flex-col items-center gap-4 relative z-10">
+               <motion.div 
+                 animate={{ 
+                   scale: current.focus === i ? 1.2 : 1,
+                   borderColor: marked[i] === 'good' ? '#06d6a0' : marked[i] === 'bad' ? '#ff4b4b' : 'rgba(255,255,255,0.1)',
+                   backgroundColor: marked[i] === 'good' ? 'rgba(6, 214, 160, 0.1)' : marked[i] === 'bad' ? 'rgba(255, 75, 75, 0.1)' : 'rgba(0,0,0,0.4)'
+                 }}
+                 className={`w-10 h-10 rounded-full border-2 flex items-center justify-center font-mono text-[10px] fw-bold shadow-xl transition-all ${current.focus === i ? 'ring-4 ring-primary/20' : ''}`}
+               >
+                  {i}
+               </motion.div>
+               {marked[i] && (
+                 <motion.span 
+                   initial={{ y: 20, opacity: 0 }} 
+                   animate={{ y: 0, opacity: 1 }}
+                   className={`text-[8px] fw-black uppercase tracking-widest ${marked[i] === 'good' ? 'text-git' : 'text-danger'}`}
+                 >
+                   {marked[i]}
+                 </motion.span>
+               )}
+               {current.focus === i && (
+                 <motion.div layoutId="cursor" className="absolute -top-10 text-primary animate-bounce">
+                    <ArrowUp size={20} />
+                 </motion.div>
+               )}
+            </div>
+          ))}
+       </div>
+    </div>
+  )
+}
+
+function IgnoreLab() {
+  const [ignored, setIgnored] = useState<string[]>([])
+  const [feedback, setFeedback] = useState<string | null>(null)
+  
+  const files = [
+    { name: 'index.html', type: 'code', shouldIgnore: false, tip: "Keep! This is your project's heart." },
+    { name: 'node_modules/', type: 'bulky', shouldIgnore: true, tip: "Ignore! It's too big and can be rebuilt via npm install." },
+    { name: '.env', type: 'secret', shouldIgnore: true, tip: "IGNORE! Never share your API keys or passwords." },
+    { name: 'style.css', type: 'code', shouldIgnore: false, tip: "Keep! Essential for your app's look." },
+    { name: 'secrets.txt', type: 'secret', shouldIgnore: true, tip: "IGNORE! Private notes should never be on GitHub." },
+    { name: 'dist/', type: 'bulky', shouldIgnore: true, tip: "Ignore! These are generated files, not source code." }
+  ]
+
+  const handleToggle = (name: string) => {
+    const file = files.find(f => f.name === name)
+    if (!file) return
+    
+    if (ignored.includes(name)) {
+      setIgnored(ignored.filter(n => n !== name))
+    } else {
+      setIgnored([...ignored, name])
+      setFeedback(file.tip)
+      setTimeout(() => setFeedback(null), 3000)
+    }
+  }
+
+  const score = files.filter(f => (f.shouldIgnore && ignored.includes(f.name)) || (!f.shouldIgnore && !ignored.includes(f.name))).length
+
+  return (
+    <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/10 shadow-2xl">
+       <div className="flex justify-between items-center mb-2">
+          <div className="flex flex-col">
+             <span className="text-xs text-secondary fw-black uppercase tracking-widest leading-none mb-2">Security Lab • .gitignore</span>
+             <h3 className="text-xl fw-black text-white">The Filtering Game</h3>
+          </div>
+          <div className="px-4 py-2 rounded-xl bg-black/40 border border-white/10 text-[10px] fw-black text-muted">
+             ACCURACY: <span className={score === files.length ? 'text-git' : 'text-primary'}>{Math.round((score/files.length)*100)}%</span>
+          </div>
+       </div>
+
+       <div className="w-full bg-black/60 rounded-2xl p-5 border border-white/10 flex flex-col gap-4">
+          <p className="text-sm text-white/90 leading-relaxed fw-medium">Click on the files you think should be **ignored** (kept out of Git).</p>
+          <AnimatePresence mode="wait">
+            {feedback && (
+              <motion.div 
+                initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }}
+                className="p-3 rounded-lg bg-primary/10 border border-primary/20 text-primary text-[11px] fw-bold flex items-center gap-2"
+              >
+                <Lightbulb size={14} /> {feedback}
+              </motion.div>
+            )}
+          </AnimatePresence>
+       </div>
+
+       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-2">
+          {files.map(f => (
+            <motion.button
+              key={f.name}
+              onClick={() => handleToggle(f.name)}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className={`p-4 rounded-2xl border-2 transition-all flex flex-col items-center gap-3 relative ${
+                ignored.includes(f.name) 
+                  ? 'bg-black/60 border-secondary shadow-lg shadow-secondary/10' 
+                  : 'bg-surface border-white/5 hover:border-white/10'
+              }`}
+            >
+               <div className={`p-3 rounded-xl ${ignored.includes(f.name) ? 'bg-secondary/10 text-secondary' : 'bg-white/5 text-muted'}`}>
+                  {f.type === 'secret' ? <ShieldCheck size={20} /> : f.type === 'bulky' ? <Cloud size={20} /> : <Code2 size={20} />}
+               </div>
+               <span className={`text-[10px] fw-black uppercase tracking-wider ${ignored.includes(f.name) ? 'text-white' : 'text-muted'}`}>{f.name}</span>
+               {ignored.includes(f.name) && (
+                 <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-secondary text-black flex items-center justify-center">
+                    <CheckCircle size={14} />
+                 </motion.div>
+               )}
+            </motion.button>
+          ))}
+       </div>
+
+       {score === files.length && (
+         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-git/10 border border-git/20 p-4 rounded-xl flex items-center justify-center gap-3">
+            <Trophy className="text-git" size={20} />
+            <span className="text-xs fw-black text-git uppercase tracking-widest">Perfect Selection! Your repo is safe and clean.</span>
+         </motion.div>
+       )}
     </div>
   )
 }

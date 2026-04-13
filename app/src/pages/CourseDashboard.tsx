@@ -64,28 +64,36 @@ export default function CourseDashboard() {
     }
 
     // Calculating each skill by combining relevant track progress (max 100)
+    // ARC: Fundamentals, Object DB, Index, Core State
     skills[0].value = Math.min(100, 
-      getSkillValue('git', m => m === 'git-1' || m === 'git-3') * 0.5 + 
-      getSkillValue('docker', m => m === 'docker-1' || m === 'docker-2') * 0.5
+      getSkillValue('git', m => ['git-1', 'git-3', 'git-7', 'git-8'].includes(m), 4) * 0.7 + 
+      getSkillValue('docker', m => ['docker-1', 'docker-2'].includes(m)) * 0.3
     )
     
+    // WORKFLOWS: Branching, Remote Collab, Undo, Stash, Flow techniques
     skills[1].value = Math.min(100, 
-      getSkillValue('git', m => m.includes('4') || m.includes('5')) * 0.6 + 
-      getSkillValue('docker', m => m === 'docker-4', 1) * 0.4
+      getSkillValue('git', m => ['git-4', 'git-6', 'git-8', 'git-10'].includes(m), 4) * 0.7 + 
+      getSkillValue('docker', m => m === 'docker-4', 1) * 0.3
     )
     
+    // NETWORKING: Fetch, Push, Remote Repos, Pull Requests
     skills[2].value = Math.min(100, 
-      getSkillValue('docker', m => m === 'docker-7', 1) * 0.5 + 
-      getSkillValue('k8s', m => m === 'k8s-5' || m === 'k8s-4') * 0.5
+      getSkillValue('git', m => ['git-5'].includes(m), 1) * 0.6 + 
+      getSkillValue('docker', m => m === 'docker-7', 1) * 0.2 +
+      getSkillValue('k8s', m => ['k8s-4', 'k8s-5'].includes(m)) * 0.2
     )
     
+    // PERSISTENCE: Snapshots, Hashing, Object Database, Reflogs
     skills[3].value = Math.min(100, 
-      getSkillValue('docker', m => m === 'docker-6', 1) * 0.5 + 
-      getSkillValue('k8s', m => m === 'k8s-7' || m === 'k8s-6', 2) * 0.5
+      getSkillValue('git', m => ['git-3', 'git-7', 'git-9'].includes(m), 3) * 0.5 + 
+      getSkillValue('docker', m => m === 'docker-6', 1) * 0.3 + 
+      getSkillValue('k8s', m => ['k8s-6', 'k8s-7'].includes(m)) * 0.2
     )
     
+    // OPS & SCALE: Security (Ignore), Cleanup, Staging, Final Quiz
     skills[4].value = Math.min(100, 
-      getSkillValue('k8s', m => m === 'k8s-1' || m === 'k8s-3' || m === 'k8s-8', 3)
+      getSkillValue('git', m => ['git-9', 'git-11'].includes(m), 2) * 0.4 + 
+      getSkillValue('k8s', m => ['k8s-1', 'k8s-3', 'k8s-8'].includes(m), 3) * 0.6
     )
     
     return skills
@@ -143,8 +151,11 @@ export default function CourseDashboard() {
                 </div>
              </div>
              
-             <div className="flex-1 md:flex-none card p-4 py-3 border-purple-500/20 bg-purple-500/5 flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400">
+             <div 
+               onClick={() => navigate('/profile')}
+               className="flex-1 md:flex-none card p-4 py-3 border-purple-500/20 bg-purple-500/5 flex items-center gap-4 cursor-pointer hover:bg-purple-500/10 transition-all group/badge"
+             >
+                <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400 group-hover/badge:scale-110 transition-transform">
                   <Trophy size={20} />
                 </div>
                 <div>
