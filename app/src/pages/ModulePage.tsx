@@ -563,32 +563,74 @@ function SectionCard({ section }: { section: Section }) {
 
 function EducationAnimation({ type }: { type: string }) {
   const [input, setInput] = useState('Git')
-  const hash = useMemo(() => {
-    // Fake hash for visual demo
-    let h = 0;
-    for (let i = 0; i < input.length; i++) h = ((h << 5) - h) + input.charCodeAt(i) | 0
-    return Math.abs(h).toString(16).padEnd(40, 'f').slice(0, 40)
-  }, [input])
 
+  const hash = useMemo(() => {
+    // Simple but deterministic hash for educational visual demo
+    if (!type.includes('SHA')) return ''
+    let h1 = 0x811c9dc5, h2 = 0xad3f3d1e
+    for (let i = 0; i < input.length; i++) {
+      h1 = Math.imul(h1 ^ input.charCodeAt(i), 16777619)
+      h2 = Math.imul(h2 ^ input.charCodeAt(i), 0x5bd1e995)
+    }
+    const s1 = (h1 >>> 0).toString(16).padStart(8, '0')
+    const s2 = (h2 >>> 0).toString(16).padStart(8, '0')
+    const s3 = ((Math.imul(h1, h2) >>> 0).toString(16) + 'abcdef0123456789').slice(0, 24)
+    return (s1 + s2 + s3).slice(0, 40)
+  }, [input, type])
+  
   if (type.includes('SHA')) {
     return (
       <div className="w-full max-w-sm flex flex-col gap-4">
-         <div className="text-[10px] text-muted uppercase fw-black tracking-widest text-center">Avalanche Effect Simulator</div>
-         <input 
-           value={input} 
-           onChange={e => setInput(e.target.value)}
-           className="bg-black/20 border border-white/10 rounded-lg p-2 text-white text-center text-sm"
-           placeholder="Type something..."
-         />
-         <div className="bg-surface p-4 rounded-lg border border-primary/20 flex flex-col items-center">
-            <span className="text-[10px] text-primary fw-black uppercase mb-2">SHA-1 HASH (Snapshot ID)</span>
-            <span className="mono text-[11px] text-xp break-all text-center leading-relaxed">
+         <div className="flex items-center justify-between">
+           <div className="text-[10px] text-muted uppercase fw-black tracking-widest">Avalanche Effect Simulator</div>
+           <div className="flex gap-2">
+              <button 
+                onClick={() => setInput('Git')} 
+                className="text-[9px] px-2 py-0.5 rounded bg-white/5 border border-white/10 text-muted hover:text-white transition-colors"
+              >
+                Reset
+              </button>
+              <button 
+                onClick={() => setInput(input === 'Git' ? 'Git!' : 'Git')} 
+                className="text-[9px] px-2 py-0.5 rounded bg-primary/20 border border-primary/30 text-primary hover:bg-primary hover:text-white transition-all fw-bold"
+              >
+                Change 1 char
+              </button>
+           </div>
+         </div>
+         <div className="relative group">
+           <input 
+             value={input} 
+             onChange={e => setInput(e.target.value)}
+             className="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-white text-center text-sm font-medium focus:border-primary/50 outline-none transition-all shadow-inner"
+             placeholder="Type message here..."
+           />
+           <Sparkles size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-primary opacity-30 group-hover:opacity-100 transition-opacity" />
+         </div>
+         
+         <div className="bg-surface p-5 rounded-2xl border border-primary/20 flex flex-col items-center relative overflow-hidden shadow-2xl">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+            <div className="flex items-center gap-2 mb-3">
+              <CheckCircle size={14} className="text-primary" />
+              <span className="text-[10px] text-primary fw-black uppercase tracking-widest">Git Snapshot ID (SHA-1)</span>
+            </div>
+            <div className="mono text-[11px] sm:text-xs text-xp break-all text-center leading-relaxed tracking-wider bg-black/20 p-3 rounded-lg border border-white/5">
               {hash.split('').map((char, i) => (
-                <motion.span key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.01 }} className={/[a-f]/.test(char) ? 'text-primary' : ''}>
+                <motion.span 
+                  key={`${input}-${i}`}
+                  initial={{ opacity: 0, scale: 0.5 }} 
+                  animate={{ opacity: 1, scale: 1 }} 
+                  transition={{ delay: i * 0.005 }}
+                  className={/[a-f]/.test(char) ? 'text-primary/80' : 'text-xp'}
+                >
                   {char}
                 </motion.span>
               ))}
-            </span>
+            </div>
+            <div className="mt-3 flex items-center gap-1.5 opacity-50">
+               <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+               <span className="text-[9px] text-muted fw-bold uppercase">Integrity Verified</span>
+            </div>
          </div>
       </div>
     )

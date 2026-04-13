@@ -308,8 +308,8 @@ export const GIT_MODULES: Module[] = [
       },
       {
         type: 'concept',
-        title: '📦 Repository (repo)',
-        content: 'A repository is the **entire project** — all files, all history, all branches. Think of it as a supercharged folder that remembers everything that ever happened inside it.\n\n- **Local repo**: on your machine\n- **Remote repo**: on a server (GitHub, GitLab, etc.)'
+        title: '📦 Repository & Remotes',
+        content: 'A repository is the **entire project** — all files, all history. But there are two types:\n\n- **Local Repo**: On your machine. This is where your commits live first.\n- **Remote Repo**: On a server (GitHub/GitLab). This is how you share code.\n\nTo move work from your Local Repo to the Remote Repo, you use the **push** command.'
       },
       {
         type: 'concept',
@@ -337,12 +337,12 @@ export const GIT_MODULES: Module[] = [
         title: 'Concept Comparison',
         content: 'Quick reference for core Git terminology.',
         tableData: {
-          headers: ['Term', 'Analogia', 'Command'],
+          headers: ['Term', 'Analogia', 'Command', 'Location'],
           rows: [
-            ['Repository', 'The Library', 'git init'],
-            ['Commit', 'A polaroid photo', 'git commit'],
-            ['Branch', 'A parallel universe', 'git branch'],
-            ['Merge', 'Combining timelines', 'git merge']
+            ['Staging Area', 'The Loading Dock', 'git add', 'Local'],
+            ['Local Repo', 'The Private Vault', 'git commit', 'Local'],
+            ['Remote Repo', 'The Public Library', 'git push', 'Server/Cloud'],
+            ['Branch', 'Parallel Universe', 'git branch', 'Local/Server']
           ]
         }
       },
@@ -350,16 +350,17 @@ export const GIT_MODULES: Module[] = [
         type: 'code',
         title: 'Creating a commit',
         content: 'The three-step ritual every developer learns by heart:',
-        code: `# 1. Move to Staging Area (git add)
-git add filename.txt
-# or stage everything:
+        code: `# 1. Select changes (git add)
 git add .
 
-# 2. Move to Repository (git commit)
-git commit -m "Add user authentication feature"
+# 2. Create the snapshot (git commit)
+git commit -m "Fix login bug"
 
-# 3. Check what you've got
-git log --oneline`,
+# 3. Verify history
+git log --oneline
+
+# 4. Share with the team (git push)
+git push origin main`,
         language: 'bash'
       },
       {
