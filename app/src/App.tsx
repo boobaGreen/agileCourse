@@ -6,12 +6,14 @@ import ModulePage from './pages/ModulePage.tsx'
 import ProfilePage from './pages/ProfilePage.tsx'
 import CertRoadmapPage from './pages/CertRoadmapPage.tsx'
 import AppShell from './components/AppShell.tsx'
+import ScrollToTop from './components/ScrollToTop.tsx'
 
 function App() {
   const userName = useAppStore((s) => s.userName)
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route
