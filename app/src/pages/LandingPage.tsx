@@ -1,9 +1,31 @@
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '../store/useAppStore'
-import { ArrowRight, Sparkles, GitBranch, Box, Workflow, Terminal, Database, Code2 } from 'lucide-react'
+import { ArrowRight, Sparkles, GitBranch, Box, Workflow, Terminal, Database, Code2, type LucideIcon } from 'lucide-react'
 
+
+const PARTICLE_ICONS = [GitBranch, Box, Workflow, Terminal, Database, Code2]
+
+interface Particle {
+  Icon: LucideIcon
+  isOdd: boolean
+  left: string
+  top: string
+  color: string
+  duration: number
+  size: number
+}
+
+const STATIC_PARTICLES: Particle[] = [...Array(24)].map((_, i) => ({
+  Icon: PARTICLE_ICONS[i % 6],
+  isOdd: i % 2 === 0,
+  left: `${(i * 13) % 100}%`,
+  top: `${(i * 17) % 100}%`,
+  color: i % 3 === 0 ? 'var(--color-git)' : i % 3 === 1 ? 'var(--color-docker)' : 'var(--color-k8s)',
+  duration: 7 + Math.random() * 5,
+  size: 16 + Math.random() * 16,
+}))
 
 export default function LandingPage() {
   const [name, setName] = useState('')
@@ -17,17 +39,7 @@ export default function LandingPage() {
     navigate('/dashboard')
   }
 
-  const particles = useMemo(() => {
-    return [...Array(24)].map((_, i) => ({
-      Icon: [GitBranch, Box, Workflow, Terminal, Database, Code2][i % 6],
-      isOdd: i % 2 === 0,
-      left: `${(i * 13) % 100}%`,
-      top: `${(i * 17) % 100}%`,
-      color: i % 3 === 0 ? 'var(--color-git)' : i % 3 === 1 ? 'var(--color-docker)' : 'var(--color-k8s)',
-      duration: 7 + Math.random() * 5,
-      size: 16 + Math.random() * 16,
-    }))
-  }, [])
+  const particles = STATIC_PARTICLES
 
   return (
     <div className="gradient-bg min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
