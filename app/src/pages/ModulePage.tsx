@@ -428,12 +428,20 @@ function SectionCard({ section }: { section: Section }) {
           <p key={i} className="mb-2 last:mb-0">
              {line.split(/\*\*(.*?)\*\*/g).map((part, pi) => {
                if (pi % 2 === 1) return <strong key={pi} className="text-white">{part}</strong>
-               // Split plain text segments by URLs and render them as links
-               return part.split(/(https?:\/\/[^\s),]+)/g).map((seg, si) =>
-                 /^https?:\/\//.test(seg)
-                   ? <a key={`${pi}-${si}`} href={seg} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline break-all">{seg}</a>
-                   : <React.Fragment key={`${pi}-${si}`}>{seg}</React.Fragment>
-               )
+               // Split by markdown links [text](url), then raw URLs
+               return part.split(/(\[[^\]]+\]\(https?:\/\/[^)]+\))|(https?:\/\/[^\s),]+)/g).map((seg, si) => {
+                 if (!seg) return null
+                 // Markdown link: [text](url)
+                 const mdMatch = seg.match(/^\[([^\]]+)\]\((https?:\/\/[^)]+)\)$/)
+                 if (mdMatch) {
+                   return <a key={`${pi}-${si}`} href={mdMatch[2]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">{mdMatch[1]} ↗</a>
+                 }
+                 // Raw URL
+                 if (/^https?:\/\//.test(seg)) {
+                   return <a key={`${pi}-${si}`} href={seg} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline break-all">{seg}</a>
+                 }
+                 return <React.Fragment key={`${pi}-${si}`}>{seg}</React.Fragment>
+               })
              })}
           </p>
         ))}
@@ -542,8 +550,10 @@ function SectionCard({ section }: { section: Section }) {
         <div className="mt-4 aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl">
           <iframe
             className="w-full h-full"
-            src={section.videoUrl.replace('watch?v=', 'embed/')}
-            title="Educational Video"
+            src={section.videoUrl.includes('playlist?list=')
+              ? section.videoUrl.replace('youtube.com/playlist?list=', 'youtube.com/embed/videoseries?list=')
+              : section.videoUrl.replace('watch?v=', 'embed/')}
+            title={section.title || 'Educational Video'}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           />
