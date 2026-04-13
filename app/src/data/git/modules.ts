@@ -1,5 +1,6 @@
 export interface QuizQuestion {
   id: string
+  track?: 'git' | 'docker' | 'k8s'
   question: string
   options: string[]
   correct: number
@@ -39,8 +40,10 @@ export interface Section {
   diagramSteps?: { label: string, icon?: string, color?: string }[]
   videoUrl?: string
   imageUrl?: string
-  gameType?: 'drag-order' | 'drag-classify' | 'choose-path' | 'terminal-sim'
+  animationType?: string
+  gameType?: 'drag-order' | 'drag-classify' | 'choose-path' | 'terminal-sim' | 'external'
   gameData?: unknown
+  externalLink?: { label: string, url: string, xpPrompt: string }
 }
 
 export const GIT_MODULES: Module[] = [
@@ -109,6 +112,26 @@ export const GIT_MODULES: Module[] = [
           { label: 'Alice\'s Laptop\n(Full Copy)', icon: '👩‍💻', color: '#06d6a0' },
           { label: 'Bob\'s PC\n(Full Copy)', icon: '👨‍💻', color: '#ffb703' }
         ]
+      },
+      {
+        type: 'animation',
+        title: '🧪 Manual Backups vs Git',
+        content: 'Why renaming files "final_v2" is a nightmare. See how Git keeps a clean, searchable history instead.',
+        animationType: 'git-vs-manual'
+      },
+      {
+        type: 'table',
+        title: '📊 Why use Version Control?',
+        content: 'A comparison of workflows:',
+        tableData: {
+          headers: ['Feature', 'Manual Backups', 'Git Version Control'],
+          rows: [
+            ['**History**', 'Filenames like "v2_FINAL"', 'Cryptographic SHA hashes'],
+            ['**Changes**', 'Full copies (wasteful)', 'Smart diffs (efficient)'],
+            ['**Undo**', 'Hard to find right version', 'Instant one-command revert'],
+            ['**Collaboration**','Impossible without ZIPs', 'Seamless branching/merging']
+          ]
+        }
       },
       {
         type: 'tip',
@@ -290,40 +313,56 @@ export const GIT_MODULES: Module[] = [
     sections: [
       {
         type: 'intro',
-        content: 'Before you type a single Git command, you need to understand four core ideas. Master these and everything else will click naturally.'
+        content: 'Before you type a single command, you need to understand how Git "thinks". Master these core concepts and everything else will click naturally.'
       },
       {
         type: 'concept',
-        title: '🗺️ The 3 Areas of Git',
-        content: 'Every file in your project exists in one of three states. Understanding how files move between these states is the essence of using Git:'
-      },
-      {
-        type: 'flowchart',
-        content: '',
-        diagramSteps: [
-          { label: 'Working Directory\n(Modified)', icon: '📝', color: '#ff4b4b' },
-          { label: 'Staging Area\n(Staged)', icon: '📦', color: '#ffd166' },
-          { label: 'Repository\n(Committed)', icon: '🏛️', color: '#06d6a0' }
-        ]
+        title: '🎯 The 4 Pillars',
+        content: 'Git is built on four fundamental concepts that transform a simple folder into a time-traveling database:\n\n1. **Repository**: Your project\'s home.\n2. **Commit**: A snapshot in time.\n3. **Branch**: A parallel timeline.\n4. **Merge**: Harmonizing two timelines.'
       },
       {
         type: 'concept',
-        title: '📦 Repository & Remotes',
-        content: 'A repository is the **entire project** — all files, all history. But there are two types:\n\n- **Local Repo**: On your machine. This is where your commits live first.\n- **Remote Repo**: On a server (GitHub/GitLab). This is how you share code.\n\nTo move work from your Local Repo to the Remote Repo, you use the **push** command.'
-      },
-      {
-        type: 'concept',
-        title: '📸 Commit & SHA Hash',
-        content: 'A commit is a **snapshot** of your project at a specific moment. \n\nEach commit has a unique ID called a **SHA Hash** (e.g., `a1b2c3d`). This is a 40-character fingerprint that ensures the integrity of your data. If even one character in one file changes, the hash changes completely.'
+        title: '📦 The Three Areas',
+        content: 'Every file in your project moves through three specific zones. Understanding this "Loading Dock" model is the secret to mastering the Git workflow.'
       },
       {
         type: 'animation',
-        content: 'SHA Hash visualization'
+        content: 'git-core-sim'
+      },
+      {
+        type: 'concept',
+        title: '📸 The Snapshot (Commit)',
+        content: 'A commit isn\'t just a list of changes; it\'s a **complete snapshot** of every file in your project. Each commit has a unique **SHA identifier** (e.g., `a1b2c3d`) — a digital fingerprint that ensures your history can never be tampered with.'
+      },
+      {
+        type: 'animation',
+        title: '🧪 The Hashing Lab',
+        content: 'Every commit has a unique SHA fingerprint. Change a single character in your code, and the fingerprint changes completely!',
+        animationType: 'git-hash-lab'
+      },
+      {
+        type: 'concept',
+        title: '🌿 Branches & Merges',
+        content: 'Think of branches as **disposable timelines**. You can create a branch to try a crazy idea, and if it works, you **merge** it back. If it fails, you just delete it. Your main code stays safe and stable.'
+      },
+      {
+        type: 'table',
+        title: '🎯 Core Concepts Cheat Sheet',
+        content: 'Use this as your mental map when working with Git:',
+        tableData: {
+          headers: ['Concept', 'Analogy', 'Primary Command'],
+          rows: [
+            ['**Working Directory**', 'Your Workbench (Messy)', '`Edit files`'],
+            ['**Staging Area**', 'The Loading Dock (Ready)', '`git add`'],
+            ['**Local Repository**', 'The Private Vault (Saved)', '`git commit`'],
+            ['**Remote Repository**', 'The Public Gallery (Shared)', '`git push`']
+          ]
+        }
       },
       {
         type: 'game',
-        title: 'Interactive Workflow',
-        content: 'Drag the Git operations into the correct order to complete a cycle of work.',
+        title: 'Interactive Workflow Challenge',
+        content: 'Now that you\'ve seen the simulation, can you order the workflow correctly?',
         gameType: 'drag-order',
         gameData: [
           { id: '1', label: 'Modify files in Working Dir' },
@@ -331,61 +370,6 @@ export const GIT_MODULES: Module[] = [
           { id: '3', label: 'Run "git commit" to save' },
           { id: '4', label: 'Run "git push" to share' }
         ]
-      },
-      {
-        type: 'table',
-        title: 'Concept Comparison',
-        content: 'Quick reference for core Git terminology.',
-        tableData: {
-          headers: ['Term', 'Analogia', 'Command', 'Location'],
-          rows: [
-            ['Staging Area', 'The Loading Dock', 'git add', 'Local'],
-            ['Local Repo', 'The Private Vault', 'git commit', 'Local'],
-            ['Remote Repo', 'The Public Library', 'git push', 'Server/Cloud'],
-            ['Branch', 'Parallel Universe', 'git branch', 'Local/Server']
-          ]
-        }
-      },
-      {
-        type: 'code',
-        title: 'Creating a commit',
-        content: 'The three-step ritual every developer learns by heart:',
-        code: `# 1. Select changes (git add)
-git add .
-
-# 2. Create the snapshot (git commit)
-git commit -m "Fix login bug"
-
-# 3. Verify history
-git log --oneline
-
-# 4. Share with the team (git push)
-git push origin main`,
-        language: 'bash'
-      },
-      {
-        type: 'concept',
-        title: '🌿 Branch',
-        content: 'A branch is an **independent line of development**. By default you work on `main`. When you want to add a feature, you create a new branch. A new branch shares all the commit history up to that point without duplicating files.\n\nBranches are **cheap** in Git — creating one takes milliseconds and costs almost no disk space.'
-      },
-      {
-        type: 'concept',
-        title: '🔀 Merge',
-        content: 'When your branch is ready, you **merge** it back into main. Git replays the changes and combines them. If two people changed the same line of code differently, Git asks you to resolve the **merge conflict** manually.'
-      },
-      {
-        type: 'table',
-        title: '🎯 The 4 Pillars Summary',
-        content: 'Here is how to think about the core concepts:',
-        tableData: {
-          headers: ['Concept', 'Analogy', 'Key Command', 'When to use'],
-          rows: [
-            ['**Repository**', 'Database / Vault', '`git init` / `git clone`', 'Starting a new project'],
-            ['**Commit**', 'Save Game Snapshot', '`git commit`', 'Reaching a logical checkpoint'],
-            ['**Branch**', 'Alternate Timeline', '`git branch` / `git switch`', 'Working on a new feature or fix safely'],
-            ['**Merge**', 'Combining Timelines', '`git merge`', 'Bringing a finished feature into the main project']
-          ]
-        }
       }
     ],
     quiz: [
@@ -487,22 +471,10 @@ git branch -d feature/login-page`,
         content: 'Both commands solve the same problem: integrating changes from one branch into another. The difference is **how** they do it.'
       },
       {
-        type: 'flowchart',
-        content: '**Merge**: Creates a new "merge commit" that ties the histories together. History is preserved exactly as it happened.',
-        diagramSteps: [
-          { label: 'Feature\nCommits', icon: '🌿', color: '#ffd166' },
-          { label: 'Merge\nCommit', icon: '🔀', color: '#ffb703' },
-          { label: 'Main\nBranch', icon: '🌲', color: '#06d6a0' }
-        ]
-      },
-      {
-        type: 'flowchart',
-        content: '**Rebase**: Replays your commits on top of another branch. Rewrites history to make it look like a single, straight line.',
-        diagramSteps: [
-          { label: 'Base\nBranch', icon: '🌲', color: '#06d6a0' },
-          { label: 'Replayed\nCommits', icon: '🔄', color: '#118ab2' },
-          { label: 'Linear\nHistory', icon: '📏', color: '#118ab2' }
-        ]
+        type: 'animation',
+        title: '🧪 Merge vs Rebase Lab',
+        content: 'Interactive comparison: See how `merge` creates a new path while `rebase` rewrites history for a clean line.',
+        animationType: 'git-merge-rebase-lab'
       },
       {
         type: 'table',
@@ -515,9 +487,14 @@ git branch -d feature/login-page`,
             ['**What it does**', 'Creates 1 new merge commit', 'Rewrites existing commits on top of base'],
             ['**Pros**', 'Shows exact historical truth. Non-destructive.', 'Clean, easy-to-read history. No merge commits.'],
             ['**Cons**', 'Cluttered history if there are many branches', 'Rewrites history (dangerous if shared with others)'],
-            ['**Rule of Thumb**', 'Use for shared branches and Pull Requests', 'Use to clean up local work before pushing']
+            ['**Rule of Thumb**', 'Use for shared branches and collaboration flows', 'Use to clean up local work before merging']
           ]
         }
+      },
+      {
+        type: 'concept',
+        title: '📤 Pull Requests (PR) — The Gatekeeper',
+        content: 'A **Pull Request** (or Merge Request in GitLab) is not a Git command, but a workflow supported by platforms like GitHub. It is a formal request to merge your feature branch into the main project.\n\n- **Review**: Teammates look at your code, suggest changes, and approve it.\n- **Discussion**: You can chat about the implementation directly on the code lines.\n- **Automation**: CI/CD tools test your code automatically before it is allowed in.\n\nOnce the PR is approved, the platform "merges" your branch for you (usually with a button click!).'
       },
       {
         type: 'code',
@@ -632,24 +609,27 @@ git rebase --abort`,
         type: 'code',
         title: '🔗 Essential remote commands',
         content: 'Working with remote repositories:',
-        code: `# Clone a repository (downloads everything + sets origin)
+        code: `# 1. Download the repo
 git clone https://github.com/company/repo.git
 
-# See your configured remotes
-git remote -v
-
-# Send your local commits to the remote
-git push origin main
-
-# Download remote changes (doesn't merge yet)
+# 2. Check for updates
 git fetch origin
 
-# Download AND merge remote changes  
+# 3. Pull (Merge)
 git pull origin main
 
-# Pull with rebase (cleaner history)
-git pull --rebase origin main`,
+# 4. Pull (Rebase)
+git pull --rebase origin main
+
+# 5. Push your work
+git push origin main`,
         language: 'bash'
+      },
+      {
+        type: 'animation',
+        title: '🧪 Remote Sync Lab',
+        content: 'Visualizing the bridge between your laptop and GitHub. Understand the flow of `push`, `fetch`, and `pull`.',
+        animationType: 'git-remote-sync-lab'
       },
       {
         type: 'flowchart',
@@ -673,17 +653,21 @@ git pull --rebase origin main`,
       },
       {
         type: 'table',
-        title: '✅ Good collaboration habits',
-        content: 'Rules to live by when working in a team:',
+        title: '✅ Git Etiquette: Team Rules',
+        content: 'Follow these "Rules of the Road" to avoid breaking the build and keep your teammates happy:',
         tableData: {
-          headers: ['Do', 'Don\'t'],
+          headers: ['✅ DO (Best Practices)', '❌ DON\'T (Danger Zones)'],
           rows: [
             ['`git pull --rebase` before starting work', 'Commit directly to the `main` branch'],
-            ['Push small, focused commits', 'Push giant, monolithic commits'],
-            ['Write clear "Why" commit messages', 'Write "Fix" or "WIP" commit messages'],
+            ['Push small, atomic commits', 'Push giant, "everything at once" commits'],
+            ['Explain **WHY** in commit messages', 'Write "Fix", "Update" or "WIP"'],
             ['Create a branch for every feature', 'Force push (`--force`) to shared branches']
           ]
         }
+      },
+      {
+        type: 'animation',
+        content: 'git-force-danger'
       }
     ],
     quiz: [
@@ -832,160 +816,61 @@ git pull --rebase origin main`,
     id: 'git-7',
     track: 'git',
     order: 7,
-    title: 'The Command Cheat Sheet',
-    subtitle: 'Every command you actually need, explained',
-    emoji: '📋',
-    duration: '10 min',
-    xpReward: 50,
+    title: 'Daily Fundamentals',
+    subtitle: 'Master the core loop: Init, Stage, Commit',
+    emoji: '⚙️',
+    duration: '8 min',
+    xpReward: 60,
     sections: [
       {
         type: 'intro',
-        content: 'You don\'t need to memorize everything — but these commands will cover 95% of your daily Git work. Bookmark this!'
+        content: 'To master Git, you must understand the **Three Areas** flow. These commands are your bread and butter.'
       },
       {
         type: 'code',
-        title: '⚙️ Setup & Config',
-        content: 'One-time setup:',
+        title: '⚙️ Configuration',
+        content: 'Before you commit, Git needs to know who you are:',
         code: `git config --global user.name "Your Name"
-git config --global user.email "you@company.com"
-git config --global init.defaultBranch main
-git config --global core.editor code   # use VS Code as editor`,
+git config --global user.email "you@email.com"
+git config --global init.defaultBranch main`,
         language: 'bash'
+      },
+      {
+        type: 'animation',
+        title: '🧪 The Staging Lab',
+        content: 'Interact with the 3 Git Areas. See how files move from your folder to the Staging area, and finally into the Repository snapshot.',
+        animationType: 'git-stage-lab'
       },
       {
         type: 'code',
-        title: '📦 Repository',
-        content: 'Starting and inspecting:',
-        code: `git init                    # Init a new repo in current folder
-git clone <url>             # Clone a remote repo
-git status                  # What's changed?
-git log --oneline --graph   # Visual history
-git diff                    # See unstaged changes
-git diff --staged           # See staged changes`,
+        title: '📦 Starting & Status',
+        content: 'Create a new repo or clone an existing one:',
+        code: `git init                    # Create .git folder
+git clone <url>             # Copy remote repo
+git status                  # What's happening?`,
         language: 'bash'
-      },
-      {
-        type: 'code',
-        title: '📸 Saving Changes',
-        content: 'The core daily loop:',
-        code: `git add .                   # Stage all changes
-git add <file>              # Stage specific file
-git commit -m "message"     # Save snapshot
-git commit --amend          # Edit last commit (local only!)
-git stash                   # Temporarily save uncommitted changes to switch context
-git stash pop               # Restore stashed changes`,
-        language: 'bash'
-      },
-      {
-        type: 'code',
-        title: '🌿 Branches',
-        content: 'Branch management:',
-        code: `git branch                  # List branches
-git switch -c <name>        # Create + switch
-git switch <name>           # Switch to existing
-git merge <branch>          # Merge branch in
-git branch -d <name>        # Delete (safe, merged only)
-git branch -D <name>        # Delete (force)`,
-        language: 'bash'
-      },
-      {
-        type: 'code',
-        title: '🌐 Remote',
-        content: 'Working with remotes:',
-        code: `git remote -v               # Show remotes
-git fetch origin            # Download (don't merge)
-git pull origin main        # Download + merge
-git push origin <branch>    # Push branch
-git push -u origin <branch> # Push + set upstream`,
-        language: 'bash'
-      },
-      {
-        type: 'concept',
-        title: '📍 Understanding HEAD',
-        content: 'In Git, **HEAD** is a pointer to the currently checked-out commit or branch. Think of it as a "You Are Here" icon on a map.'
-      },
-      {
-        type: 'flowchart',
-        content: '**How HEAD moves when you switch branches**',
-        diagramSteps: [
-          { label: 'Branch `main`\n(Commit A)', icon: '🌲', color: '#000000' },
-          { label: 'HEAD\n(You are here)', icon: '📍', color: '#ffb703' },
-          { label: 'Switch to\n`feature`', icon: '🏃', color: '#118ab2' },
-          { label: 'Branch `feature`\n(Commit B)', icon: '🌿', color: '#06d6a0' }
-        ]
       },
       {
         type: 'table',
-        title: '⏪ Undoing Things safely',
-        content: 'Not all undo commands are created equal. Pay attention to the risk level:',
+        title: '📸 The Daily Saving Loop',
+        content: 'Use these commands hundreds of times a day:',
         tableData: {
-          headers: ['Command', 'What it does', 'Risk Level'],
+          headers: ['Command', 'Purpose', 'Visual Effect'],
           rows: [
-            ['`git restore <file>`', 'Discards unstaged changes in a file', '🟢 Low (loses uncommitted work)'],
-            ['`git restore --staged <file>`', 'Removes a file from the Staging Area', '🟢 Safe (no code lost)'],
-            ['`git revert <sha>`', 'Creates a new commit that does the exact opposite of <sha>', '🟢 Safe (history is preserved)'],
-            ['`git commit --amend`', 'Adds staged changes to the previous commit', '🟡 Medium (rewrites last commit)'],
-            ['`git reset --hard HEAD~1`', 'Moves branch pointer back AND deletes all changes', '🔴 HIGH (changes are gone forever!)']
+            ['`git add .`', 'Stages all changes', 'Moves files to the "Waiting Room"'],
+            ['`git commit -m`','Saves snapshot', 'Creates a permanent history dot'],
+            ['`git commit --amend`','Fix last commit', 'Replaces the previous dot']
           ]
         }
-      },
-      {
-        type: 'concept',
-        title: '🚫 .gitignore — Keeping Secrets Out',
-        content: '`.gitignore` is a special file at the root of your repository that tells Git which files and folders to **completely ignore**. Files listed here will never be tracked, staged, or committed.\n\n**Common entries:**\n- `node_modules/` — dependency folder (huge, auto-generated)\n- `.env` — environment variables with secrets (API keys, DB passwords)\n- `dist/` or `build/` — compiled output (regenerated on build)\n- `__pycache__/` — Python bytecode cache\n- `*.log` — log files\n- `.DS_Store` — macOS metadata files\n\n💡 **Always create a `.gitignore` before your first commit.** You can find pre-built templates at https://github.com/github/gitignore for every language.'
-      },
-      {
-        type: 'concept',
-        title: '🔌 Detached HEAD — Lost in Time',
-        content: 'Normally, HEAD points to a **branch name** (like `main`), which in turn points to the latest commit. But if you checkout a specific commit hash directly (e.g., `git checkout a1b2c3d`), HEAD points directly to that commit instead of a branch. This is called a **detached HEAD** state.\n\n**Why is it risky?** Any new commits you make in this state are not on any branch. If you switch away, those commits become "orphaned" and may be garbage-collected.\n\n**How to get out:**\n- `git switch main` — return to a branch (abandoning detached commits)\n- `git switch -c new-branch` — save your detached work by creating a new branch from the current position'
-      },
-      {
-        type: 'concept',
-        title: '🍒 git cherry-pick — Surgical Commit Transplant',
-        content: '`git cherry-pick <sha>` takes a **single specific commit** from any branch and applies its changes to your current branch.\n\n**When is it useful?**\n- A teammate fixed a critical bug on `feature-x`, but you need the fix on `main` NOW — without merging the entire unfinished branch.\n- You accidentally committed to the wrong branch and want to move specific commits.\n\n**Syntax:**\n```\ngit cherry-pick a1b2c3d\n```\n\n⚠️ Cherry-pick creates a **new commit** with a different SHA. It does not move the original commit.'
-      },
-      {
-        type: 'concept',
-        title: '🔍 git bisect — Binary Search for Bugs',
-        content: '`git bisect` is a debugging power tool. It performs a **binary search** through your commit history to find the exact commit that introduced a bug.\n\n**How it works:**\n1. `git bisect start` — begin the bisect session\n2. `git bisect bad` — mark the current commit as broken\n3. `git bisect good <sha>` — mark a known working commit\n4. Git checks out a commit halfway between good and bad\n5. You test, then mark `good` or `bad`\n6. Repeat — Git halves the search space each time\n7. `git bisect reset` — return to normal when done\n\n💡 For a repo with 1024 commits, bisect finds the culprit in just **10 steps** instead of checking all 1024!'
-      },
-      {
-        type: 'concept',
-        title: "📦 Bare Repository — The Server's Version",
-        content: 'A **bare repository** is a repository that has **no working directory** — no editable files, just the `.git` database (objects, refs, config). It is created with `git init --bare`.\n\n**Why does it exist?** Bare repos are designed to be used as **remote/server repositories** — they are what GitHub, GitLab, and Bitbucket use internally. You push to them and fetch from them, but you never edit files directly inside them.\n\n**Key differences from a normal repo:**\n- No `working directory` (you cannot `git checkout` files)\n- No `staging area`\n- Convention: named `my-project.git` (ending with `.git`)\n- Only accepts `push` and allows `fetch`/`clone`'
       }
     ],
     quiz: [
       {
         id: 'git-7-q1',
-        question: 'Which command safely undoes a commit by creating a new "reverse" commit?',
-        options: ['git reset --hard', 'git revert', 'git restore', 'git checkout'],
+        question: 'Which area acts as a "waiting room" before a commit is saved?',
+        options: ['Working Directory', 'Staging Area', 'Local Repository', 'Remote Server'],
         correct: 1,
-        explanation: '`git revert <sha>` creates a new commit that undoes the changes of the specified commit. It\'s safe because it doesn\'t rewrite history — perfect for undoing changes on shared branches.'
-      },
-      {
-        id: 'git-7-q2',
-        question: 'What does `git stash` do?',
-        options: [
-          'Permanently deletes uncommitted changes',
-          'Temporarily saves uncommitted changes so you can switch branches',
-          'Creates a backup of the entire repository',
-          'Pushes changes to the remote'
-        ],
-        correct: 1,
-        explanation: '`git stash` saves your uncommitted work to a temporary stack, leaving your working directory clean. Useful when you need to switch context quickly. `git stash pop` restores it.'
-      },
-      {
-        id: 'git-7-q3',
-        question: 'What is the danger of `git reset --hard HEAD~1`?',
-        options: [
-          'It sends an email to your team',
-          'It permanently throws away your last commit and all its changes',
-          'It deletes all branches',
-          'It resets your Git configuration'
-        ],
-        correct: 1,
-        explanation: '`git reset --hard` rewrites history and discards changes permanently (they\'re not in the trash — they\'re gone). Only use on commits that have never been pushed to a shared remote.'
+        explanation: 'The Staging Area (or Index) is where you pick which changes to include in your next snapshot (commit).'
       }
     ]
   },
@@ -993,45 +878,50 @@ git push -u origin <branch> # Push + set upstream`,
     id: 'git-8',
     track: 'git',
     order: 8,
-    title: 'Hands-on Labs: Git Games',
-    subtitle: 'Two free interactive tools to master Git by playing',
-    emoji: '🎮',
-    duration: '45+ min',
+    title: 'Time Travel & Safety',
+    subtitle: 'Undoing mistakes and managing the HEAD pointer',
+    emoji: '⏩',
+    duration: '10 min',
     xpReward: 80,
-    externalLink: {
-      label: 'Open Learn Git Branching',
-      url: 'https://learngitbranching.js.org',
-      xpPrompt: 'How many total levels did you complete across both tools? Enter the number to earn XP!'
-    },
     sections: [
       {
         type: 'intro',
-        content: 'Theory is important, but Git truly clicks when you **play with it**. In this module we spotlight two completely free, interactive tools that will cement your Git skills through hands-on practice.'
+        content: 'Git lets you "undo" almost anything. But you need to know which tool to use for which mistake.'
+      },
+      {
+        type: 'animation',
+        title: '📍 Understanding HEAD',
+        content: 'See where the "You Are Here" pointer (HEAD) actually lives and how it moves when you switch branches.',
+        animationType: 'git-head-lab'
+      },
+      {
+        type: 'animation',
+        title: '🧪 The Undo Sandbox',
+        content: 'Compare `git revert` (safe history) vs `git reset --hard` (permanent deletion). Use with caution!',
+        animationType: 'git-undo-lab'
+      },
+      {
+        type: 'code',
+        title: '📦 The Emergency Stash',
+        content: 'Need to switch branches but your work isn\'t ready to commit?',
+        code: `git stash           # Hide changes away
+git stash list      # See stashed work
+git stash pop       # Bring changes back`,
+        language: 'bash'
       },
       {
         type: 'concept',
-        title: '🌐 Tool 1: Learn Git Branching (Browser)',
-        content: '**Learn Git Branching** is widely considered the best interactive Git learning tool in the world. It runs entirely in your browser — no installation needed.\n\n- Visualizes branches, commits, merges, and rebases **in real time** as you type commands\n- Progressive level system from basics to advanced (cherry-pick, interactive rebase, detached HEAD, remote branches)\n- Available in multiple languages\n\n🔗 **URL**: https://learngitbranching.js.org'
-      },
+        title: '🔌 Detached HEAD — Lost in Time',
+        content: 'If you checkout a specific commit hash directly (e.g., `git checkout a1b2c3d`), HEAD points directly to that commit instead of a branch. This is the **detached HEAD** state. Any new commits here are not on a branch and may get lost!'
+      }
+    ],
+    quiz: [
       {
-        type: 'concept',
-        title: '📖 Learn Git Branching: Recommended Path',
-        content: '**Main track (Basics):**\n1. Introduction Sequence (4 levels)\n2. Ramping Up (4 levels)\n3. Moving Work Around (4 levels)\n\n**Then try:**\n4. Remote (8 levels) — if you\'ve completed module 5 here'
-      },
-      {
-        type: 'concept',
-        title: '🎮 Tool 2: Oh My Git! (Desktop Game)',
-        content: '**Oh My Git!** is a free, open-source **desktop game** that teaches Git through a playful card-based interface.\n\n- **Download** (Windows/Mac/Linux): https://ohmygit.org\n- Uses a unique **playing card metaphor**: Git commands are represented as cards you play\n- Real-time visualization of the internal Git state (commit graph, HEAD, staging area)\n- Built with the Godot game engine — feels like a real video game!\n- Includes a built-in terminal for those who want to type commands directly\n\n💡 **Best for**: visual learners who prefer a game-like experience over a command-line puzzle.'
-      },
-      {
-        type: 'concept',
-        title: '🆚 Which tool should I use?',
-        content: '**Learn Git Branching** → Best if you prefer typing commands and want to master the CLI. Browser-based, no install.\n\n**Oh My Git!** → Best if you prefer a visual, game-like experience with cards and animations. Requires download.\n\n🎯 **Our recommendation**: Try both! Learn Git Branching first for command mastery, then Oh My Git for a different perspective on the same concepts.'
-      },
-      {
-        type: 'tip',
-        title: '🏆 Earn XP',
-        content: 'Complete as many levels as you can in either (or both!) tools, then come back here and report your highest total level count to earn internal XP. We track it on the leaderboard!'
+        id: 'git-8-q1',
+        question: 'Which undo command is SAFEST for shared branches because it doesn\'t delete history?',
+        options: ['git reset --hard', 'git revert', 'git checkout', 'git clean'],
+        correct: 1,
+        explanation: '`git revert` creates a new "inverse" commit. It keeps the history intact, making it the safest choice for collaboration.'
       }
     ]
   },
@@ -1039,217 +929,311 @@ git push -u origin <branch> # Push + set upstream`,
     id: 'git-9',
     track: 'git',
     order: 9,
+    title: 'Power User Tools',
+    subtitle: 'Surgical commits, ignoring files, and debugging',
+    emoji: '🍒',
+    duration: '10 min',
+    xpReward: 90,
+    sections: [
+      {
+        type: 'intro',
+        content: 'Advanced tools to keep your repo clean and find bugs with surgical precision.'
+      },
+      {
+        type: 'animation',
+        title: '🍒 Cherry-picking',
+        content: 'Drag a specific commit from one branch and "copy" it into your current branch.',
+        animationType: 'git-cherry-pick-lab'
+      },
+      {
+        type: 'concept',
+        title: '🔍 git bisect — Binary Search for Bugs',
+        content: 'Bisect performs a binary search through history to find the exact commit that broke the code. In 10 steps, it can find a bug in 1000 commits!'
+      },
+      {
+        type: 'code',
+        title: '🚫 .gitignore Essentials',
+        content: 'Tell Git what to ignore (secrets, big binaries, logs):',
+        code: `node_modules/
+.env                 # SECRETS (Never commit!)
+dist/
+*.log`,
+        language: 'bash'
+      },
+      {
+        type: 'concept',
+        title: '📦 Bare Repository',
+        content: 'A repository with no working directory — only the Git database. This is what servers like GitHub use internally.'
+      }
+    ],
+    quiz: [
+      {
+        id: 'git-9-q1',
+        question: 'What is the purpose of `git cherry-pick`?',
+        options: [
+          'To merge an entire branch',
+          'To copy a single specific commit into the current branch',
+          'To delete a commit',
+          'To rename a branch'
+        ],
+        correct: 1,
+        explanation: 'Cherry-pick lets you surgically apply the changes from one specific commit from anywhere in history to your current branch.'
+      }
+    ]
+  },
+  {
+    id: 'git-10',
+    track: 'git',
+    order: 10,
+    title: 'Hands-on Labs: Git Games',
+    subtitle: 'Master complex scenarios by playing',
+    emoji: '🎮',
+    duration: '45+ min',
+    xpReward: 80,
+    sections: [
+      {
+        type: 'intro',
+        content: 'The best way to learn Git is to use it. These interactive tools simulate complex real-world scenarios.'
+      },
+      {
+        type: 'game',
+        title: '🎮 Git Branching Simulator',
+        content: 'The famous "Learn Git Branching" visual puzzle. Master rebase, merge, and cherry-pick through levels.',
+        gameType: 'external',
+        externalLink: {
+          label: 'Launch Simulator',
+          url: 'https://learngitbranching.js.org/',
+          xpPrompt: 'Complete 3 levels and report your progress'
+        }
+      },
+      {
+        type: 'game',
+        title: '🕹️ Oh My Git!',
+        content: 'An open-source game that visualises Git internal structures and commands.',
+        gameType: 'external',
+        externalLink: {
+          label: 'View Game',
+          url: 'https://ohmygit.org/',
+          xpPrompt: 'Try a level and report XP'
+        }
+      }
+    ]
+  },
+  {
+    id: 'git-11',
+    track: 'git',
+    order: 11,
     title: 'Final Quiz',
-    subtitle: 'Put everything together — 20 questions, timed',
+    subtitle: 'The ultimate knowledge test',
     emoji: '🏆',
     duration: '15 min',
     xpReward: 100,
     sections: [
       {
         type: 'intro',
-        content: 'Time to prove what you\'ve learned! 20 questions covering all Git modules. You have 15 minutes. Good luck!'
+        content: 'Ready to prove your mastery? This comprehensive quiz covers everything from the basics to advanced workflows.'
       }
     ],
     quiz: [
       {
-        id: 'git-9-q1',
+        id: 'git-11-q1',
         question: 'What does VCS stand for?',
         options: ['Virtual Container System', 'Version Control System', 'Visual Code Studio', 'Variable Commit Save'],
         correct: 1,
         explanation: 'VCS = Version Control System. The category of tools that Git belongs to.'
       },
       {
-        id: 'git-9-q2',
+        id: 'git-11-q2',
         question: 'Which command creates a local copy of a remote repository?',
         options: ['git init', 'git fetch', 'git clone', 'git pull'],
         correct: 2,
-        explanation: '`git clone <url>` downloads the entire repository (all history, all branches) to your machine and configures "origin" automatically.'
+        explanation: '`git clone <url>` downloads the entire repository (all history, all branches) to your machine.'
       },
       {
-        id: 'git-9-q3',
+        id: 'git-11-q3',
         question: 'What is HEAD in Git?',
         options: [
           'The first commit in the repository',
           'A pointer to the currently checked-out commit or branch',
-          'The main administrator of the repository',
-          'The remote server address'
+          'The remote server address',
+          'The repository owner'
         ],
         correct: 1,
-        explanation: 'HEAD is Git\'s way of saying "where you are right now". It usually points to a branch, which in turn points to a commit.'
+        explanation: 'HEAD points to your current location in history.'
       },
       {
-        id: 'git-9-q4',
+        id: 'git-11-q4',
         question: 'Which command shows the history of commits?',
         options: ['git status', 'git history', 'git log', 'git show'],
         correct: 2,
-        explanation: '`git log` shows the commit history. `git log --oneline --graph` gives a compact visual view.'
+        explanation: '`git log` displays the timeline of snapshots.'
       },
       {
-        id: 'git-9-q5',
-        question: 'What does `.gitignore` do?',
+        id: 'git-11-q5',
+        question: 'What does .gitignore do?',
         options: [
-          'Deletes files from the repository',
-          'Lists files that Git should NOT track',
+          'Deletes files',
+          'Tells Git which files to never track',
           'Shows ignored commits',
-          'Prevents merges on a branch'
+          'Encrypts files'
         ],
         correct: 1,
-        explanation: '`.gitignore` is a file listing patterns of files/folders Git should ignore. Common entries: `node_modules/`, `*.env`, `__pycache__/`, etc.'
+        explanation: 'It excludes temporary or sensitive files from being tracked.'
       },
       {
-        id: 'git-9-q6',
+        id: 'git-11-q6',
         question: 'What is a "detached HEAD" state?',
         options: [
-          'A corrupted repository',
+          'A corrupted repo',
           'When HEAD points directly to a commit instead of a branch',
-          'When the remote is unavailable',
+          'When remote is down',
           'A failed merge'
         ],
         correct: 1,
-        explanation: 'Detached HEAD happens when you checkout a specific commit rather than a branch. Any new commits won\'t belong to a branch and may be lost when you switch away.'
+        explanation: 'You are looking at a fixed point in time, not a moving branch.'
       },
       {
-        id: 'git-9-q7',
-        question: 'Which workflow uses feature flags to hide unfinished features in production?',
+        id: 'git-11-q7',
+        question: 'Which workflow uses feature flags for continuous deployment?',
         options: ['Gitflow', 'Trunk-based Development', 'GitHub Flow', 'Waterfall'],
         correct: 1,
-        explanation: 'Trunk-based development merges to main very frequently. Feature flags allow unfinished code to exist in production without being visible to users.'
+        explanation: 'Trunk-based development relies on flags to keep main stable while merging often.'
       },
       {
-        id: 'git-9-q8',
+        id: 'git-11-q8',
         question: 'What does `git cherry-pick <sha>` do?',
         options: [
-          'Deletes a specific commit',
-          'Applies the changes from a specific commit onto the current branch',
-          'Selects the best commit for deployment',
-          'Creates a branch from a commit'
+          'Deletes a commit',
+          'Surgically applies a specific commit to the current branch',
+          'Renames a branch',
+          'Cleans the workspace'
         ],
         correct: 1,
-        explanation: '`git cherry-pick` applies a specific commit\'s changes to your current branch. Useful for applying a hotfix from one branch to another without merging everything.'
+        explanation: 'It copies a single commit\'s changes elsewhere.'
       },
       {
-        id: 'git-9-q9',
-        question: 'How many characters does a full Git SHA-1 hash have?',
+        id: 'git-11-q9',
+        question: 'How many characters is a full Git SHA-1 hash?',
         options: ['8', '16', '32', '40'],
         correct: 3,
-        explanation: 'A full Git SHA-1 hash is 40 hexadecimal characters. In practice, you only need the first 7 to uniquely identify a commit in most repositories.'
+        explanation: 'A full SHA-1 hash is 40 hexadecimal characters.'
       },
       {
-        id: 'git-9-q10',
-        question: 'What does `git pull --rebase` do differently from `git pull`?',
+        id: 'git-11-q10',
+        question: 'What does `git pull --rebase` do?',
         options: [
-          'It deletes remote branches',
-          'It downloads remote changes and replays your local commits on top, keeping a linear history',
-          'It forces a push to the remote',
-          'It downloads only the latest commit'
+          'Deletes branches',
+          'Replays local commits on top of remote changes for a linear history',
+          'Forces a push',
+          'Compiles the code'
         ],
         correct: 1,
-        explanation: '`git pull --rebase` fetches remote changes and then rebases your local commits on top instead of creating a merge commit. This keeps the history linear and clean.'
+        explanation: 'It avoids merge commits by updating your base before adding your work.'
       },
       {
-        id: 'git-9-q11',
+        id: 'git-11-q11',
         question: 'In which year was Git created?',
         options: ['1999', '2003', '2005', '2008'],
         correct: 2,
-        explanation: 'Git was created in 2005 by Linus Torvalds. GitHub was launched later in 2008.'
+        explanation: 'Linus Torvalds created Git in 2005.'
       },
       {
-        id: 'git-9-q12',
-        question: 'What is the purpose of `git fetch` before `git merge`?',
+        id: 'git-11-q12',
+        question: 'What is the benefit of `git fetch`?',
         options: [
-          'To delete local branches that no longer exist on the remote',
-          'To download remote changes for inspection before integrating them',
-          'To automatically resolve merge conflicts',
-          'To speed up the merge operation'
+          'It clears local cache',
+          'It downloads updates without changing your local files',
+          'It deletes old branches',
+          'It pushes local work'
         ],
         correct: 1,
-        explanation: 'Using `git fetch` first lets you inspect what changed on the remote (via `git log origin/main`) before deciding to merge. It gives you more control than `git pull`.'
+        explanation: 'Fetch is safe because it only downloads data for you to inspect.'
       },
       {
-        id: 'git-9-q13',
-        question: 'What does the `-u` flag do in `git push -u origin main`?',
+        id: 'git-11-q13',
+        question: 'What does the `-u` flag do in push?',
         options: [
-          'Makes the push urgent/priority',
-          'Sets the upstream tracking relationship so future `git push` and `git pull` know the defaults',
-          'Uploads uncommitted changes',
-          'Forces the push even if it would overwrite remote history'
+          'Urgent push',
+          'Sets upstream tracking for the branch',
+          'Unlocks the repository',
+          'Upgrades Git'
         ],
         correct: 1,
-        explanation: '`-u` (or `--set-upstream`) links your local branch to the remote branch. After running it once, you can just type `git push` or `git pull` without specifying origin/branch.'
+        explanation: 'It links your local branch to the remote branch for future shorthand commands.'
       },
       {
-        id: 'git-9-q14',
-        question: 'Which command shows the differences between your working directory and the last commit?',
-        options: ['git log', 'git status', 'git diff', 'git show'],
-        correct: 2,
-        explanation: '`git diff` shows line-by-line changes between your working directory and the staging area. `git diff --staged` shows staged changes vs the last commit.'
+        id: 'git-11-q14',
+        question: 'Which command shows unstaged local changes?',
+        options: ['git status', 'git diff', 'git log', 'git show'],
+        correct: 1,
+        explanation: '`git diff` shows the delta between your work and the staging area.'
       },
       {
-        id: 'git-9-q15',
-        question: 'What does "fast-forward merge" mean?',
+        id: 'git-11-q15',
+        question: 'What is a fast-forward merge?',
         options: [
-          'A merge that skips the review process',
-          'When Git simply moves the branch pointer forward because there are no diverging commits',
-          'A high-speed network transfer of commits',
-          'Merging more than 10 commits at once'
+          'Merging 100+ commits',
+          'Moving a branch pointer forward because of no diverging work',
+          'An automated script',
+          'A merge on GitHub'
         ],
         correct: 1,
-        explanation: 'A fast-forward merge happens when the target branch has no commits since you branched off. Git just moves the pointer forward — no merge commit is created.'
+        explanation: 'No merge commit is needed because the history is a straight line.'
       },
       {
-        id: 'git-9-q16',
-        question: 'What is the purpose of `git bisect`?',
+        id: 'git-11-q16',
+        question: 'What is `git bisect` used for?',
         options: [
-          'To split a commit into two separate commits',
-          'To perform a binary search through commits to find which one introduced a bug',
-          'To merge two branches simultaneously',
-          'To compare two different files'
+          'Splitting commits',
+          'Finding which commit introduced a bug using binary search',
+          'Comparing two files',
+          'Archiving the repo'
         ],
         correct: 1,
-        explanation: '`git bisect` is a powerful debugging tool. You mark a "good" commit and a "bad" commit, and Git checks out commits in between — halving the search space each time until the buggy commit is found.'
+        explanation: 'It\'s a powerful debugging tool to find regressions.'
       },
       {
-        id: 'git-9-q17',
-        question: 'What happens when you run `git init` in a folder?',
+        id: 'git-11-q17',
+        question: 'What happens when you run `git init`?',
         options: [
-          'It clones a remote repository into the folder',
-          'It creates a new .git folder turning the directory into a Git repository',
-          'It deletes all existing files',
-          'It connects the folder to GitHub'
+          'Clones a repo',
+          'Creates a .git folder and initializes the project',
+          'Deletes history',
+          'Logs into GitHub'
         ],
         correct: 1,
-        explanation: '`git init` initializes a repository by creating a hidden `.git` folder. This folder contains the entire database of history and configuration. Never delete it manually!'
+        explanation: 'It creates the internal database for tracking.'
       },
       {
-        id: 'git-9-q18',
-        question: 'Which of these is NOT a Git hosting platform?',
+        id: 'git-11-q18',
+        question: 'Which is NOT a Git platform?',
         options: ['GitHub', 'GitLab', 'Bitbucket', 'Kubernetes'],
         correct: 3,
-        explanation: 'Kubernetes is a container orchestration platform, not a Git hosting platform. GitHub, GitLab, and Bitbucket all host Git repositories.'
+        explanation: 'Kubernetes manages containers, not Git repositories.'
       },
       {
-        id: 'git-9-q19',
+        id: 'git-11-q19',
         question: 'What does `git commit --amend` do?',
         options: [
-          'Creates a new commit after the last one',
-          'Edits the last commit (message or content) — only safe if not yet pushed',
-          'Permanently reverts the last commit',
-          'Adds a tag to the last commit'
+          'Adds a comment',
+          'Modifies the very last commit',
+          'Reverts to last state',
+          'Fixes syntax errors'
         ],
         correct: 1,
-        explanation: '`git commit --amend` rewrites the last commit. You can fix the message or add forgotten changes. ONLY use this before pushing — amending published commits breaks others\' history.'
+        explanation: 'Useful for fixing the last message or adding a forgotten file.'
       },
       {
-        id: 'git-9-q20',
-        question: 'What is a "bare" repository in Git?',
+        id: 'git-11-q20',
+        question: 'What is a "bare" repository?',
         options: [
-          'A repository with no branches',
-          'A repository with no working directory — only the Git database (used for servers/remotes)',
-          'A repository with empty commit messages',
-          'A new repository with no commits yet'
+          'A repo with no working files (server/remote only)',
+          'An empty repo',
+          'A repo with no branches',
+          'A basic version of Git'
         ],
-        correct: 1,
-        explanation: 'A bare repository (created with `git init --bare`) has no working directory. It\'s used as a remote/server — you push and fetch from it but don\'t work directly in it. GitHub\'s servers use bare repos internally.'
+        correct: 0,
+        explanation: 'Bare repos (created with `git init --bare`) only contain the history database, not live files.'
       }
     ]
   }

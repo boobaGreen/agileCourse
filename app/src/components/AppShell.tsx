@@ -2,10 +2,12 @@ import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '../store/useAppStore'
-import {
-  LayoutDashboard, User, Award,
-  ChevronLeft, ChevronRight, Zap, Menu, X
-} from 'lucide-react'
+import { LayoutDashboard, User, Award, ChevronLeft, ChevronRight, Zap, Menu, X } from 'lucide-react'
+import { matchPath } from 'react-router-dom'
+import { GIT_MODULES } from '../data/git/modules'
+import { DOCKER_MODULES } from '../data/docker/modules'
+import { K8S_MODULES } from '../data/k8s/modules'
+import ModuleSidebar from './ModuleSidebar'
 
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -55,6 +57,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           xp={xp}
           badges={badges.length}
           onNavigate={(path) => navigate(path)}
+          onItemClick={() => {}}
         />
         {/* Collapse toggle */}
         <button
@@ -89,6 +92,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               xp={xp}
               badges={badges.length}
               onNavigate={(path) => { navigate(path); setMobileOpen(false) }}
+              onItemClick={() => setMobileOpen(false)}
             />
           </motion.aside>
         )}
@@ -121,14 +125,23 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   )
 }
 
-function SidebarContent({ collapsed, location, userName, xp, badges, onNavigate }: {
+function SidebarContent({ collapsed, location, userName, xp, badges, onNavigate, onItemClick }: {
   collapsed: boolean
   location: { pathname: string }
   userName: string
   xp: number
   badges: number
   onNavigate: (path: string) => void
+  onItemClick: () => void
 }) {
+  const match = matchPath({ path: '/:track/module/:id' }, location.pathname)
+  const trackId = match?.params.track
+  const moduleId = match?.params.id
+  const completedModules = useAppStore(s => s.completedModules)
+
+  const modules = trackId === 'git' ? GIT_MODULES : trackId === 'docker' ? DOCKER_MODULES : trackId === 'k8s' ? K8S_MODULES : []
+  const trackColor = trackId === 'git' ? 'var(--color-git)' : trackId === 'docker' ? 'var(--color-docker)' : 'var(--color-k8s)'
+
   return (
     <div className="flex flex-col h-full">
       {/* Header/Logo */}
@@ -153,7 +166,7 @@ function SidebarContent({ collapsed, location, userName, xp, badges, onNavigate 
       )}
 
       {/* Navigation list */}
-      <nav className="flex flex-col gap-1 px-2 flex-1 mt-2">
+      <nav className={`${modules.length > 0 ? 'pb-4 border-b mb-4' : 'flex-1'} flex flex-col gap-1 px-2 mt-2`} style={{ borderColor: 'var(--color-border)' }}>
         {navItems.map((item) => {
           const Icon = item.icon
           const isActive = location.pathname === item.path || (item.path !== '/dashboard' && location.pathname.startsWith(item.path))
@@ -169,6 +182,19 @@ function SidebarContent({ collapsed, location, userName, xp, badges, onNavigate 
           )
         })}
       </nav>
+
+      {/* Dynamic Module Sidebar (Curriculum) */}
+      {!collapsed && modules.length > 0 && (
+        <div className="flex-1 px-2 overflow-y-auto custom-scrollbar">
+           <ModuleSidebar 
+              modules={modules} 
+              currentId={moduleId || ''} 
+              completedIds={completedModules} 
+              trackColor={trackColor} 
+              onItemClick={onItemClick}
+           />
+        </div>
+      )}
 
       {/* Sidebar Footer */}
       {!collapsed && (

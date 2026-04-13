@@ -122,7 +122,7 @@ export default function CourseDashboard() {
         style={{ background: activeTrack.color }}
       />
       
-      <div className="animate-fade-up relative z-10">
+      <div className="animate-fade-up relative z-10 max-w-7xl mx-auto px-8 sm:px-12 lg:px-16 pt-24 pb-12">
         {/* Welcome Header */}
         <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
           <div>
@@ -237,8 +237,8 @@ export default function CourseDashboard() {
           </div>
         </motion.div>
 
-        {/* Immersive Track Gallery - MOVED UP */}
-        <div className="flex flex-col md:grid md:grid-cols-3 gap-4 md:gap-6 mb-16 md:mb-24 px-0 md:px-0">
+        {/* Immersive Track Gallery */}
+        <div className="flex flex-col md:grid md:grid-cols-3 gap-4 md:gap-6 mb-12">
           {tracks.map((track) => {
             const progress = getTrackProgress(track.id, track.modules)
             const isActive = activeTrackId === track.id
@@ -310,10 +310,88 @@ export default function CourseDashboard() {
           })}
         </div>
 
-        {/* Explicit Spacer */}
-        <div className="h-24" />
+        {/* Selected Track Detail - MOVED UP HERE (The 'Accordion' behavior) */}
+        <AnimatePresence mode="wait">
+          <motion.div 
+            key={activeTrackId}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="overflow-visible mb-16"
+          >
+            <div className="flex items-center gap-2 mb-8">
+              <div className="h-[1px] flex-1 bg-primary/20" />
+              <div className="flex items-center gap-2 px-6">
+                 <span className="text-[10px] text-muted uppercase fw-black tracking-[0.2em]">Syllabus for</span>
+                 <span className="text-xs fw-black uppercase tracking-[0.1em]" style={{ color: activeTrack.color }}>{activeTrack.label} Hub</span>
+              </div>
+              <div className="h-[1px] flex-1 bg-primary/20" />
+            </div>
 
-        {/* Analytics Section - MOVED DOWN */}
+            <div className="module-grid">
+              {currentModules.map((mod, mIdx) => {
+                const isDone = completedModules.includes(mod.id)
+                const isNext = nextModule?.id === mod.id
+                
+                return (
+                  <motion.div
+                    key={mod.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: mIdx * 0.05 }}
+                    onClick={() => navigate(`/${activeTrackId}/module/${mod.id}`)}
+                    className={`module-card group relative ${isDone ? 'done' : ''} ${isNext ? 'ring-2 ring-primary/40 scale-[1.02]' : ''}`}
+                    style={{ 
+                      borderColor: isDone ? `${activeTrack.color}60` : undefined,
+                    }}
+                  >
+                    {isDone && (
+                      <div className="absolute top-4 right-4" style={{ color: activeTrack.color }}>
+                        <CheckCircle size={20} />
+                      </div>
+                    )}
+
+                    {isNext && (
+                      <div className="absolute -top-3 left-4 bg-primary text-white text-[10px] fw-black px-3 py-1 rounded-full shadow-lg z-10">
+                        NEXT UP
+                      </div>
+                    )}
+                    
+                    <div className="flex items-center gap-4 mb-4">
+                       <div className="w-12 h-12 rounded-xl bg-surface2 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                        {mod.emoji}
+                       </div>
+                       <div className="flex-1">
+                         <span className="text-[11px] md:text-xs text-muted mono block uppercase mb-0.5">Module {mod.order}</span>
+                         <h3 className="text-white fw-black text-base md:text-lg leading-tight line-clamp-1">{mod.title}</h3>
+                       </div>
+                    </div>
+                    
+                    <p className="text-muted text-xs md:text-sm leading-relaxed mb-6 line-clamp-2">
+                      {mod.subtitle}
+                    </p>
+
+                    <div className="mt-auto flex justify-between items-center pt-4 border-t border-white/5">
+                      <div className="flex items-center gap-2 text-xs md:text-sm text-sub">
+                        <span>⏱ {mod.duration}</span>
+                        <span>•</span>
+                        <span className="fw-black flex items-center gap-1" style={{ color: activeTrack.color }}><Zap size={12}/> {mod.xpReward} XP</span>
+                      </div>
+                      <button 
+                        className="p-2.5 rounded-lg bg-surface2 text-muted group-hover:bg-white/10 group-hover:text-white transition-colors"
+                      >
+                         <ArrowRight size={16} />
+                      </button>
+                    </div>
+                  </motion.div>
+                )
+              })}
+            </div>
+          </motion.div>
+        </AnimatePresence>
+        <div className="h-20 w-full" />
+
+        {/* Analytics Section - Spaced out */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-24">
           {/* Skills Radar */}
           <div className="lg:col-span-1 card p-6 bg-surface/40 flex flex-col items-center justify-center min-h-[320px] min-w-0">
@@ -383,78 +461,6 @@ export default function CourseDashboard() {
           </div>
         </div>
 
-        {/* Explicit Spacer */}
-        <div className="h-24" />
-
-        {/* Selected Track Detail */}
-        <AnimatePresence mode="wait">
-          <motion.div 
-            key={activeTrackId}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="flex items-center gap-2 mb-6">
-              <div className="h-px flex-1 bg-border opacity-50" />
-              <h2 className="text-[10px] md:text-xs fw-black text-muted uppercase tracking-[0.2em] px-4">
-                Curriculum: <span style={{ color: activeTrack.color }}>{activeTrack.label}</span>
-              </h2>
-              <div className="h-px flex-1 bg-border opacity-50" />
-            </div>
-
-            <div className="module-grid">
-              {currentModules.map((mod) => {
-                const isDone = completedModules.includes(mod.id)
-                
-                return (
-                  <div
-                    key={mod.id}
-                    onClick={() => navigate(`/${activeTrackId}/module/${mod.id}`)}
-                    className={`module-card group ${isDone ? 'done' : ''}`}
-                    style={{ 
-                      borderColor: isDone ? `${activeTrack.color}60` : undefined,
-                      boxShadow: !isDone ? `hover: ${activeTrack.color}15 0 10px` : undefined
-                    }}
-                  >
-                    {isDone && (
-                      <div className="absolute top-4 right-4" style={{ color: activeTrack.color }}>
-                        <CheckCircle size={20} />
-                      </div>
-                    )}
-                    
-                    <div className="flex items-center gap-4 mb-4">
-                       <div className="w-12 h-12 rounded-xl bg-surface2 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                        {mod.emoji}
-                       </div>
-                       <div className="flex-1">
-                         <span className="text-[11px] md:text-xs text-muted mono block uppercase mb-0.5">Module {mod.order}</span>
-                         <h3 className="text-white fw-black text-base md:text-lg leading-tight line-clamp-1">{mod.title}</h3>
-                       </div>
-                    </div>
-                    
-                    <p className="text-muted text-xs md:text-sm leading-relaxed mb-6 line-clamp-2">
-                      {mod.subtitle}
-                    </p>
-
-                    <div className="mt-auto flex justify-between items-center pt-4 border-t border-white/5">
-                      <div className="flex items-center gap-2 text-xs md:text-sm text-sub">
-                        <span>⏱ {mod.duration}</span>
-                        <span>•</span>
-                        <span className="fw-black flex items-center gap-1" style={{ color: activeTrack.color }}><Zap size={12}/> {mod.xpReward} XP</span>
-                      </div>
-                      <button 
-                        className="p-2.5 rounded-lg bg-surface2 text-muted group-hover:bg-white/10 group-hover:text-white transition-colors"
-                      >
-                         <ArrowRight size={16} />
-                      </button>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          </motion.div>
-        </AnimatePresence>
       </div>
     </div>
   )

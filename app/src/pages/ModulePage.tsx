@@ -9,7 +9,9 @@ import type { Section, QuizQuestion } from '../data/git/modules'
 import {
   ArrowLeft, ArrowRight, Zap,
   ExternalLink, BookOpen, Code2, Lightbulb, Sparkles,
-  LayoutGrid, Workflow, Play, Image, Gamepad2, CheckCircle, Trophy
+  LayoutGrid, Workflow, Play, Image, Gamepad2, CheckCircle, Trophy,
+  RefreshCcw, GitMerge, Repeat, AlertTriangle, Users,
+  Laptop, Cloud, Search, ArrowUp
 } from 'lucide-react'
 import confetti from 'canvas-confetti'
 
@@ -166,99 +168,98 @@ export default function ModulePage() {
         <span className="opacity-30">/</span>
         <span className="text-sub">Module {mod.order}: {mod.title}</span>
       </div>
-
-      <AnimatePresence mode="wait">
-        {view === 'theory' && (
-          <motion.div key="theory" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="w-full">
-            {/* Module Hero Card */}
-            <div className="card mb-8" style={{ borderColor: `${trackColor}40` }}>
-              <div className="flex items-start gap-4 flex-col sm:flex-row">
-                <span className="text-4xl sm:text-5xl animate-float">{mod.emoji}</span>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2 flex-wrap">
-                    <span className="badge-pill bg-surface text-muted mono">Module {mod.order}</span>
-                    <span className="badge-pill text-white uppercase text-[10px]" 
-                      style={{ background: mod.track === 'git' ? 'var(--color-git)' : mod.track === 'docker' ? 'var(--color-docker)' : 'var(--color-k8s)' }}>
-                      {mod.track} Track
-                    </span>
-                    <span className="text-xs text-muted fw-med">⏱ {mod.duration}</span>
+          <AnimatePresence mode="wait">
+            {view === 'theory' && (
+              <motion.div key="theory" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="w-full">
+                {/* Module Hero Card */}
+                <div className="card mb-8" style={{ borderColor: `${trackColor}40` }}>
+                  <div className="flex items-start gap-4 flex-col sm:flex-row">
+                    <span className="text-4xl sm:text-5xl animate-float">{mod.emoji}</span>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2 flex-wrap">
+                        <span className="badge-pill bg-surface text-muted mono">Module {mod.order}</span>
+                        <span className="badge-pill text-white uppercase text-[10px]" 
+                          style={{ background: mod.track === 'git' ? 'var(--color-git)' : mod.track === 'docker' ? 'var(--color-docker)' : 'var(--color-k8s)' }}>
+                          {mod.track} Track
+                        </span>
+                        <span className="text-xs text-muted fw-med">⏱ {mod.duration}</span>
+                      </div>
+                      <h1 className="text-2xl sm:text-3xl fw-black text-white">{mod.title}</h1>
+                      <p className="text-sub mt-2">{mod.subtitle}</p>
+                    </div>
+                    <div className="sm:text-right flex sm:flex-col items-center sm:items-end gap-2 sm:gap-0">
+                      <p className="text-xs text-muted uppercase tracking-wider mb-1">XP Reward</p>
+                      <p className="text-xp text-xl fw-black flex items-center gap-1"><Zap size={18} /> {mod.xpReward}</p>
+                    </div>
                   </div>
-                  <h1 className="text-2xl sm:text-3xl fw-black text-white">{mod.title}</h1>
-                  <p className="text-sub mt-2">{mod.subtitle}</p>
-                </div>
-                <div className="sm:text-right flex sm:flex-col items-center sm:items-end gap-2 sm:gap-0">
-                  <p className="text-xs text-muted uppercase tracking-wider mb-1">XP Reward</p>
-                  <p className="text-xp text-xl fw-black flex items-center gap-1"><Zap size={18} /> {mod.xpReward}</p>
-                </div>
-              </div>
 
-              {mod.funFact && (
-                <div className="funfact mt-6 flex gap-3">
-                  <Sparkles size={18} className="text-purple-400 shrink-0" />
-                  <p><strong>Fun fact: </strong>{mod.funFact}</p>
+                  {mod.funFact && (
+                    <div className="funfact mt-6 flex gap-3">
+                      <Sparkles size={18} className="text-purple-400 shrink-0" />
+                      <p><strong>Fun fact: </strong>{mod.funFact}</p>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
 
-            {/* Content Sections */}
-            <div className="flex flex-col gap-4">
-              {mod.sections.map((section, i) => (
-                <SectionCard key={i} section={section} />
-              ))}
-            </div>
+                {/* Content Sections */}
+                <div className="flex flex-col gap-4">
+                  {mod.sections.map((section, i) => (
+                    <SectionCard key={i} section={section} />
+                  ))}
+                </div>
 
-            {/* External Challenge Link */}
-            {mod.externalLink && (
-              <div className="mt-8 card" style={{ borderColor: `${trackColor}50` }}>
-                <h3 className="text-white fw-bold mb-4 flex items-center gap-2">
-                  <ExternalLink size={18} style={{ color: trackColor }} />
-                  Practical Mission
-                </h3>
-                <p className="text-sub text-sm mb-6">{mod.externalLink.xpPrompt}</p>
-                
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <a
-                    href={mod.externalLink.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn flex-1 justify-center"
+                {/* External Challenge Link */}
+                {mod.externalLink && (
+                  <div className="mt-8 card" style={{ borderColor: `${trackColor}50` }}>
+                    <h3 className="text-white fw-bold mb-4 flex items-center gap-2">
+                      <ExternalLink size={18} style={{ color: trackColor }} />
+                      Practical Mission
+                    </h3>
+                    <p className="text-sub text-sm mb-6">{mod.externalLink.xpPrompt}</p>
+                    
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <a
+                        href={mod.externalLink.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn flex-1 justify-center"
+                        style={{ background: trackColor, color: 'white' }}
+                      >
+                        Launch {mod.externalLink.label} <ExternalLink size={14} />
+                      </a>
+                      
+                      <div className="flex gap-2 flex-1">
+                        <input
+                          type="number"
+                          placeholder="Report level achieved..."
+                          value={xpImport}
+                          onChange={(e) => setXpImport(e.target.value)}
+                          className="flex-1 bg-surface2 border border-border p-3 rounded-xl text-white outline-none"
+                        />
+                        <button onClick={() => { if(xpImport) { addXP(parseInt(xpImport)*5); setXpImport('') } }} className="btn btn-primary">
+                          Claim
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Navigation CTA */}
+                <div className="mt-10 flex justify-end">
+                  <button
+                    onClick={handleCompleteTheory}
+                    className="btn py-4 px-10 text-lg"
                     style={{ background: trackColor, color: 'white' }}
                   >
-                    Launch {mod.externalLink.label} <ExternalLink size={14} />
-                  </a>
-                  
-                  <div className="flex gap-2 flex-1">
-                    <input
-                      type="number"
-                      placeholder="Report level achieved..."
-                      value={xpImport}
-                      onChange={(e) => setXpImport(e.target.value)}
-                      className="flex-1 bg-surface2 border border-border p-3 rounded-xl text-white outline-none"
-                    />
-                    <button onClick={() => { if(xpImport) { addXP(parseInt(xpImport)*5); setXpImport('') } }} className="btn btn-primary">
-                      Claim
-                    </button>
-                  </div>
+                    {mod.quiz && mod.quiz.length > 0 ? (
+                      <><BookOpen size={20} /> Start Knowledge Check</>
+                    ) : (
+                      <><ArrowRight size={20} /> Complete Module</>
+                    )}
+                  </button>
                 </div>
-              </div>
+              </motion.div>
             )}
-
-            {/* Navigation CTA */}
-            <div className="mt-10 flex justify-end">
-              <button
-                onClick={handleCompleteTheory}
-                className="btn py-4 px-10 text-lg"
-                style={{ background: trackColor, color: 'white' }}
-              >
-                {mod.quiz && mod.quiz.length > 0 ? (
-                  <><BookOpen size={20} /> Start Knowledge Check</>
-                ) : (
-                  <><ArrowRight size={20} /> Complete Module</>
-                )}
-              </button>
-            </div>
-          </motion.div>
-        )}
 
         {view === 'quiz' && quizData.length > 0 && (
           <motion.div key="quiz" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="w-full">
@@ -465,23 +466,38 @@ function SectionCard({ section }: { section: Section }) {
             <table className="w-full text-xs sm:text-sm">
             <thead>
               <tr className="bg-white/5">
-                {section.tableData.headers.map((h, hi) => (
-                  <th key={hi} className="px-3 sm:px-4 py-3 text-left text-white fw-bold uppercase tracking-wider text-[10px] sm:text-[11px] border-b border-white/10">
-                    {h}
-                  </th>
-                ))}
+                {section.tableData.headers.map((h, hi) => {
+                  const isDo = h.toUpperCase().includes('DO') || h.includes('✅');
+                  const isDont = h.toUpperCase().includes('DON\'T') || h.includes('❌');
+                  return (
+                    <th key={hi} className={`px-3 sm:px-4 py-3 text-left fw-bold uppercase tracking-wider text-[10px] sm:text-[11px] border-b border-white/10
+                      ${isDo ? 'text-green' : isDont ? 'text-danger' : 'text-white'}
+                    `}>
+                      {h}
+                    </th>
+                  );
+                })}
               </tr>
             </thead>
             <tbody>
               {section.tableData.rows.map((row, ri) => (
                 <tr key={ri} className={`${ri % 2 === 0 ? 'bg-white/[0.02]' : ''} hover:bg-white/5 transition-colors`}>
-                  {row.map((cell, ci) => (
-                    <td key={ci} className={`px-3 sm:px-4 py-3 text-sub border-b border-white/5 ${ci === 0 ? 'text-white fw-bold' : ''}`}>
-                      {cell.split(/\*\*(.*?)\*\*/g).map((part, pi) =>
-                        pi % 2 === 1 ? <strong key={pi} className="text-white">{part}</strong> : part
-                      )}
-                    </td>
-                  ))}
+                  {row.map((cell, ci) => {
+                    const header = section.tableData?.headers[ci] || '';
+                    const isDo = header.toUpperCase().includes('DO') || header.includes('✅');
+                    const isDont = header.toUpperCase().includes('DON\'T') || header.includes('❌');
+                    
+                    return (
+                      <td key={ci} className={`px-3 sm:px-4 py-3 border-b border-white/5 
+                        ${ci === 0 ? 'text-white fw-bold' : 'text-sub'}
+                        ${isDo ? 'bg-green/5' : isDont ? 'bg-danger/5' : ''}
+                      `}>
+                        {cell.split(/\*\*(.*?)\*\*/g).map((part, pi) =>
+                          pi % 2 === 1 ? <strong key={pi} className="text-white">{part}</strong> : part
+                        )}
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>
@@ -563,6 +579,8 @@ function SectionCard({ section }: { section: Section }) {
 
 function EducationAnimation({ type }: { type: string }) {
   const [input, setInput] = useState('Git')
+  const [scenario, setScenario] = useState<'original' | 'merge' | 'rebase'>('original')
+  const [step, setStep] = useState(0)
 
   const hash = useMemo(() => {
     // Simple but deterministic hash for educational visual demo
@@ -692,6 +710,399 @@ function EducationAnimation({ type }: { type: string }) {
     )
   }
 
+  if (type.toLowerCase().includes('core') || type === 'git-core-sim') {
+    const steps = [
+      { 
+        title: "1. Working Directory (Workspace)", 
+        desc: "Your workbench. You have multiple files (App.js, Readme), but today only App.js is ready for prime time.",
+        cmd: "# Workspace: Files are dirty/modified",
+        op: 'modify' 
+      },
+      { 
+        title: "2. Staging Area (The Filter)", 
+        desc: "Why Staging? It's a loading dock. You 'add' only App.js. This allows you to split your work into clean, logical snapshots.",
+        cmd: "git add App.js",
+        op: 'add' 
+      },
+      { 
+        title: "3. Local Repository (The Vault)", 
+        desc: "When you 'commit', Git takes only what was on the loading dock. Your Readme remains safe and unstaged in your workspace.",
+        cmd: "git commit -m 'Fix login logic'",
+        op: 'commit' 
+      },
+      { 
+        title: "4. Logical History", 
+        desc: "Success! You've created a clean commit with only relevant changes. This is why Git is more powerful than simple 'Save'!",
+        cmd: "git log --oneline",
+        op: 'done' 
+      }
+    ]
+
+    return (
+      <div className="w-full flex flex-col items-center gap-6 p-4">
+        {/* Storyboard Navigation */}
+        <div className="w-full max-w-lg bg-white/5 p-4 rounded-3xl border border-white/10 shadow-2xl backdrop-blur-md">
+           <div className="flex items-center justify-between mb-4">
+              <div className="flex flex-col">
+                 <span className="text-[10px] text-primary fw-black uppercase tracking-widest leading-none mb-1">Concept Mastery • Step {step + 1}</span>
+                 <h3 className="text-sm fw-black text-white">{steps[step].title}</h3>
+              </div>
+              <div className="flex gap-2">
+                 <button 
+                   disabled={step === 0}
+                   onClick={() => setStep(s => s - 1)}
+                   className="p-2 rounded-xl bg-white/5 border border-white/10 text-white disabled:opacity-20 hover:bg-white/10 transition-all"
+                 >
+                    <ArrowLeft size={16} />
+                 </button>
+                 <button 
+                   disabled={step === steps.length - 1}
+                   onClick={() => setStep(s => s + 1)}
+                   className="px-4 py-2 rounded-xl bg-primary text-white shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 fw-bold text-xs"
+                 >
+                    Next Step
+                    <ArrowRight size={16} />
+                 </button>
+              </div>
+           </div>
+           
+           <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+              <motion.div 
+                className="h-full bg-primary"
+                animate={{ width: `${((step + 1) / steps.length) * 100}%` }}
+              />
+           </div>
+        </div>
+
+        <div className="relative w-full aspect-[2/1] bg-black/40 rounded-3xl border border-white/5 p-6 flex flex-col overflow-hidden shadow-2xl">
+           <svg viewBox="0 0 400 200" className="w-full h-full">
+             {/* Area Labels */}
+             <text x="65" y="30" textAnchor="middle" className="text-[7px] fw-black uppercase tracking-widest" fill="rgba(255,255,255,0.4)">Working Dir</text>
+             <text x="200" y="30" textAnchor="middle" className="text-[7px] fw-black uppercase tracking-widest" fill="rgba(255,255,255,0.4)">Staging Area</text>
+             <text x="335" y="30" textAnchor="middle" className="text-[7px] fw-black uppercase tracking-widest" fill="rgba(255,255,255,0.4)">Local Repo</text>
+
+             {/* Vertical Dividers */}
+             <line x1="133" y1="40" x2="133" y2="180" stroke="rgba(255,255,255,0.1)" strokeWidth="1" strokeDasharray="4 4" />
+             <line x1="266" y1="40" x2="266" y2="180" stroke="rgba(255,255,255,0.1)" strokeWidth="1" strokeDasharray="4 4" />
+
+             {/* Background placeholders */}
+             {[65, 200, 335].map((x, i) => (
+               <rect key={i} x={x-20} y={90} width="40" height="40" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
+             ))}
+
+             {/* FILE B (The 'Excluded' file) */}
+             <motion.g x={65} y={110} initial={false}>
+                 <rect width="25" height="35" rx="3" x="-12.5" y="-17.5" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
+                 <text x="0" y="5" textAnchor="middle" className="text-[5px] fw-bold" fill="rgba(255,255,255,0.3)">Readme</text>
+             </motion.g>
+
+             {/* FILE A (The 'Active' file moving through areas) */}
+             <motion.g
+               initial={false}
+               animate={{ 
+                 x: step === 0 ? 65 : step === 1 ? 200 : 335,
+                 y: step === 0 ? 125 : 110
+               }}
+               transition={{ type: 'spring', stiffness: 80, damping: 15 }}
+             >
+                {/* File Visual */}
+                <motion.rect 
+                  width="44" height="54" rx="4" x="-22" y="-27"
+                  animate={{ 
+                    fill: step === 0 ? "rgba(239, 68, 68, 0.2)" : step === 1 ? "rgba(250, 204, 21, 0.2)" : "rgba(34, 197, 94, 0.2)",
+                    stroke: step === 0 ? "#ef4444" : step === 1 ? "#facc15" : "#22c55e",
+                    opacity: step >= 2 ? 0 : 1
+                  }}
+                  strokeWidth="2"
+                />
+                {step < 2 && (
+                  <motion.g animate={{ opacity: step >= 2 ? 0 : 1 }}>
+                     <line x1="-12" y1="-10" x2="12" y2="-10" stroke="white" strokeWidth="0.5" opacity="0.3" />
+                     <line x1="-12" y1="-5" x2="6" y2="-5" stroke="white" strokeWidth="0.5" opacity="0.3" />
+                     <motion.text x="0" y="12" textAnchor="middle" className="text-[6px] fw-bold" fill="white">App.js</motion.text>
+                  </motion.g>
+                )}
+
+                {/* Commit Node Visual */}
+                <motion.circle 
+                  r="8"
+                  initial={{ scale: 0 }}
+                  animate={{ 
+                    scale: step >= 2 ? 1 : 0,
+                    fill: "#22c55e",
+                    boxShadow: "0 0 20px rgba(34,197,94,0.5)"
+                  }}
+                />
+                {step >= 2 && (
+                   <motion.text 
+                     x="0" y="20" textAnchor="middle" className="text-[7px] fw-black" fill="#22c55e"
+                     initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                   >
+                     Commit
+                   </motion.text>
+                )}
+             </motion.g>
+           </svg>
+        </div>
+
+        {/* Narrative Panel */}
+        <div className="w-full">
+          <AnimatePresence mode="wait">
+          <motion.div 
+            key={step}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="w-full max-w-lg bg-black/40 backdrop-blur-xl border border-white/10 p-5 rounded-3xl shadow-2xl"
+          >
+             <div className="flex items-start gap-4">
+                <div className="p-2.5 rounded-2xl bg-primary/20 text-primary shrink-0">
+                   <LayoutGrid size={18} />
+                </div>
+                <div className="flex flex-col gap-3 w-full">
+                   <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-2">
+                         <span className="text-[10px] text-primary fw-black uppercase tracking-widest whitespace-nowrap">Conceptual Logic</span>
+                         <div className="h-[1px] w-full bg-white/10" />
+                      </div>
+                      <p className="text-xs text-white/90 leading-relaxed fw-medium">
+                         {steps[step].desc}
+                      </p>
+                   </div>
+
+                   {/* Terminal */}
+                   <div className="bg-black/60 rounded-xl p-2.5 border border-white/5 shadow-inner flex items-center gap-3">
+                      <div className="flex gap-1">
+                         <div className="w-1.5 h-1.5 rounded-full bg-red-500/50" />
+                         <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/50" />
+                         <div className="w-1.5 h-1.5 rounded-full bg-green-500/50" />
+                      </div>
+                      <code className="text-[10px] mono text-git fw-bold">
+                         <span className="text-muted opacity-50 mr-2">$</span>
+                         {steps[step].cmd}
+                      </code>
+                   </div>
+                </div>
+             </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </div>
+    )
+  }
+
+    if (type.toLowerCase().includes('merge') || type.toLowerCase().includes('rebase')) {
+    return <MergeRebaseLab />
+  }
+
+  if (type.toLowerCase().includes('remote') || type.toLowerCase().includes('sim')) {
+    return <RemoteSyncLab />
+  }
+
+  if (type === 'git-force-danger') {
+    const steps = [
+      { 
+        title: "1. The Stable State", 
+        desc: "Everyone is synchronized. The server (Origin) and your machine have the same history (A -> B).",
+        cmd: "# History is clean",
+        op: 'sync' 
+      },
+      { 
+        title: "2. Teammate Work (C)", 
+        desc: "A teammate pushes commit 'C'. The server now has (A -> B -> C). You don't have 'C' yet.",
+        cmd: "# Teammate: git push origin main",
+        op: 'remote_move' 
+      },
+      { 
+        title: "3. Divergent Force Push", 
+        desc: "You make commit 'D' from 'B', ignoring 'C'. Then you run 'git push --force'.",
+        cmd: "git push origin main --force",
+        op: 'force_push' 
+      },
+      { 
+        title: "4. DISASTER: History Wiped", 
+        desc: "CRITICAL: Commit 'C' is GONE from the server! Your teammate's work is deleted. Chaos ensues.",
+        cmd: "# Teammate: Error! Diverged history!",
+        op: 'disaster' 
+      }
+    ]
+
+    return (
+      <div className="w-full flex flex-col items-center gap-6 p-4">
+        {/* Storyboard Navigation */}
+        <div className="w-full max-w-lg bg-white/5 p-4 rounded-3xl border border-white/10 shadow-2xl backdrop-blur-md">
+           <div className="flex items-center justify-between mb-4">
+              <div className="flex flex-col">
+                 <span className="text-[10px] text-danger fw-black uppercase tracking-widest leading-none mb-1">Warning Simulation • Step {step + 1}</span>
+                 <h3 className="text-sm fw-black text-white">{steps[step].title}</h3>
+              </div>
+              <div className="flex gap-2">
+                 <button 
+                   disabled={step === 0}
+                   onClick={() => setStep(s => s - 1)}
+                   className="p-2 rounded-xl bg-white/5 border border-white/10 text-white disabled:opacity-20 hover:bg-white/10 transition-all"
+                 >
+                    <ArrowLeft size={16} />
+                 </button>
+                 <button 
+                   disabled={step === steps.length - 1}
+                   onClick={() => setStep(s => s + 1)}
+                   className="px-4 py-2 rounded-xl bg-danger text-white shadow-lg shadow-danger/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 fw-bold text-xs"
+                 >
+                    Next Step
+                    <ArrowRight size={16} />
+                 </button>
+              </div>
+           </div>
+           
+           <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+              <motion.div 
+                className="h-full bg-danger"
+                animate={{ width: `${((step + 1) / steps.length) * 100}%` }}
+              />
+           </div>
+        </div>
+
+        <div className="relative w-full aspect-[2/1] bg-black/40 rounded-3xl border border-white/5 p-6 flex flex-col overflow-hidden shadow-2xl">
+           <svg viewBox="0 0 400 200" className="w-full h-full">
+             {/* Track Labels */}
+             <text x="10" y="55" className="text-[8px] font-black uppercase tracking-wider" fill="#4fd1c5">Remote (Origin)</text>
+             <text x="10" y="145" className="text-[8px] font-black uppercase tracking-wider" fill="#68d391">Local (Your PC)</text>
+
+             {/* Tracks Lines */}
+             <line x1="50" y1="60" x2="380" y2="60" stroke="rgba(79, 209, 197, 0.1)" strokeWidth="1" />
+             <line x1="50" y1="150" x2="380" y2="150" stroke="rgba(104, 211, 145, 0.1)" strokeWidth="1" />
+
+             {/* SHARED History (A, B) */}
+             {[80, 140].map(x => (
+               <g key={x}>
+                 <circle cx={x} cy="60" r="5" fill="#4fd1c5" opacity="0.4" />
+                 <circle cx={x} cy="150" r="5" fill="#68d391" />
+               </g>
+             ))}
+
+             {/* Commit C (Teammate's Work on Server) */}
+             <AnimatePresence>
+                {step >= 1 && step < 3 && (
+                  <motion.g initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0, opacity: 0 }}>
+                     <circle cx="200" cy="60" r="5" fill="#4fd1c5" />
+                     <text x="200" y="45" textAnchor="middle" className="text-[6px] font-bold" fill="#4fd1c5">Teammate commit (C)</text>
+                     {step === 2 && (
+                       <motion.circle 
+                         animate={{ r: [5, 12, 5], opacity: [1, 0, 1] }}
+                         transition={{ repeat: Infinity }}
+                         cx="200" cy="60" stroke="#4fd1c5" fill="none" 
+                       />
+                     )}
+                  </motion.g>
+                )}
+             </AnimatePresence>
+
+             {/* Commit D (Your Work) */}
+             {step >= 2 && (
+               <motion.g
+                 animate={{ 
+                    x: step >= 3 ? 0 : 0,
+                    y: step >= 3 ? -90 : 0
+                 }}
+                 transition={{ type: 'spring', stiffness: 60 }}
+               >
+                  <circle cx="200" cy="150" r="5" fill="#68d391" />
+                  <text x="200" y="165" textAnchor="middle" className="text-[7px] font-bold" fill="#68d391">Your commit (D)</text>
+                  
+                  {step >= 3 && (
+                    <motion.circle 
+                      cx="200" cy="150" r="20" fill="rgba(239, 68, 68, 0.2)" 
+                      initial={{ scale: 0 }} animate={{ scale: 1.5 }}
+                    />
+                  )}
+               </motion.g>
+             )}
+
+             {/* Warning UI for step 3/4 */}
+             {step >= 3 && (
+                <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                   <rect x="180" y="40" width="40" height="40" fill="none" stroke="#ef4444" strokeWidth="2" strokeDasharray="4 2" />
+                   <text x="200" y="85" textAnchor="middle" className="text-[10px] font-black" fill="#ef4444">OVERWRITTEN!</text>
+                   <motion.text x="320" y="60" textAnchor="middle" className="text-[20px]" animate={{ rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity }}>😱</motion.text>
+                   <text x="320" y="75" textAnchor="middle" className="text-[6px] font-bold" fill="#ef4444">Teammate is crying</text>
+                </motion.g>
+             )}
+           </svg>
+        </div>
+
+        {/* Narrative Panel */}
+        <div className="w-full">
+          <AnimatePresence mode="wait">
+            <motion.div 
+              key={step}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="w-full max-w-lg bg-black/40 backdrop-blur-xl border border-white/10 p-5 rounded-3xl shadow-2xl"
+            >
+               <div className="flex items-start gap-4">
+                  <div className={`p-2.5 rounded-2xl ${step === 3 ? 'bg-danger/20 text-danger animate-pulse' : 'bg-primary/20 text-primary'} shrink-0 shadow-lg shadow-primary/10`}>
+                     {step === 3 ? <AlertTriangle size={18} /> : <Users size={18} />}
+                  </div>
+                  <div className="flex flex-col gap-3 w-full">
+                     <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
+                           <span className={`text-[10px] ${step === 3 ? 'text-danger' : 'text-primary'} fw-black uppercase tracking-widest whitespace-nowrap`}>
+                             {step === 3 ? 'Critical Warning' : 'Collaboration Habit'}
+                           </span>
+                           <div className="h-[1px] w-full bg-white/10" />
+                        </div>
+                        <p className="text-xs text-white/90 leading-relaxed fw-medium">
+                           {steps[step].desc}
+                        </p>
+                     </div>
+
+                     {/* Mini-Terminal Badge */}
+                     <div className="bg-black/60 rounded-xl p-2.5 border border-white/5 shadow-inner flex items-center gap-3">
+                        <div className="flex gap-1">
+                           <div className="w-1.5 h-1.5 rounded-full bg-red-500/50" />
+                           <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/50" />
+                           <div className="w-1.5 h-1.5 rounded-full bg-green-500/50" />
+                        </div>
+                        <code className={`text-[10px] mono ${step === 3 ? 'text-danger' : 'text-git'} fw-bold overflow-hidden text-ellipsis whitespace-nowrap`}>
+                           <span className="text-muted opacity-50 mr-2">$</span>
+                           {steps[step].cmd}
+                        </code>
+                     </div>
+                  </div>
+               </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+    )
+  }
+
+  if (type === 'git-stage-lab') {
+    return <StageLab />
+  }
+
+  if (type === 'git-head-lab') {
+    return <HeadLab />
+  }
+
+  if (type === 'git-undo-lab') {
+    return <UndoSandbox />
+  }
+
+  if (type === 'git-cherry-pick-lab') {
+    return <CherryPickLab />
+  }
+
+  if (type === 'git-vs-manual') {
+    return <ManualVsGitLab />
+  }
+
+  if (type === 'git-hash-lab') {
+    return <HashLab />
+  }
+
   // Fallback icon animation
   return (
     <div className="flex flex-col items-center gap-3">
@@ -707,6 +1118,345 @@ function EducationAnimation({ type }: { type: string }) {
   )
 }
 
+// --- SIMULATION COMPONENTS (Isolated to fix hook violations) ---
+
+const ManualVsGitLab = () => {
+  const [count, setCount] = useState(1)
+  return (
+    <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/5">
+       <div className="flex justify-between items-center px-4">
+          <h4 className="text-[10px] fw-black text-muted uppercase tracking-widest">Scaling to {count} changes</h4>
+          <button onClick={() => setCount(c => Math.min(c + 1, 5))} className="px-3 py-1 rounded-lg bg-primary text-white text-[10px] fw-bold hover:scale-105 active:scale-95 transition-all">+ Add Change</button>
+       </div>
+       <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col gap-3">
+             <span className="text-[9px] text-center text-danger fw-black uppercase">Manual Folder 📁</span>
+             <div className="bg-black/40 rounded-2xl p-4 flex flex-col gap-1 min-h-[160px]">
+                {Array.from({ length: count }).map((_, i) => (
+                  <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} key={i} className="p-2 rounded-lg bg-surface2 border border-white/5 text-[9px] text-white font-mono flex items-center gap-2">
+                     📄 project_final{i > 0 ? `_v${i+1}` : ''}{i === count-1 ? '_REAL_FINAL' : ''}.zip
+                  </motion.div>
+                ))}
+             </div>
+          </div>
+          <div className="flex flex-col gap-3">
+             <span className="text-[9px] text-center text-git fw-black uppercase">Git History 🐙</span>
+             <div className="bg-black/40 rounded-2xl p-4 flex flex-col-reverse gap-4 min-h-[160px] relative">
+                <div className="absolute left-[26px] top-6 bottom-6 w-[2px] bg-git/20" />
+                {Array.from({ length: count }).map((_, i) => (
+                  <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} key={i} className="flex items-center gap-3 relative z-10">
+                     <div className="w-4 h-4 rounded-full bg-git shadow-lg shadow-git/20" />
+                     <div className="flex flex-col">
+                        <span className="text-[8px] text-git font-mono fw-black uppercase">bc{i}f{i}a{i}</span>
+                        <span className="text-[8px] text-white opacity-60">Feature {i+1} added</span>
+                     </div>
+                  </motion.div>
+                ))}
+             </div>
+          </div>
+       </div>
+    </div>
+  )
+}
+
+const HashLab = () => {
+  const [text, setText] = useState('Type something...')
+  const hash = Array.from(text).reduce((acc, char) => (acc << 5) - acc + char.charCodeAt(0), 0).toString(16).padEnd(7, '0').slice(0, 7)
+  
+  return (
+    <div className="w-full flex flex-col items-center gap-6 p-8 bg-surface/30 rounded-3xl border border-white/5">
+       <div className="w-full max-w-xs relative">
+          <input 
+            type="text" 
+            value={text} 
+            onChange={(e) => setText(e.target.value)}
+            className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white text-sm focus:border-primary transition-all outline-none text-center font-mono"
+          />
+          <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-muted opacity-30" size={16} />
+       </div>
+       <div className="flex flex-col items-center gap-2">
+          <div className="text-[9px] fw-black text-muted uppercase tracking-widest">The SHA-1 Fingerprint</div>
+          <motion.div 
+             key={hash}
+             initial={{ scale: 1.2, color: '#ffb703' }}
+             animate={{ scale: 1, color: '#fff' }}
+             className="text-4xl font-mono font-black tracking-tighter"
+          >
+             {hash}
+          </motion.div>
+       </div>
+       <p className="text-[10px] text-muted text-center max-w-sm italic">Change a single pixel, and the Hash becomes completely different! 🔒</p>
+    </div>
+  )
+}
+
+const MergeRebaseLab = () => {
+  const [mode, setMode] = useState<'merge' | 'rebase'>('merge')
+  return (
+    <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/5">
+       <div className="flex justify-center gap-4">
+          <button onClick={() => setMode('merge')} className={`px-4 py-2 rounded-xl text-[10px] fw-black border transition-all ${mode === 'merge' ? 'bg-git border-git text-white' : 'bg-surface2 border-white/10 text-muted'}`}>SIMULATE MERGE</button>
+          <button onClick={() => setMode('rebase')} className={`px-4 py-2 rounded-xl text-[10px] fw-black border transition-all ${mode === 'rebase' ? 'bg-primary border-primary text-white' : 'bg-surface2 border-white/10 text-muted'}`}>SIMULATE REBASE</button>
+       </div>
+       
+       <div className="h-48 bg-black/40 rounded-2xl flex items-center justify-center p-4">
+          <svg viewBox="0 0 400 150" className="w-full h-full">
+             <line x1="50" y1="100" x2="350" y2="100" stroke="rgba(255,255,255,0.1)" strokeWidth="2" />
+             <circle cx="80" cy="100" r="5" fill="#4fd1c5" />
+             <circle cx="160" cy="100" r="5" fill="#4fd1c5" />
+             
+             <AnimatePresence mode="wait">
+                {mode === 'merge' ? (
+                   <motion.g key="merge" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                      <path d="M 160 100 Q 220 40 280 40" fill="none" stroke="#118ab2" strokeWidth="2" />
+                      <circle cx="280" cy="40" r="5" fill="#118ab2" />
+                      <path d="M 280 40 Q 320 100 320 100" fill="none" stroke="#118ab2" strokeWidth="2" strokeDasharray="4 2" />
+                      <circle cx="320" cy="100" r="6" fill="#ffd166" />
+                      <text x="320" y="125" textAnchor="middle" className="text-[8px] fw-black" fill="#ffd166">MERGE COMMIT</text>
+                   </motion.g>
+                ) : (
+                   <motion.g key="rebase" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                      <circle cx="240" cy="100" r="5" fill="#118ab2" />
+                      <circle cx="320" cy="100" r="5" fill="#118ab2" />
+                      <text x="280" y="80" textAnchor="middle" className="text-[8px] fw-black" fill="#118ab2">REPLAYED ON TOP</text>
+                      <motion.circle 
+                         animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
+                         transition={{ repeat: Infinity }}
+                         cx="240" cy="100" r="10" stroke="#118ab2" fill="none" 
+                      />
+                   </motion.g>
+                )}
+             </AnimatePresence>
+          </svg>
+       </div>
+    </div>
+  )
+}
+
+const RemoteSyncLab = () => {
+  const [status, setStatus] = useState<'idle' | 'pushing'>('idle')
+  const [localPending, setLocalPending] = useState(1)
+  const [remoteCount, setRemoteCount] = useState(2)
+
+  const handlePush = () => {
+     if (localPending === 0) return
+     setStatus('pushing')
+     setTimeout(() => {
+        setRemoteCount(r => r + localPending)
+        setLocalPending(0)
+        setStatus('idle')
+     }, 1500)
+  }
+
+  return (
+    <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/5">
+       <div className="flex justify-center gap-4">
+          <button disabled={status !== 'idle' || localPending === 0} onClick={handlePush} className="px-6 py-2 rounded-xl bg-git text-white text-[10px] fw-black disabled:opacity-20 flex items-center gap-2 transition-all hover:scale-105 active:scale-95">
+             <ArrowUp size={14} /> GIT PUSH
+          </button>
+       </div>
+
+       <div className="flex items-center justify-between px-10 h-40 relative">
+          <div className="flex flex-col items-center gap-2">
+             <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center relative">
+                <Laptop size={32} className="text-git" />
+                {localPending > 0 && <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-danger text-[10px] fw-black flex items-center justify-center border-2 border-surface">{localPending}</div>}
+             </div>
+             <span className="text-[9px] fw-black text-muted uppercase">Your PC</span>
+          </div>
+
+          <div className="flex-1 h-[2px] bg-white/5 mx-4 relative overflow-hidden">
+             <AnimatePresence>
+                {status === 'pushing' && (
+                   <motion.div 
+                      initial={{ x: '-100%' }}
+                      animate={{ x: '100%' }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-git to-transparent w-full h-full"
+                   />
+                )}
+             </AnimatePresence>
+          </div>
+
+          <div className="flex flex-col items-center gap-2 text-primary">
+             <div className="w-16 h-16 rounded-2xl bg-primary/5 border border-primary/20 flex flex-col items-center justify-center relative">
+                <Cloud size={32} />
+                <div className="text-[10px] fw-black mt-1">{remoteCount}</div>
+             </div>
+             <span className="text-[9px] fw-black text-muted uppercase">GitHub</span>
+          </div>
+       </div>
+    </div>
+  )
+}
+
+const StageLab = () => {
+  const [step, setStep] = useState(0)
+  const steps = [
+    { title: 'Working Dir', desc: 'Your workspace. Changes are untracked.', color: 'var(--color-danger)' },
+    { title: 'Staging Area', desc: 'The waiting room for commits.', color: 'var(--color-primary)' },
+    { title: 'Repository', desc: 'Official version history.', color: 'var(--color-git)' }
+  ]
+
+  return (
+    <div className="w-full flex flex-col items-center gap-6 p-6">
+       <div className="flex justify-center gap-4 w-full max-w-lg">
+          {steps.map((s, i) => (
+            <motion.div 
+               key={i} 
+               animate={{ opacity: step === i ? 1 : 0.4, scale: step === i ? 1.05 : 0.95 }}
+               className="flex-1 p-4 rounded-2xl border border-white/10 bg-surface2 flex flex-col items-center gap-2 text-center"
+               onClick={() => setStep(i)}
+            >
+               <span className="text-[8px] fw-black uppercase tracking-tighter" style={{ color: s.color }}>{s.title}</span>
+               <p className="text-[9px] leading-tight opacity-70">{s.desc}</p>
+            </motion.div>
+          ))}
+       </div>
+       <div className="w-full max-w-lg h-32 bg-black/40 rounded-3xl border border-white/5 relative flex items-center justify-center overflow-hidden">
+          <motion.div 
+             animate={{ x: (step - 1) * 150 }}
+             className="flex gap-10"
+          >
+             <div className="w-16 h-16 rounded-xl bg-danger/20 border border-danger/40 shadow-lg shadow-danger/20 flex items-center justify-center"><LayoutGrid size={24} className="text-danger" /></div>
+             <div className="w-16 h-16 rounded-xl bg-primary/20 border border-primary/40 shadow-lg shadow-primary/20 flex items-center justify-center"><Workflow size={24} className="text-primary" /></div>
+             <div className="w-16 h-16 rounded-xl bg-git/20 border border-git/40 shadow-lg shadow-git/20 flex items-center justify-center"><BookOpen size={24} className="text-git" /></div>
+          </motion.div>
+       </div>
+    </div>
+  )
+}
+
+const HeadLab = () => {
+    const [step, setStep] = useState(0)
+    const steps = [
+      { 
+        title: "Initial State", 
+        desc: "HEAD points to the 'main' branch, which points to commit C1.", 
+        pos: { main: 0, head: 'main' } 
+      },
+      { 
+        title: "New Commit", 
+        desc: "You made C2. 'main' moved to C2, and HEAD followed 'main'.", 
+        pos: { main: 1, head: 'main' } 
+      },
+      { 
+        title: "Detached HEAD", 
+        desc: "You checked out C1 directly. HEAD now points to the commit, NOT a branch!", 
+        pos: { main: 1, head: 0 } 
+      }
+    ]
+
+    return (
+      <div className="w-full flex flex-col items-center gap-6 p-4">
+        <div className="w-full max-w-lg flex items-center justify-between mb-4">
+           <div className="flex flex-col">
+              <span className="text-[10px] text-primary fw-black uppercase tracking-widest leading-none mb-1">HEAD Simulation • Step {step + 1}</span>
+              <h3 className="text-sm fw-black text-white">{steps[step].title}</h3>
+           </div>
+           <div className="flex gap-2">
+              <button disabled={step === 0} onClick={() => setStep(s => s - 1)} className="p-2 rounded-xl bg-white/5 border border-white/10 text-white disabled:opacity-20 hover:bg-white/10 transition-all"><ArrowLeft size={16} /></button>
+              <button disabled={step === steps.length - 1} onClick={() => setStep(s => s + 1)} className="px-4 py-2 rounded-xl bg-primary text-white shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all text-xs fw-bold"><ArrowRight size={16} /></button>
+           </div>
+        </div>
+
+        <div className="w-full max-w-lg bg-black/40 rounded-3xl border border-white/5 p-8 relative min-h-[160px] flex flex-col items-center justify-center gap-10">
+           <div className="flex gap-12 relative">
+              <div className="absolute top-1/2 left-4 right-4 h-0.5 bg-white/10 -translate-y-1/2" />
+              {[0, 1].map(i => (
+                <div key={i} className="flex flex-col items-center gap-3 relative">
+                   <div className="w-10 h-10 rounded-full bg-surface2 border border-white/10 flex items-center justify-center text-xs fw-bold font-mono">C{i+1}</div>
+                   {steps[step].pos.main === i && (
+                     <motion.div layoutId="main-label" className="absolute -bottom-8 px-2 py-1 rounded bg-git text-[8px] fw-black text-white">MAIN</motion.div>
+                   )}
+                   {steps[step].pos.head === i && (
+                     <motion.div layoutId="head-label" className="absolute -top-8 px-2 py-1 rounded bg-primary text-[8px] fw-black text-white">HEAD 📍</motion.div>
+                   )}
+                </div>
+              ))}
+           </div>
+           {steps[step].pos.head === 'main' && (
+              <motion.div layoutId="head-label" className="absolute top-12 right-1/4 -translate-y-full px-2 py-1 rounded bg-primary text-[8px] fw-black text-white">HEAD 📍</motion.div>
+           )}
+           <p className="text-[10px] text-muted text-center max-w-xs">{steps[step].desc}</p>
+        </div>
+      </div>
+    )
+}
+
+const UndoSandbox = () => {
+  const [mode, setMode] = useState<'revert' | 'reset'>('revert')
+  const [commits] = useState(['C1', 'C2', 'C3 (Error)'])
+
+  return (
+    <div className="w-full flex flex-col gap-6 p-6">
+       <div className="flex justify-center gap-4">
+          <button onClick={() => setMode('revert')} className={`px-4 py-2 rounded-xl text-[10px] fw-black transition-all ${mode === 'revert' ? 'bg-primary text-white' : 'bg-surface2 text-muted'}`}>SIMULATE REVERT</button>
+          <button onClick={() => setMode('reset')} className={`px-4 py-2 rounded-xl text-[10px] fw-black transition-all ${mode === 'reset' ? 'bg-danger text-white' : 'bg-surface2 text-muted'}`}>SIMULATE RESET</button>
+       </div>
+       <div className="bg-black/40 rounded-3xl p-8 border border-white/5 flex flex-col items-center gap-8 relative overflow-hidden">
+          <div className="flex gap-6">
+             <AnimatePresence mode="popLayout">
+                {(mode === 'revert' ? [...commits, 'C4 (Fix)'] : commits.slice(0, 2)).map((c, i) => (
+                  <motion.div 
+                    layout
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    key={c}
+                    className={`w-12 h-12 rounded-2xl border flex items-center justify-center text-[10px] fw-black font-mono shadow-xl ${i === 2 && mode === 'revert' ? 'border-danger/30 bg-danger/10 text-danger/50 line-through' : 'border-white/10 bg-surface2 text-white/90'}`}
+                  >
+                     {c}
+                  </motion.div>
+                ))}
+             </AnimatePresence>
+          </div>
+          <p className="text-[10px] text-muted text-center max-w-xs">
+             {mode === 'revert' ? 'Revert adds a new commit to undo changes, preserving history.' : 'Reset --hard permanently deletes commits. Be careful!'}
+          </p>
+       </div>
+    </div>
+  )
+}
+
+const CherryPickLab = () => {
+  const [isPicked, setIsPicked] = useState(false)
+  return (
+     <div className="w-full flex flex-col gap-10 p-8 bg-surface/30 rounded-3xl border border-white/5">
+        <div className="flex flex-col gap-10">
+           <div className="relative">
+              <span className="text-[9px] fw-black text-git uppercase tracking-widest absolute -top-4">Main Branch</span>
+              <div className="h-16 bg-black/40 rounded-2xl border border-white/5 flex items-center px-6 gap-6">
+                 <div className="w-8 h-8 rounded-lg bg-surface2 border border-white/10 flex items-center justify-center text-[10px] text-muted font-mono opacity-50">C1</div>
+                 <div className="w-8 h-8 rounded-lg bg-surface2 border border-white/10 flex items-center justify-center text-[10px] text-muted font-mono opacity-50">C2</div>
+                 <AnimatePresence>
+                    {isPicked && (
+                       <motion.div initial={{ scale: 0, x: 50 }} animate={{ scale: 1, x: 0 }} className="w-8 h-8 rounded-lg bg-xp border border-xp text-black flex items-center justify-center text-[10px] fw-black font-mono">C*</motion.div>
+                    )}
+                 </AnimatePresence>
+              </div>
+           </div>
+
+           <div className="relative">
+              <span className="text-[9px] fw-black text-primary uppercase tracking-widest absolute -top-4">Feature Branch</span>
+              <div className="h-16 bg-black/40 rounded-2xl border border-white/5 flex items-center px-6 gap-6">
+                 <div className="w-8 h-8 rounded-lg bg-surface2 border border-white/10 flex items-center justify-center text-[10px] text-muted font-mono opacity-50">A</div>
+                 <div className="w-8 h-8 rounded-lg bg-surface2 border border-white/10 flex items-center justify-center text-[10px] text-muted font-mono opacity-50">B</div>
+                 <motion.button 
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setIsPicked(true)}
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center text-[10px] fw-black transition-all shadow-lg ${isPicked ? 'bg-xp text-black cursor-default' : 'bg-primary text-white hover:shadow-primary/40'}`}
+                 >
+                    {isPicked ? <CheckCircle size={14} className="text-black" /> : 'C'}
+                 </motion.button>
+              </div>
+           </div>
+        </div>
+     </div>
+  )
+}
+
 function MiniGame({ gameType, gameData }: { gameType: string, gameData: GameDataItem[] | GameDataClassify }) {
   if (gameType === 'drag-order') {
     return <DragOrderGame items={gameData as GameDataItem[]} />
@@ -719,6 +1469,7 @@ function MiniGame({ gameType, gameData }: { gameType: string, gameData: GameData
 
   return <div className="p-10 text-center text-muted border border-dashed rounded-xl">Game Module Coming Soon...</div>
 }
+
 
 function DragOrderGame({ items }: { items: { id: string, label: string }[] }) {
   const [solved, setSolved] = useState(false)
