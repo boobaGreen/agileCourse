@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '../store/useAppStore'
@@ -30,7 +30,14 @@ const STATIC_PARTICLES: Particle[] = [...Array(24)].map((_, i) => ({
 export default function LandingPage() {
   const [name, setName] = useState('')
   const setUserName = useAppStore((s) => s.setUserName)
+  const userName = useAppStore((s) => s.userName)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (userName) {
+      navigate('/dashboard', { replace: true })
+    }
+  }, [userName, navigate])
 
   const handleNameSubmit = (e: React.FormEvent) => {
     e.preventDefault()
