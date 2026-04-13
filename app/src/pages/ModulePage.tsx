@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, Reorder } from 'framer-motion'
 import { useAppStore } from '../store/useAppStore'
 import { GIT_MODULES } from '../data/git/modules'
 import { DOCKER_MODULES } from '../data/docker/modules'
@@ -682,12 +682,9 @@ function DragOrderGame({ items }: { items: { id: string, label: string }[] }) {
   const [solved, setSolved] = useState(false)
   const [currentOrder, setCurrentOrder] = useState(() => [...items].sort(() => Math.random() - 0.5))
   
-  const moveItem = (fromIdx: number, toIdx: number) => {
-    const newOrder = [...currentOrder]
-    const [removed] = newOrder.splice(fromIdx, 1)
-    newOrder.splice(toIdx, 0, removed)
+  const handleReorder = (newOrder: typeof currentOrder) => {
+    if (solved) return
     setCurrentOrder(newOrder)
-    
     const isCorrect = newOrder.every((item, i) => item.id === items[i].id)
     if (isCorrect) setSolved(true)
   }
@@ -699,35 +696,29 @@ function DragOrderGame({ items }: { items: { id: string, label: string }[] }) {
         <p className="text-muted text-xs">Drag the steps into the correct chronological sequence.</p>
       </div>
 
-      <div className="flex flex-col gap-2 mb-6">
+      <Reorder.Group axis="y" values={currentOrder} onReorder={handleReorder} className="flex flex-col gap-2 mb-6">
          {currentOrder.map((item, idx) => (
-           <motion.div
+           <Reorder.Item
              key={item.id}
-             layout
-             className={`p-3 rounded-xl border flex items-center justify-between cursor-move group transition-all
-               ${solved ? 'bg-green/10 border-green/30' : 'bg-surface2 border-white/5 hover:border-white/20'}
+             value={item}
+             className={`p-3 rounded-xl border flex items-center justify-between cursor-grab active:cursor-grabbing group transition-colors shadow-sm
+               ${solved ? 'bg-green/10 border-green/30 !cursor-default' : 'bg-surface2 border-white/5 hover:border-white/20'}
              `}
            >
-              <div className="flex items-center gap-3">
-                 <div className="w-6 h-6 rounded-lg bg-black/20 flex items-center justify-center text-[10px] fw-black text-muted group-hover:text-white">
+              <div className="flex items-center gap-3 select-none">
+                 <div className="w-6 h-6 rounded-lg bg-black/20 flex items-center justify-center text-[10px] fw-black text-muted group-hover:text-white transition-colors">
                     {idx + 1}
                  </div>
-                 <span className="text-sm fw-bold text-sub group-hover:text-white">{item.label}</span>
+                 <span className="text-sm fw-bold text-sub group-hover:text-white transition-colors">{item.label}</span>
               </div>
-              {!solved && (
-                <div className="flex gap-1">
-                  <button onClick={() => idx > 0 && moveItem(idx, idx - 1)} className="p-1 hover:text-white"><Zap size={12} className="rotate-180" /></button>
-                  <button onClick={() => idx < currentOrder.length - 1 && moveItem(idx, idx + 1)} className="p-1 hover:text-white"><Zap size={12} /></button>
-                </div>
-              )}
               {solved && <CheckCircle size={14} className="text-green" />}
-           </motion.div>
+           </Reorder.Item>
          ))}
-      </div>
+      </Reorder.Group>
 
       {solved && (
         <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center">
-           <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-green text-black fw-black text-sm">
+           <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-green text-white fw-black text-sm">
               <Trophy size={16} /> Workflow Mastered! (+10 XP)
            </div>
         </motion.div>
@@ -793,7 +784,7 @@ function DragClassifyGame({ categories, items }: { categories: { id: string, lab
 
       {solved && (
         <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center mt-6">
-           <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-green text-black fw-black text-sm">
+           <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-green text-white fw-black text-sm">
               <Trophy size={16} /> Architecture Validated! (+15 XP)
            </div>
         </motion.div>

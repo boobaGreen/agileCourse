@@ -54,7 +54,7 @@ export default function ProfilePage() {
         {/* Avatar */}
         <div className="relative mb-6 z-10 group">
           <div className="absolute inset-0 bg-gradient-to-tr from-git via-docker to-k8s rounded-full blur-xl opacity-40 group-hover:opacity-70 transition-opacity duration-700" />
-          <div className="relative w-28 h-28 md:w-32 md:h-32 rounded-full bg-surface border-4 border-surface2 flex items-center justify-center text-5xl md:text-6xl flex-col shadow-[0_0_40px_rgba(0,0,0,0.5)]">
+          <div className="relative w-28 h-28 md:w-32 md:h-32 rounded-full bg-surface border-4 border-white/20 flex items-center justify-center text-5xl md:text-6xl flex-col shadow-[0_0_40px_rgba(0,0,0,0.5)]">
              <span className="animate-float">🧑‍🚀</span>
           </div>
         </div>
