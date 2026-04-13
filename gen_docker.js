@@ -1,4 +1,6 @@
-import type { Module } from '../git/modules'
+const fs = require('fs');
+
+const content = `import type { Module } from '../git/modules'
 
 export const DOCKER_MODULES: Module[] = [
   {
@@ -14,7 +16,7 @@ export const DOCKER_MODULES: Module[] = [
     sections: [
       {
         type: 'intro',
-        content: 'In the old days, software worked on one machine but failed on another. "It works on my machine" became the developer\'s excuse. Docker solved this by putting everything an app needs into a portable, standardized container.'
+        content: 'In the old days, software worked on one machine but failed on another. "It works on my machine" became the developer\\'s excuse. Docker solved this by putting everything an app needs into a portable, standardized container.'
       },
       {
         type: 'video',
@@ -25,7 +27,7 @@ export const DOCKER_MODULES: Module[] = [
       {
         type: 'concept',
         title: '📦 Why not just use a Virtual Machine?',
-        content: 'To understand containers, we must understand the old way of doing things: Virtual Machines (VMs). A VM runs a **full Guest Operating System** on top of virtualized hardware. It\'s slow to start and heavy on resources. A container, instead, shares the Host OS, making it start in milliseconds.'
+        content: 'To understand containers, we must understand the old way of doing things: Virtual Machines (VMs). A VM runs a **full Guest Operating System** on top of virtualized hardware. It\\'s slow to start and heavy on resources. A container, instead, shares the Host OS, making it start in milliseconds.'
       },
       {
         type: 'table',
@@ -44,12 +46,12 @@ export const DOCKER_MODULES: Module[] = [
       },
       {
         type: 'flowchart',
-        content: '**The Shipping Container Analogy**\nBefore standard containers, moving software was exactly like moving random-sized cargo. Docker standardized the shape!',
+        content: '**The Shipping Container Analogy**\\nBefore standard containers, moving software was exactly like moving random-sized cargo. Docker standardized the shape!',
         diagramSteps: [
-          { label: 'Dev Laptop\n(Messy Code)', icon: '💻', color: '#118ab2' },
-          { label: 'Standard Docker Image\n(The Container)', icon: '📦', color: '#ffb703' },
-          { label: 'Cloud Servers\n(The Ship)', icon: '☁️', color: '#06d6a0' },
-          { label: 'Runs Exactly the Same\n(Delivery)', icon: '✅', color: '#118ab2' }
+          { label: 'Dev Laptop\\n(Messy Code)', icon: '💻', color: '#118ab2' },
+          { label: 'Standard Docker Image\\n(The Container)', icon: '📦', color: '#ffb703' },
+          { label: 'Cloud Servers\\n(The Ship)', icon: '☁️', color: '#06d6a0' },
+          { label: 'Runs Exactly the Same\\n(Delivery)', icon: '✅', color: '#118ab2' }
         ]
       },
       {
@@ -93,8 +95,8 @@ export const DOCKER_MODULES: Module[] = [
         id: 'docker-1-q3',
         question: 'Why are containers generally considered "lighter" than VMs?',
         options: [
-          'They don\'t have IP addresses',
-          'They don\'t include a Guest OS overhead',
+          'They don\\'t have IP addresses',
+          'They don\\'t include a Guest OS overhead',
           'They only run compiled languages like C++',
           'They bypass CPU and only use RAM'
         ],
@@ -121,7 +123,7 @@ export const DOCKER_MODULES: Module[] = [
       {
         type: 'concept',
         title: '🖼️ The Image (The Blueprint)',
-        content: 'An image is a **read-only** template. It contains the OS libraries, the app code, and the runtime. It doesn\'t "run" — it just sits on your disk. Think of it as a recipe in a cookbook, or an ISO file.'
+        content: 'An image is a **read-only** template. It contains the OS libraries, the app code, and the runtime. It doesn\\'t "run" — it just sits on your disk. Think of it as a recipe in a cookbook, or an ISO file.'
       },
       {
         type: 'concept',
@@ -132,9 +134,9 @@ export const DOCKER_MODULES: Module[] = [
         type: 'flowchart',
         content: '**One Image, Multiple Independent Containers**',
         diagramSteps: [
-          { label: 'Image\n(Read-Only)', icon: '🖼️', color: '#118ab2' },
-          { label: 'Container A\n(Port 80)', icon: '📦', color: '#06d6a0' },
-          { label: 'Container B\n(Port 81)', icon: '📦', color: '#06d6a0' }
+          { label: 'Image\\n(Read-Only)', icon: '🖼️', color: '#118ab2' },
+          { label: 'Container A\\n(Port 80)', icon: '📦', color: '#06d6a0' },
+          { label: 'Container B\\n(Port 81)', icon: '📦', color: '#06d6a0' }
         ]
       },
       {
@@ -152,10 +154,10 @@ export const DOCKER_MODULES: Module[] = [
         type: 'flowchart',
         content: '**Image Architecture (Layers)**',
         diagramSteps: [
-          { label: 'Base OS\n(Ubuntu 50MB)', icon: '🐧', color: '#ff4b4b' },
-          { label: 'Dependencies\n(Node.js 20MB)', icon: '📚', color: '#ffd166' },
-          { label: 'Your App\n(index.js 2KB)', icon: '💻', color: '#06d6a0' },
-          { label: 'R/W Layer\n(Container)', icon: '✏️', color: '#118ab2' }
+          { label: 'Base OS\\n(Ubuntu 50MB)', icon: '🐧', color: '#ff4b4b' },
+          { label: 'Dependencies\\n(Node.js 20MB)', icon: '📚', color: '#ffd166' },
+          { label: 'Your App\\n(index.js 2KB)', icon: '💻', color: '#06d6a0' },
+          { label: 'R/W Layer\\n(Container)', icon: '✏️', color: '#118ab2' }
         ]
       },
       {
@@ -180,35 +182,35 @@ export const DOCKER_MODULES: Module[] = [
       {
         type: 'game',
         title: 'Terminal: Your First Container',
-        content: 'Let\'s pull an image and run it. The command structure is: `docker [action] [image]`.',
+        content: 'Let\\'s pull an image and run it. The command structure is: `docker [action] [image]`.',
         gameType: 'terminal',
         gameData: {
           startText: 'ubuntu@docker-host:~$ ',
           steps: [
             {
-              instruction: 'First, let\'s download the official alpine linux image. Type: docker pull alpine',
+              instruction: 'First, let\\'s download the official alpine linux image. Type: docker pull alpine',
               expectedCommand: 'docker pull alpine',
-              output: 'Using default tag: latest\nlatest: Pulling from library/alpine\n4abcf2066143: Pull complete\nDigest: sha256:c5b1261d6d3e...1ad6b\nStatus: Downloaded newer image for alpine:latest'
+              output: 'Using default tag: latest\\nlatest: Pulling from library/alpine\\n4abcf2066143: Pull complete\\nDigest: sha256:c5b1261d6d3e43071626931fc004f70149baeba2c8ec672bd4f27761f8e1ad6b\\nStatus: Downloaded newer image for alpine:latest'
             },
             {
               instruction: 'Now verify it is on our disk. Type: docker images',
               expectedCommand: 'docker images',
-              output: 'REPOSITORY    TAG       IMAGE ID       CREATED        SIZE\nalpine        latest    05455a08881e   2 weeks ago    7.38MB'
+              output: 'REPOSITORY    TAG       IMAGE ID       CREATED        SIZE\\nalpine        latest    05455a08881e   2 weeks ago    7.38MB'
             },
             {
-              instruction: 'Let\'s spin up a container from this image and echo a word. Type: docker run alpine echo hello',
+              instruction: 'Let\\'s spin up a container from this image and echo a word. Type: docker run alpine echo hello',
               expectedCommand: 'docker run alpine echo hello',
               output: 'hello'
             },
             {
               instruction: 'See the list of currently running containers. Type: docker ps',
               expectedCommand: 'docker ps',
-              output: 'CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES\n(Empty list because the container exited immediately after echoing!)'
+              output: 'CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES\\n(Empty list because the container exited immediately after echoing!)'
             },
             {
               instruction: 'To see containers that have finished executing, type: docker ps -a',
               expectedCommand: 'docker ps -a',
-              output: 'CONTAINER ID   IMAGE     COMMAND        CREATED          STATUS                      PORTS     NAMES\na1b2c3d4e5f6   alpine    "echo hello"   14 seconds ago   Exited (0) 13 seconds ago             dazzling_turing'
+              output: 'CONTAINER ID   IMAGE     COMMAND        CREATED          STATUS                      PORTS     NAMES\\na1b2c3d4e5f6   alpine    "echo hello"   14 seconds ago   Exited (0) 13 seconds ago             dazzling_turing'
             }
           ]
         }
@@ -265,7 +267,7 @@ export const DOCKER_MODULES: Module[] = [
     sections: [
       {
         type: 'intro',
-        content: 'You won\'t always rely on predefined images. To create an environment specifically for your app, you write a **Dockerfile** — a simple, standardized text document containing all the commands a user could call on the command line to assemble an image.'
+        content: 'You won\\'t always rely on predefined images. To create an environment specifically for your app, you write a **Dockerfile** — a simple, standardized text document containing all the commands a user could call on the command line to assemble an image.'
       },
       {
         type: 'video',
@@ -305,12 +307,12 @@ export const DOCKER_MODULES: Module[] = [
       {
         type: 'concept',
         title: '⚡ Understanding the Build Cache',
-        content: 'Docker builds images sequentially. To speed things up, it **caches** each layer. If you change a line of code, Docker tries to reuse the cache. **However**, if a layer is invalidated (e.g., a file changed in `COPY`), ALL subsequent layers are completely rebuilt.\n\nThis is why we `COPY package.json` and `RUN npm install` **BEFORE** we `COPY . .` (the rest of the code). We don\'t want to reinstall 500MB of Node modules just because we changed a typo in `index.html`!'
+        content: 'Docker builds images sequentially. To speed things up, it **caches** each layer. If you change a line of code, Docker tries to reuse the cache. **However**, if a layer is invalidated (e.g., a file changed in `COPY`), ALL subsequent layers are completely rebuilt.\\n\\nThis is why we `COPY package.json` and `RUN npm install` **BEFORE** we `COPY . .` (the rest of the code). We don\\'t want to reinstall 500MB of Node modules just because we changed a typo in `index.html`!'
       },
       {
         type: 'game',
         title: 'Terminal: Build & Tag',
-        content: 'Let\'s use the Docker CLI to build a Dockerfile.',
+        content: 'Let\\'s use the Docker CLI to build a Dockerfile.',
         gameType: 'terminal',
         gameData: {
           startText: 'ubuntu@docker-host:~/my-app$ ',
@@ -318,12 +320,12 @@ export const DOCKER_MODULES: Module[] = [
             {
               instruction: 'Build the image in the current directory (.) and tag it with the name "myapp:v1". Type: docker build -t myapp:v1 .',
               expectedCommand: 'docker build -t myapp:v1 .',
-              output: 'Sending build context to Docker daemon  2.048kB\nStep 1/5 : FROM node:18-alpine\n ---> 34c8w912f\nStep 2/5 : WORKDIR /app\n ---> Running in a2bf12\nRemoving intermediate container a2bf12\n ---> 78c31fe\nStep 3/5 : COPY . .\n ---> 21ad22f\nSuccessfully built 21ad22f\nSuccessfully tagged myapp:v1'
+              output: 'Sending build context to Docker daemon  2.048kB\\nStep 1/5 : FROM node:18-alpine\\n ---> 34c8w912f\\nStep 2/5 : WORKDIR /app\\n ---> Running in a2bf12\\nRemoving intermediate container a2bf12\\n ---> 78c31fe\\nStep 3/5 : COPY . .\\n ---> 21ad22f\\nSuccessfully built 21ad22f\\nSuccessfully tagged myapp:v1'
             },
             {
               instruction: 'Verify your new custom image exists. Type: docker images',
               expectedCommand: 'docker images',
-              output: 'REPOSITORY    TAG       IMAGE ID       CREATED         SIZE\nmyapp         v1        21ad22f4b1e2   2 seconds ago   174MB\nalpine        latest    05455a08881e   2 weeks ago     7.38MB'
+              output: 'REPOSITORY    TAG       IMAGE ID       CREATED         SIZE\\nmyapp         v1        21ad22f4b1e2   2 seconds ago   174MB\\nalpine        latest    05455a08881e   2 weeks ago     7.38MB'
             }
           ]
         }
@@ -347,8 +349,8 @@ export const DOCKER_MODULES: Module[] = [
         question: 'Why do sophisticated Dockerfiles separate `COPY package.json` from `COPY .` (the rest of the code)?',
         options: [
           'Because Docker cannot copy large folders all at once',
-          'To optimize the layer cache so dependencies aren\'t re-installed every time code changes',
-          'To ensure malicious files aren\'t copied',
+          'To optimize the layer cache so dependencies aren\\'t re-installed every time code changes',
+          'To ensure malicious files aren\\'t copied',
           'Because package.json must be executed as a script'
         ],
         correct: 1,
@@ -375,7 +377,7 @@ export const DOCKER_MODULES: Module[] = [
     sections: [
       {
         type: 'intro',
-        content: 'You don\'t have to build everything yourself. **Docker Hub** is the central public registry where millions of pre-built images live. From basic Linux distributions to giant databases, it\'s the App Store for developers.'
+        content: 'You don\\'t have to build everything yourself. **Docker Hub** is the central public registry where millions of pre-built images live. From basic Linux distributions to giant databases, it\\'s the App Store for developers.'
       },
       {
         type: 'concept',
@@ -405,15 +407,15 @@ export const DOCKER_MODULES: Module[] = [
         type: 'flowchart',
         content: '**The Push & Pull Cycle**',
         diagramSteps: [
-          { label: 'Developer Laptop\n(docker push)', icon: '💻', color: '#ffb703' },
-          { label: 'Docker Hub\n(The Cloud Registry)', icon: '☁️', color: '#118ab2' },
-          { label: 'Prod Server\n(docker pull)', icon: '🖥️', color: '#06d6a0' }
+          { label: 'Developer Laptop\\n(docker push)', icon: '💻', color: '#ffb703' },
+          { label: 'Docker Hub\\n(The Cloud Registry)', icon: '☁️', color: '#118ab2' },
+          { label: 'Prod Server\\n(docker pull)', icon: '🖥️', color: '#06d6a0' }
         ]
       },
       {
         type: 'game',
         title: 'Terminal: Publish to the World',
-        content: 'Let\'s log in and push an image to Docker Hub.',
+        content: 'Let\\'s log in and push an image to Docker Hub.',
         gameType: 'terminal',
         gameData: {
           startText: 'ubuntu@docker-host:~$ ',
@@ -421,7 +423,7 @@ export const DOCKER_MODULES: Module[] = [
             {
               instruction: 'First, log into your Docker Hub account via CLI. Type: docker login',
               expectedCommand: 'docker login',
-              output: 'Authenticating with existing credentials...\nLogin Succeeded'
+              output: 'Authenticating with existing credentials...\\nLogin Succeeded'
             },
             {
               instruction: 'Tag your local "myapp:v1" image with your Docker Hub username. Type: docker tag myapp:v1 devguru/myapp:v1',
@@ -431,7 +433,7 @@ export const DOCKER_MODULES: Module[] = [
             {
               instruction: 'Now push it to the public cloud registry! Type: docker push devguru/myapp:v1',
               expectedCommand: 'docker push devguru/myapp:v1',
-              output: 'The push refers to repository [docker.io/devguru/myapp]\n21ad22f4b1e2: Pushed\nv1: digest: sha256:8b4c3... size: 1993'
+              output: 'The push refers to repository [docker.io/devguru/myapp]\\n21ad22f4b1e2: Pushed\\nv1: digest: sha256:8b4c3... size: 1993'
             }
           ]
         }
@@ -444,7 +446,7 @@ export const DOCKER_MODULES: Module[] = [
         options: [
           'It costs more money to use the latest tag',
           'It is a mutable tag; it can point to a completely different, breaking version tomorrow',
-          'The latest tag disables Docker\'s security sandbox',
+          'The latest tag disables Docker\\'s security sandbox',
           'The latest tag bypasses cache and takes hours to pull'
         ],
         correct: 1,
@@ -471,7 +473,7 @@ export const DOCKER_MODULES: Module[] = [
     sections: [
       {
         type: 'intro',
-        content: 'Containers are meant to be **ephemeral** (temporary). If you delete a database container, everything on its internal disk is wiped out. To save our actual user data, we must bridge the gap to the Host machine\'s physical disk.'
+        content: 'Containers are meant to be **ephemeral** (temporary). If you delete a database container, everything on its internal disk is wiped out. To save our actual user data, we must bridge the gap to the Host machine\\'s physical disk.'
       },
       {
         type: 'concept',
@@ -482,10 +484,10 @@ export const DOCKER_MODULES: Module[] = [
         type: 'flowchart',
         content: '**Ephemeral Data (Dangerous ❌)**',
         diagramSteps: [
-          { label: 'PostgreSQL\n(Running Container)', icon: '🐘', color: '#ffb703' },
-          { label: 'Writes to\nContainer Disk', icon: '📝', color: '#ff4b4b' },
-          { label: 'Container Demolished\n(docker rm)', icon: '💥', color: '#ff4b4b' },
-          { label: 'Data is\nGone Forever!', icon: '💀', color: '#000000' }
+          { label: 'PostgreSQL\\n(Running Container)', icon: '🐘', color: '#ffb703' },
+          { label: 'Writes to\\nContainer Disk', icon: '📝', color: '#ff4b4b' },
+          { label: 'Container Demolished\\n(docker rm)', icon: '💥', color: '#ff4b4b' },
+          { label: 'Data is\\nGone Forever!', icon: '💀', color: '#000000' }
         ]
       },
       {
@@ -497,7 +499,7 @@ export const DOCKER_MODULES: Module[] = [
       {
         type: 'concept',
         title: '🔗 The Solution: Bind Mounts & Named Volumes',
-        content: 'We solve this by "mounting" folders.\n\n**1. Bind Mounts**: You map a specific path from your laptop (e.g. `/Users/claudio/code`) straight into the container. Great for live-reloading code during development.\n\n**2. Named Volumes**: You let Docker manage a secure, hidden folder on the host disk. The best choice for Database data persistence.'
+        content: 'We solve this by "mounting" folders.\\n\\n**1. Bind Mounts**: You map a specific path from your laptop (e.g. `/Users/claudio/code`) straight into the container. Great for live-reloading code during development.\\n\\n**2. Named Volumes**: You let Docker manage a secure, hidden folder on the host disk. The best choice for Database data persistence.'
       },
       {
         type: 'table',
@@ -516,7 +518,7 @@ export const DOCKER_MODULES: Module[] = [
       {
         type: 'game',
         title: 'Terminal: Persist It',
-        content: 'Let\'s create a named volume and mount it to a database container.',
+        content: 'Let\\'s create a named volume and mount it to a database container.',
         gameType: 'terminal',
         gameData: {
           startText: 'ubuntu@docker-host:~$ ',
@@ -529,7 +531,7 @@ export const DOCKER_MODULES: Module[] = [
             {
               instruction: 'Now run a postgres container in the background (-d), and mount the volume (-v) to its internal data path. Type: docker run -d -v dbstore:/var/lib/postgresql/data postgres',
               expectedCommand: 'docker run -d -v dbstore:/var/lib/postgresql/data postgres',
-              output: '9f2a4b1c2d3e4f5a6b7c...\nYour database is now safe and persistent!'
+              output: '9f2a4b1c2d3e4f5a6b7c...\\nYour database is now safe and persistent!'
             }
           ]
         }
@@ -538,7 +540,7 @@ export const DOCKER_MODULES: Module[] = [
     quiz: [
       {
         id: 'docker-5-q1',
-        question: 'What occurs to data saved inside a container\'s writable layer when the container is executing `docker rm`?',
+        question: 'What occurs to data saved inside a container\\'s writable layer when the container is executing `docker rm`?',
         options: [
           'It is backed up to Docker Hub',
           'It is permanently deleted',
@@ -574,7 +576,7 @@ export const DOCKER_MODULES: Module[] = [
     sections: [
       {
         type: 'intro',
-        content: 'A container running a brilliantly crafted web server is useless if nobody can reach it. We need to bridge the isolation gap between the container\'s internal network, and our computer\'s local network.'
+        content: 'A container running a brilliantly crafted web server is useless if nobody can reach it. We need to bridge the isolation gap between the container\\'s internal network, and our computer\\'s local network.'
       },
       {
         type: 'video',
@@ -585,21 +587,21 @@ export const DOCKER_MODULES: Module[] = [
       {
         type: 'concept',
         title: '🚪 Port Mapping (`-p`)',
-        content: 'By default, a container exposes no ports to the public. To view a React app running on port 3000 inside a container, we must **bind** it to a port on our laptop.\n\nSyntax: `-p [HOST_PORT]:[CONTAINER_PORT]`\n\nThe `HOST_PORT` is what you type in your browser (e.g., `localhost:8080`).'
+        content: 'By default, a container exposes no ports to the public. To view a React app running on port 3000 inside a container, we must **bind** it to a port on our laptop.\\n\\nSyntax: `-p [HOST_PORT]:[CONTAINER_PORT]`\\n\\nThe `HOST_PORT` is what you type in your browser (e.g., `localhost:8080`).'
       },
       {
         type: 'flowchart',
         content: '**How Port Mapping Works (`-p 8080:80`)**',
         diagramSteps: [
-          { label: 'Browser User\n(localhost:8080)', icon: '🌍', color: '#118ab2' },
-          { label: 'Host Port Tracker\n(Docker Daemon)', icon: '🚪', color: '#ffb703' },
-          { label: 'Container Port 80\n(Nginx web server)', icon: '📦', color: '#06d6a0' }
+          { label: 'Browser User\\n(localhost:8080)', icon: '🌍', color: '#118ab2' },
+          { label: 'Host Port Tracker\\n(Docker Daemon)', icon: '🚪', color: '#ffb703' },
+          { label: 'Container Port 80\\n(Nginx web server)', icon: '📦', color: '#06d6a0' }
         ]
       },
       {
         type: 'concept',
         title: '🌐 Docker User-Defined Networks',
-        content: 'What if a Web Container needs to talk to a Database Container? They shouldn\'t go over the public internet! \n\nDocker can create virtual internal networks. When containers join the same network, they can securely talk to each other **using their container names** as hostnames (e.g., `http://my-db:5432`). This is built-in DNS!'
+        content: 'What if a Web Container needs to talk to a Database Container? They shouldn\\'t go over the public internet! \\n\\nDocker can create virtual internal networks. When containers join the same network, they can securely talk to each other **using their container names** as hostnames (e.g., `http://my-db:5432`). This is built-in DNS!'
       },
       {
         type: 'game',
@@ -610,14 +612,14 @@ export const DOCKER_MODULES: Module[] = [
           startText: 'ubuntu@docker-host:~$ ',
           steps: [
             {
-              instruction: 'Run an nginx container in the background, mapping your laptop\'s port 8080 to the container\'s internal port 80. Type: docker run -d -p 8080:80 nginx',
+              instruction: 'Run an nginx container in the background, mapping your laptop\\'s port 8080 to the container\\'s internal port 80. Type: docker run -d -p 8080:80 nginx',
               expectedCommand: 'docker run -d -p 8080:80 nginx',
               output: 'bf4d9a...'
             },
             {
               instruction: 'Now curl localhost on your laptop port to see if the web server responds. Type: curl localhost:8080',
               expectedCommand: 'curl localhost:8080',
-              output: '<!DOCTYPE html>\n<html>\n<head>\n<title>Welcome to nginx!</title>\n...\n</html>'
+              output: '<!DOCTYPE html>\\n<html>\\n<head>\\n<title>Welcome to nginx!</title>\\n...\\n</html>'
             }
           ]
         }
@@ -635,7 +637,7 @@ export const DOCKER_MODULES: Module[] = [
         id: 'docker-6-q2',
         question: 'How do two containers on the same custom Docker network communicate with each other?',
         options: [
-          'Using the host\'s IP address',
+          'Using the host\\'s IP address',
           'Using port mapping on localhost',
           'Using their container names as DNS hostnames',
           'They cannot communicate directly for security reasons'
@@ -657,26 +659,26 @@ export const DOCKER_MODULES: Module[] = [
     sections: [
       {
         type: 'intro',
-        content: 'Real applications aren\'t just one container. They are a Database, a Redis cache, a Backend API, and a Frontend. Managing a dozen `docker run` commands manually is a nightmare. Enter **Docker Compose**.'
+        content: 'Real applications aren\\'t just one container. They are a Database, a Redis cache, a Backend API, and a Frontend. Managing a dozen `docker run` commands manually is a nightmare. Enter **Docker Compose**.'
       },
       {
         type: 'video',
-        title: '📺 Docker Compose Explained',
+        title: '📺 Docker Compose in 12 Minutes',
         content: 'See exactly how to transition from painful CLI commands to elegant, declarative YAML files.',
         videoUrl: 'https://www.youtube.com/watch?v=MEljGea1pDk'
       },
       {
         type: 'table',
-        title: '📝 The docker-compose.yml Syntax',
-        content: 'Compose uses a YAML file to configure services. It\'s essentially a translated list of docker CLI flags.',
+        title: '📝 The docker-compose.yml Syntax Reference',
+        content: 'Compose uses a YAML file to configure services. It\\'s essentially a translated list of docker CLI flags.',
         tableData: {
           headers: ['YAML Property', 'CLI Equivalent', 'Example'],
           rows: [
-            ['`image:`', '`docker run <image>`', '`image: postgres:15`'],
-            ['`build:`', '`docker build ...`', '`build: ./frontend`'],
-            ['`ports:`', '`-p 5000:80`', '`ports:\n  - "5000:80"`'],
-            ['`volumes:`', '`-v db-data:/var/lib`', '`volumes:\n  - db-data:/var`'],
-            ['`environment:`', '`-e NODE_ENV=prod`', '`environment:\n  - NODE_ENV=prod`']
+            ['\`image:\`', '\`docker run <image>\`', '\`image: postgres:15\`'],
+            ['\`build:\`', '\`docker build ...\`', '\`build: ./frontend\`'],
+            ['\`ports:\`', '\`-p 5000:80\`', '\`ports: - "5000:80"\`'],
+            ['\`volumes:\`', '\`-v db-data:/var/lib\`', '\`volumes: - db-data:/var/lib/xyz\`'],
+            ['\`environment:\`', '\`-e NODE_ENV=prod\`', '\`environment: - NODE_ENV=prod\`']
           ]
         }
       },
@@ -684,7 +686,7 @@ export const DOCKER_MODULES: Module[] = [
         type: 'code',
         title: 'Example: A Full Stack in One File',
         content: 'This single file spins up a backend server AND a postgres database, links them on a network, and creates a volume.',
-        code: `version: '3.8'
+        code: \`version: '3.8'
 services:
   web:
     build: .
@@ -700,7 +702,7 @@ services:
       - db-data:/var/lib/postgresql/data
 
 volumes:
-  db-data:`,
+  db-data:\`,
         language: 'yaml'
       },
       {
@@ -726,17 +728,17 @@ volumes:
             {
               instruction: 'Start all the services defined in your docker-compose.yml, and run them detached in the background. Type: docker-compose up -d',
               expectedCommand: 'docker-compose up -d',
-              output: 'Creating network "my-project_default" with the default driver\nCreating volume "my-project_db-data" with default driver\nCreating my-project_db_1 ... done\nCreating my-project_web_1 ... done'
+              output: 'Creating network "my-project_default" with the default driver\\nCreating volume "my-project_db-data" with default driver\\nCreating my-project_db_1 ... done\\nCreating my-project_web_1 ... done'
             },
             {
               instruction: 'Your stack is running! If you want to check the live logs from ALL services at once, type: docker-compose logs -f',
               expectedCommand: 'docker-compose logs -f',
-              output: 'db_1   | PostgreSQL init process complete; ready for start up.\nweb_1  | Server listening on port 5000...\n^C'
+              output: 'db_1   | PostgreSQL init process complete; ready for start up.\\nweb_1  | Server listening on port 5000...\\n^C'
             },
             {
               instruction: 'Now, completely destroy the stack and clean up the networks. Type: docker-compose down',
               expectedCommand: 'docker-compose down',
-              output: 'Stopping my-project_web_1 ... done\nStopping my-project_db_1 ... done\nRemoving my-project_web_1 ... done\nRemoving my-project_db_1 ... done\nRemoving network my-project_default'
+              output: 'Stopping my-project_web_1 ... done\\nStopping my-project_db_1 ... done\\nRemoving my-project_web_1 ... done\\nRemoving my-project_db_1 ... done\\nRemoving network my-project_default'
             }
           ]
         }
@@ -791,7 +793,7 @@ volumes:
       {
         type: 'concept',
         title: '🌐 Tool 1: Play with Docker (PWD)',
-        content: '**Play with Docker** gives you a free, temporary Docker environment **right in your browser**. No installation.\n\n- Get a fresh Linux VM with Docker pre-installed\n- Create multiple instances (nodes) to simulate swarm clusters\n- Each session lasts **4 hours**\n\n🔗 **URL**: [https://labs.play-with-docker.com](https://labs.play-with-docker.com)'
+        content: '**Play with Docker** gives you a free, temporary Docker environment **right in your browser**. No installation.\\n\\n- Get a fresh Linux VM with Docker pre-installed\\n- Create multiple instances (nodes) to simulate swarm clusters\\n- Each session lasts **4 hours**\\n\\n🔗 **URL**: [https://labs.play-with-docker.com](https://labs.play-with-docker.com)'
       },
       {
         type: 'video',
@@ -802,12 +804,12 @@ volumes:
       {
         type: 'concept',
         title: '📚 Tool 2: Docker Classroom',
-        content: '**Docker Classroom** is the guided, structured version of PWD.\n\n🔗 **URL**: [https://training.play-with-docker.com](https://training.play-with-docker.com)\n\n💡 **Recommended starter labs:**\n1. "Your First Linux Containers"\n2. "Doing More With Docker Images"\n3. "Docker Networking Hands-on Lab"'
+        content: '**Docker Classroom** is the guided, structured version of PWD.\\n\\n🔗 **URL**: [https://training.play-with-docker.com](https://training.play-with-docker.com)\\n\\n💡 **Recommended starter labs:**\\n1. "Your First Linux Containers"\\n2. "Doing More With Docker Images"\\n3. "Docker Networking Hands-on Lab"'
       },
       {
         type: 'tip',
         title: '🎯 Suggested Learning Path',
-        content: '**Step 1**: Use the PWD sandbox to rerun the commands we covered in the Terminal simulations.\n**Step 2**: Follow the 3 Recommended Labs in Docker Classroom.\n**Step 3**: Come back here and obliterate the Final Quiz! 🏆'
+        content: '**Step 1**: Use the PWD sandbox to rerun the commands we covered in the Terminal simulations.\\n**Step 2**: Follow the 3 Recommended Labs in Docker Classroom.\\n**Step 3**: Come back here and obliterate the Final Quiz! 🏆'
       }
     ]
   },
@@ -853,18 +855,18 @@ volumes:
         question: 'In a Dockerfile, why should `RUN npm install` typically be placed BEFORE `COPY . .`?',
         options: ['To bypass security checks', 'To ensure syntax errors are caught early', 'To maximize layer caching and drastically speed up future builds', 'To force npm to run as root'],
         correct: 2,
-        explanation: 'Docker builds cache layer by layer. Copying only package.json and installing allows Docker to cache the heavy "node_modules" layer, bypassing the install step on future builds as long as dependencies haven\'t changed.'
+        explanation: 'Docker builds cache layer by layer. Copying only package.json and installing allows Docker to cache the heavy "node_modules" layer, bypassing the install step on future builds as long as dependencies haven\\'t changed.'
       },
       {
         id: 'docker-9-q5',
-        question: 'To guarantee that your PostgreSQL database doesn\'t lose records when its container crashes or updates, you MUST use:',
+        question: 'To guarantee that your PostgreSQL database doesn\\'t lose records when its container crashes or updates, you MUST use:',
         options: ['Bind mounts on /var/log', 'Named Volumes or explicit Host Bind Mounts', 'A larger Docker Image', 'Redis Caching'],
         correct: 1,
         explanation: 'Without external mounts, data is written to the ephemeral container layer. Volumes ensure data physically resides on the host machine and outlives the container.'
       },
       {
         id: 'docker-9-q6',
-        question: 'If you want to expose a Python Flask app running on port 5000 inside a container to your laptop\'s port 80, what flag do you use?',
+        question: 'If you want to expose a Python Flask app running on port 5000 inside a container to your laptop\\'s port 80, what flag do you use?',
         options: ['-p 5000:80', '-p 80:5000', '-e PORT=80', '-expose 80:5000'],
         correct: 1,
         explanation: 'The mapping syntax is always `host_port:container_port`. So `-p 80:5000`.'
@@ -872,7 +874,7 @@ volumes:
       {
         id: 'docker-9-q7',
         question: 'In Docker Compose, what does `depends_on` parameter achieve?',
-        options: ['It guarantees the app won\'t crash', 'It delays the start of a service until its dependencies have successfully started', 'It installs node modules automatically', 'It mounts dependent volumes'],
+        options: ['It guarantees the app won\\'t crash', 'It delays the start of a service until its dependencies have successfully started', 'It installs node modules automatically', 'It mounts dependent volumes'],
         correct: 1,
         explanation: 'It controls the absolute startup order. If `web` depends on `db`, compose starts `db` first.'
       },
@@ -899,4 +901,7 @@ volumes:
       }
     ]
   }
-]
+];`
+
+fs.writeFileSync('app/src/data/docker/modules.ts', content);
+console.log('Docker modules updated successfully.');

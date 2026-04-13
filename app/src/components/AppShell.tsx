@@ -47,7 +47,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         style={{
           background: 'var(--color-surface)',
           borderRight: '1px solid var(--color-border)',
-          overflow: 'hidden'
+          overflow: 'visible'
         }}
       >
         <SidebarContent
@@ -62,10 +62,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         {/* Collapse toggle */}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="absolute top-1/2 -right-3 w-6 h-6 rounded-full flex items-center justify-center text-slate-400 hover:text-white transition-colors z-10"
-          style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', cursor: 'pointer' }}
+          className="absolute top-1/2 -right-[14px] w-[28px] h-[28px] rounded-full flex items-center justify-center bg-surface border border-white/20 text-white hover:bg-primary hover:border-primary hover:scale-110 shadow-[0_0_15px_rgba(0,0,0,0.5)] transition-all z-20 cursor-pointer"
         >
-          {collapsed ? <ChevronRight size={12} /> : <ChevronLeft size={12} />}
+          {collapsed ? <ChevronRight size={16} strokeWidth={3} /> : <ChevronLeft size={16} strokeWidth={3} />}
         </button>
       </motion.aside>
 

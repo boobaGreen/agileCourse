@@ -5,71 +5,77 @@ export const K8S_MODULES: Module[] = [
     id: 'k8s-1',
     track: 'k8s',
     order: 1,
-    title: 'What is Kubernetes?',
-    subtitle: 'The Captain of the Container Fleet',
-    emoji: '☸️',
-    duration: '10 min',
-    xpReward: 50,
-    funFact: 'The name comes from the Greek word "kybernitis", meaning helmsman or pilot. It is the root of the word "cybernetics".',
+    title: 'The Need for Orchestration',
+    subtitle: 'Managing thousands of containers',
+    emoji: '🚢',
+    duration: '15 min',
+    xpReward: 100,
+    funFact: 'Kubernetes is often abbreviated as "K8s" because there are exactly 8 letters between the "K" and the "s" in "Kubernetes".',
     sections: [
       {
-        type: 'concept',
-        title: '🚢 What is Kubernetes?',
-        content: 'Kubernetes (often abbreviated as "K8s") is an open-source system for automating deployment, scaling, and management of containerized applications.\n\nOriginally designed by Google and now maintained by the Cloud Native Computing Foundation, it acts as the "operating system" for your cloud infrastructure.'
-      },
-      {
-        type: 'concept',
-        title: '🐳 Why not just use Docker?',
-        content: 'Docker is great for running a single container on a single machine. But what happens when you have 100 containers spreading across 10 servers?\n\n- How do they talk to each other?\n- What if a server crashes?\n- How do you update them without downtime?\n\n**Docker builds the containers; Kubernetes orchestrates them.**'
+        type: 'intro',
+        content: 'Docker is fantastic for running a few containers. But what happens when you have millions of users, and you need to run 5,000 containers across 50 different servers? How do they talk to each other? What if a server catches fire? You need an orchestrator.'
       },
       {
         type: 'video',
-        title: '🎬 Recommended: What is Kubernetes?',
-        content: 'Observe this clear visual explanation of why K8s was born and how it changed the industry.',
-        videoUrl: 'https://www.youtube.com/watch?v=PH-2FfFD2PU'
+        title: '📺 Kubernetes in 5 Minutes',
+        content: 'A brilliant, high-level animated breakdown of exactly what problem Kubernetes solves in modern architecture.',
+        videoUrl: 'https://www.youtube.com/watch?v=s_o8dwzRlu4'
       },
       {
-        type: 'game',
-        title: 'Challenge: Scaling the Fleet',
-        content: 'In Kubernetes, we don\'t manage individual pods. We manage the "Desired State". Put these scaling operations in the correct order.',
-        gameType: 'drag-order',
-        gameData: [
-          { id: '1', label: 'Define 3 replicas in YAML' },
-          { id: '2', label: 'Submit to API Server (kubectl apply)' },
-          { id: '3', label: 'Scheduler finds available Nodes' },
-          { id: '4', label: 'Kubelet starts 3 containers' }
+        type: 'concept',
+        title: '🎯 The Orchestrator\'s Job',
+        content: 'Kubernetes does not run containers itself. It manages the tools (like Docker or containerd) that do.\n\nImagine a symphony orchestra: the musicians (containers) make the actual sound, but the **Conductor** (Kubernetes) tells them when to play, how loud to play, and replaces them if they fall asleep.'
+      },
+      {
+        type: 'flowchart',
+        content: '**Life Without vs With Kubernetes**',
+        diagramSteps: [
+          { label: 'Server Dies\n(Plain Docker)', icon: '🔥', color: '#ff4b4b' },
+          { label: 'Site Goes Down!\n(Downtime)', icon: '💀', color: '#ff4b4b' },
+          { label: 'Server Dies\n(Kubernetes)', icon: '🔥', color: '#ffb703' },
+          { label: 'Auto-Restarts\non New Server', icon: '✨', color: '#06d6a0' }
         ]
       },
       {
-        type: 'tip',
-        title: '💡 Key Takeaway',
-        content: 'Kubernetes does not build your containers (Docker does that). Kubernetes **orchestrates** them: it decides where to run them, how many of them to run, and how they should talk to each other.'
+        type: 'table',
+        title: '⚖️ Core Features of K8s',
+        content: 'Why does every modern enterprise use it?',
+        tableData: {
+          headers: ['Feature', 'What it means practically'],
+          rows: [
+            ['**Self-healing**', 'Restarts containers that fail, replaces containers when nodes die.'],
+            ['**Auto-scaling**', 'Spins up more containers during Black Friday traffic, shuts them down at night.'],
+            ['**Load Balancing**', 'Distributes incoming network traffic evenly across your containers.'],
+            ['**Rollouts & Rollbacks**', 'Updates your app bit by bit, pausing and reverting if a bug is detected!']
+          ]
+        }
       }
     ],
     quiz: [
       {
         id: 'k8s-1-q1',
-        question: 'What does "Kubernetes" mean in Greek?',
+        question: 'Which of the following is NOT a core responsibility of Kubernetes?',
         options: [
-          'Master of Machines',
-          'Helmsman or Pilot',
-          'Cloud Architect',
-          'Digital Ship'
+          'Load balancing incoming traffic across multiple containers',
+          'Writing and compiling your application source code',
+          'Restarting failed containers automatically',
+          'Scaling the number of running containers up and down'
         ],
         correct: 1,
-        explanation: 'Kybernitis means helmsman. Just as a helmsman steers a ship, Kubernetes steers your containers.'
+        explanation: 'Kubernetes is purely an orchestration engine. It does not compile code or build images. It relies on CI/CD pipelines and tools like Docker for that.'
       },
       {
         id: 'k8s-1-q2',
-        question: 'Which of these is the main role of Kubernetes?',
+        question: 'What happens in a Kubernetes cluster if a physical server (node) suddenly loses power?',
         options: [
-          'Creating Docker images',
-          'Writing source code',
-          'Managing and orchestrating containers at scale',
-          'Providing physical servers'
+          'The entire cluster goes completely offline',
+          'An administrator must write a YAML file to buy a new server',
+          'Kubernetes detects the dead node and automatically schedules its containers onto healthy surviving nodes',
+          'The containers on that server are permanently deleted along with their data'
         ],
         correct: 2,
-        explanation: 'K8s is an orchestrator. It manages the lifecycle, scaling, and networking of containers built by tools like Docker.'
+        explanation: 'This is the "Self-healing" mechanism. The Control Plane notices the worker is dead and immediately asks other workers to spin up replacement containers.'
       }
     ]
   },
@@ -77,62 +83,89 @@ export const K8S_MODULES: Module[] = [
     id: 'k8s-2',
     track: 'k8s',
     order: 2,
-    title: 'Origins: Borg & The Wheel',
-    subtitle: 'From Google internal tools to open standard',
-    emoji: '🎡',
-    duration: '8 min',
-    xpReward: 50,
-    funFact: 'The original code name for Kubernetes within Google was "Project 7", a reference to the Star Trek character Seven of Nine (a Borg). This is why the logo has 7 spokes!',
+    title: 'Cluster Architecture',
+    subtitle: 'The Brain and the Muscles',
+    emoji: '🧠',
+    duration: '20 min',
+    xpReward: 120,
     sections: [
       {
         type: 'intro',
-        content: 'Long before Docker existed, Google was already running everything in containers using an internal tool called **Borg**. In 2014, Google decided to take everything they learned from Borg and create an open-source version. They called it Kubernetes.'
+        content: 'A Kubernetes cluster is not a single entity. It is a collection of distinct machines (physical or virtual VMs) working together. They are strictly divided into two distinct roles: The Control Plane (The Brain) and the Worker Nodes (The Muscle).'
+      },
+      {
+        type: 'video',
+        title: '📺 Architecture Deep Dive',
+        content: 'TechWorld with Nana provides the absolute best visual breakdown of every component inside a K8s node.',
+        videoUrl: 'https://www.youtube.com/watch?v=X48VuDVv0do'
+      },
+      {
+        type: 'concept',
+        title: '🧠 The Control Plane (Master Node)',
+        content: 'The Control Plane makes global decisions about the cluster. It does not run your application code.\n\n- **API Server**: The only component you interact with directly. The front-door.\n- **etcd**: The cluster\'s memory. A highly-available key-value store containing the cluster state.\n- **Scheduler**: Watches for new unassigned containers and assigns them to an appropriate Worker node.\n- **Controller Manager**: The endless "loop" that ensures the current state matches your desired state.'
+      },
+      {
+        type: 'concept',
+        title: '💪 The Worker Nodes',
+        content: 'Worker Nodes are the machines that actually run your application containers.\n\n- **Kubelet**: The captain of the worker node. It listens to the API Server and makes sure containers are running healthy.\n- **Kube-Proxy**: Maintains network rules, allowing communication to and from containers.\n- **Container Runtime**: The actual engine pulling images and running them (like containerd or Docker).'
       },
       {
         type: 'flowchart',
-        content: '**The Timeline of Cloud Native Computing**',
+        content: '**The Architecture Visualized**',
         diagramSteps: [
-          { label: '2003\n(Google Borg)', icon: '🕰️', color: '#ffb703' },
-          { label: '2014\n(K8s Open Sourced)', icon: '🔓', color: '#06d6a0' },
-          { label: '2015\n(CNCF Formed)', icon: '🏛️', color: '#118ab2' },
-          { label: 'Today\n(Industry Standard)', icon: '🌍', color: '#06d6a0' }
+          { label: 'Developer\n(kubectl)', icon: '👨‍💻', color: '#118ab2' },
+          { label: 'Control Plane\n(API Server)', icon: '🧠', color: '#ffb703' },
+          { label: 'Worker Node 1\n(Kubelet)', icon: '💪', color: '#06d6a0' },
+          { label: 'Worker Node 2\n(Kubelet)', icon: '💪', color: '#06d6a0' }
         ]
       },
       {
-        type: 'concept',
-        title: '☸️ The Logo: 7 Spoked Wheel',
-        content: 'The Kubernetes logo represents a ship\'s wheel. Why 7 spokes? It\'s a nod to its ancestor, the Borg system (Star Trek\'s Seven of Nine). The "7" signifies the continuity of knowledge from Google\'s massive internal infrastructure to the open-source community.'
-      },
-      {
-        type: 'concept',
-        title: '🛡️ CNCF: Home of K8s',
-        content: 'In 2015, Google donated Kubernetes to the Linux Foundation, forming the **Cloud Native Computing Foundation (CNCF)**. Today, K8s is the center of a massive ecosystem of over 1000 projects, from monitoring (Prometheus) to security (Linkerd).'
-      },
-      {
-        type: 'tip',
-        title: '🚀 Why "K8s"?',
-        content: 'K8s is a "numeronym". There are **8 letters** between the "K" and the "s" in "Kubernetes". It\'s much easier to type (and say) than the full word!'
+        type: 'game',
+        title: 'Challenge: Master vs Worker',
+        content: 'Drag the components to their correct architectural home.',
+        gameType: 'drag-classify',
+        gameData: {
+          categories: [
+            { id: 'master', label: 'Control Plane (Master)' },
+            { id: 'worker', label: 'Worker Node' }
+          ],
+          items: [
+            { id: 'api', label: 'API Server', categoryId: 'master' },
+            { id: 'etcd', label: 'etcd Database', categoryId: 'master' },
+            { id: 'scheduler', label: 'Scheduler', categoryId: 'master' },
+            { id: 'kubelet', label: 'Kubelet', categoryId: 'worker' },
+            { id: 'proxy', label: 'Kube-Proxy', categoryId: 'worker' },
+            { id: 'runtime', label: 'Container Runtime', categoryId: 'worker' }
+          ]
+        }
       }
     ],
     quiz: [
       {
         id: 'k8s-2-q1',
-        question: 'What was the internal Google tool that preceded Kubernetes?',
-        options: ['Docker', 'Borg', 'LXC', 'Systemd'],
-        correct: 1,
-        explanation: 'Borg was (and is) Google\'s internal cluster manager. K8s is the "spiritual successor" born from that experience.'
+        question: 'Which component serves as the cluster\'s fundamental "Brain and Memory", storing all state information?',
+        options: ['Kubelet', 'Kube-Proxy', 'The API Server', 'etcd'],
+        correct: 3,
+        explanation: '`etcd` is arguably the most critical component. It is the highly-available dictionary where Kubernetes stores all data. If you lose your etcd data cleanly, your cluster forgets everything.'
       },
       {
         id: 'k8s-2-q2',
-        question: 'Why does the Kubernetes logo have 7 spokes?',
+        question: 'When you type a command into your terminal to deploy an app, which component receives it?',
+        options: ['The Worker node directly', 'The Scheduler', 'The API Server', 'The Container Runtime'],
+        correct: 2,
+        explanation: 'The `kube-apiserver` acts as the grand central station. No component bypasses it; everything, including UI dashboards, CLIs, and internal nodes, must talk to the API Server.'
+      },
+      {
+        id: 'k8s-2-q3',
+        question: 'What is the primary job of the Kubelet?',
         options: [
-          'To represent the 7 continents',
-          'Because there are 7 core developers',
-          'As a reference to "Seven of Nine" from Star Trek',
-          'It is the 7th version of the software'
+          'To route external internet traffic into the cluster',
+          'To store secret passwords',
+          'To ensure that containers scheduled to its specific node are actively running and healthy',
+          'To schedule pods to other nodes'
         ],
         correct: 2,
-        explanation: 'It\'s an easter egg referencing "Seven of Nine", the Borg character, because K8s was originally "Project 7".'
+        explanation: 'The Kubelet is the local agent on every worker node. It registers the node with the cluster and ensures the containers it was assigned are actually running.'
       }
     ]
   },
@@ -140,108 +173,107 @@ export const K8S_MODULES: Module[] = [
     id: 'k8s-3',
     track: 'k8s',
     order: 3,
-    title: 'Nodes & Pods',
-    subtitle: 'The atomic units of the cluster',
-    emoji: '🏘️',
-    duration: '15 min',
-    xpReward: 50,
+    title: 'Pods & kubectl',
+    subtitle: 'The smallest atomic unit',
+    emoji: '🫛',
+    duration: '20 min',
+    xpReward: 100,
     sections: [
       {
         type: 'intro',
-        content: 'In Docker, we talk about containers. In Kubernetes, we talk about **Pods**. Understanding the hierarchy from Node to Pod to Container is crucial.'
+        content: 'In Docker, the smallest unit is a Container. In Kubernetes, the smallest unit is a **Pod**. Kubernetes does not run individual containers; it runs Pods, which are wrappers that *contain* one or more containers.'
       },
       {
         type: 'concept',
-        title: '🖥️ The Node (The Server)',
-        content: 'A Node is a worker machine in Kubernetes. It can be a physical server or a virtual machine. Every Node runs the **Kubelet** (the agent that talks to the brain) and a **Container Runtime** (like Docker or containerd).'
-      },
-      {
-        type: 'concept',
-        title: '🐋 The Pod (The Whale Nest)',
-        content: 'A Pod is the **smallest deployable unit** in K8s. It contains one or more containers that share the same network (IP address) and storage. \n\n**Analogy**: If a Container is a tenant, a Pod is an apartment. Tenants in the same apartment share the same address and amenities.'
+        title: '🫛 Why Pods instead of Containers?',
+        content: 'Why add a wrapper layer? Because sometimes, containers are forcefully coupled. \n\nImagine a Web Server container and a Logging container. By putting them in the **same Pod**, they are guaranteed to run on the exact same physical machine, share the same IP address, and share the same internal localhost network.'
       },
       {
         type: 'flowchart',
-        content: '**Cluster Architecture**',
+        content: '**The Pod Wrapper Structure**',
         diagramSteps: [
-          { label: 'Control Plane\n(The Brain)', icon: '🧠', color: '#118ab2' },
-          { label: 'API Server\n(Hub)', icon: '📡', color: '#ffb703' },
-          { label: 'Worker Node 1\n(Muscle)', icon: '🖥️', color: '#06d6a0' },
-          { label: 'Worker Node 2\n(Muscle)', icon: '🖥️', color: '#06d6a0' }
+          { label: 'Node (Server)', icon: '🖥️', color: '#118ab2' },
+          { label: 'Pod Environment\n(Shared IP)', icon: '🫛', color: '#06d6a0' },
+          { label: 'Container 1\n(App)', icon: '📦', color: '#ffd166' },
+          { label: 'Container 2\n(Logger)', icon: '📦', color: '#ffd166' }
         ]
       },
       {
         type: 'concept',
-        title: '🧠 Control Plane vs Worker Nodes',
-        content: '- **Control Plane (The Brain)**: Manages the cluster via several components.\n- **Worker Nodes (The Muscle)**: Actually run the containers. If the brain goes down, pods keep running, but you cannot change the cluster state until it recovers.'
+        title: '⌨️ The kubectl CLI',
+        content: '`kubectl` (pronounced "kube-control" or "kube-cuddle") is the command line tool used to communicate with the API Server. It is the absolute daily-driver for a DevOps engineer.'
       },
       {
         type: 'table',
-        title: '⚙️ Control Plane Components',
-        content: 'Inside the "Brain" of the cluster are 4 vital organs:',
+        title: '🛠️ Essential kubectl Commands',
+        content: 'Memorize these, you will use them thousands of times.',
         tableData: {
-          headers: ['Component', 'Role / Analogy', 'What hapens if it fails?'],
+          headers: ['Command', 'Purpose'],
           rows: [
-            ['**etcd**', 'Database / Source of Truth. Stores all cluster configs.', 'Cluster state cannot be changed or read reliably.'],
-            ['**kube-scheduler**', 'The Matchmaker. Decides which node runs a new pod.', 'New pods stay in "Pending" state forever.'],
-            ['**kube-apiserver**', 'The Hub. Everything talks through this.', 'Complete loss of control. `kubectl` commands fail.'],
-            ['**Controller Manager**', 'The Manager. Ensure desired state matches actual state.', 'Self-healing stops. Crashing pods are not restarted.']
+            ['`kubectl get pods`', 'List all pods in the current namespace'],
+            ['`kubectl describe pod [name]`', 'Show incredibly detailed info and events (vital for debugging)'],
+            ['`kubectl logs [name]`', 'View the internal console logs of the containers in the pod'],
+            ['`kubectl apply -f [file.yml]`', 'Create or update resources from a YAML definition file'],
+            ['`kubectl delete pod [name]`', 'Destroy a pod (It will likely be immediately recreated!)']
           ]
         }
       },
       {
         type: 'game',
-        title: 'Challenge: Build a Cluster',
-        content: 'Distinguish between the Brain (Control Plane) and the Muscle (Worker Node) by categorizing these components.',
-        gameType: 'drag-classify',
+        title: 'Terminal: Meet kubectl',
+        content: 'Let\'s run some basic commands against a virtual cluster.',
+        gameType: 'terminal',
         gameData: {
-          categories: [
-            { id: 'brain', label: 'Control Plane' },
-            { id: 'muscle', label: 'Worker Node' }
-          ],
-          items: [
-            { id: 'etcd', label: 'etcd', categoryId: 'brain' },
-            { id: 'api', label: 'API Server', categoryId: 'brain' },
-            { id: 'kubelet', label: 'Kubelet', categoryId: 'muscle' },
-            { id: 'proxy', label: 'kube-proxy', categoryId: 'muscle' },
-            { id: 'sched', label: 'Scheduler', categoryId: 'brain' }
+          startText: 'k8s-admin@k8s-master:~$ ',
+          steps: [
+            {
+              instruction: 'First, see what pods are currently running. Type: kubectl get pods',
+              expectedCommand: 'kubectl get pods',
+              output: 'NAME                     READY   STATUS    RESTARTS   AGE\nnginx-web-6b7df-x8mqp    1/1     Running   0          10m\nredis-cache-4f2xx        1/1     Running   0          5m'
+            },
+            {
+              instruction: 'The nginx pod has "READY 1/1", which means its 1 container is healthy. Let\'s see its logs. Type: kubectl logs nginx-web-6b7df-x8mqp',
+              expectedCommand: 'kubectl logs nginx-web-6b7df-x8mqp',
+              output: '10.244.1.1 - - [14/Apr/2026:10:00:01] "GET / HTTP/1.1" 200 612\n10.244.1.1 - - [14/Apr/2026:10:00:05] "GET /images/logo.png HTTP/1.1" 200 4500'
+            },
+            {
+              instruction: 'What happens if we forcefully destroy the pod? Type: kubectl delete pod nginx-web-6b7df-x8mqp',
+              expectedCommand: 'kubectl delete pod nginx-web-6b7df-x8mqp',
+              output: 'pod "nginx-web-6b7df-x8mqp" deleted'
+            },
+            {
+              instruction: 'Now quickly check the pods again! Type: kubectl get pods',
+              expectedCommand: 'kubectl get pods',
+              output: 'NAME                     READY   STATUS              RESTARTS   AGE\nnginx-web-6b7df-z9rtc    0/1     ContainerCreating   0          2s\nredis-cache-4f2xx        1/1     Running             0          6m'
+            }
           ]
         }
       },
       {
-        type: 'flowchart',
-        content: '**Inside the Pod (Sidecar Pattern)**',
-        diagramSteps: [
-          { label: 'Main Container\n(App Logic)', icon: '📦', color: '#06d6a0' },
-          { label: 'Shared Network\n(localhost inter-comm)', icon: '🌐', color: '#118ab2' },
-          { label: 'Sidecar Container\n(Logging/Proxy)', icon: '🏍️', color: '#ffb703' }
-        ]
-      },
-      {
         type: 'tip',
-        title: '💡 Sidecar Pattern',
-        content: 'Why put more than one container in a pod? Usually one is the "Main App" and others are "Helpers" (Sidecars) that handle logging, proxying, or caching for the main one.'
+        title: '💡 Wait, why did it come back?',
+        content: 'Pods are mortal. When you deleted the Pod, Kubernetes immediately created a BRAND NEW one (`z9rtc`) to replace it. This is because Pods are managed by higher-level controllers (like Deployments) which enforce a desired state. Never make naked Pods!'
       }
     ],
     quiz: [
       {
         id: 'k8s-3-q1',
-        question: 'What is the smallest object you can create in Kubernetes?',
-        options: ['Container', 'Node', 'Pod', 'Service'],
-        correct: 2,
-        explanation: 'Kubernetes manages Pods, not containers directly. A Pod is the atomic unit of deployment.'
+        question: 'What is true about containers inside the exact same Pod?',
+        options: [
+          'They must be written in the same programming language',
+          'They share the exact same localhost network space and IP address',
+          'They are automatically protected against infinite loops',
+          'They cannot communicate with each other'
+        ],
+        correct: 1,
+        explanation: 'Containers in the same pod share networking and storage. If Container A runs an app on port 8080, Container B can reach it simply by pinging `localhost:8080`.'
       },
       {
         id: 'k8s-3-q2',
-        question: 'Containers inside the same Pod share the same...',
-        options: [
-          'CPU cycle',
-          'IP address and Network space',
-          'Docker image',
-          'Hard drive partition'
-        ],
-        correct: 1,
-        explanation: 'All containers in a pod talk to each other via "localhost" because they share the same network stack and IP.'
+        question: 'Which tool is the primary way human administrators give commands to the Kubernetes API server?',
+        options: ['docker-compose', 'kubelet', 'kubectl', 'k8s-admin'],
+        correct: 2,
+        explanation: '`kubectl` translates human commands like `get pods` into secure REST API HTTP requests aimed at the cluster\'s Control Plane.'
       }
     ]
   },
@@ -249,98 +281,117 @@ export const K8S_MODULES: Module[] = [
     id: 'k8s-4',
     track: 'k8s',
     order: 4,
-    title: 'Deployments & Scaling',
-    subtitle: 'Keeping things running and growing',
-    emoji: '📈',
-    duration: '12 min',
-    xpReward: 50,
+    title: 'Deployments & Self-Healing',
+    subtitle: 'Declaring the desired state',
+    emoji: '📄',
+    duration: '25 min',
+    xpReward: 150,
     sections: [
       {
         type: 'intro',
-        content: 'You rarely create Pods manually. Instead, you create a **Deployment**. Deployments describe the *desired state* of your app, and K8s makes it happen.'
+        content: 'As we saw, you should never create individual Pods manually. If a naked Pod crashes, it\'s gone forever. We want K8s to maintain a **desired state** (e.g. "I always want 3 copies of this app running"). We achieve this using a **Deployment**.'
+      },
+      {
+        type: 'video',
+        title: '📺 Imperative vs Declarative',
+        content: 'Understand why Kubernetes uses a Declarative system instead of a list of bash scripts.',
+        videoUrl: 'https://www.youtube.com/watch?v=kOa_llowQ1c'
       },
       {
         type: 'concept',
-        title: '📋 Declarative Setup',
-        content: 'In Kubernetes, you don\'t say "Add another pod". You say "**I want 3 replicas of this app**". If one pod dies, K8s notices the difference between the Desired State (3) and the Actual State (2) and automatically starts a new one (#SelfHealing).'
-      },
-      {
-        type: 'flowchart',
-        content: '**Self-Healing in Action**',
-        diagramSteps: [
-          { label: 'Desired: 3 Pods\nRunning: 3', icon: '✅', color: '#06d6a0' },
-          { label: '1 Pod Dies\nRunning: 2 ❌', icon: '💥', color: '#ff4b4b' },
-          { label: 'K8s detects\nmismatch', icon: '👀', color: '#ffb703' },
-          { label: 'K8s creates Pod\nRunning: 3 ✨', icon: '✅', color: '#06d6a0' }
-        ]
-      },
-      {
-        type: 'concept',
-        title: '🔄 Rolling Updates',
-        content: 'Deployments allow you to update your app with **zero downtime**. K8s starts a new version pods one by one, and only kills the old ones once the new ones are ready and healthy.'
-      },
-      {
-        type: 'animation',
-        content: 'Rolling Update animation'
-      },
-      {
-        type: 'flowchart',
-        content: '**Rolling Update (Zero Downtime)**',
-        diagramSteps: [
-          { label: 'v1 Pods\n(Old)', icon: '🟦', color: '#118ab2' },
-          { label: 'Start 1 v2 Pod\n(New)', icon: '🟩', color: '#06d6a0' },
-          { label: 'Kill 1 v1 Pod\n(Old)', icon: '❌', color: '#ff4b4b' },
-          { label: 'All v2 Pods\n(Complete)', icon: '✅', color: '#06d6a0' }
-        ]
+        title: '📄 The Deployment YAML',
+        content: 'A Deployment is a YAML file where you say: \n\n"I want a Deployment named *my-app*. I want exactly *3 replicas* (Pods). Use the container image *node:18*."\n\nKubernetes constantly reads this file. If it sees only 2 Pods running, it spins up a 3rd. If it sees 4, it assassinates 1. It is a tireless robot enforcing your will.'
       },
       {
         type: 'code',
-        title: 'A Deployment YAML',
-        content: 'This is how we tell K8s what to run:',
+        title: 'Look at a real Deployment YAML',
+        content: 'Notice the `replicas: 3` and the `template`, which is basically an embedded Pod definition.',
         code: `apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-app
+  name: web-deployment
 spec:
-  replicas: 3 # Desired state
+  replicas: 3
   selector:
     matchLabels:
       app: web
-  template:
+  template:         # Everything below here is the blueprint for the Pods!
     metadata:
       labels:
         app: web
     spec:
       containers:
       - name: nginx
-        image: nginx:1.21`,
+        image: nginx:1.24
+        ports:
+        - containerPort: 80`,
         language: 'yaml'
       },
       {
-        type: 'concept',
-        title: '📈 Autoscaling with HPA',
-        content: 'Kubernetes can scale automatically based on usage. The **Horizontal Pod Autoscaler (HPA)** monitors metrics like CPU or Memory and automatically increases or decreases the number of pod replicas (horizontal scaling) to match the load.'
+        type: 'table',
+        title: '🚀 Rollouts (Zero-Downtime Updates)',
+        content: 'Deployments allow you to update your application without anyone noticing.',
+        tableData: {
+          headers: ['Action', 'What K8s does automatically under the hood', 'Result'],
+          rows: [
+            ['Update image to v2', 'Spins up a new v2 pod. Waits for it to be healthy.', 'No downtime'],
+            ['v2 pod is Ready', 'Shuts down one of the old v1 pods.', 'Traffic smoothly shifts'],
+            ['Repeat', 'Continues rolling out 1 by 1 until all are v2.', '100% updated safely'],
+            ['Wait, v2 crashes!', 'Deployment halts! Old v1 pods are kept alive.', 'Vast majority of users unaffected']
+          ]
+        }
       },
       {
-        type: 'code',
-        title: 'HPA YAML Example',
-        content: 'Automatically scale between 2 and 10 pods when CPU hits 70%:',
-        code: `apiVersion: autoscaling/v2\nkind: HorizontalPodAutoscaler\nmetadata:\n  name: web-app-hpa\nspec:\n  scaleTargetRef:\n    apiVersion: apps/v1\n    kind: Deployment\n    name: web-app\n  minReplicas: 2\n  maxReplicas: 10\n  metrics:\n  - type: Resource\n    resource:\n      name: cpu\n      target:\n        type: Utilization\n        averageUtilization: 70`,
-        language: 'yaml'
+        type: 'game',
+        title: 'Terminal: The Force Multiplier',
+        content: 'Apply a declarative file and scale millions of requests.',
+        gameType: 'terminal',
+        gameData: {
+          startText: 'k8s-admin@k8s-master:~/configs$ ',
+          steps: [
+            {
+              instruction: 'We have a web.yml file. Apply it to the cluster to create the Deployment. Type: kubectl apply -f web.yml',
+              expectedCommand: 'kubectl apply -f web.yml',
+              output: 'deployment.apps/web-deployment created'
+            },
+            {
+              instruction: 'Let\'s check the pods it created. Type: kubectl get pods',
+              expectedCommand: 'kubectl get pods',
+              output: 'NAME                               READY   STATUS    RESTARTS   AGE\nweb-deployment-7bb9x               1/1     Running   0          4s\nweb-deployment-2ab4c               1/1     Running   0          4s\nweb-deployment-9zq1f               1/1     Running   0          4s'
+            },
+            {
+              instruction: 'Traffic just spiked 10x! We need more power. Scale the deployment immediately to 10 replicas. Type: kubectl scale deployment web-deployment --replicas=10',
+              expectedCommand: 'kubectl scale deployment web-deployment --replicas=10',
+              output: 'deployment.apps/web-deployment scaled'
+            }
+          ]
+        }
       }
     ],
     quiz: [
       {
         id: 'k8s-4-q1',
-        question: 'What happens if a Pod managed by a Deployment crashes?',
+        question: 'Why is a declarative approach (writing YAML files) better than an imperative approach (running terminal scripts sequentially)?',
         options: [
-          'The whole cluster stops',
-          'Kubernetes ignores it',
-          'Kubernetes automatically starts a new Pod to replace it',
-          'You must manually restart it'
+          'Imperative approaches cannot run on Linux servers',
+          'Declarative files tell K8s exactly what the END RESULT should be, allowing the system to handle the complexity, self-healing, and drift-correction automatically.',
+          'Declarative approaches use less CPU',
+          'Declarative files are impossible to delete'
+        ],
+        correct: 1,
+        explanation: 'If a node dies in an imperative script, you have to write a script to detect and fix it. In a declarative system, you simply stated "I want 3 pods." The system constantly acts to make reality match that file.'
+      },
+      {
+        id: 'k8s-4-q2',
+        question: 'During a Rolling Update with a Deployment, what happens if the newly deployed v2 Pod immediately crashes?',
+        options: [
+          'The entire cluster reboots',
+          'The update proceeds anyway, destroying all old v1 pods',
+          'The Deployment halts the rollout indefinitely until human intervention, preserving the remaining v1 pods so the app doesn\'t go totally offline',
+          'The database is wiped'
         ],
         correct: 2,
-        explanation: 'This is "Self-Healing". The Deployment controller always works to match the actual state to your desired state (replicas).'
+        explanation: 'A key feature of Deployments is that they verify "readiness" of new pods. If the new pod crashes (e.g. `CrashLoopBackOff`), the rollout stops, preventing a catastrophic 100% outage.'
       }
     ]
   },
@@ -349,86 +400,78 @@ spec:
     track: 'k8s',
     order: 5,
     title: 'Services & Networking',
-    subtitle: 'Connecting Pods together reliably',
-    emoji: '🔌',
-    duration: '15 min',
-    xpReward: 50,
+    subtitle: 'Connecting the dots',
+    emoji: '🌐',
+    duration: '25 min',
+    xpReward: 150,
     sections: [
       {
         type: 'intro',
-        content: 'Pods are temporary (ephemeral). They get new IP addresses every time they restart. How does a Frontend find its Backend if the Backend\'s IP is always changing? Enter the **Service**.'
+        content: 'Pods are mortal. They die, they restart, and when they do, **they get a new IP address**. If your Frontend talks to your Backend via an IP address, your app breaks the moment a pod restarts. We need a stable identifier. We need a **Service**.'
       },
       {
         type: 'concept',
-        title: '🛡️ The Service (The Entry Point)',
-        content: 'A Service is an abstraction that defines a logical set of Pods and a policy by which to access them. It provides a **stable IP and DNS name**. You talk to the Service, and it load-balances the traffic to the healthy Pods behind it. \n\nHow does it know which Pods to send traffic to? It uses a **Selector** (a set of labels like `app: web`) to find all Pods with matching tags.'
+        title: '🌉 What is a Service?',
+        content: 'A Service creates a static, permanent IP address and a DNS name (e.g., `backend-service`) that NEVER changes. \n\nWhen traffic hits the Service, the Service acts as a load balancer, instantly forwarding the request to one of the healthy backend Pods.'
       },
       {
         type: 'flowchart',
-        title: 'Service as a Load Balancer',
-        content: 'The Service provides a stable entry point even if the pods behind it are replaced.',
+        content: '**The Service Load Balancer**',
         diagramSteps: [
-          { label: 'User Request', icon: '🌍', color: '#118ab2' },
-          { label: 'Service (VIP)', icon: '🛡️', color: '#ffb703' },
-          { label: 'Pods (app=web)', icon: '📦', color: '#06d6a0' }
+          { label: 'Frontend Pod\n(Makes Request)', icon: '📱', color: '#118ab2' },
+          { label: 'Backend Service\n(Stable static IP)', icon: '🚦', color: '#ffb703' },
+          { label: 'Any Healthy Pod\n(Dynamic IP)', icon: '🫛', color: '#06d6a0' }
         ]
       },
       {
-        type: 'game',
-        title: 'Challenge: Route the Traffic',
-        content: 'Identify which Service type is best suited for these scenarios.',
-        gameType: 'drag-classify',
-        gameData: {
-          categories: [
-            { id: 'internal', label: 'Internal Access' },
-            { id: 'external', label: 'Public Access' }
-          ],
-          items: [
-            { id: 'db', label: 'PostgreSQL Database', categoryId: 'internal' },
-            { id: 'web', label: 'React Frontend', categoryId: 'external' },
-            { id: 'api', label: 'Internal Auth Service', categoryId: 'internal' },
-            { id: 'shop', label: 'E-commerce Site', categoryId: 'external' }
-          ]
-        }
+        type: 'video',
+        title: '📺 Services vs Ingress',
+        content: 'A great visual comparison of how traffic flows internally vs from the public internet.',
+        videoUrl: 'https://www.youtube.com/watch?v=WwwvA4Yngi4'
       },
       {
         type: 'table',
-        title: '🏗️ Types of Services',
-        content: 'Choose the right tool for the job:',
+        title: '🌍 Types of Services',
+        content: 'Depending on who needs to make the connection:',
         tableData: {
-          headers: ['Service Type', 'Scope', 'Best Use Case', 'Cost'],
+          headers: ['Service Type', 'Who can access it?', 'Use case'],
           rows: [
-            ['**ClusterIP**', 'Internal cluster only', 'Backend APIs & Databases (hidden)', 'Free (Default)'],
-            ['**NodePort**', 'External (Node IPs)', 'Testing & custom internal routing', 'Free'],
-            ['**LoadBalancer**', 'External (Public IP)', 'Public-facing Web Apps / APIs', '$$$ (Cloud billing)']
+            ['**ClusterIP** (Default)', 'ONLY other pods inside the cluster.', 'Your Database Service. High security.'],
+            ['**NodePort**', 'External traffic, but using a weird port (30000+).', 'Quick dev tests. Unprofessional for prod.'],
+            ['**LoadBalancer**', 'The entire open internet.', 'Spins up an expensive AWS/Azure Load Balancer.']
           ]
         }
       },
       {
-        type: 'tip',
-        title: '🌐 Ingress',
-        content: 'If you have many services, giving each one an expensive cloud LoadBalancer is wasteful. An **Ingress** acts as a Smart Router (like NGINX) that handles multiple services behind one IP based on the URL path (e.g., `/api` goes to service A, `/` goes to service B).'
-      },
-      {
-        type: 'code',
-        title: 'A Service YAML',
-        content: 'This Service load-balances port 80 traffic to all pods with the `app: web` label on their port 8080.',
-        code: `apiVersion: v1\nkind: Service\nmetadata:\n  name: my-web-service\nspec:\n  type: ClusterIP\n  selector:\n    app: web\n  ports:\n    - protocol: TCP\n      port: 80\n      targetPort: 8080`,
-        language: 'yaml'
+        type: 'concept',
+        title: '🚪 Enter the Ingress',
+        content: 'A `LoadBalancer` service is expensive. If you have 5 web apps, you don\'t want to pay for 5 AWS Load Balancers. \n\nInstead, you deploy ONE **Ingress Controller**. It is a smart router (like Nginx) that sits at the front door. It looks at the URL requested (e.g. `myapp.com/api`) and routes the traffic to the correct internal ClusterIP service.'
       }
     ],
     quiz: [
       {
         id: 'k8s-5-q1',
-        question: 'Why do we need Services if Pods already have IP addresses?',
+        question: 'Why should you NOT hardcode the IP address of a Pod into your application configuration?',
         options: [
-          'Pod IPs are too long',
-          'Pod IPs are temporary and change when the Pod restarts; Services provide a stable IP',
-          'Services make the code run faster',
-          'Pods cannot communicate without a Service'
+          'Pods do not have IP addresses',
+          'Because K8s IP addresses are only 4 digits long',
+          'Because Pods are ephemeral; when a pod is destroyed and recreated (which is frequent), its new replica will receive a totally different IP address.',
+          'IP addresses cost money inside the cluster'
         ],
-        correct: 1,
-        explanation: 'Pods are ephemeral. Services provide the stable "identity" (IP/DNS) that other pods can rely on.'
+        correct: 2,
+        explanation: 'K8s networking assumes constant death and rebirth. You MUST use a `Service` to abstract away the dynamic Pod IPs into a single, permanent DNS hostname.'
+      },
+      {
+        id: 'k8s-5-q2',
+        question: 'You have a backend NodeJS API pod, and a PostgreSQL database pod. Which Service type should you place in front of the PostgreSQL pod to ensure maximum security?',
+        options: [
+          'LoadBalancer',
+          'Ingress',
+          'NodePort',
+          'ClusterIP'
+        ],
+        correct: 3,
+        explanation: '`ClusterIP` completely blocks external internet traffic. Only other pods INSIDE the cluster can reach the database. This is the gold standard for backend resource security.'
       }
     ]
   },
@@ -437,69 +480,84 @@ spec:
     track: 'k8s',
     order: 6,
     title: 'ConfigMaps & Secrets',
-    subtitle: 'Decoupling code from configuration',
-    emoji: '🔒',
-    duration: '10 min',
-    xpReward: 50,
+    subtitle: 'Decoupling configuration from code',
+    emoji: '🔑',
+    duration: '20 min',
+    xpReward: 100,
     sections: [
       {
         type: 'intro',
-        content: 'Never hardcode database passwords or API URLs in your Docker image! Kubernetes provides two objects to inject settings into your pods at runtime.'
+        content: 'You should never hardcode passwords, API keys, or environment settings (like `NODE_ENV=production`) directly into your Docker images. If you do, anyone with the image has the password. Furthermore, a single image should be deployable to Dev, Staging, and Prod without modification. We need K8s objects to inject these vars dynamically.'
       },
       {
         type: 'concept',
-        title: '🗺️ ConfigMap',
-        content: 'Used for non-sensitive settings like env variables (LOG_LEVEL, API_URL) or config files. Pods can read them as environment variables or as files in a mounted folder.'
+        title: '🗺️ ConfigMaps (The Safe Stuff)',
+        content: 'A **ConfigMap** is a dictionary of plain-text key-value pairs. You use them to store non-sensitive data:\n- Language toggle: `LANG=en_US`\n- Application Port: `PORT=8080`\n- UI Theme: `THEME=dark`\n\nThese can be injected into your pods as Environment Variables or mounted as physical configuration files.'
       },
       {
         type: 'concept',
-        title: '🤫 Secret',
-        content: 'Similar to ConfigMaps but for **sensitive data**: API keys, DB passwords, SSH keys. Kubernetes stores them in base64 encoding (and typically encrypts them at rest in etcd).'
-      },
-      {
-        type: 'flowchart',
-        content: '**Same Image, Different Config**',
-        diagramSteps: [
-          { label: 'Docker Image\n(App v1.0)', icon: '📦', color: '#118ab2' },
-          { label: 'ConfigMap\n(Prod DB URL)', icon: '🗺️', color: '#ffb703' },
-          { label: 'Secret\n(Prod Pass)', icon: '🤫', color: '#ff4b4b' },
-          { label: 'Pod (Prod)\nReady', icon: '✅', color: '#06d6a0' }
-        ]
-      },
-      {
-        type: 'table',
-        title: '⚖️ ConfigMap vs Secret',
-        content: 'When to use which K8s object:',
-        tableData: {
-          headers: ['Feature', 'ConfigMap 🗺️', 'Secret 🤫'],
-          rows: [
-            ['**Data Type**', 'Non-sensitive (URLs, Ports, Envs)', 'Sensitive (Passwords, SSH Keys, Tokens)'],
-            ['**Encoding**', 'Plain text', 'Base64 Encoded'],
-            ['**Security**', 'Stored in plain text in etcd', 'Often encrypted at rest in etcd'],
-            ['**Example**', '`DB_HOST=localhost`', '`DB_PASS=S3cr3t!`']
-          ]
-        }
+        title: '🤫 Secrets (The Dangerous Stuff)',
+        content: 'A **Secret** is conceptually identical to a ConfigMap, but it is explicitly designed for sensitive data (Passwords, SSH keys, TLS certificates). \n\nBy default, secrets are stored as base64-encoded strings and are loaded only into the RAM (tmpfs) of the Worker Node, ensuring they aren\'t accidentally logged or saved to a physical hard drive.'
       },
       {
         type: 'code',
-        title: 'A ConfigMap YAML Example',
-        content: 'Defining environment variables and consuming them in a Pod:',
-        code: `apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: app-config\ndata:\n  API_URL: "https://api.example.com"\n  LOG_LEVEL: "info"\n---\n# Consuming it in a Deployment\napiVersion: apps/v1\nkind: Deployment\n# ... inside the container spec ...\n        envFrom:\n        - configMapRef:\n            name: app-config`,
+        title: 'Injecting a ConfigMap into a Deployment',
+        content: 'See how the Pod references the external ConfigMap object.',
+        code: `apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  LOG_LEVEL: "debug"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  template:
+    spec:
+      containers:
+      - name: my-app
+        image: my-app:v1
+        env:
+        - name: K8S_LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config   # Matches the ConfigMap name
+              key: LOG_LEVEL     # Pulls the exact value "debug"`,
         language: 'yaml'
+      },
+      {
+        type: 'tip',
+        title: '💡 The "Sealed Secrets" Problem',
+        content: 'Wait, if I write a Secret in a YAML file so I can `kubectl apply` it, anyone who hacks my GitHub repository can read my plaintext passwords! \nTo solve this, advanced teams use tools like **Bitnami Sealed Secrets**. It cryptographically encrypts the YAML file so it\'s perfectly safe to upload to public GitHub. Only the K8s cluster possesses the private key to decrypt it back into a real K8s Secret.'
       }
     ],
     quiz: [
       {
         id: 'k8s-6-q1',
-        question: 'What is the main difference between a ConfigMap and a Secret?',
+        question: 'Why is it considered a bad practice to tightly couple configuration settings directly into a Docker image?',
         options: [
-          'ConfigMaps are for files; Secrets are for variables',
-          'Secrets are intended for sensitive information like passwords; ConfigMaps are for general settings',
-          'ConfigMaps only work on Linux',
-          'There is no difference'
+          'It creates a syntax error during Docker build',
+          'It forces you to rebuild an entirely new image for every single environment (Dev, Staging, Prod), defeating the purpose of the "Build Once, Run Anywhere" philosophy.',
+          'Images containing configuration data are blocked by Docker Hub',
+          'It consumes massive amounts of RAM'
         ],
         correct: 1,
-        explanation: 'Always use Secrets for sensitive data. Note that standard K8s secrets are base64 encoded, not encrypted by default — use external tools (like Vault or Sealed Secrets) for maximum security.'
+        explanation: 'Images should be completely stateless. The exact same image artifact that passes QA testing must be the artifact that deploys to Prod. Only the K8s ConfigMap should inject the difference (e.g. `DB_URL_PROD`).'
+      },
+      {
+        id: 'k8s-6-q2',
+        question: 'Which of the following is true about standard Kubernetes Secrets by default?',
+        options: [
+          'They correspond to military-grade AES-256 encryption automatically',
+          'They are simply Base64-encoded, which is easily decoded. Do not commit naked Secret YAMLs to GitHub!',
+          'They cannot be used as environment variables',
+          'They require an immediate payment to CNCF'
+        ],
+        correct: 1,
+        explanation: 'Base64 is an encoding format, NOT encryption. Anyone who runs `echo "cGFzc3dvcmQ=" | base64 --decode` gets the plain text password instantly.'
       }
     ]
   },
@@ -507,49 +565,88 @@ spec:
     id: 'k8s-7',
     track: 'k8s',
     order: 7,
-    title: 'Storage: PV & PVC',
-    subtitle: 'Data that survives pod deletion',
+    title: 'Storage & Persistence',
+    subtitle: 'Where data goes to survive',
     emoji: '💾',
-    duration: '15 min',
-    xpReward: 50,
+    duration: '20 min',
+    xpReward: 100,
     sections: [
       {
         type: 'intro',
-        content: 'If a database pod dies, we don\'t want our users\' data to die with it. Just like Docker has Volumes, Kubernetes has a powerful storage system.'
+        content: 'Just like Docker, Kubernetes Pods are entirely ephemeral. When a pod is deleted, everything on its local disk is utterly wiped out. For a frontend app this is fine. For a Database, it\'s a disaster. Kubernetes introduces a complex but brilliant dual-layer system for permanent storage.'
+      },
+      {
+        type: 'video',
+        title: '📺 Kubernetes Storage Explained',
+        content: 'Understand why the PV and PVC objects are intentionally separated.',
+        videoUrl: 'https://www.youtube.com/watch?v=0swOh5C3OVM'
       },
       {
         type: 'concept',
-        title: '🧱 PersistentVolume (PV)',
-        content: 'The actual piece of storage (a disk on AWS, a folder on the server, etc.) available to the cluster. Managed by administrators.'
+        title: '💽 Persistent Volumes (PV)',
+        content: 'A PV is the actual physical representation of storage. It is an AWS EBS drive, an Azure Disk, or an NFS share pre-provisioned by your infrastructure admin. It sits in the cluster, completely separate from any pods, waiting to be used.'
       },
       {
         type: 'concept',
-        title: '🎫 PersistentVolumeClaim (PVC)',
-        content: 'A request for storage by a user. The user say: "I need a 5GB disk with ReadWrite once access". K8s finds a matching **PV** and binds it to the **PVC**.'
+        title: '📜 Persistent Volume Claims (PVC)',
+        content: 'A PVC is a **request** by a Pod. \n\nThink of a PV as an empty hotel room. The PVC is the reservation ticket. \nThe application developer writes a PVC saying: "I need 10GB of fast SSD storage." \nKubernetes then searches the available PVs. If it finds a match, it **Binds** them together. The Pod then mounts the PVC.'
       },
       {
         type: 'flowchart',
-        content: '**PV ↔ PVC Binding process**',
+        content: '**Separation of Concerns: DevOps vs Devs**',
         diagramSteps: [
-          { label: 'PV\n(50GB Disk)', icon: '🧱', color: '#ffb703' },
-          { label: 'K8s Binding\n(Match!)', icon: '🤝', color: '#118ab2' },
-          { label: 'PVC\n(Needs 50GB)', icon: '🎫', color: '#06d6a0' },
-          { label: 'Pod Mounts\n(Volume)', icon: '📂', color: '#118ab2' }
+          { label: 'Cloud Admin\nCreates PV (100GB Disk)', icon: '☁️', color: '#118ab2' },
+          { label: 'Kubernetes\n(Binding Layer)', icon: '🤝', color: '#ffb703' },
+          { label: 'Developer\nRequests PVC (10GB)', icon: '📝', color: '#06d6a0' },
+          { label: 'Pod\nMounts PVC', icon: '🫛', color: '#06d6a0' }
         ]
       },
       {
-        type: 'tip',
-        title: '📦 StorageClass',
-        content: 'Modern clusters use **Dynamic Provisioning**. You just create a PVC, and the StorageClass automatically creates a new cloud disk (PV) on the fly. No manual admin work needed!'
+        type: 'game',
+        title: 'Terminal: Diagnosing State',
+        content: 'Common status checks every admin does.',
+        gameType: 'terminal',
+        gameData: {
+          startText: 'k8s-admin@k8s-master:~$ ',
+          steps: [
+            {
+              instruction: 'List your Persistent Volume Claims to see their statuses. Type: kubectl get pvc',
+              expectedCommand: 'kubectl get pvc',
+              output: 'NAME          STATUS    VOLUME   CAPACITY   ACCESS MODES   AGE\npg-data-pvc   Bound     pvc-x7   5Gi        RWO            10d\nminio-pvc     Pending                       RWO            2m'
+            },
+            {
+              instruction: 'The minio-pvc is stuck in "Pending". We need clues. Describe it using the describe command. Type: kubectl describe pvc minio-pvc',
+              expectedCommand: 'kubectl describe pvc minio-pvc',
+              output: '...\nEvents:\n  Type     Reason              Age               From                         Message\n  ----     ------              ----              ----                         -------\n  Warning  ProvisioningFailed  12s (x4 over 2m)  persistentvolume-controller  no volume plugin matched'
+            }
+          ]
+        }
       }
     ],
     quiz: [
       {
         id: 'k8s-7-q1',
-        question: 'Which object represents a user\'s request for storage?',
-        options: ['PV', 'PVC', 'StorageClass', 'VolumeMount'],
+        question: 'What is the primary reason K8s splits storage into two objects (PV and PVC)?',
+        options: [
+          'To increase the speed of SSDs',
+          'Separation of concerns: It allows Cloud Admins to deal with the exact hardware details (PV), while Developers only need to write generic requests for size and access modes (PVC).',
+          'Because AWS requires it',
+          'To allow K8s to compress the data automatically'
+        ],
         correct: 1,
-        explanation: 'A PVC is like a "ticket" or "voucher". You give the ticket to K8s to get a piece of the Storage "pie" (the PV).'
+        explanation: 'A developer shouldn\'t have to know the exact ARN of an AWS disk. They just want 10GB of space. By splitting the logic, the file becomes portable. It works on AWS, and if moved to Azure, it binds to Azure disks transparently.'
+      },
+      {
+        id: 'k8s-7-q2',
+        question: 'If a PVC is stuck in the "Pending" state, what does it most likely mean?',
+        options: [
+          'The K8s cluster ran out of memory',
+          'The Pod crashed inside',
+          'Kubernetes could not find a physical volume (PV) that met the exact size and access requirements requested in the PVC.',
+          'The base64 secret failed to decrypt'
+        ],
+        correct: 2,
+        explanation: 'A claim must bind to a volume. If you ask for a 50GB fast SSD, and the cluster only has 10GB slow HDDs available, the claim stays Pending forever until an Admin provisions the right hardware.'
       }
     ]
   },
@@ -557,72 +654,35 @@ spec:
     id: 'k8s-8',
     track: 'k8s',
     order: 8,
-    title: 'Hands-on Labs: kubectl & Playgrounds',
-    subtitle: 'Free browser-based Kubernetes clusters to practice on',
-    emoji: '🛠️',
+    title: 'Hands-on Labs: Playground',
+    subtitle: 'Free clusters to practice safely',
+    emoji: '🧪',
     duration: '45+ min',
-    xpReward: 80,
+    xpReward: 100,
     externalLink: {
-      label: 'Open Killercoda K8s Scenarios',
+      label: 'Launch Killercoda K8s Lab',
       url: 'https://killercoda.com/playgrounds/scenario/kubernetes',
-      xpPrompt: 'How many scenarios/exercises did you complete? Enter the number to earn XP!'
+      xpPrompt: 'How many Killercoda tasks did you conquer? Enter below!'
     },
     sections: [
       {
         type: 'intro',
-        content: 'How do you actually talk to the cluster? You use **kubectl** (pronounced "kube-control" or "kube-cuttle"). But you don\'t need to install anything — we have free playgrounds!'
-      },
-      {
-        type: 'game',
-        title: 'Challenge: Fix the Cluster',
-        content: 'A Pod is in CrashLoopBackOff! Order the commands you would use to diagnose and fix the issue.',
-        gameType: 'drag-order',
-        gameData: [
-          { id: '1', label: 'kubectl get pods (Identify the victim)' },
-          { id: '2', label: 'kubectl describe pod (Check events)' },
-          { id: '3', label: 'kubectl logs pod (Check error messages)' },
-          { id: '4', label: 'kubectl apply -f fix.yaml (Fix the config)' }
-        ]
-      },
-      {
-        type: 'table',
-        title: '⌨️ The kubectl Command Matrix',
-        content: 'Categorized commands for daily use: Inspect, Manage, and Debug.',
-        tableData: {
-          headers: ['Category', 'Command', 'What it does'],
-          rows: [
-            ['**Inspect** (🟢 Safe)', '`kubectl get pods`', 'Lists all pods in the namespace'],
-            ['**Inspect** (🟢 Safe)', '`kubectl describe pod [name]`', 'Shows detailed configuration and events for a pod'],
-            ['**Debug** (🟡 Medium)', '`kubectl logs [name]`', 'Prints standard output/error (the logs) of the container'],
-            ['**Debug** (🟡 Medium)', '`kubectl exec -it [name] -- sh`', 'Opens an interactive shell inside the container for debugging'],
-            ['**Manage** (🔴 Alta)', '`kubectl apply -f [file.yaml]`', 'Creates or updates resources declaratively'],
-            ['**Manage** (🔴 Alta)', '`kubectl delete pod [name]`', 'Force deletes a pod (usually self-heals if part of a deployment)']
-          ]
-        }
+        content: 'You cannot learn Kubernetes entirely by reading theory. You MUST use `kubectl`. The good news? You do not need to install Minikube or pay Google Cloud. Free browser-based cluster environments exist.'
       },
       {
         type: 'concept',
-        title: '🌐 Tool 1: Killercoda (Guided Scenarios)',
-        content: '**Killercoda** is the gold standard for Kubernetes practice. It gives you a **real, live cluster** in your browser — completely free.\n\n- Pre-built scenarios: "Kubernetes Basics", "Deployments", "Services", "CKAD Prep"\n- Each scenario has step-by-step instructions with verification\n- Real `kubectl` access — everything you type actually runs on a real cluster\n- No time limit on individual scenarios\n\n🔗 **URL**: https://killercoda.com/playgrounds/scenario/kubernetes\n\n💡 **Recommended starting scenarios:**\n1. "Kubernetes Playground" (free-form practice)\n2. "Create a Pod" (Beginner)\n3. "Deploy and Scale" (Intermediate)\n4. "Network Policies" (Advanced)'
+        title: '🌐 Tool 1: Killercoda Playgrounds',
+        content: '**Killercoda** is the absolute best free Kubernetes playground. \n\n- Gives you a two-node cluster (1 Master, 1 Worker)\n- Already configured with autocomplete and right permissions\n- 100% Free, runs instantly in the browser\n\n🔗 **URL**: [https://killercoda.com](https://killercoda.com)'
       },
       {
         type: 'concept',
-        title: '🎮 Tool 2: Play with Kubernetes (PWK)',
-        content: '**Play with Kubernetes** is the K8s equivalent of Play with Docker. A free, browser-based environment.\n\n- Get a multi-node cluster in seconds\n- Sessions last **4 hours**\n- Perfect for experimenting with YAML files from modules 3-7\n- Can simulate multi-node scenarios (failover, scheduling)\n\n🔗 **URL**: https://labs.play-with-k8s.com'
+        title: '📚 Tool 2: K8s Official Tutorials',
+        content: 'The official K8s documentation has an excellent interactive tutorial track.\n\n🔗 **URL**: [https://kubernetes.io/docs/tutorials/kubernetes-basics/](https://kubernetes.io/docs/tutorials/kubernetes-basics/)\n\n💡 **Recommended Focus:**\nDeploy an App -> Expose your app (Service) -> Scale your app -> Update your app.'
       },
       {
         type: 'tip',
-        title: '🎯 Which playground should I use?',
-        content: '**First time with kubectl?** → Killercoda (guided, step-by-step)\n\n**Want free-form practice?** → Play with Kubernetes (blank cluster)\n\n**Preparing for CKA/CKAD?** → Killercoda has dedicated exam-prep scenarios\n\n🏆 Complete at least 3 Killercoda scenarios before moving to the Final Challenge!'
-      }
-    ],
-    quiz: [
-      {
-        id: 'k8s-8-q1',
-        question: 'Which command is used to apply a configuration from a YAML file?',
-        options: ['kubectl get', 'kubectl apply -f', 'kubectl run', 'kubectl start'],
-        correct: 1,
-        explanation: '`kubectl apply -f [filename]` is the standard way to deploy objects. It is declarative: K8s looks at what you want and makes it so.'
+        title: '🎯 The Golden Rule of Debugging',
+        content: 'When things break in your lab, follow the **K8s Debugging Trinity** in this exact order:\n1. `kubectl get pods` (Are they running or crashing?)\n2. `kubectl describe pod [name]` (Look at the "Events" at the bottom for errors!)\n3. `kubectl logs [name]` (Read the actual application error stacktrace)'
       }
     ]
   },
@@ -631,236 +691,126 @@ spec:
     track: 'k8s',
     order: 9,
     title: 'Final K8s Challenge',
-    subtitle: 'Master of the Cluster',
-    emoji: '🏆',
-    duration: '20 min',
-    xpReward: 150,
+    subtitle: 'The Helm Master Certification',
+    emoji: '🥇',
+    duration: '25 min',
+    xpReward: 250,
     sections: [
       {
         type: 'intro',
-        content: 'The final exam! 20 questions covering architecture, workloads, services, and troubleshooting. Earn your "Kybernitis" badge now!'
+        content: 'So you think you understand the orchestrator? Prove it. 10 deep questions covering architecture, lifecycles, and debugging edge cases.'
       }
     ],
     quiz: [
       {
         id: 'k8s-9-q1',
-        question: 'Which component is responsible for deciding which Node a Pod should run on?',
-        options: ['Kubelet', 'kube-scheduler', 'etcd', 'API Server'],
+        question: 'Which component physically resides on the Worker Nodes (not the Control Plane)?',
+        options: ['etcd database', 'Kubelet', 'Kube-apiserver', 'Controller Manager'],
         correct: 1,
-        explanation: 'The scheduler is the component that selects a node for an unscheduled pod based on resource availability and constraints.'
+        explanation: 'Kubelet is the local agent on every worker node that reports back to the master.'
       },
       {
         id: 'k8s-9-q2',
-        question: 'What is "etcd" in Kubernetes?',
+        question: 'Under normal K8s best practices, how should you scale a web application from 1 to 5 instances?',
         options: [
-          'The container runtime',
-          'A distributed key-value store used as the cluster database',
-          'A command-line tool',
-          'A type of pod'
+          'Run `kubectl run web --replicas=5`',
+          'Deploy 5 separate individual Pod YAMLs',
+          'Change the `replicas: 5` property in the existing Deployment YAML and `kubectl apply` it.',
+          'Manually provision 4 more worker nodes'
         ],
-        correct: 1,
-        explanation: 'etcd is the "source of truth". Every configuration and state of the cluster is stored here.'
+        correct: 2,
+        explanation: 'Kubernetes relies on declarative Deployments. Altering the `replicas` field in the file and reapplying it is the standard GitOps way.'
       },
       {
         id: 'k8s-9-q3',
-        question: 'What is the purpose of HPA (Horizontal Pod Autoscaler)?',
+        question: 'You type `kubectl get pods` and see a pod\'s status is `ImagePullBackOff`. What is the most likely cause?',
         options: [
-          'To make pods larger (more CPU/RAM)',
-          'To increase or decrease the number of pod replicas based on load (CPU/Memory)',
-          'To restart failing nodes',
-          'To move pods between clusters'
+          'The application script crashed with a stack trace error',
+          'Kubernetes could not download the container image (perhaps a typo in the image name, or the image is perfectly private and lacks credentials)',
+          'The cluster ran out of CPU resources',
+          'The API server is currently offline'
         ],
         correct: 1,
-        explanation: 'HPA scales "horizontally" (more pods). "Vertical" scaling (bigger pods) is handled by VPA.'
+        explanation: '`ImagePullBackOff` explicitly means the Container Runtime failed to pull the image from the registry (Hub/ECR). The pod hasn\'t even started executing code yet.'
       },
       {
         id: 'k8s-9-q4',
-        question: 'In a Service, what is the "Selector"?',
-        options: [
-          'A dropdown menu in the UI',
-          'A set of labels used to identify which Pods the Service should send traffic to',
-          'The IP address of the service',
-          'The name of the external LoadBalancer'
-        ],
+        question: 'True or False: A ClusterIP Service allows public internet users to access your frontend Pods.',
+        options: ['True', 'False'],
         correct: 1,
-        explanation: 'Selectors are how Services find their Pods. If a pod has the label `app: web` and the service has the selector `app: web`, they are connected.'
+        explanation: 'False. ClusterIP is strictly for internal cluster-only communication.'
       },
       {
         id: 'k8s-9-q5',
-        question: 'What happens if the Control Plane becomes unavailable?',
+        question: 'What is the function of an Ingress Resource?',
         options: [
-          'All running pods on worker nodes are immediately terminated',
-          'Pods keep running on worker nodes, but you cannot change the state (create/delete) of the cluster',
-          'The entire cluster is deleted',
-          'The pods automatically migrate to Docker'
+          'It deletes old containers',
+          'It encrypts Secret data in etcd',
+          'It acts as an intelligent Nginx/HAProxy load balancer managing external URL routing rules (e.g. sending /api traffic to the backend, and / traffic to the frontend).',
+          'It manages the deployment rollout process'
         ],
-        correct: 1,
-        explanation: 'K8s worker nodes can survive a control plane failure long enough to keep apps running, but you lose management capabilities until the brain is back online.'
+        correct: 2,
+        explanation: 'Ingress is a smart layer 7 router at the front of the cluster.'
       },
       {
         id: 'k8s-9-q6',
-        question: 'What is a "Pod" in Kubernetes?',
+        question: 'If a worker node catches fire and completely dies, what does a Deployment controller do?',
         options: [
-          'A physical server',
-          'The smallest deployable computing unit, which can contain one or more containers',
-          'A networking interface',
-          'A storage volume'
+          'Nothing, it awaits admin commands',
+          'It immediately re-creates the missing Pods by scheduling them onto surviving, healthy Worker nodes',
+          'It sends an email via SendGrid',
+          'It shuts down the cluster to prevent data corruption'
         ],
         correct: 1,
-        explanation: 'The Pod is the atomic unit of Kubernetes. While usually containing a single container, it can hold multiple tightly-coupled containers.'
+        explanation: 'This is the self-healing power. The controller notices 3 active pods dropped to 1, and commands the scheduler to provision 2 new ones instantly.'
       },
       {
         id: 'k8s-9-q7',
-        question: 'Which component is known as the "Brain" of the worker node?',
-        options: ['etcd', 'kube-proxy', 'kubelet', 'scheduler'],
+        question: 'Regarding storage, what is the role of a PVC?',
+        options: [
+          'To format the hard drive on a worker node',
+          'To encrypt the volume data',
+          'To act as a flexible "request" or "claim" ticket from the developer asking the cluster for an appropriate amount of storage.',
+          'To define persistent variables'
+        ],
         correct: 2,
-        explanation: 'kubelet runs on every worker node. It registers the node with the cluster and ensures containers described in PodSpecs are running and healthy.'
+        explanation: 'A Persistent Volume Claim (PVC) is the developer\'s abstract request for storage hardware.'
       },
       {
         id: 'k8s-9-q8',
-        question: 'What is the primary difference between a Deployment and a Pod?',
+        question: 'You type `kubectl get pods` and see a pod\'s status is `CrashLoopBackOff`. You run `kubectl logs <pod-name>`. What are you hoping to find?',
         options: [
-          'Deployments are for databases; Pods are for web servers',
-          'Pods declare desired state; Deployments are the actual running instances',
-          'Deployments manage the lifecycle, replication, and updates of Pods',
-          'There is no difference'
+          'Kubelet authorization failure messages',
+          'Node resource starvation metrics',
+          'The actual stack trace error outputted by your application crashing (e.g. Runtime Exception or DB Timeout)',
+          'Docker pull errors'
         ],
         correct: 2,
-        explanation: 'You rarely create Pods directly. Deployments supervise Pods, ensuring the right number are running and handling updates without downtime.'
+        explanation: '`CrashLoopBackOff` means the container starts running, crashes, restarts, and crashes again. The `logs` command outputs the std-out/std-err of the app, revealing the code issue.'
       },
       {
         id: 'k8s-9-q9',
-        question: 'What is a "Rolling Update"?',
+        question: 'Where is the safest and most proper place to store a third-party API Access Token for your application in K8s?',
         options: [
-          'Replacing all instances of an application at exactly the same time',
-          'Gradually replacing old Pods with new Pods to ensure zero downtime',
-          'Restarting the Kubernetes Control Plane',
-          'Updating the underlying host Operating System'
+          'Hardcoded into the Docker Image',
+          'As a Kubernetes ConfigMap',
+          'As a Kubernetes Secret',
+          'Inside the Deployment YAML as plaintext'
         ],
-        correct: 1,
-        explanation: 'Rolling updates allow Deployments\' updates to take place with zero downtime by incrementally updating Pods instances with new ones.'
+        correct: 2,
+        explanation: 'You must use a K8s Secret. While it\'s technically similar to a ConfigMap, Secrets are mounted securely into RAM (tmpfs) on worker nodes to prevent them from landing on physical disk drives.'
       },
       {
         id: 'k8s-9-q10',
-        question: 'Which Service type provides an internal IP only reachable from within the cluster?',
-        options: ['LoadBalancer', 'NodePort', 'ClusterIP', 'ExternalName'],
-        correct: 2,
-        explanation: 'ClusterIP is the default Service type. It exposes the Service on a cluster-internal IP, making it only reachable from within the cluster.'
-      },
-      {
-        id: 'k8s-9-q11',
-        question: 'What is the purpose of an Ingress?',
+        question: 'What happens to the data inside a container\'s default writable filesystem when a naked Pod is deleted?',
         options: [
-          'To create a new Node in the cluster',
-          'To act as a smart HTTP/S router that directs outside traffic to multiple internal Services',
-          'To store sensitive passwords',
-          'To monitor CPU usage'
+          'It is backed up to etcd',
+          'It is completely and irreversibly destroyed along with the Pod',
+          'It transfers instantly to the new Pod',
+          'It is converted to a PV automatically'
         ],
         correct: 1,
-        explanation: 'Ingress manages external access to the services in a cluster, typically HTTP. It can provide load balancing, SSL termination, and name-based virtual hosting.'
-      },
-      {
-        id: 'k8s-9-q12',
-        question: 'Where should you store a database password in Kubernetes?',
-        options: ['ConfigMap', 'Secret', 'Deployment YAML', 'Docker Image'],
-        correct: 1,
-        explanation: 'Secrets are designed specifically to hold sensitive information. ConfigMaps are for non-sensitive configuration data.'
-      },
-      {
-        id: 'k8s-9-q13',
-        question: 'What is the function of "kube-proxy"?',
-        options: [
-          'It is a VPN service',
-          'It maintains network rules on nodes allowing network communication to your Pods',
-          'It proxies API requests to etcd',
-          'It creates Docker images'
-        ],
-        correct: 1,
-        explanation: 'kube-proxy runs on each node and is responsible for implementing the Kubernetes Service concept (routing traffic to the right Pod).'
-      },
-      {
-        id: 'k8s-9-q14',
-        question: 'Why would you use a "StatefulSet" instead of a "Deployment"?',
-        options: [
-          'For stateless web applications',
-          'When your application requires stable network IDs and persistent storage (e.g. Databases)',
-          'When you need horizontal autoscaling',
-          'StatefulSets are deprecated'
-        ],
-        correct: 1,
-        explanation: 'Unlike a Deployment, a StatefulSet maintains a sticky identity for each of its Pods, essential for clustered databases like Kafka or MySQL.'
-      },
-      {
-        id: 'k8s-9-q15',
-        question: 'What does a "DaemonSet" ensure?',
-        options: [
-          'That a copy of a Pod runs on ALL (or some) Nodes in the cluster',
-          'That only one Pod runs in the entire cluster',
-          'That background jobs run on a specific schedule',
-          'That external traffic is routed to the Master node'
-        ],
-        correct: 0,
-        explanation: 'DaemonSets are perfect for logging, monitoring, and networking agents that must run exactly once on every single node.'
-      },
-      {
-        id: 'k8s-9-q16',
-        question: 'What is a "PersistentVolumeClaim (PVC)"?',
-        options: [
-          'A request for CPU resources',
-          'A request for storage by a user/Pod',
-          'A claim for a specific IP address',
-          'A networking plugin'
-        ],
-        correct: 1,
-        explanation: 'A PVC is a request for storage, abstracting the details of how the storage is provisioned from how it is consumed by the application.'
-      },
-      {
-        id: 'k8s-9-q17',
-        question: 'What is "kubectl"?',
-        options: [
-          'A type of pod',
-          'The Kubernetes command-line tool',
-          'A load balancer',
-          'A graphical dashboard'
-        ],
-        correct: 1,
-        explanation: 'kubectl is the command line utility used to communicate with the Kubernetes API server and manage the cluster.'
-      },
-      {
-        id: 'k8s-9-q18',
-        question: 'In Kubernetes, what is a "Namespace"?',
-        options: [
-          'A physical separation of hardware',
-          'A virtual cluster backed by the same physical cluster, used for isolation',
-          'A type of DNS server',
-          'A network interface for Pods'
-        ],
-        correct: 1,
-        explanation: 'Namespaces provide a mechanism for isolating groups of resources within a single cluster (e.g. `dev`, `staging`, `prod` namespaces).'
-      },
-      {
-        id: 'k8s-9-q19',
-        question: 'What happens when a node fails in a Kubernetes cluster?',
-        options: [
-          'The pods on it are lost forever',
-          'The scheduler detects the failure and reschedules the affected Pods onto healthy nodes',
-          'The Control Plane reboots the entire cluster',
-          'You must manually re-create the node'
-        ],
-        correct: 1,
-        explanation: 'Kubernetes constantly monitors nodes. If one fails, the Control Plane ensures the desired state is met by creating new Pods on other available nodes.'
-      },
-      {
-        id: 'k8s-9-q20',
-        question: 'What is "Helm"?',
-        options: [
-          'The new name for Kubernetes',
-          'A package manager for Kubernetes (like apt or npm)',
-          'A secure network overlay',
-          'The Kubernetes native database'
-        ],
-        correct: 1,
-        explanation: 'Helm helps you manage Kubernetes applications. Helm Charts help you define, install, and upgrade even the most complex Kubernetes application.'
+        explanation: 'Without mounted Volumes, ALL data inside a container/pod is totally completely ephemeral.'
       }
     ]
   }

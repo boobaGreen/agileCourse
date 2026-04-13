@@ -21,6 +21,15 @@ type GameDataClassify = {
   items: { id: string, label: string, categoryId: string }[] 
 }
 
+export type TerminalGameData = {
+  startText?: string;
+  steps: {
+    instruction: string;
+    expectedCommand: string;
+    output?: string;
+  }[];
+}
+
 export default function ModulePage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -1930,7 +1939,7 @@ function CherryPickLab() {
   )
 }
 
-function MiniGame({ gameType, gameData }: { gameType: string, gameData: GameDataItem[] | GameDataClassify }) {
+function MiniGame({ gameType, gameData }: { gameType: string, gameData: GameDataItem[] | GameDataClassify | TerminalGameData }) {
   if (gameType === 'drag-order') {
     return <DragOrderGame items={gameData as GameDataItem[]} />
   }
@@ -1938,6 +1947,10 @@ function MiniGame({ gameType, gameData }: { gameType: string, gameData: GameData
   if (gameType === 'drag-classify') {
     const data = gameData as GameDataClassify
     return <DragClassifyGame categories={data.categories} items={data.items} />
+  }
+
+  if (gameType === 'terminal') {
+    return <TerminalSimulatorGame data={gameData as TerminalGameData} />
   }
 
   return <div className="p-10 text-center text-muted border border-dashed rounded-xl">Game Module Coming Soon...</div>
@@ -2359,3 +2372,101 @@ function IgnoreLab() {
     </div>
   )
 }
+
+function TerminalSimulatorGame({ data }: { data: TerminalGameData }) {
+  const [currentStep, setCurrentStep] = useState(0)
+  const [input, setInput] = useState('')
+  const [history, setHistory] = useState<{type: 'cmd' | 'out', text: string}[]>([])
+  
+  // Use a ref to scroll to bottom
+  const scrollRef = React.useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+    }
+  }, [history])
+
+  const step = data?.steps?.[currentStep]
+  const isFinished = data?.steps && currentStep >= data.steps.length
+
+  useEffect(() => {
+    if (isFinished && data?.steps?.length > 0) {
+       import('canvas-confetti').then((confetti) => {
+          confetti.default({ particleCount: 100, spread: 70, origin: { y: 0.6 } })
+       })
+    }
+  }, [isFinished, data])
+
+  if (!data?.steps) return null
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && input.trim() !== '') {
+      const val = input.trim()
+      const newHistory = [...history, { type: 'cmd' as const, text: (data.startText || '$ ') + val }]
+      
+      if (!isFinished && val === step?.expectedCommand) {
+         if (step.output) {
+           newHistory.push({ type: 'out' as const, text: step.output })
+         }
+         setCurrentStep(s => s + 1)
+      } else {
+         newHistory.push({ type: 'out' as const, text: `Command not found or unexpected: ${val}` })
+      }
+      
+      setHistory(newHistory)
+      setInput('')
+    }
+  }
+
+  return (
+    <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/10 shadow-2xl">
+      <div className="flex justify-between items-center mb-2">
+         <div className="flex flex-col">
+            <span className="text-xs text-secondary fw-black uppercase tracking-widest leading-none mb-2">Interactive Terminal</span>
+            <h3 className="text-xl fw-black text-white">Command Line Simulator</h3>
+         </div>
+         <div className="px-4 py-2 rounded-xl bg-black/40 border border-white/10 text-[10px] fw-black text-muted">
+            STEP: <span className={isFinished ? 'text-git' : 'text-primary'}>{Math.min(currentStep + 1, data.steps.length)} / {data.steps.length}</span>
+         </div>
+      </div>
+
+      <div className="w-full bg-black/60 rounded-2xl p-5 border border-white/10 flex flex-col gap-4">
+         {!isFinished ? (
+           <p className="text-sm text-white/90 leading-relaxed fw-medium">
+             {step.instruction}
+           </p>
+         ) : (
+           <div className="p-3 bg-git/10 text-git rounded-xl border border-git/20 text-xs fw-black tracking-wider uppercase text-center flex items-center justify-center gap-2">
+             <CheckCircle size={16} /> Simulator Completed!
+           </div>
+         )}
+      </div>
+
+      <div className="w-full bg-black rounded-lg border border-white/10 p-4 font-mono text-xs md:text-sm flex flex-col min-h-[300px] h-[300px]">
+        <div ref={scrollRef} className="flex-1 overflow-y-auto flex flex-col gap-2 pb-2 scrollbar-thin scrollbar-thumb-white/10">
+           {history.map((h, i) => (
+             <div key={i} className={h.type === 'cmd' ? "text-white" : "text-muted whitespace-pre-wrap"}>
+               {h.text}
+             </div>
+           ))}
+           {!isFinished && (
+             <div className="flex items-center text-white mt-2">
+               <span className="text-primary mr-2 whitespace-pre">{data.startText}</span>
+               <input 
+                 type="text"
+                 value={input}
+                 onChange={e => setInput(e.target.value)}
+                 onKeyDown={handleKeyDown}
+                 spellCheck={false}
+                 className="flex-1 bg-transparent outline-none border-none text-white font-mono caret-primary min-w-[200px]"
+                 placeholder="Type here..."
+               />
+             </div>
+           )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
