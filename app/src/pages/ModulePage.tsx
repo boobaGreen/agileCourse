@@ -927,13 +927,13 @@ function EducationAnimation({ type }: { type: string }) {
                    </div>
 
                    {/* Terminal */}
-                   <div className="bg-black/60 rounded-xl p-2.5 border border-white/5 shadow-inner flex items-center gap-3">
+                   <div className="bg-black/60 rounded-xl p-2.5 border border-white/5 shadow-inner flex items-center gap-3 overflow-x-auto min-w-0 scrollbar-hide">
                       <div className="flex gap-1">
                          <div className="w-1.5 h-1.5 rounded-full bg-red-500/50" />
                          <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/50" />
                          <div className="w-1.5 h-1.5 rounded-full bg-green-500/50" />
                       </div>
-                      <code className="text-[10px] mono text-git fw-bold">
+                      <code className="text-[10px] sm:text-[11px] mono text-git fw-bold whitespace-nowrap pr-6">
                          <span className="text-muted opacity-50 mr-2">$</span>
                          {steps[step].cmd}
                       </code>
@@ -1116,13 +1116,13 @@ function EducationAnimation({ type }: { type: string }) {
                      </div>
 
                      {/* Mini-Terminal Badge */}
-                     <div className="bg-black/60 rounded-xl p-2.5 border border-white/5 shadow-inner flex items-center gap-3 overflow-x-auto min-w-0">
+                     <div className="bg-black/60 rounded-xl p-2.5 border border-white/5 shadow-inner flex items-center gap-3 overflow-x-auto min-w-0 scrollbar-hide">
                         <div className="flex gap-1 shrink-0">
                            <div className="w-1.5 h-1.5 rounded-full bg-red-500/50" />
                            <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/50" />
                            <div className="w-1.5 h-1.5 rounded-full bg-green-500/50" />
                         </div>
-                        <code className="text-[9px] sm:text-[10px] mono text-git fw-bold whitespace-nowrap">
+                        <code className="text-[10px] sm:text-[11px] mono text-git fw-bold whitespace-nowrap pr-6">
                            <span className="text-muted opacity-50 mr-2">$</span>
                            {steps[step].cmd}
                         </code>
@@ -1282,9 +1282,9 @@ function MergeRebaseLab() {
                 <button disabled={step === steps.length - 1} onClick={() => setStep(s => s + 1)} className={`px-4 py-2 rounded-xl text-white shadow-lg transition-all text-xs fw-bold flex gap-2 items-center ${mode === 'merge' ? 'bg-git shadow-git/20' : 'bg-primary shadow-primary/20'} disabled:opacity-30`}>Next <ArrowRight size={16} /></button>
              </div>
           </div>
-          <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3">
-             <TermIcon size={18} className="text-muted" />
-             <code className={`text-sm font-mono fw-bold ${mode === 'merge' ? 'text-git' : 'text-primary'}`}>
+          <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3 overflow-x-auto min-w-0 scrollbar-hide">
+             <TermIcon size={18} className="text-muted shrink-0" />
+             <code className={`text-[11px] sm:text-sm font-mono fw-bold whitespace-nowrap pr-6 ${mode === 'merge' ? 'text-git' : 'text-primary'}`}>
                 <span className="text-muted opacity-50 mr-2">$</span>
                 {currentStep.cmd}
              </code>
@@ -1620,12 +1620,12 @@ function RemoteSyncLab() {
 
        <div className="w-full bg-black/40 rounded-3xl p-3 sm:p-6 border border-white/5 flex flex-col gap-2 sm:gap-5 z-10 backdrop-blur-sm mt-2 sm:mt-4">
           <p className="text-[11px] sm:text-base text-white/80 leading-relaxed fw-medium italic text-center sm:text-left">"{current.desc}"</p>
-          <div className="bg-black/60 border border-white/10 rounded-2xl p-2 sm:p-4 flex items-center gap-3 sm:gap-4 shadow-inner">
-             <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
+          <div className="bg-black/60 border border-white/10 rounded-2xl p-2 sm:p-4 flex items-center gap-3 sm:gap-4 shadow-inner overflow-x-auto min-w-0 scrollbar-hide">
+             <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
                 <TermIcon size={14} className="sm:hidden" />
                 <TermIcon size={18} className="hidden sm:block" />
              </div>
-             <code className="text-[15px] font-mono text-secondary fw-bold flex items-center gap-2">
+             <code className="text-[11px] sm:text-[15px] font-mono text-secondary fw-bold flex items-center gap-2 whitespace-nowrap pr-6">
                 <span className="text-muted opacity-30 select-none">course @ git:</span>
                 <span className="text-white">{current.cmd}</span>
                 <motion.span animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 1 }} className="w-2 h-5 bg-secondary/50 rounded-sm" />
@@ -1790,9 +1790,9 @@ function HeadLab() {
         {/* Narrative & Command Panel */}
         <div className="w-full bg-black/60 rounded-2xl p-5 border border-white/10 flex flex-col gap-4">
            <p className="text-sm text-white/90 leading-relaxed fw-medium">{steps[step].desc}</p>
-           <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3">
-              <TermIcon size={18} className="text-muted" />
-              <code className="text-sm font-mono text-git fw-bold">
+           <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3 overflow-x-auto min-w-0 scrollbar-hide">
+              <TermIcon size={18} className="text-muted shrink-0" />
+              <code className="text-[11px] sm:text-sm font-mono text-git fw-bold whitespace-nowrap pr-6">
                  <span className="text-muted opacity-50 mr-2">$</span>
                  {steps[step].cmd}
               </code>
@@ -1922,9 +1922,9 @@ function UndoSandbox() {
                  </button>
               </div>
            </div>
-           <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3">
-              <TermIcon size={18} className="text-muted" />
-              <code className={`text-sm font-mono fw-bold ${mode === 'revert' ? 'text-primary' : 'text-danger'}`}>
+           <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3 overflow-x-auto min-w-0 scrollbar-hide">
+              <TermIcon size={18} className="text-muted shrink-0" />
+              <code className={`text-[11px] sm:text-sm font-mono fw-bold whitespace-nowrap pr-6 ${mode === 'revert' ? 'text-primary' : 'text-danger'}`}>
                  <span className="text-muted opacity-50 mr-2">$</span>
                  {currentStep.cmd}
               </code>
@@ -2011,9 +2011,9 @@ function CherryPickLab() {
 
        <div className="w-full bg-black/60 rounded-2xl p-5 border border-white/10 flex flex-col gap-4">
           <p className="text-sm text-white/90 leading-relaxed fw-medium">{steps[step].desc}</p>
-          <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3">
-             <TermIcon size={18} className="text-muted" />
-             <code className="text-sm font-mono text-xp fw-bold">
+          <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3 overflow-x-auto min-w-0 scrollbar-hide">
+             <TermIcon size={18} className="text-muted shrink-0" />
+             <code className="text-[11px] sm:text-sm font-mono text-xp fw-bold whitespace-nowrap pr-6">
                 <span className="text-muted opacity-50 mr-2">$</span>
                 {steps[step].cmd}
              </code>
@@ -2421,9 +2421,9 @@ function BisectLab() {
 
        <div className="w-full bg-black/60 rounded-2xl p-5 border border-white/10 flex flex-col gap-4 mt-2">
           <p className="text-sm text-white/90 leading-relaxed fw-medium">{current.desc}</p>
-          <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3">
-             <TermIcon size={18} className="text-muted" />
-             <code className="text-sm font-mono text-primary fw-bold">
+          <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3 overflow-x-auto min-w-0 scrollbar-hide">
+             <TermIcon size={18} className="text-muted shrink-0" />
+             <code className="text-[11px] sm:text-sm font-mono text-primary fw-bold whitespace-nowrap pr-6">
                 <span className="text-muted opacity-50 mr-2">$</span>
                 {current.cmd}
              </code>
@@ -2620,7 +2620,7 @@ function TerminalSimulatorGame({ data, onComplete }: { data: TerminalGameData, o
                  onChange={e => setInput(e.target.value)}
                  onKeyDown={handleKeyDown}
                  spellCheck={false}
-                 className="flex-1 bg-transparent outline-none border-none text-primary placeholder:text-white/20 font-mono caret-primary min-w-[200px]"
+                 className="flex-1 bg-transparent outline-none border-none text-primary placeholder:text-white/20 font-mono caret-primary min-w-0"
                  placeholder="Type here..."
                />
                <div className="text-[10px] text-white/30 font-sans px-2 hidden sm:block">Press ENTER</div>

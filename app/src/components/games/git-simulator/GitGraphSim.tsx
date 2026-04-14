@@ -198,7 +198,7 @@ export function GitGraphSim({ data, onComplete }: Props) {
                       onKeyDown={handleCommand}
                       spellCheck={false}
                       autoFocus
-                      placeholder="e.g. git commit"
+                      placeholder="Type git command..."
                       className="flex-1 bg-transparent outline-none border-none text-[#06d6a0] placeholder:text-white/20 font-mono text-sm min-w-0"
                     />
                     <div className="text-[10px] text-white/30 font-sans px-2 hidden sm:block text-right">ENTER</div>
