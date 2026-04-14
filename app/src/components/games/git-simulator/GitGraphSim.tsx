@@ -117,7 +117,7 @@ export function GitGraphSim({ data, onComplete }: Props) {
 
   const handleReset = () => {
     setState(data.startState);
-    setHistory([{ type: 'out', text: 'Spazio temporale riavvolto. Scenario resettato.' }]);
+    setHistory([{ type: 'out', text: 'Time rewound. Scenario reset.' }]);
     setCompletedTasks(new Set());
     setInput('');
   };
@@ -132,7 +132,7 @@ export function GitGraphSim({ data, onComplete }: Props) {
               <button 
                 onClick={handleReset}
                 className="px-3 py-1 flex items-center gap-2 text-xs bg-white/5 hover:bg-danger/20 text-muted hover:text-danger rounded border border-white/10 hover:border-danger/30 transition-colors"
-                title="Ricomincia il livello da capo"
+                title="Restart level from scratch"
               >
                 <RotateCcw size={12} /> Reset
               </button>
@@ -178,7 +178,7 @@ export function GitGraphSim({ data, onComplete }: Props) {
                   <TerminalSquare size={14} /> <span className="text-[10px] uppercase font-black tracking-widest text-primary">Git Bash Simulator</span>
                 </div>
                 <p className="text-[10px] text-muted leading-relaxed">
-                  💡 Esegui <span className="text-git font-bold">git commit</span> per interagire con il grafo.
+                  💡 Type <span className="text-git font-bold">git commands</span> to reach your mission objectives.
                 </p>
               </div>
 
@@ -198,10 +198,10 @@ export function GitGraphSim({ data, onComplete }: Props) {
                       onKeyDown={handleCommand}
                       spellCheck={false}
                       autoFocus
-                      placeholder="es. git commit"
+                      placeholder="e.g. git commit"
                       className="flex-1 bg-transparent outline-none border-none text-[#06d6a0] placeholder:text-white/20 font-mono text-sm min-w-0"
                     />
-                    <div className="text-[10px] text-white/30 font-sans px-2 hidden sm:block text-right">INVIO</div>
+                    <div className="text-[10px] text-white/30 font-sans px-2 hidden sm:block text-right">ENTER</div>
                   </div>
                 )}
               </div>

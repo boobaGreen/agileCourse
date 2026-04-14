@@ -1096,9 +1096,9 @@ function EducationAnimation({ type }: { type: string }) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="w-full max-w-lg bg-black/40 backdrop-blur-xl border border-white/10 p-5 rounded-3xl shadow-2xl"
+              className="w-full max-w-lg bg-black/40 backdrop-blur-xl border border-white/10 p-4 sm:p-5 rounded-3xl shadow-2xl"
             >
-               <div className="flex items-start gap-4">
+               <div className="flex items-start gap-3 sm:gap-4">
                   <div className={`p-2.5 rounded-2xl ${step === 3 ? 'bg-danger/20 text-danger animate-pulse' : 'bg-primary/20 text-primary'} shrink-0 shadow-lg shadow-primary/10`}>
                      {step === 3 ? <AlertTriangle size={18} /> : <Users size={18} />}
                   </div>
@@ -1402,13 +1402,13 @@ function RemoteSyncLab() {
        {/* Background decorative elements */}
        <div className="absolute top-0 right-0 w-64 h-64 bg-git/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
        
-       <div className="flex justify-between items-center mb-2 z-10">
+       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 z-10 gap-6">
           <div className="flex flex-col gap-1">
              <div className="flex items-center gap-2">
                 <span className="px-2 py-0.5 rounded-full bg-secondary/20 text-[10px] text-secondary fw-black uppercase tracking-wider border border-secondary/30">Module 5</span>
                 <span className="text-[10px] text-muted fw-bold uppercase tracking-widest">Network Simulation • {step + 1}/4</span>
              </div>
-             <h3 className="text-2xl fw-black text-white tracking-tight">{current.title}</h3>
+             <h3 className="text-xl sm:text-2xl fw-black text-white tracking-tight">{current.title}</h3>
           </div>
           <div className="flex gap-3">
              <button 
@@ -1421,16 +1421,16 @@ function RemoteSyncLab() {
              {step === steps.length - 1 ? (
                 <button 
                    onClick={() => setStep(0)} 
-                   className="px-6 py-3 rounded-2xl bg-white/10 text-white border border-white/20 hover:bg-white/20 active:scale-95 transition-all text-sm fw-bold flex gap-2 items-center shadow-lg"
+                   className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl bg-white/10 text-white border border-white/20 hover:bg-white/20 active:scale-95 transition-all text-xs sm:text-sm fw-bold flex gap-2 items-center shadow-lg"
                 >
-                   <RotateCcw size={18} /> Restart Lab
+                   <RotateCcw size={16} /> Restart
                 </button>
              ) : (
                 <button 
                    onClick={() => setStep(s => s + 1)} 
-                   className="px-8 py-3 rounded-2xl bg-git text-white shadow-[0_10px_30px_rgba(240,80,50,0.4)] hover:shadow-[0_15px_40px_rgba(240,80,50,0.5)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all text-sm fw-black flex gap-2 items-center"
+                   className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-2xl bg-git text-white shadow-[0_10px_30px_rgba(240,80,50,0.4)] hover:shadow-[0_15px_40px_rgba(240,80,50,0.5)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all text-xs sm:text-sm fw-black flex gap-2 items-center"
                 >
-                   Next Stage <ArrowRight size={18} />
+                   Next <ArrowRight size={16} />
                 </button>
              )}
           </div>
@@ -1458,7 +1458,7 @@ function RemoteSyncLab() {
 
           {/* Local Machine */}
           <div className="flex flex-col gap-6">
-             <div className="bg-surface2/40 rounded-[2rem] p-8 border border-white/10 flex flex-col gap-8 shadow-xl relative overflow-hidden group">
+             <div className="bg-surface2/40 rounded-[1.5rem] sm:rounded-[2rem] p-5 sm:p-8 border border-white/10 flex flex-col gap-8 shadow-xl relative overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-br from-git/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
                 
                 <div className="flex items-center justify-between border-b border-white/5 pb-5">
@@ -1495,7 +1495,7 @@ function RemoteSyncLab() {
                                  transition={{ delay: i * 0.1, type: "spring", damping: 15 }}
                                  className="relative"
                               >
-                                 <div className={`w-12 h-12 rounded-full flex items-center justify-center font-mono text-[10px] fw-black border-2 transition-all duration-500 shadow-xl ${
+                                 <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-mono text-[9px] sm:text-[10px] fw-black border-2 transition-all duration-500 shadow-xl ${
                                     c === 'C2' 
                                     ? 'bg-git border-git text-white ring-4 ring-git/10' 
                                     : 'bg-surface border-white/20 text-muted/80'
@@ -1543,7 +1543,7 @@ function RemoteSyncLab() {
 
           {/* GitHub Remote */}
           <div className="flex flex-col gap-6">
-             <div className="bg-secondary/5 rounded-[2rem] p-8 border border-secondary/20 flex flex-col gap-8 shadow-xl relative overflow-hidden h-full group">
+             <div className="bg-secondary/5 rounded-[1.5rem] sm:rounded-[2rem] p-5 sm:p-8 border border-secondary/20 flex flex-col gap-8 shadow-xl relative overflow-hidden h-full group">
                 <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
 
                 <div className="flex items-center justify-between border-b border-secondary/10 pb-5">
@@ -1574,7 +1574,7 @@ function RemoteSyncLab() {
                               transition={{ duration: 0.5, type: "spring" }}
                               className="relative"
                            >
-                              <div className={`w-16 h-16 rounded-full flex items-center justify-center font-mono text-[12px] fw-black border-2 shadow-2xl transition-all duration-700 ${
+                              <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center font-mono text-[10px] sm:text-[12px] fw-black border-2 shadow-2xl transition-all duration-700 ${
                                  c === 'T1' 
                                  ? 'bg-secondary/20 border-secondary text-secondary shadow-[0_0_30px_rgba(var(--color-secondary),0.3)]' 
                                  : c === 'C2' 
@@ -2607,7 +2607,7 @@ function TerminalSimulatorGame({ data, onComplete }: { data: TerminalGameData, o
                  className="flex-1 bg-transparent outline-none border-none text-primary placeholder:text-white/20 font-mono caret-primary min-w-[200px]"
                  placeholder="Type here..."
                />
-               <div className="text-[10px] text-white/30 font-sans px-2 hidden sm:block">Premi INVIO</div>
+               <div className="text-[10px] text-white/30 font-sans px-2 hidden sm:block">Press ENTER</div>
              </div>
            )}
         </div>
