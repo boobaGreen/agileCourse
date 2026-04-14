@@ -1656,8 +1656,8 @@ function StageLab() {
     }
 
     return (
-      <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/5 shadow-2xl">
-        <div className="grid grid-cols-3 gap-4 h-64">
+      <div className="w-full flex flex-col gap-6 p-4 sm:p-6 bg-surface/30 rounded-3xl border border-white/5 shadow-2xl">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:h-64">
            {/* Working Directory */}
            <div className="flex flex-col gap-3">
               <span className="text-[10px] fw-black text-danger uppercase tracking-widest text-center">Working Dir</span>
@@ -1769,7 +1769,7 @@ function HeadLab() {
     ]
 
     return (
-      <div className="w-full flex flex-col items-center gap-6 p-6 bg-surface/30 rounded-3xl border border-white/10 shadow-2xl">
+      <div className="w-full flex flex-col items-center gap-6 p-4 sm:p-6 bg-surface/30 rounded-3xl border border-white/10 shadow-2xl">
         <div className="w-full flex items-center justify-between mb-2">
            <div className="flex flex-col">
               <span className="text-xs text-primary fw-black uppercase tracking-widest leading-none mb-2">HEAD Simulation • Step {step + 1}</span>
