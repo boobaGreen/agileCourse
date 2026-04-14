@@ -502,9 +502,13 @@ function SectionCard({ section, onCompleteGame }: { section: Section, onComplete
       {section.type === 'table' && section.tableData && (
         <div className="mt-4 relative group">
           {/* Scroll hint gradient for mobile */}
-          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-black/80 to-transparent pointer-events-none sm:hidden rounded-r-xl z-10" />
-          <div className="overflow-x-auto rounded-xl border border-white/10 relative z-0">
-            <table className="w-full text-xs sm:text-sm">
+          <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-black/80 to-transparent pointer-events-none sm:hidden rounded-r-xl z-10 flex items-center justify-end pr-2">
+             <motion.div animate={{ x: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 1.5 }} className="text-white/40">
+                <ArrowRight size={16} />
+             </motion.div>
+          </div>
+          <div className="overflow-x-auto rounded-xl border border-white/10 relative z-0 scrollbar-hide">
+            <table className="w-full text-xs sm:text-sm min-w-[700px] sm:min-w-full">
             <thead>
               <tr className="bg-white/5">
                 {section.tableData.headers.map((h, hi) => {
@@ -549,8 +553,9 @@ function SectionCard({ section, onCompleteGame }: { section: Section, onComplete
 
       {/* Flowchart / diagram rendering */}
       {section.type === 'flowchart' && section.diagramSteps && (
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-1 sm:gap-2">
-          {section.diagramSteps.map((step, si) => (
+        <div className="mt-4 relative">
+          <div className="flex flex-nowrap items-center gap-2 overflow-x-auto pb-4 px-2 scrollbar-hide sm:justify-center sm:flex-wrap group">
+            {section.diagramSteps.map((step, si) => (
             <React.Fragment key={si}>
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
@@ -575,6 +580,7 @@ function SectionCard({ section, onCompleteGame }: { section: Section, onComplete
               )}
             </React.Fragment>
           ))}
+          </div>
         </div>
       )}
 
@@ -1186,7 +1192,7 @@ function ManualVsGitLab() {
           <h4 className="text-[10px] fw-black text-muted uppercase tracking-widest">Scaling to {count} changes</h4>
           <button onClick={() => setCount(c => Math.min(c + 1, 5))} className="px-3 py-1 rounded-lg bg-primary text-white text-[10px] fw-bold hover:scale-105 active:scale-95 transition-all">+ Add Change</button>
        </div>
-       <div className="grid grid-cols-2 gap-4">
+       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex flex-col gap-3">
              <span className="text-[9px] text-center text-danger fw-black uppercase">Manual Folder 📁</span>
              <div className="bg-black/40 rounded-2xl p-4 flex flex-col gap-1 min-h-[160px]">

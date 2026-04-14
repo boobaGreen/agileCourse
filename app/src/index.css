@@ -41,6 +41,21 @@ body {
 ::-webkit-scrollbar-thumb { background: #1f2d45; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
 
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* ─── Reusable component classes ─── */
 
 .card {
