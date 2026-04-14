@@ -1398,17 +1398,17 @@ function RemoteSyncLab() {
   const current = steps[step]
 
   return (
-    <div className="w-full flex flex-col gap-6 p-5 sm:p-8 bg-surface/40 rounded-[1.5rem] sm:rounded-[2.5rem] border border-white/10 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] backdrop-blur-md relative overflow-hidden">
+    <div className="w-full flex flex-col gap-6 p-4 sm:p-8 bg-surface/40 rounded-[1.5rem] sm:rounded-[2.5rem] border border-white/10 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] backdrop-blur-md relative overflow-hidden">
        {/* Background decorative elements */}
        <div className="absolute top-0 right-0 w-64 h-64 bg-git/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
        
-       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 z-10 gap-6">
-          <div className="flex flex-col gap-1">
+       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 z-10 gap-4 sm:gap-6">
+          <div className="flex flex-col gap-0.5">
              <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded-full bg-secondary/20 text-[10px] text-secondary fw-black uppercase tracking-wider border border-secondary/30">Module 5</span>
-                <span className="text-[10px] text-muted fw-bold uppercase tracking-widest">Network Simulation • {step + 1}/4</span>
+                <span className="px-2 py-0.5 rounded-full bg-secondary/20 text-[9px] sm:text-[10px] text-secondary fw-black uppercase tracking-wider border border-secondary/30">Module 5</span>
+                <span className="text-[9px] sm:text-[10px] text-muted fw-bold uppercase tracking-widest">Network Simulation • {step + 1}/4</span>
              </div>
-             <h3 className="text-xl sm:text-2xl fw-black text-white tracking-tight">{current.title}</h3>
+             <h3 className="text-xl sm:text-2xl fw-black text-white tracking-tight leading-tight">{current.title}</h3>
           </div>
           <div className="flex gap-3">
              <button 
@@ -1436,7 +1436,7 @@ function RemoteSyncLab() {
           </div>
        </div>
 
-       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-4 pt-4 relative min-h-[300px] z-10">
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 mt-4 pt-4 relative min-h-[300px] z-10">
           {/* Animated Fiber Path */}
           <div className="absolute top-[4.5rem] left-[25%] right-[25%] h-0.5 hidden md:block z-0">
              <svg className="w-full h-12 overflow-visible">
@@ -1458,7 +1458,7 @@ function RemoteSyncLab() {
 
           {/* Local Machine */}
           <div className="flex flex-col gap-6">
-             <div className="bg-surface2/40 rounded-[1.5rem] sm:rounded-[2rem] p-5 sm:p-8 border border-white/10 flex flex-col gap-8 shadow-xl relative overflow-hidden group">
+             <div className="bg-surface2/40 rounded-[1.5rem] sm:rounded-[2rem] p-4 sm:p-8 border border-white/10 flex flex-col gap-8 shadow-xl relative overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-br from-git/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
                 
                 <div className="flex items-center justify-between border-b border-white/5 pb-5">
@@ -1495,7 +1495,7 @@ function RemoteSyncLab() {
                                  transition={{ delay: i * 0.1, type: "spring", damping: 15 }}
                                  className="relative"
                               >
-                                 <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-mono text-[9px] sm:text-[10px] fw-black border-2 transition-all duration-500 shadow-xl ${
+                                 <div className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-mono text-[8px] sm:text-[10px] fw-black border-2 transition-all duration-500 shadow-xl ${
                                     c === 'C2' 
                                     ? 'bg-git border-git text-white ring-4 ring-git/10' 
                                     : 'bg-surface border-white/20 text-muted/80'
@@ -1527,7 +1527,7 @@ function RemoteSyncLab() {
                                  transition={{ delay: i * 0.1 }}
                                  className="relative"
                               >
-                                 <div className={`w-10 h-10 rounded-full border-2 border-dashed flex items-center justify-center font-mono text-[9px] fw-black transition-all ${
+                                 <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-dashed flex items-center justify-center font-mono text-[8px] sm:text-[9px] fw-black transition-all ${
                                     c === 'T1' ? 'border-secondary/60 text-secondary bg-secondary/5' : 'border-white/10 text-muted/30'
                                  }`}>
                                     {c}
@@ -1543,7 +1543,7 @@ function RemoteSyncLab() {
 
           {/* GitHub Remote */}
           <div className="flex flex-col gap-6">
-             <div className="bg-secondary/5 rounded-[1.5rem] sm:rounded-[2rem] p-5 sm:p-8 border border-secondary/20 flex flex-col gap-8 shadow-xl relative overflow-hidden h-full group">
+             <div className="bg-secondary/5 rounded-[1.5rem] sm:rounded-[2rem] p-4 sm:p-8 border border-secondary/20 flex flex-col gap-8 shadow-xl relative overflow-hidden h-full group">
                 <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
 
                 <div className="flex items-center justify-between border-b border-secondary/10 pb-5">
@@ -1574,7 +1574,7 @@ function RemoteSyncLab() {
                               transition={{ duration: 0.5, type: "spring" }}
                               className="relative"
                            >
-                              <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center font-mono text-[10px] sm:text-[12px] fw-black border-2 shadow-2xl transition-all duration-700 ${
+                              <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center font-mono text-[9px] sm:text-[12px] fw-black border-2 shadow-2xl transition-all duration-700 ${
                                  c === 'T1' 
                                  ? 'bg-secondary/20 border-secondary text-secondary shadow-[0_0_30px_rgba(var(--color-secondary),0.3)]' 
                                  : c === 'C2' 
@@ -1603,8 +1603,8 @@ function RemoteSyncLab() {
           </div>
        </div>
 
-       <div className="w-full bg-black/40 rounded-3xl p-6 border border-white/5 flex flex-col gap-5 z-10 backdrop-blur-sm mt-4">
-          <p className="text-base text-white/80 leading-relaxed fw-medium italic">"{current.desc}"</p>
+       <div className="w-full bg-black/40 rounded-3xl p-4 sm:p-6 border border-white/5 flex flex-col gap-5 z-10 backdrop-blur-sm mt-4">
+          <p className="text-sm sm:text-base text-white/80 leading-relaxed fw-medium italic">"{current.desc}"</p>
           <div className="bg-black/60 border border-white/10 rounded-2xl p-4 flex items-center gap-4 shadow-inner">
              <div className="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
                 <TermIcon size={18} />
