@@ -459,29 +459,26 @@ function SectionCard({ section, onCompleteGame }: { section: Section, onComplete
       <div className="text-sub text-sm leading-relaxed">
         {section.content.split('\n').map((line, i) => (
           <p key={i} className="mb-2 last:mb-0">
-             {line.split(/\*\*(.*?)\*\*/g).map((part, pi) => {
-               if (pi % 2 === 1) return <strong key={pi} className="text-white">{part}</strong>
-               // Split by markdown links [text](url), then raw URLs
-               return part.split(/(\[[^\]]+\]\(https?:\/\/[^)]+\))|(https?:\/\/[^\s),]+)/g).map((seg, si) => {
-                 if (!seg) return null
-                 // Markdown link: [text](url)
-                 const mdMatch = seg.match(/^\[([^\]]+)\]\((https?:\/\/[^)]+)\)$/)
+             {line.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\)|https?:\/\/[^\s)]+)/g).map((part, pi) => {
+                 const boldMatch = part.match(/^\*\*(.*?)\*\*$/)
+                 if (boldMatch) return <strong key={`${pi}-${i}`} className="text-white fw-black">{boldMatch[1]}</strong>
+                 
+                 const mdMatch = part.match(/^\[(.*?)\]\((.*?)\)$/)
                  if (mdMatch) {
-                   return <a key={`${pi}-${si}`} href={mdMatch[2]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">{mdMatch[1]} ↗</a>
+                    return <a key={`${pi}-${i}`} href={mdMatch[2]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">{mdMatch[1]} ↗</a>
                  }
-                 // Raw URL
-                 if (/^https?:\/\//.test(seg)) {
-                   return <a key={`${pi}-${si}`} href={seg} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline break-all">{seg}</a>
+                 if (/^https?:\/\//.test(part)) {
+                    return <a key={`${pi}-${i}`} href={part} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline break-all">{part}</a>
                  }
-                 return <React.Fragment key={`${pi}-${si}`}>{seg}</React.Fragment>
-               })
+                 return <React.Fragment key={`${pi}-${i}`}>{part}</React.Fragment>
              })}
           </p>
         ))}
       </div>
 
+      {/* Code Block Rendering */}
       {section.type === 'code' && section.code && (
-        <div className="code-block">
+        <div className="code-block mt-4">
           <div className="code-block-header">
             <div className="dot bg-danger" />
             <div className="dot bg-xp" />
@@ -498,55 +495,34 @@ function SectionCard({ section, onCompleteGame }: { section: Section, onComplete
         </div>
       )}
 
-      {/* Table rendering */}
+      {/* Table Rendering with Scroll Hint */}
       {section.type === 'table' && section.tableData && (
-        <div className="mt-4 relative group">
-          {/* Scroll hint gradient for mobile */}
-          <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-black/80 to-transparent pointer-events-none sm:hidden rounded-r-xl z-10 flex items-center justify-end pr-2">
-             <motion.div animate={{ x: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 1.5 }} className="text-white/40">
+        <div className="mt-4 relative overflow-hidden rounded-xl border border-white/10 bg-surface2/30 shadow-2xl">
+          <div className="overflow-x-auto scrollbar-hide py-2 px-1">
+            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-black/80 to-transparent pointer-events-none sm:hidden rounded-r-xl z-20 flex items-center justify-end pr-2">
+              <motion.div animate={{ x: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 1.5 }} className="text-white/40">
                 <ArrowRight size={16} />
-             </motion.div>
-          </div>
-          <div className="overflow-x-auto rounded-xl border border-white/10 relative z-0 scrollbar-hide">
-            <table className="w-full text-xs sm:text-sm min-w-[700px] sm:min-w-full">
-            <thead>
-              <tr className="bg-white/5">
-                {section.tableData.headers.map((h, hi) => {
-                  const isDo = h.toUpperCase().includes('DO') || h.includes('✅');
-                  const isDont = h.toUpperCase().includes('DON\'T') || h.includes('❌');
-                  return (
-                    <th key={hi} className={`px-3 sm:px-4 py-3 text-left fw-bold uppercase tracking-wider text-[10px] sm:text-[11px] border-b border-white/10
-                      ${isDo ? 'text-green' : isDont ? 'text-danger' : 'text-white'}
-                    `}>
-                      {h}
-                    </th>
-                  );
-                })}
-              </tr>
-            </thead>
-            <tbody>
-              {section.tableData.rows.map((row, ri) => (
-                <tr key={ri} className={`${ri % 2 === 0 ? 'bg-white/[0.02]' : ''} hover:bg-white/5 transition-colors`}>
-                  {row.map((cell, ci) => {
-                    const header = section.tableData?.headers[ci] || '';
-                    const isDo = header.toUpperCase().includes('DO') || header.includes('✅');
-                    const isDont = header.toUpperCase().includes('DON\'T') || header.includes('❌');
-                    
-                    return (
-                      <td key={ci} className={`px-3 sm:px-4 py-3 border-b border-white/5 
-                        ${ci === 0 ? 'text-white fw-bold' : 'text-sub'}
-                        ${isDo ? 'bg-green/5' : isDont ? 'bg-danger/5' : ''}
-                      `}>
-                        {cell.split(/\*\*(.*?)\*\*/g).map((part, pi) =>
-                          pi % 2 === 1 ? <strong key={pi} className="text-white">{part}</strong> : part
-                        )}
-                      </td>
-                    );
-                  })}
+              </motion.div>
+            </div>
+
+            <table className="w-full text-left" style={{ minWidth: '600px' }}>
+              <thead>
+                <tr className="border-b border-white/10 bg-white/5">
+                  {section.tableData.headers.map((h, i) => (
+                    <th key={i} className="p-3 text-[10px] fw-black text-white uppercase tracking-wider">{h}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {section.tableData.rows.map((row, ri) => (
+                  <tr key={ri} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors last:border-0">
+                    {row.map((cell, ci) => (
+                      <td key={ci} className="p-3 text-xs text-sub leading-relaxed">{cell}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       )}
@@ -554,32 +530,38 @@ function SectionCard({ section, onCompleteGame }: { section: Section, onComplete
       {/* Flowchart / diagram rendering */}
       {section.type === 'flowchart' && section.diagramSteps && (
         <div className="mt-4 relative">
-          <div className="flex flex-nowrap items-center gap-2 overflow-x-auto pb-4 px-2 scrollbar-hide sm:justify-center sm:flex-wrap group">
+          <div className="flex flex-nowrap items-center gap-2 overflow-x-auto pb-6 px-2 scrollbar-hide sm:justify-center sm:flex-wrap group">
+             <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-black/60 to-transparent pointer-events-none sm:hidden z-20 flex items-center justify-end pr-2">
+                <motion.div animate={{ x: [0, 3, 0] }} transition={{ repeat: Infinity, duration: 1.5 }} className="text-white/20">
+                   <ArrowRight size={14} />
+                </motion.div>
+             </div>
+
             {section.diagramSteps.map((step, si) => (
-            <React.Fragment key={si}>
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: si * 0.1 }}
-                className="flex flex-col items-center gap-2 px-5 sm:px-7 py-4 sm:py-5 rounded-2xl border border-white/10 bg-white/[0.03] min-w-fit max-w-[180px] text-center shadow-lg"
-                style={{ borderColor: step.color ? `${step.color}50` : undefined }}
-              >
-                {step.icon && <span className="text-2xl sm:text-3xl mb-1">{step.icon}</span>}
-                <span className="text-[11px] sm:text-sm fw-bold text-white leading-tight whitespace-pre-line">{step.label}</span>
-              </motion.div>
-              {si < section.diagramSteps!.length - 1 && (
-                <motion.span
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ delay: si * 0.1 + 0.05 }}
-                  className="text-muted text-lg sm:text-xl"
+              <React.Fragment key={si}>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: si * 0.1 }}
+                  className="flex flex-col items-center gap-2 px-5 sm:px-7 py-4 sm:py-5 rounded-2xl border border-white/10 bg-white/[0.03] min-w-fit max-w-[180px] text-center shadow-lg relative z-10"
+                  style={{ borderColor: step.color ? `${step.color}50` : undefined }}
                 >
-                  →
-                </motion.span>
-              )}
-            </React.Fragment>
-          ))}
+                  {step.icon && <span className="text-2xl sm:text-3xl mb-1">{step.icon}</span>}
+                  <span className="text-[11px] sm:text-sm fw-bold text-white leading-tight whitespace-pre-line">{step.label}</span>
+                </motion.div>
+                {si < section.diagramSteps!.length - 1 && (
+                  <motion.span
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ delay: si * 0.1 + 0.05 }}
+                    className="text-muted text-lg sm:text-xl shrink-0"
+                  >
+                    →
+                  </motion.span>
+                )}
+              </React.Fragment>
+            ))}
           </div>
         </div>
       )}
@@ -1197,8 +1179,8 @@ function ManualVsGitLab() {
              <span className="text-[9px] text-center text-danger fw-black uppercase">Manual Folder 📁</span>
              <div className="bg-black/40 rounded-2xl p-4 flex flex-col gap-1 min-h-[160px]">
                 {Array.from({ length: count }).map((_, i) => (
-                  <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} key={i} className="p-2 rounded-lg bg-surface2 border border-white/5 text-[9px] text-white font-mono flex items-center gap-2">
-                     📄 project_final{i > 0 ? `_v${i+1}` : ''}{i === count-1 ? '_REAL_FINAL' : ''}.zip
+                  <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} key={i} className="p-2 rounded-lg bg-surface2 border border-white/5 text-[9px] text-white font-mono flex items-center gap-2 overflow-hidden">
+                     <span className="truncate break-all">📄 project_final{i > 0 ? `_v${i+1}` : ''}{i === count-1 ? '_REAL_FINAL' : ''}.zip</span>
                   </motion.div>
                 ))}
              </div>
