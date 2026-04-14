@@ -687,7 +687,7 @@ function EducationAnimation({ type }: { type: string }) {
               <CheckCircle size={14} className="text-primary" />
               <span className="text-[10px] text-primary fw-black uppercase tracking-widest">Git Snapshot ID (SHA-1)</span>
             </div>
-            <div className="mono text-[10px] sm:text-xs text-xp break-all text-center leading-relaxed tracking-wider bg-black/20 p-3 w-full rounded-lg border border-white/5 mx-auto overflow-hidden">
+            <div className="mono text-[10px] sm:text-xs text-xp flex flex-wrap justify-center leading-relaxed tracking-wider bg-black/20 p-2 sm:p-3 w-full rounded-lg border border-white/5 mx-auto overflow-hidden">
               {hash.split('').map((char, i) => (
                 <motion.span 
                   key={`${input}-${i}`}
