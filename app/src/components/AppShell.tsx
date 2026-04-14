@@ -11,7 +11,6 @@ import ModuleSidebar from './ModuleSidebar'
 
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/certifications', label: 'Certifications', icon: Award },
   { path: '/profile', label: 'My Profile', icon: User },
 ]
 
