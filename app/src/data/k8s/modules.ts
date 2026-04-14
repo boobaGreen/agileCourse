@@ -222,7 +222,7 @@ export const K8S_MODULES: Module[] = [
         type: 'game',
         title: 'Terminal: Meet kubectl',
         content: 'Let\'s run some basic commands against a virtual cluster.',
-        gameType: 'terminal',
+        gameType: 'terminal-sim',
         gameData: {
           startText: 'k8s-admin@k8s-master:~$ ',
           steps: [
@@ -345,7 +345,7 @@ spec:
         type: 'game',
         title: 'Terminal: The Force Multiplier',
         content: 'Apply a declarative file and scale millions of requests.',
-        gameType: 'terminal',
+        gameType: 'terminal-sim',
         gameData: {
           startText: 'k8s-admin@k8s-master:~/configs$ ',
           steps: [
@@ -605,7 +605,7 @@ spec:
         type: 'game',
         title: 'Terminal: Diagnosing State',
         content: 'Common status checks every admin does.',
-        gameType: 'terminal',
+        gameType: 'terminal-sim',
         gameData: {
           startText: 'k8s-admin@k8s-master:~$ ',
           steps: [
