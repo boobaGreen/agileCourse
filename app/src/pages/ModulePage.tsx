@@ -236,7 +236,6 @@ export default function ModulePage() {
                     <SectionCard 
                       key={i} 
                       section={section} 
-                      moduleId={mod.id} 
                       onCompleteGame={(title) => handleInternalGameComplete(mod.id, title)} 
                     />
                   ))}
@@ -432,7 +431,7 @@ export default function ModulePage() {
   )
 }
 
-function SectionCard({ section, moduleId, onCompleteGame }: { section: Section, moduleId: string, onCompleteGame: (title: string) => void }) {
+function SectionCard({ section, onCompleteGame }: { section: Section, onCompleteGame: (title: string) => void }) {
   const icons: Record<string, React.ElementType> = {
     intro: BookOpen,
     concept: Sparkles,
@@ -2084,10 +2083,6 @@ function CherryPickLab() {
   )
 }
 
-interface GameDataItem { id: string, label: string }
-interface GameDataClassify { categories: { id: string, label: string }[], items: { id: string, label: string, categoryId: string }[] }
-interface TerminalGameData { startText?: string, steps: { instruction: string, expectedCommand: string, output?: string }[] }
-
 function MiniGame({ gameType, gameData, onComplete }: { gameType: string, gameData: unknown, onComplete?: () => void }) {
   if (gameType === 'drag-order') {
     return <DragOrderGame items={gameData as GameDataItem[]} onComplete={onComplete} />
@@ -2461,26 +2456,26 @@ function IgnoreLab({ onComplete }: { onComplete?: () => void }) {
     const file = files.find(f => f.name === name)
     if (!file) return
     
+    let newIgnored;
     if (ignored.includes(name)) {
-      setIgnored(ignored.filter(n => n !== name))
+      newIgnored = ignored.filter(n => n !== name);
     } else {
-      setIgnored([...ignored, name])
-      setFeedback(file.tip)
-      setTimeout(() => setFeedback(null), 3000)
+      newIgnored = [...ignored, name];
+      setFeedback(file.tip);
+      setTimeout(() => setFeedback(null), 3000);
+    }
+    
+    setIgnored(newIgnored);
+    
+    // Check completion immediately
+    const newScore = files.filter(f => (f.shouldIgnore && newIgnored.includes(f.name)) || (!f.shouldIgnore && !newIgnored.includes(f.name))).length;
+    if (newScore === files.length) {
+      setIsDone(true);
+      if (onComplete) onComplete();
     }
   }
 
-  const score = files.filter(f => (f.shouldIgnore && ignored.includes(f.name)) || (!f.shouldIgnore && !ignored.includes(f.name))).length
-
-  useEffect(() => {
-    if (score === files.length && !isDone) {
-      setIsDone(true)
-      if (onComplete) {
-        // Delay slight completion to avoid cascading update warning
-        setTimeout(onComplete, 0)
-      }
-    }
-  }, [score, files.length, onComplete, isDone])
+  const score = files.filter(f => (f.shouldIgnore && ignored.includes(f.name)) || (!f.shouldIgnore && !ignored.includes(f.name))).length;
 
   return (
     <div className="w-full flex flex-col gap-6 p-6 bg-[#0d1117]/80 rounded-3xl border border-white/10 shadow-2xl backdrop-blur-xl">
@@ -2548,7 +2543,6 @@ function TerminalSimulatorGame({ data, onComplete }: { data: TerminalGameData, o
   const [currentStep, setCurrentStep] = useState(0)
   const [input, setInput] = useState('')
   const [history, setHistory] = useState<{type: 'cmd' | 'out', text: string}[]>([])
-  const [isDone, setIsDone] = useState(false)
   
   // Use a ref to scroll to bottom
   const scrollRef = React.useRef<HTMLDivElement>(null)
@@ -2560,17 +2554,7 @@ function TerminalSimulatorGame({ data, onComplete }: { data: TerminalGameData, o
   }, [history])
 
   const step = data?.steps?.[currentStep]
-  const isFinished = data?.steps && currentStep >= data.steps.length
-
-  useEffect(() => {
-    if (isFinished && data?.steps?.length > 0 && !isDone) {
-       setIsDone(true)
-       if (onComplete) {
-         setTimeout(onComplete, 0)
-       }
-       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } })
-    }
-  }, [isFinished, data, onComplete, isDone])
+  const isFinished = data?.steps && currentStep >= data.steps.length;
 
   if (!data?.steps) return null
 
@@ -2583,7 +2567,14 @@ function TerminalSimulatorGame({ data, onComplete }: { data: TerminalGameData, o
          if (step.output) {
            newHistory.push({ type: 'out' as const, text: step.output })
          }
-         setCurrentStep(s => s + 1)
+         const nextStep = currentStep + 1;
+         setCurrentStep(nextStep);
+         
+         // Se abbiamo finito tutti gli step
+         if (data?.steps && nextStep >= data.steps.length) {
+           if (onComplete) onComplete();
+           confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+         }
       } else {
          newHistory.push({ type: 'out' as const, text: `Command not found or unexpected: ${val}` })
       }

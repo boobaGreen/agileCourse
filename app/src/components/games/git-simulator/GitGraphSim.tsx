@@ -34,10 +34,10 @@ export function GitGraphSim({ data, onComplete }: Props) {
         const branchHash = currentState.branches[arg1];
         if (branchHash) {
           let count = 0;
-          let curr = currentState.commits[branchHash];
+          let curr: GitGraphState['commits'][string] | undefined = currentState.commits[branchHash];
           while(curr) {
             count++;
-            const parentId = curr.parents[0];
+            const parentId: string | undefined = curr.parents[0];
             curr = parentId ? currentState.commits[parentId] : undefined;
           }
           if (count >= parseInt(arg2)) isDone = true;
