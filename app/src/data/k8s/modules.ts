@@ -20,7 +20,7 @@ export const K8S_MODULES: Module[] = [
         type: 'video',
         title: '📺 Kubernetes in 5 Minutes',
         content: 'A brilliant, high-level animated breakdown of exactly what problem Kubernetes solves in modern architecture.',
-        videoUrl: 'https://www.youtube.com/watch?v=s_o8dwzRlu4'
+        videoUrl: 'https://www.youtube.com/watch?v=PH-2FfFD2PU'
       },
       {
         type: 'concept',
@@ -97,7 +97,7 @@ export const K8S_MODULES: Module[] = [
         type: 'video',
         title: '📺 Architecture Deep Dive',
         content: 'TechWorld with Nana provides the absolute best visual breakdown of every component inside a K8s node.',
-        videoUrl: 'https://www.youtube.com/watch?v=X48VuDVv0do'
+        videoUrl: 'https://www.youtube.com/watch?v=umXEmn3cMWY'
       },
       {
         type: 'concept',
@@ -295,7 +295,7 @@ export const K8S_MODULES: Module[] = [
         type: 'video',
         title: '📺 Imperative vs Declarative',
         content: 'Understand why Kubernetes uses a Declarative system instead of a list of bash scripts.',
-        videoUrl: 'https://www.youtube.com/watch?v=X48VuDVv0do'
+        videoUrl: 'https://www.youtube.com/watch?v=pPQKAR1pA9U'
       },
       {
         type: 'concept',
@@ -427,7 +427,7 @@ spec:
         type: 'video',
         title: '📺 Services vs Ingress',
         content: 'A great visual comparison of how traffic flows internally vs from the public internet.',
-        videoUrl: 'https://www.youtube.com/watch?v=7Xw2ON_lI6c'
+        videoUrl: 'https://www.youtube.com/watch?v=T4Z7visMM4E'
       },
       {
         type: 'table',
