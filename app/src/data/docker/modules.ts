@@ -298,9 +298,19 @@ export const DOCKER_MODULES: Module[] = [
             ['**WORKDIR**', 'Sets the active directory inside the container', 'Build Phase'],
             ['**COPY**', 'Copies files from your laptop into the image', 'Build Phase'],
             ['**RUN**', 'Executes shell commands (like `apt install` or `npm install`)', 'Build Phase (Creates a layer)'],
-            ['**CMD**', 'Defines the default command that runs when the container starts', '**Runtime** (When you `docker run`)']
+            ['**CMD**', 'Defines the default command that runs when the **container starts**', 'Runtime Phase (Once only)']
           ]
         }
+      },
+      {
+        type: 'concept',
+        title: '⚡ Layers & Caching',
+        content: 'Docker caches each step. If you change a file, Docker rebuilds from that layer down. If you need a completely fresh build without using old cached layers, use the **`--no-cache`** flag:\n\n`docker build --no-cache -t my-app .`'
+      },
+      {
+         type: 'concept',
+         title: '🛑 The Container Lifecycle',
+         content: 'A container is designed to run a specific task. **When the process defined in CMD finishes, the container exits automatically.** For example, a container running `echo hello` will exit immediately after printing, while a web server will keep running as long as the server process is alive.'
       },
       {
         type: 'concept',

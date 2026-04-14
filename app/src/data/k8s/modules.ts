@@ -683,7 +683,21 @@ spec:
         type: 'tip',
         title: '🎯 The Golden Rule of Debugging',
         content: 'When things break in your lab, follow the **K8s Debugging Trinity** in this exact order:\n1. `kubectl get pods` (Are they running or crashing?)\n2. `kubectl describe pod [name]` (Look at the "Events" at the bottom for errors!)\n3. `kubectl logs [name]` (Read the actual application error stacktrace)'
-      }
+      },
+      {
+        type: 'table',
+        title: '🚩 Common Pod Statuses & Fixes',
+        content: 'If `kubectl get pods` shows anything other than `Running`, use this guide:',
+        tableData: {
+          headers: ['Status', 'Meaning', 'Primary Cause'],
+          rows: [
+            ['`ImagePullBackOff`', 'K8s cannot download your container image', 'Typo in image name or private registry credentials missing'],
+            ['`CrashLoopBackOff`', 'The app starts but then crashes recursively', 'Code bug, missing secret, or database connection timeout'],
+            ['`Pending`', 'The pod is "waiting in line" for a node', 'Cluster is out of CPU/RAM or no PV is available for storage'],
+            ['`OOMKilled`', 'The container tried to use more RAM than allowed', 'Memory leak or resource limit set too low']
+          ]
+        }
+      },
     ]
   },
   {

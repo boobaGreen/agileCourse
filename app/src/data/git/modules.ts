@@ -344,7 +344,7 @@ export const GIT_MODULES: Module[] = [
       {
         type: 'concept',
         title: '📸 The Snapshot (Commit)',
-        content: 'A commit isn\'t just a list of changes; it\'s a **complete snapshot** of every file in your project. Each commit has a unique **SHA identifier** (e.g., `a1b2c3d`) — a digital fingerprint that ensures your history can never be tampered with.'
+        content: 'A commit isn\'t just a list of changes; it\'s a **complete snapshot** of every file in your project. Each commit has a unique **SHA identifier** (e.g., `a1b2c3d`) — a digital fingerprint. A full Git hash is exactly **40 hexadecimal characters** long, ensuring your history can never be tampered with.'
       },
       {
         type: 'animation',
@@ -644,7 +644,7 @@ git rebase --abort`,
       {
         type: 'code',
         title: '🔗 Essential remote commands',
-        content: 'Working with remote repositories:',
+        content: 'Working with remote repositories. Use the **-u flag** the first time you push a branch to set it as "upstream" (tracking), so future commands can be shorter.',
         code: `# 1. Download the repo
 git clone https://github.com/company/repo.git
 
@@ -657,9 +657,14 @@ git pull origin main
 # 4. Pull (Rebase)
 git pull --rebase origin main
 
-# 5. Push your work
-git push origin main`,
+# 5. Push your work and set upstream
+git push -u origin main`,
         language: 'bash'
+      },
+      {
+        type: 'concept',
+        title: '📦 Bare Repositories',
+        content: 'On a server or remote (like GitHub), repositories are often **"bare"**. A bare repo has no working directory (you can\'t edit files there); it only contains the Git history database. It is created with `git init --bare`.'
       },
       {
         type: 'animation',
@@ -935,7 +940,9 @@ git status                  # What's happening?`,
             ['`git add .`', 'Stages all changes in the current folder', '`git add .`'],
             ['`git add <file>`', 'Stages only a specific file (recommended)', '`git add index.html`'],
             ['`git commit -m "msg"`','Saves snapshot with a descriptive message', '`git commit -m "Fix login bug"`'],
-            ['`git commit --amend -m "..."`','Fixes the last commit using staged files', '`git commit --amend -m "Fix typo"`']
+            ['`git commit --amend -m "..."`','Fixes the last commit using staged files', '`git commit --amend -m "Fix typo"`'],
+            ['`git diff`','Shows unstaged changes between workspace and staging', '`git diff`'],
+            ['`git log`','Shows the timeline of commits (history)', '`git log --oneline`']
           ]
         }
       }
@@ -1018,7 +1025,7 @@ git status                  # What's happening?`,
       {
         type: 'concept',
         title: '🔌 Detached HEAD — Lost in Time',
-        content: 'If you checkout a specific commit hash directly (e.g., `git checkout a1b2c3d`), HEAD points directly to that commit instead of a branch. This is the **detached HEAD** state. Any new commits here are not on a branch and may get lost!'
+        content: 'Normally, **HEAD** is a pointer that points to your current branch. However, if you checkout a specific commit hash directly (e.g., `git checkout a1b2c3d`), HEAD points directly to that commit instead of a branch. This is the **detached HEAD** state. Any new commits here are not on a branch and may get lost!'
       }
     ],
     quiz: [
