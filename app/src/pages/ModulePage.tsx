@@ -459,7 +459,28 @@ function SectionCard({ section, onCompleteGame }: { section: Section, onComplete
       <div className="text-sub text-sm leading-relaxed">
         {section.content.split('\n').map((line, i) => (
           <p key={i} className="mb-2 last:mb-0">
-             {line.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\)|https?:\/\/[^\s)]+)/g).map((part, pi) => {
+             {line.includes(' · ') && line.includes('[') ? (
+                <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-3 mt-4">
+                   {line.split(' · ').map((part, pi) => {
+                      const match = part.match(/\[([^\]]+)\]\(([^)]+)\)/);
+                      const emoji = part.match(/^([\u2600-\u27BF]|[\uD83C-\uD83E][\uDC00-\uDFFF])/);
+                      if (match) {
+                         return (
+                            <a 
+                               key={pi} 
+                               href={match[2]} 
+                               target="_blank" 
+                               rel="noopener noreferrer" 
+                               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-primary hover:bg-primary/10 hover:border-primary transition-all text-xs fw-bold w-full sm:w-auto"
+                            >
+                               {emoji?.[0]} {match[1]} ↗
+                            </a>
+                         )
+                      }
+                      return <span key={pi}>{part}</span>;
+                   })}
+                </div>
+             ) : line.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\)|https?:\/\/[^\s)]+)/g).map((part, pi) => {
                  const boldMatch = part.match(/^\*\*(.*?)\*\*$/)
                  if (boldMatch) return <strong key={`${pi}-${i}`} className="text-white fw-black">{boldMatch[1]}</strong>
                  
@@ -1370,7 +1391,6 @@ function MergeRebaseLab() {
 function RemoteSyncLab() {
   const [step, setStep] = useState(0)
 
-
   const steps = [
     {
       title: "1. Divergence",
@@ -1444,20 +1464,6 @@ function RemoteSyncLab() {
                    Next Stage <ArrowRight size={18} />
                 </button>
              )}
-          </div>
-       </div>
-
-       <div className="w-full bg-black/40 rounded-3xl p-6 border border-white/5 flex flex-col gap-5 z-10 backdrop-blur-sm">
-          <p className="text-base text-white/80 leading-relaxed fw-medium italic">"{current.desc}"</p>
-          <div className="bg-black/60 border border-white/10 rounded-2xl p-4 flex items-center gap-4 shadow-inner">
-             <div className="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
-                <TermIcon size={18} />
-             </div>
-             <code className="text-[15px] font-mono text-secondary fw-bold flex items-center gap-2">
-                <span className="text-muted opacity-30 select-none">course @ git:</span>
-                <span className="text-white">{current.cmd}</span>
-                <motion.span animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 1 }} className="w-2 h-5 bg-secondary/50 rounded-sm" />
-             </code>
           </div>
        </div>
 
@@ -1627,9 +1633,24 @@ function RemoteSyncLab() {
              </div>
           </div>
        </div>
+
+       <div className="w-full bg-black/40 rounded-3xl p-6 border border-white/5 flex flex-col gap-5 z-10 backdrop-blur-sm mt-4">
+          <p className="text-base text-white/80 leading-relaxed fw-medium italic">"{current.desc}"</p>
+          <div className="bg-black/60 border border-white/10 rounded-2xl p-4 flex items-center gap-4 shadow-inner">
+             <div className="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
+                <TermIcon size={18} />
+             </div>
+             <code className="text-[15px] font-mono text-secondary fw-bold flex items-center gap-2">
+                <span className="text-muted opacity-30 select-none">course @ git:</span>
+                <span className="text-white">{current.cmd}</span>
+                <motion.span animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 1 }} className="w-2 h-5 bg-secondary/50 rounded-sm" />
+             </code>
+          </div>
+       </div>
     </div>
   )
 }
+
 
 function StageLab() {
     const [staged, setStaged] = useState<string[]>([])
@@ -2259,18 +2280,8 @@ function StashLab() {
           </div>
        </div>
 
-       <div className="w-full bg-black/60 rounded-2xl p-5 border border-white/10 flex flex-col gap-4">
-          <p className="text-sm text-white/90 leading-relaxed fw-medium">{steps[step].desc}</p>
-          <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3">
-             <TermIcon size={18} className="text-muted" />
-             <code className="text-sm font-mono text-git fw-bold">
-                <span className="text-muted opacity-50 mr-2">$</span>
-                {steps[step].cmd}
-             </code>
-          </div>
-       </div>
 
-       <div className="grid grid-cols-2 gap-6 mt-2">
+       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-2">
           {/* Working Dir Column */}
           <div className="flex flex-col gap-3">
              <span className="text-[10px] fw-black text-muted uppercase tracking-widest text-center">Working Directory</span>
@@ -2317,6 +2328,17 @@ function StashLab() {
                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.2 }} className="text-[10px] fw-bold italic text-white/50">Shelf Empty</motion.div>
                 )}
              </div>
+          </div>
+       </div>
+
+       <div className="w-full bg-black/60 rounded-2xl p-5 border border-white/10 flex flex-col gap-4 mt-2">
+          <p className="text-sm text-white/90 leading-relaxed fw-medium">{steps[step].desc}</p>
+          <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3">
+             <TermIcon size={18} className="text-muted" />
+             <code className="text-sm font-mono text-git fw-bold">
+                <span className="text-muted opacity-50 mr-2">$</span>
+                {steps[step].cmd}
+             </code>
           </div>
        </div>
     </div>
@@ -2379,18 +2401,8 @@ function BisectLab() {
           </div>
        </div>
 
-       <div className="w-full bg-black/60 rounded-2xl p-5 border border-white/10 flex flex-col gap-4">
-          <p className="text-sm text-white/90 leading-relaxed fw-medium">{current.desc}</p>
-          <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3">
-             <TermIcon size={18} className="text-muted" />
-             <code className="text-sm font-mono text-primary fw-bold">
-                <span className="text-muted opacity-50 mr-2">$</span>
-                {current.cmd}
-             </code>
-          </div>
-       </div>
 
-       <div className="bg-surface2/40 rounded-2xl border border-white/5 p-10 mt-4 relative flex items-center justify-between gap-2 overflow-hidden">
+       <div className="bg-surface2/40 rounded-2xl border border-white/5 p-10 mt-2 relative flex items-center justify-between gap-2 overflow-hidden">
           <div className="absolute top-1/2 left-10 right-10 h-1 bg-white/5 -translate-y-1/2 rounded-full" />
           {[1, 2, 3, 4, 5, 6, 7].map(i => (
             <div key={i} className="flex flex-col items-center gap-4 relative z-10">
@@ -2420,6 +2432,17 @@ function BisectLab() {
                )}
             </div>
           ))}
+       </div>
+
+       <div className="w-full bg-black/60 rounded-2xl p-5 border border-white/10 flex flex-col gap-4 mt-2">
+          <p className="text-sm text-white/90 leading-relaxed fw-medium">{current.desc}</p>
+          <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3">
+             <TermIcon size={18} className="text-muted" />
+             <code className="text-sm font-mono text-primary fw-bold">
+                <span className="text-muted opacity-50 mr-2">$</span>
+                {current.cmd}
+             </code>
+          </div>
        </div>
     </div>
   )

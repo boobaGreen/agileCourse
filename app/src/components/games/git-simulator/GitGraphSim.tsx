@@ -145,30 +145,32 @@ export function GitGraphSim({ data, onComplete }: Props) {
          )}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-         {/* Graph Area (Takes up 2 cols) */}
-         <div className="col-span-1 lg:col-span-2 flex flex-col min-h-[300px]">
+      <div className="flex flex-col gap-6">
+         {/* Graph Area (Now at the top, full width) */}
+         <div className="w-full flex flex-col min-h-[300px] bg-black/20 rounded-2xl border border-white/5 overflow-hidden">
             <GitVisualGraph state={state} />
          </div>
 
-         {/* Tasks & Terminal Area */}
-         <div className="col-span-1 flex flex-col gap-4">
+         {/* Tasks & Terminal Area (Grouped together below) */}
+         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             
             {/* Task List */}
-            <div className="bg-black/40 border border-white/10 rounded-xl p-4 flex flex-col gap-3">
-              <span className="text-[10px] text-muted font-black uppercase tracking-widest border-b border-white/5 pb-2">Mission Objectives</span>
-              {tasks.map(t => (
-                <div key={t.id} className="flex gap-3 items-center">
-                  <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${t.completed ? 'bg-git border-git' : 'border-danger/50 bg-black'}`}>
-                    {t.completed && <CheckCircle className="text-white" size={10} />}
+            <div className="flex flex-col gap-3">
+              <div className="bg-black/40 border border-white/10 rounded-xl p-5 flex flex-col gap-3 h-full">
+                <span className="text-[10px] text-muted font-black uppercase tracking-widest border-b border-white/5 pb-2">Mission Objectives</span>
+                {tasks.map(t => (
+                  <div key={t.id} className="flex gap-3 items-center">
+                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${t.completed ? 'bg-git border-git' : 'border-danger/50 bg-black'}`}>
+                      {t.completed && <CheckCircle className="text-white" size={10} />}
+                    </div>
+                    <span className={`text-xs font-bold transition-colors ${t.completed ? 'text-white/50 line-through' : 'text-white'}`}>{t.instruction}</span>
                   </div>
-                  <span className={`text-xs font-bold transition-colors ${t.completed ? 'text-white/50 line-through' : 'text-white'}`}>{t.instruction}</span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
 
             {/* Terminal */}
-            <div className="bg-black/80 rounded-xl border border-white/10 p-5 font-mono text-xs flex flex-col flex-1 min-h-[220px] shadow-2xl relative overflow-hidden">
+            <div className="bg-black/80 rounded-xl border border-white/10 p-5 font-mono text-xs flex flex-col min-h-[250px] shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
               
               <div className="flex flex-col gap-2 mb-4 border-b border-white/5 pb-3">
@@ -176,7 +178,7 @@ export function GitGraphSim({ data, onComplete }: Props) {
                   <TerminalSquare size={14} /> <span className="text-[10px] uppercase font-black tracking-widest text-primary">Git Bash Simulator</span>
                 </div>
                 <p className="text-[10px] text-muted leading-relaxed">
-                  💡 In questa simulazione isolata del DAG, puoi eseguire <span className="text-git font-bold">git commit</span> senza aver modificato alcun file reale. Lo scopo è concentrarsi esclusivamente sull'architettura dell'albero e dei branch generati.
+                  💡 Esegui <span className="text-git font-bold">git commit</span> per interagire con il grafo.
                 </p>
               </div>
 
@@ -196,15 +198,14 @@ export function GitGraphSim({ data, onComplete }: Props) {
                       onKeyDown={handleCommand}
                       spellCheck={false}
                       autoFocus
-                      placeholder="Scrivi un comando (es. git commit)"
+                      placeholder="es. git commit"
                       className="flex-1 bg-transparent outline-none border-none text-[#06d6a0] placeholder:text-white/20 font-mono text-sm min-w-0"
                     />
-                    <div className="text-[10px] text-white/30 font-sans px-2 hidden sm:block">Premi INVIO</div>
+                    <div className="text-[10px] text-white/30 font-sans px-2 hidden sm:block text-right">INVIO</div>
                   </div>
                 )}
               </div>
             </div>
-
          </div>
       </div>
     </div>
