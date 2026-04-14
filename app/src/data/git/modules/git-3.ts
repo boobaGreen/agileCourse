@@ -70,6 +70,11 @@ export const git3: Module = {
         { id: '3', label: 'Run "git commit" to save' },
         { id: '4', label: 'Run "git push" to share' }
       ]
+    },
+    {
+      type: 'tip',
+      title: '🎮 Practice This Module',
+      content: '**Learn Git Branching**: Complete *Introduction Sequence — Level 1* (Introduction to Git Commits)\n\n**Oh My Git!**: Play the *Intro* and *Files* chapters\n\n**Git Kata**: `basic-commits`, `basic-staging`\n\n🚀 [Launch Learn Git Branching](https://learngitbranching.js.org/) · 📥 [Oh My Git!](https://ohmygit.org/) · 📂 [Git Katas](https://github.com/eficode-academy/git-katas)'
     }
   ],
   quiz: [

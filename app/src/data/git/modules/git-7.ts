@@ -59,6 +59,11 @@ git status                  # What's happening?`,
           ['`git log`','Shows the timeline of commits (history)', '`git log --oneline`']
         ]
       }
+    },
+    {
+      type: 'tip',
+      title: '🎮 Practice This Module',
+      content: '**Learn Git Branching**: Revisit *Introduction Sequence — Level 1* (Introduction to Git Commits)\n\n**Oh My Git!**: Play the *Files* and *Index* chapters\n\n**Git Kata**: `basic-commits`, `basic-staging`, `basic-cleaning`\n\n🚀 [Launch Learn Git Branching](https://learngitbranching.js.org/) · 📥 [Oh My Git!](https://ohmygit.org/) · 📂 [Git Katas](https://github.com/eficode-academy/git-katas)'
     }
   ],
   quiz: [

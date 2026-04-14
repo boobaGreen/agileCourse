@@ -105,6 +105,11 @@ git rebase --abort`,
       type: 'tip',
       title: '⚠️ Golden Rule of Rebase',
       content: '**Never rebase commits that have been pushed to a shared remote branch.** Rebase rewrites history — if others have already fetched those commits, you\'ll create chaos. Only rebase local, unpublished commits.'
+    },
+    {
+      type: 'tip',
+      title: '🎮 Practice This Module',
+      content: '**Learn Git Branching**: Complete *Introduction Sequence — Levels 2-4* (Branching, Merging, Rebase)\n\n**Oh My Git!**: Play the *Branches* and *Merge* chapters\n\n**Git Kata**: `basic-branching`, `ff-merge`, `3-way-merge`, `merge-conflict`, `rebase-branch`\n\n🚀 [Launch Learn Git Branching](https://learngitbranching.js.org/) · 📥 [Oh My Git!](https://ohmygit.org/) · 📂 [Git Katas](https://github.com/eficode-academy/git-katas)'
     }
   ],
   quiz: [

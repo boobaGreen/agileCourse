@@ -97,6 +97,11 @@ git push -u origin main`,
     {
       type: 'animation',
       content: 'git-force-danger'
+    },
+    {
+      type: 'tip',
+      title: '🎮 Practice This Module',
+      content: '**Learn Git Branching**: Complete the *Remote Tab — Push & Pull* sequence (levels 1-8: Clone, Fetch, Pull, Push, Diverged History)\n\n**Oh My Git!**: Play the *Remotes* chapter\n\n🚀 [Launch Learn Git Branching](https://learngitbranching.js.org/) · 📥 [Oh My Git!](https://ohmygit.org/) · 📂 [Git Katas](https://github.com/eficode-academy/git-katas)'
     }
   ],
   quiz: [

@@ -58,6 +58,11 @@ export const git6: Module = {
       type: 'tip',
       title: '💡 Pro Tip: GitHub Flow',
       content: 'For most small-to-medium web projects, **GitHub Flow** is the sweet spot: Create a branch from `main`, push commits, open a PR, merge after approval. Simple, clean, and effective.'
+    },
+    {
+      type: 'tip',
+      title: '🎮 Practice This Module',
+      content: '**Learn Git Branching**: Complete *Remote Tab — Advanced* levels 9-10 (Push Main!, Merging with Remotes)\n\n**Oh My Git!**: Play the *Workflows* chapter\n\n🚀 [Launch Learn Git Branching](https://learngitbranching.js.org/) · 📥 [Oh My Git!](https://ohmygit.org/)'
     }
   ],
   quiz: [

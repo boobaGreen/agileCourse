@@ -58,6 +58,11 @@ export const git9: Module = {
       title: '📦 The .gitignore Builder',
       content: 'Practice identifying which files should be tracked and which should be ignored.',
       animationType: 'git-ignore-lab'
+    },
+    {
+      type: 'tip',
+      title: '🎮 Practice This Module',
+      content: '**Learn Git Branching**: Complete *Moving Work Around* (Cherry-pick, Interactive Rebase) + *A Mixed Bag* (Tags, Juggling Commits, Git Describe)\n\n**Oh My Git!**: Play *Bisect*, *Tags* chapters, then try the *Sandbox*\n\n**Git Kata**: `amend`, `advanced-rebase-interactive`, `bad-commit` (bisect), `ignore`, `git-tag`\n\n🚀 [Launch Learn Git Branching](https://learngitbranching.js.org/) · 📥 [Oh My Git!](https://ohmygit.org/) · 📂 [Git Katas](https://github.com/eficode-academy/git-katas)'
     }
   ],
   quiz: [

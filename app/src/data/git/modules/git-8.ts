@@ -36,6 +36,11 @@ export const git8: Module = {
       type: 'concept',
       title: '🔌 Detached HEAD — Lost in Time',
       content: 'Normally, **HEAD** is a pointer that points to your current branch. However, if you checkout a specific commit hash directly (e.g., `git checkout a1b2c3d`), HEAD points directly to that commit instead of a branch. This is the **detached HEAD** state. Any new commits here are not on a branch and may get lost!'
+    },
+    {
+      type: 'tip',
+      title: '🎮 Practice This Module',
+      content: '**Learn Git Branching**: Complete *Ramping Up* sequence (levels 5-8: Detached HEAD, Relative Refs, Reversing Changes)\n\n**Oh My Git!**: Play *Changing the Past*, *Shit Happens*, and *Stash* chapters\n\n**Git Kata**: `basic-revert`, `basic-stashing`, `save-my-commit`, `detached-head`, `commit-on-wrong-branch`\n\n🚀 [Launch Learn Git Branching](https://learngitbranching.js.org/) · 📥 [Oh My Git!](https://ohmygit.org/) · 📂 [Git Katas](https://github.com/eficode-academy/git-katas)'
     }
   ],
   quiz: [
