@@ -2,10 +2,10 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence, Reorder } from 'framer-motion'
 import { useAppStore } from '../store/useAppStore'
-import { GIT_MODULES } from '../data/git/modules'
-import { DOCKER_MODULES } from '../data/docker/modules'
-import { K8S_MODULES } from '../data/k8s/modules'
-import type { Section, QuizQuestion } from '../data/git/modules'
+import { GIT_MODULES } from '../data/git/modules/index'
+import { DOCKER_MODULES } from '../data/docker/modules/index'
+import { K8S_MODULES } from '../data/k8s/modules/index'
+import type { Section, QuizQuestion } from '../data/types'
 import {
   ArrowLeft, ArrowRight, Zap,
   ExternalLink, BookOpen, Code2, Lightbulb, Sparkles,

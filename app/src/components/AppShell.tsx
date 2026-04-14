@@ -4,9 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '../store/useAppStore'
 import { LayoutDashboard, User, Award, ChevronLeft, ChevronRight, Zap, Menu, X } from 'lucide-react'
 import { matchPath } from 'react-router-dom'
-import { GIT_MODULES } from '../data/git/modules'
-import { DOCKER_MODULES } from '../data/docker/modules'
-import { K8S_MODULES } from '../data/k8s/modules'
+import { GIT_MODULES } from '../data/git/modules/index'
+import { DOCKER_MODULES } from '../data/docker/modules/index'
+import { K8S_MODULES } from '../data/k8s/modules/index'
 import ModuleSidebar from './ModuleSidebar'
 
 const navItems = [

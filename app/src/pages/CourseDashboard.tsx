@@ -2,9 +2,9 @@ import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence, useSpring, useTransform } from 'framer-motion'
 import { useAppStore } from '../store/useAppStore'
-import { GIT_MODULES } from '../data/git/modules'
-import { DOCKER_MODULES } from '../data/docker/modules'
-import { K8S_MODULES } from '../data/k8s/modules'
+import { GIT_MODULES } from '../data/git/modules/index'
+import { DOCKER_MODULES } from '../data/docker/modules/index'
+import { K8S_MODULES } from '../data/k8s/modules/index'
 import { 
   CheckCircle, GitBranch, Package, Ship, ArrowRight, Zap, 
   Target, Activity, Trophy, Star

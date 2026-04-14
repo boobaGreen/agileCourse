@@ -3,10 +3,10 @@ import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore, BADGES } from '../store/useAppStore'
 import { Zap, CheckCircle, Award, RotateCcw, GitBranch, Package, Ship, BarChart3 } from 'lucide-react'
-import { GIT_MODULES } from '../data/git/modules'
-import { DOCKER_MODULES } from '../data/docker/modules'
-import { K8S_MODULES } from '../data/k8s/modules'
-import type { Module } from '../data/git/modules'
+import { GIT_MODULES } from '../data/git/modules/index'
+import { DOCKER_MODULES } from '../data/docker/modules/index'
+import { K8S_MODULES } from '../data/k8s/modules/index'
+import type { Module } from '../data/types'
 import { 
   BarChart, Bar, XAxis, YAxis, 
   Tooltip, ResponsiveContainer, Cell 

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { CheckCircle, ChevronRight } from 'lucide-react'
-import type { Module } from '../data/git/modules'
+import type { Module } from '../data/types'
 
 interface ModuleSidebarProps {
   modules: Module[]
