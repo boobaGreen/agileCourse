@@ -1023,8 +1023,8 @@ function EducationAnimation({ type }: { type: string }) {
         <div className="relative w-full aspect-[4/3] sm:aspect-[2/1] bg-black/40 rounded-3xl border border-white/5 p-3 sm:p-6 flex flex-col overflow-hidden shadow-2xl mt-4">
            <svg viewBox="0 0 400 200" className="w-full h-full">
              {/* Track Labels */}
-             <text x="10" y="55" className="text-[8px] font-black uppercase tracking-wider" fill="#4fd1c5">Remote (Origin)</text>
-             <text x="10" y="145" className="text-[8px] font-black uppercase tracking-wider" fill="#68d391">Local (Your PC)</text>
+             <text x="15" y="55" className="text-[8px] font-black uppercase tracking-wider" fill="#4fd1c5">Remote (Origin)</text>
+             <text x="15" y="145" className="text-[8px] font-black uppercase tracking-wider" fill="#68d391">Local (Your PC)</text>
 
              {/* Tracks Lines */}
              <line x1="50" y1="60" x2="380" y2="60" stroke="rgba(79, 209, 197, 0.1)" strokeWidth="1" />
@@ -1096,16 +1096,16 @@ function EducationAnimation({ type }: { type: string }) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="w-full max-w-lg bg-black/40 backdrop-blur-xl border border-white/10 p-4 sm:p-5 rounded-3xl shadow-2xl"
+              className="w-full max-w-lg bg-black/40 backdrop-blur-xl border border-white/10 p-3 sm:p-5 rounded-3xl shadow-2xl"
             >
                <div className="flex items-start gap-3 sm:gap-4">
                   <div className={`p-2.5 rounded-2xl ${step === 3 ? 'bg-danger/20 text-danger animate-pulse' : 'bg-primary/20 text-primary'} shrink-0 shadow-lg shadow-primary/10`}>
                      {step === 3 ? <AlertTriangle size={18} /> : <Users size={18} />}
                   </div>
-                  <div className="flex flex-col gap-3 w-full">
+                  <div className="flex flex-col gap-3 w-full min-w-0">
                      <div className="flex flex-col gap-2 sm:gap-3">
                         <div className="flex items-center gap-2">
-                           <span className={`text-[10px] ${step === 3 ? 'text-danger' : 'text-primary'} fw-black uppercase tracking-widest whitespace-nowrap`}>
+                           <span className={`text-[10px] ${step === 3 ? 'text-danger' : 'text-primary'} fw-black uppercase tracking-widest whitespace-normal sm:whitespace-nowrap`}>
                              {step === 3 ? 'Critical Warning' : 'Collaboration Habit'}
                            </span>
                            <div className="h-[1px] w-full bg-white/10" />
