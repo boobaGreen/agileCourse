@@ -457,9 +457,12 @@ function SectionCard({ section, onCompleteGame }: { section: Section, onComplete
       )}
       
       <div className="text-sub text-sm leading-relaxed">
-        {section.content.split('\n').map((line, i) => (
-          <div key={i} className="mb-2 last:mb-0">
-             {line.includes(' · ') && line.includes('[') ? (
+        {section.content.split('\n').map((line, i) => {
+          const isDesktopOnly = line.includes('<!-- desktop-only -->');
+          const cleanLine = line.replace('<!-- desktop-only -->', '');
+          return (
+          <div key={i} className={`mb-2 last:mb-0 ${isDesktopOnly ? 'hidden sm:block' : ''}`}>
+             {cleanLine.includes(' · ') && cleanLine.includes('[') ? (
                 <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-3 mt-4">
                    {line.split(' · ').map((part, pi) => {
                       const match = part.match(/\[([^\]]+)\]\(([^)]+)\)/);
@@ -494,7 +497,8 @@ function SectionCard({ section, onCompleteGame }: { section: Section, onComplete
                  return <React.Fragment key={`${pi}-${i}`}>{part}</React.Fragment>
              })}
           </div>
-        ))}
+        )
+      })}
       </div>
 
       {/* Code Block Rendering */}

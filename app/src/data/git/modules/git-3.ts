@@ -37,7 +37,7 @@ export const git3: Module = {
     {
       type: 'concept',
       title: '🧪 The Hashing Logic',
-      content: 'Every commit has a unique SHA fingerprint. Git uses this to ensure that no part of your history can be changed without it noticing. If you change even a single character in your code, the fingerprint changes completely!\n\n**Examples of Git Hashes:**\n- `a1b2c3d` (A shortened 7-character hash)\n- `e69de29bb2d1d6434b8b29ae775ad8c2e48c5391` (A full 40-character version)'
+      content: 'Every commit has a unique SHA fingerprint. Git uses this to ensure that no part of your history can be changed without it noticing. If you change even a single character in your code, the fingerprint changes completely!\n\n**Examples of Git Hashes:** <!-- desktop-only -->\n- `a1b2c3d` (A shortened 7-character hash) <!-- desktop-only -->\n- `e69de29bb2d1d6434b8b29ae775ad8c2e48c5391` (A full 40-character version) <!-- desktop-only -->'
     },
     {
       type: 'concept',
