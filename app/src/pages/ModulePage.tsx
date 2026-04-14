@@ -687,7 +687,7 @@ function EducationAnimation({ type }: { type: string }) {
               <CheckCircle size={14} className="text-primary" />
               <span className="text-[10px] text-primary fw-black uppercase tracking-widest">Git Snapshot ID (SHA-1)</span>
             </div>
-            <div className="mono text-[11px] sm:text-xs text-xp break-all text-center leading-relaxed tracking-wider bg-black/20 p-3 rounded-lg border border-white/5">
+            <div className="mono text-[10px] sm:text-xs text-xp break-all text-center leading-relaxed tracking-wider bg-black/20 p-3 w-full rounded-lg border border-white/5 mx-auto overflow-hidden">
               {hash.split('').map((char, i) => (
                 <motion.span 
                   key={`${input}-${i}`}
@@ -915,7 +915,7 @@ function EducationAnimation({ type }: { type: string }) {
                 <div className="p-2.5 rounded-2xl bg-primary/20 text-primary shrink-0">
                    <LayoutGrid size={18} />
                 </div>
-                <div className="flex flex-col gap-3 w-full">
+                <div className="flex flex-col gap-3 w-full min-w-0">
                    <div className="flex flex-col gap-1">
                       <div className="flex items-center gap-2">
                          <span className="text-[10px] text-primary fw-black uppercase tracking-widest whitespace-nowrap">Conceptual Logic</span>
@@ -928,7 +928,7 @@ function EducationAnimation({ type }: { type: string }) {
 
                    {/* Terminal */}
                    <div className="bg-black/60 rounded-xl p-2.5 border border-white/5 shadow-inner flex items-center gap-3 overflow-x-auto min-w-0 scrollbar-hide">
-                      <div className="flex gap-1">
+                      <div className="flex gap-1 shrink-0">
                          <div className="w-1.5 h-1.5 rounded-full bg-red-500/50" />
                          <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/50" />
                          <div className="w-1.5 h-1.5 rounded-full bg-green-500/50" />
