@@ -10,7 +10,7 @@ import {
   ArrowLeft, ArrowRight, Zap,
   ExternalLink, BookOpen, Code2, Lightbulb, Sparkles,
   LayoutGrid, Workflow, Play, Image, Gamepad2, CheckCircle, Trophy,
-  AlertTriangle, Users, RefreshCcw, Terminal as TermIcon,
+  AlertTriangle, Users, RefreshCcw, RotateCcw, Terminal as TermIcon,
   Laptop, Cloud, Search, ShieldCheck, ArrowUp
 } from 'lucide-react'
 import confetti from 'canvas-confetti'
@@ -1359,7 +1359,7 @@ function RemoteSyncLab() {
     {
       title: "1. Divergence",
       desc: "You have a new local commit (C2), but your teammate has already pushed (T1) to the server. You are out of sync!",
-      cmd: "# Team check...",
+      cmd: "# Check remote status...",
       local: ['C1', 'C2'],
       remote: ['C1', 'T1'],
       tracking: ['C1']
@@ -1374,123 +1374,239 @@ function RemoteSyncLab() {
     },
     {
       title: "3. The Integration",
-      desc: "You merge the remote changes into your local branch. Now your history contains both your work (C2) and theirs (T1).",
+      desc: "Merge the remote changes into your local branch. Now your history contains both your work (C2) and theirs (T1).",
       cmd: "git merge origin/main",
       local: ['C1', 'T1', 'C2'],
       remote: ['C1', 'T1'],
       tracking: ['C1', 'T1']
     },
     {
-       title: "4. The Push",
-       desc: "Now that you are up-to-date, you can safely push your commit (C2) to the server for the whole team to see.",
-       cmd: "git push origin",
-       local: ['C1', 'T1', 'C2'],
-       remote: ['C1', 'T1', 'C2'],
-       tracking: ['C1', 'T1', 'C2']
+      title: "4. The Push",
+      desc: "Now that you are up-to-date, you can safely push your commit (C2) to the server for the whole team to see.",
+      cmd: "git push origin",
+      local: ['C1', 'T1', 'C2'],
+      remote: ['C1', 'T1', 'C2'],
+      tracking: ['C1', 'T1', 'C2']
     }
   ]
 
   const current = steps[step]
 
   return (
-    <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/10 shadow-2xl">
-       <div className="flex justify-between items-center mb-2">
-          <div className="flex flex-col">
-             <span className="text-xs text-secondary fw-black uppercase tracking-widest leading-none mb-2">Network Lab • Step {step + 1}</span>
-             <h3 className="text-xl fw-black text-white">{current.title}</h3>
+    <div className="w-full flex flex-col gap-6 p-8 bg-surface/40 rounded-[2.5rem] border border-white/10 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] backdrop-blur-md relative overflow-hidden">
+       {/* Background decorative elements */}
+       <div className="absolute top-0 right-0 w-64 h-64 bg-git/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+       
+       <div className="flex justify-between items-center mb-2 z-10">
+          <div className="flex flex-col gap-1">
+             <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded-full bg-secondary/20 text-[10px] text-secondary fw-black uppercase tracking-wider border border-secondary/30">Module 5</span>
+                <span className="text-[10px] text-muted fw-bold uppercase tracking-widest">Network Simulation • {step + 1}/4</span>
+             </div>
+             <h3 className="text-2xl fw-black text-white tracking-tight">{current.title}</h3>
           </div>
-          <div className="flex gap-2">
-             <button disabled={step === 0} onClick={() => setStep(s => s - 1)} className="p-3 rounded-xl bg-surface2 border border-white/10 text-white disabled:opacity-30 hover:bg-white/10 transition-all"><ArrowLeft size={18} /></button>
-             <button disabled={step === steps.length - 1} onClick={() => setStep(s => s + 1)} className="px-5 py-3 rounded-xl bg-secondary text-black shadow-lg shadow-secondary/20 hover:scale-105 active:scale-95 transition-all text-sm fw-bold flex gap-2 items-center">Next <ArrowRight size={18} /></button>
+          <div className="flex gap-3">
+             <button 
+                disabled={step === 0} 
+                onClick={() => setStep(s => s - 1)} 
+                className="p-3 rounded-2xl bg-white/5 border border-white/10 text-white disabled:opacity-20 hover:bg-white/10 active:scale-90 transition-all shadow-inner"
+             >
+                <ArrowLeft size={20} />
+             </button>
+             {step === steps.length - 1 ? (
+                <button 
+                   onClick={() => setStep(0)} 
+                   className="px-6 py-3 rounded-2xl bg-white/10 text-white border border-white/20 hover:bg-white/20 active:scale-95 transition-all text-sm fw-bold flex gap-2 items-center shadow-lg"
+                >
+                   <RotateCcw size={18} /> Restart Lab
+                </button>
+             ) : (
+                <button 
+                   onClick={() => setStep(s => s + 1)} 
+                   className="px-8 py-3 rounded-2xl bg-git text-white shadow-[0_10px_30px_rgba(240,80,50,0.4)] hover:shadow-[0_15px_40px_rgba(240,80,50,0.5)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all text-sm fw-black flex gap-2 items-center"
+                >
+                   Next Stage <ArrowRight size={18} />
+                </button>
+             )}
           </div>
        </div>
 
-       <div className="w-full bg-black/60 rounded-2xl p-5 border border-white/10 flex flex-col gap-4">
-          <p className="text-sm text-white/90 leading-relaxed fw-medium">{current.desc}</p>
-          <div className="bg-black/80 border border-white/5 rounded-xl p-4 flex items-center gap-3">
-             <TermIcon size={18} className="text-muted" />
-             <code className="text-sm font-mono text-secondary fw-bold">
-                <span className="text-muted opacity-50 mr-2">$</span>
-                {current.cmd}
+       <div className="w-full bg-black/40 rounded-3xl p-6 border border-white/5 flex flex-col gap-5 z-10 backdrop-blur-sm">
+          <p className="text-base text-white/80 leading-relaxed fw-medium italic">"{current.desc}"</p>
+          <div className="bg-black/60 border border-white/10 rounded-2xl p-4 flex items-center gap-4 shadow-inner">
+             <div className="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
+                <TermIcon size={18} />
+             </div>
+             <code className="text-[15px] font-mono text-secondary fw-bold flex items-center gap-2">
+                <span className="text-muted opacity-30 select-none">course @ git:</span>
+                <span className="text-white">{current.cmd}</span>
+                <motion.span animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 1 }} className="w-2 h-5 bg-secondary/50 rounded-sm" />
              </code>
           </div>
        </div>
 
-       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4 pt-4 relative">
-          {/* Local Machine */}
-          <div className="bg-surface2/30 rounded-2xl p-6 border border-white/5 flex flex-col gap-6">
-             <div className="flex items-center gap-3 border-b border-white/5 pb-4">
-                <div className="p-2 rounded-lg bg-git/10 text-git">
-                   <Laptop size={18} />
-                </div>
-                <span className="text-[10px] fw-black text-muted uppercase tracking-widest">Local Repository</span>
-             </div>
-             
-             <div className="flex flex-col gap-8">
-                <div className="flex flex-col gap-2">
-                   <span className="text-[8px] fw-black text-muted/60 uppercase">Main Branch</span>
-                   <div className="flex flex-wrap gap-2">
-                      <AnimatePresence mode="popLayout">
-                         {current.local.map(c => (
-                           <motion.div 
-                              key={c} layoutId={`local-${c}`} 
-                              initial={{ scale: 0 }} animate={{ scale: 1 }}
-                              className={`w-8 h-8 rounded-lg flex items-center justify-center font-mono text-[9px] fw-bold border ${c === 'C2' ? 'bg-git border-git text-white' : 'bg-surface border-white/10 text-muted'}`}
-                           >
-                              {c}
-                           </motion.div>
-                         ))}
-                      </AnimatePresence>
-                   </div>
-                </div>
-
-                <div className="flex flex-col gap-2">
-                   <span className="text-[8px] fw-black text-secondary/60 uppercase">Origin/Main (Tracking)</span>
-                   <div className="flex flex-wrap gap-2 opacity-50">
-                      <AnimatePresence mode="popLayout">
-                         {current.tracking.map(c => (
-                           <motion.div 
-                              key={c} layoutId={`track-${c}`}
-                              initial={{ scale: 0 }} animate={{ scale: 1 }}
-                              className="w-8 h-8 rounded-lg border border-dashed border-secondary/40 flex items-center justify-center font-mono text-[9px] fw-bold text-secondary"
-                           >
-                              {c}
-                           </motion.div>
-                         ))}
-                      </AnimatePresence>
-                   </div>
-                </div>
-             </div>
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-4 pt-4 relative min-h-[300px] z-10">
+          {/* Animated Fiber Path */}
+          <div className="absolute top-[4.5rem] left-[25%] right-[25%] h-0.5 hidden md:block z-0">
+             <svg className="w-full h-12 overflow-visible">
+                <path d="M 0 6 L 200 6" className="stroke-white/10 stroke-[2] fill-none" strokeDasharray="4 4" />
+                <AnimatePresence>
+                   {(step === 1 || step === 3) && (
+                      <motion.circle
+                         initial={{ cx: step === 1 ? "100%" : "0%" }}
+                         animate={{ cx: step === 1 ? "0%" : "100%" }}
+                         transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                         r="4"
+                         cy="6"
+                         className={step === 1 ? "fill-secondary shadow-[0_0_10px_rgba(var(--color-secondary),1)]" : "fill-git shadow-[0_0_10px_rgba(240,80,50,1)]"}
+                      />
+                   )}
+                </AnimatePresence>
+             </svg>
           </div>
 
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:flex flex-col items-center gap-2 z-20">
-             <div className="w-10 h-10 rounded-full bg-black/60 border border-white/10 backdrop-blur-xl flex items-center justify-center text-muted">
-                {step === 1 ? <ArrowLeft className="animate-pulse text-secondary" /> : step === 3 ? <ArrowRight className="animate-pulse text-git" /> : <ShieldCheck size={20} />}
+          {/* Local Machine */}
+          <div className="flex flex-col gap-6">
+             <div className="bg-surface2/40 rounded-[2rem] p-8 border border-white/10 flex flex-col gap-8 shadow-xl relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-br from-git/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                
+                <div className="flex items-center justify-between border-b border-white/5 pb-5">
+                   <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-2xl bg-git/10 text-git flex items-center justify-center shadow-lg border border-git/20">
+                         <Laptop size={24} />
+                      </div>
+                      <div className="flex flex-col">
+                         <span className="text-[10px] fw-black text-muted uppercase tracking-[0.2em] leading-none mb-1">Station</span>
+                         <span className="text-sm fw-black text-white">Local Repository</span>
+                      </div>
+                   </div>
+                   <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-git animate-pulse" />
+                      <span className="text-[10px] fw-bold text-git/80 uppercase">Active</span>
+                   </div>
+                </div>
+                
+                <div className="flex flex-col gap-10">
+                   <div className="flex flex-col gap-3">
+                      <div className="flex items-center gap-2 mb-1">
+                         <div className="w-1 h-3 bg-git/50 rounded-full" />
+                         <span className="text-[9px] fw-black text-white/40 uppercase tracking-widest">Master / Main Branch</span>
+                      </div>
+                      <div className="flex flex-wrap gap-4 items-center">
+                         <AnimatePresence mode="popLayout">
+                            {current.local.map((c, i) => (
+                              <motion.div 
+                                 key={`local-node-${c}`}
+                                 layoutId={`local-id-${c}`}
+                                 initial={{ scale: 0, opacity: 0, y: 10 }}
+                                 animate={{ scale: 1, opacity: 1, y: 0 }}
+                                 exit={{ scale: 0, opacity: 0 }}
+                                 transition={{ delay: i * 0.1, type: "spring", damping: 15 }}
+                                 className="relative"
+                              >
+                                 <div className={`w-12 h-12 rounded-full flex items-center justify-center font-mono text-[10px] fw-black border-2 transition-all duration-500 shadow-xl ${
+                                    c === 'C2' 
+                                    ? 'bg-git border-git text-white ring-4 ring-git/10' 
+                                    : 'bg-surface border-white/20 text-muted/80'
+                                 }`}>
+                                    {c}
+                                 </div>
+                                 {i < current.local.length - 1 && (
+                                    <div className="absolute top-1/2 -right-4 w-4 h-[2px] bg-white/5 -translate-y-1/2" />
+                                 )}
+                              </motion.div>
+                            ))}
+                         </AnimatePresence>
+                      </div>
+                   </div>
+
+                   <div className="flex flex-col gap-3">
+                      <div className="flex items-center gap-2 mb-1">
+                         <div className="w-1 h-3 bg-secondary/50 rounded-full" />
+                         <span className="text-[9px] fw-black text-secondary/40 uppercase tracking-widest">Origin/Main (Mirror)</span>
+                      </div>
+                      <div className="flex flex-wrap gap-4 items-center">
+                         <AnimatePresence mode="popLayout">
+                            {current.tracking.map((c, i) => (
+                              <motion.div 
+                                 key={`track-node-${c}`}
+                                 layoutId={`track-id-${c}`}
+                                 initial={{ scale: 0, opacity: 0 }}
+                                 animate={{ scale: 1, opacity: 0.7 }}
+                                 transition={{ delay: i * 0.1 }}
+                                 className="relative"
+                              >
+                                 <div className={`w-10 h-10 rounded-full border-2 border-dashed flex items-center justify-center font-mono text-[9px] fw-black transition-all ${
+                                    c === 'T1' ? 'border-secondary/60 text-secondary bg-secondary/5' : 'border-white/10 text-muted/30'
+                                 }`}>
+                                    {c}
+                                 </div>
+                              </motion.div>
+                            ))}
+                         </AnimatePresence>
+                      </div>
+                   </div>
+                </div>
              </div>
           </div>
 
           {/* GitHub Remote */}
-          <div className="bg-secondary/5 rounded-2xl p-6 border border-secondary/20 flex flex-col gap-6">
-             <div className="flex items-center gap-3 border-b border-secondary/10 pb-4">
-                <div className="p-2 rounded-lg bg-secondary/10 text-secondary">
-                   <Cloud size={18} />
-                </div>
-                <span className="text-[10px] fw-black text-secondary/60 uppercase tracking-widest">GitHub (Remote)</span>
-             </div>
+          <div className="flex flex-col gap-6">
+             <div className="bg-secondary/5 rounded-[2rem] p-8 border border-secondary/20 flex flex-col gap-8 shadow-xl relative overflow-hidden h-full group">
+                <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
 
-             <div className="flex flex-col gap-2 h-full justify-center">
-                <div className="flex flex-wrap gap-3 justify-center">
-                   <AnimatePresence mode="popLayout">
-                      {current.remote.map(c => (
-                        <motion.div 
-                           key={c} layoutId={`remote-${c}`}
-                           initial={{ scale: 0 }} animate={{ scale: 1 }}
-                           className={`w-12 h-12 rounded-xl flex items-center justify-center font-mono text-[11px] fw-bold border-2 ${c === 'T1' ? 'bg-secondary/20 border-secondary text-secondary' : 'bg-black/40 border-white/5 text-muted'}`}
-                        >
-                           {c}
-                        </motion.div>
-                      ))}
-                   </AnimatePresence>
+                <div className="flex items-center justify-between border-b border-secondary/10 pb-5">
+                   <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-2xl bg-secondary/10 text-secondary flex items-center justify-center shadow-lg border border-secondary/20">
+                         <Cloud size={24} />
+                      </div>
+                      <div className="flex flex-col">
+                         <span className="text-[10px] fw-black text-secondary/40 uppercase tracking-[0.2em] leading-none mb-1">Server</span>
+                         <span className="text-sm fw-black text-white">GitHub (Remote)</span>
+                      </div>
+                   </div>
+                   <div className="px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
+                      <span className="text-[8px] fw-black text-secondary uppercase tracking-widest">Cloud Sync</span>
+                   </div>
+                </div>
+
+                <div className="flex-1 flex flex-col h-full items-center justify-center py-4">
+                   <div className="flex flex-wrap gap-6 justify-center items-center">
+                      <AnimatePresence mode="popLayout">
+                         {current.remote.map((c, i) => (
+                           <motion.div 
+                              key={`remote-node-${c}`}
+                              layoutId={`remote-id-${c}`}
+                              initial={{ scale: 0, opacity: 0, x: 20 }}
+                              animate={{ scale: 1.1, opacity: 1, x: 0 }}
+                              transition={{ duration: 0.5, type: "spring" }}
+                              className="relative"
+                           >
+                              <div className={`w-16 h-16 rounded-full flex items-center justify-center font-mono text-[12px] fw-black border-2 shadow-2xl transition-all duration-700 ${
+                                 c === 'T1' 
+                                 ? 'bg-secondary/20 border-secondary text-secondary shadow-[0_0_30px_rgba(var(--color-secondary),0.3)]' 
+                                 : c === 'C2' 
+                                 ? 'bg-git/20 border-git text-git shadow-[0_0_30px_rgba(240,80,50,0.3)]' 
+                                 : 'bg-black/60 border-white/10 text-muted/40'
+                              }`}>
+                                 {c}
+                              </div>
+                              {i < current.remote.length - 1 && (
+                                 <motion.div 
+                                    initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                                    className="absolute -right-6 top-1/2 w-6 h-[1px] bg-secondary/20 -translate-y-1/2" 
+                                 />
+                              )}
+                           </motion.div>
+                         ))}
+                      </AnimatePresence>
+                   </div>
+                </div>
+
+                <div className="mt-auto pt-6 border-t border-secondary/5 flex items-center justify-center gap-2 text-[10px] fw-black text-secondary/30 uppercase tracking-[0.3em]">
+                   <Search size={12} />
+                   Public Repository Visibility
                 </div>
              </div>
           </div>
