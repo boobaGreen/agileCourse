@@ -896,6 +896,12 @@ git push origin main`,
         content: 'To master Git, you must understand the **Three Areas** flow. These commands are your bread and butter.'
       },
       {
+        type: 'video',
+        title: '📺 Git basics in 60 seconds!',
+        content: 'A hyper-fast overview of the daily commit loop and staging area by ThePrimeagen.',
+        videoUrl: 'https://www.youtube.com/watch?v=KjusL9BBZ7U'
+      },
+      {
         type: 'code',
         title: '⚙️ Configuration',
         content: 'Before you commit, Git needs to know who you are:',
