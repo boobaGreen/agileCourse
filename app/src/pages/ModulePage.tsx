@@ -1103,7 +1103,7 @@ function EducationAnimation({ type }: { type: string }) {
                      {step === 3 ? <AlertTriangle size={18} /> : <Users size={18} />}
                   </div>
                   <div className="flex flex-col gap-3 w-full">
-                     <div className="flex flex-col gap-1">
+                     <div className="flex flex-col gap-2 sm:gap-3">
                         <div className="flex items-center gap-2">
                            <span className={`text-[10px] ${step === 3 ? 'text-danger' : 'text-primary'} fw-black uppercase tracking-widest whitespace-nowrap`}>
                              {step === 3 ? 'Critical Warning' : 'Collaboration Habit'}
@@ -1398,17 +1398,17 @@ function RemoteSyncLab() {
   const current = steps[step]
 
   return (
-    <div className="w-full flex flex-col gap-6 p-4 sm:p-8 bg-surface/40 rounded-[1.5rem] sm:rounded-[2.5rem] border border-white/10 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] backdrop-blur-md relative overflow-hidden">
+    <div className="w-full flex flex-col gap-4 sm:gap-6 p-3 sm:p-8 bg-surface/40 rounded-[1.5rem] sm:rounded-[2.5rem] border border-white/10 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] backdrop-blur-md relative overflow-hidden">
        {/* Background decorative elements */}
        <div className="absolute top-0 right-0 w-64 h-64 bg-git/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
        
-       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 z-10 gap-4 sm:gap-6">
+       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-0 sm:mb-2 z-10 gap-2 sm:gap-6">
           <div className="flex flex-col gap-0.5">
              <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded-full bg-secondary/20 text-[9px] sm:text-[10px] text-secondary fw-black uppercase tracking-wider border border-secondary/30">Module 5</span>
-                <span className="text-[9px] sm:text-[10px] text-muted fw-bold uppercase tracking-widest">Network Simulation • {step + 1}/4</span>
+                <span className="px-1.5 py-0.5 rounded-full bg-secondary/20 text-[8px] sm:text-[10px] text-secondary fw-black uppercase tracking-wider border border-secondary/30">M5</span>
+                <span className="text-[8px] sm:text-[10px] text-muted fw-bold uppercase tracking-widest">Lab • {step + 1}/4</span>
              </div>
-             <h3 className="text-xl sm:text-2xl fw-black text-white tracking-tight leading-tight">{current.title}</h3>
+             <h3 className="text-lg sm:text-2xl fw-black text-white tracking-tight leading-tight">{current.title}</h3>
           </div>
           <div className="flex gap-3">
              <button 
@@ -1436,7 +1436,7 @@ function RemoteSyncLab() {
           </div>
        </div>
 
-       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 mt-4 pt-4 relative min-h-[300px] z-10">
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-12 mt-2 sm:mt-4 pt-2 sm:pt-4 relative min-h-[auto] sm:min-h-[300px] z-10">
           {/* Animated Fiber Path */}
           <div className="absolute top-[4.5rem] left-[25%] right-[25%] h-0.5 hidden md:block z-0">
              <svg className="w-full h-12 overflow-visible">
@@ -1457,21 +1457,28 @@ function RemoteSyncLab() {
           </div>
 
           {/* Local Machine */}
-          <div className="flex flex-col gap-6">
-             <div className="bg-surface2/40 rounded-[1.5rem] sm:rounded-[2rem] p-4 sm:p-8 border border-white/10 flex flex-col gap-8 shadow-xl relative overflow-hidden group">
+          <div className="flex flex-col gap-4 sm:gap-6">
+             <div className="bg-surface2/40 rounded-[1.5rem] sm:rounded-[2rem] p-3 sm:p-8 border border-white/10 flex flex-col gap-4 sm:gap-8 shadow-xl relative overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-br from-git/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
                 
-                <div className="flex items-center justify-between border-b border-white/5 pb-5">
-                   <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-2xl bg-git/10 text-git flex items-center justify-center shadow-lg border border-git/20">
-                         <Laptop size={24} />
+                <div className="flex items-center justify-between border-b border-white/5 pb-2 sm:pb-5">
+                   <div className="flex items-center gap-2 sm:gap-4">
+                      <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-git/10 text-git flex items-center justify-center shadow-lg border border-git/20">
+                         <Laptop size={18} className="sm:hidden" />
+                         <Laptop size={24} className="hidden sm:block" />
                       </div>
                       <div className="flex flex-col">
-                         <span className="text-[10px] fw-black text-muted uppercase tracking-[0.2em] leading-none mb-1">Station</span>
-                         <span className="text-sm fw-black text-white">Local Repository</span>
+                         <div className="flex items-center gap-2">
+                            <span className="text-[8px] sm:text-[10px] fw-black text-muted uppercase tracking-[0.2em] leading-none">Station</span>
+                            <div className="flex items-center gap-1 sm:hidden">
+                               <div className="w-1.5 h-1.5 rounded-full bg-git animate-pulse" />
+                               <span className="text-[7px] fw-bold text-git/80 uppercase">Active</span>
+                            </div>
+                         </div>
+                         <span className="text-xs sm:text-sm fw-black text-white">Local Repository</span>
                       </div>
                    </div>
-                   <div className="flex items-center gap-2">
+                   <div className="hidden sm:flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-git animate-pulse" />
                       <span className="text-[10px] fw-bold text-git/80 uppercase">Active</span>
                    </div>
@@ -1542,21 +1549,28 @@ function RemoteSyncLab() {
           </div>
 
           {/* GitHub Remote */}
-          <div className="flex flex-col gap-6">
-             <div className="bg-secondary/5 rounded-[1.5rem] sm:rounded-[2rem] p-4 sm:p-8 border border-secondary/20 flex flex-col gap-8 shadow-xl relative overflow-hidden h-full group">
+          <div className="flex flex-col gap-4 sm:gap-6">
+             <div className="bg-secondary/5 rounded-[1.5rem] sm:rounded-[2rem] p-3 sm:p-8 border border-secondary/20 flex flex-col gap-4 sm:gap-8 shadow-xl relative overflow-hidden h-fit sm:h-full group">
                 <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
 
-                <div className="flex items-center justify-between border-b border-secondary/10 pb-5">
-                   <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-2xl bg-secondary/10 text-secondary flex items-center justify-center shadow-lg border border-secondary/20">
-                         <Cloud size={24} />
+                <div className="flex items-center justify-between border-b border-secondary/10 pb-2 sm:pb-5">
+                   <div className="flex items-center gap-2 sm:gap-4">
+                      <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-secondary/10 text-secondary flex items-center justify-center shadow-lg border border-secondary/20">
+                         <Cloud size={18} className="sm:hidden" />
+                         <Cloud size={24} className="hidden sm:block" />
                       </div>
                       <div className="flex flex-col">
-                         <span className="text-[10px] fw-black text-secondary/40 uppercase tracking-[0.2em] leading-none mb-1">Server</span>
-                         <span className="text-sm fw-black text-white">GitHub (Remote)</span>
+                         <div className="flex items-center gap-2">
+                           <span className="text-[8px] sm:text-[10px] fw-black text-secondary/40 uppercase tracking-[0.2em] leading-none">Server</span>
+                           <div className="px-1.5 py-0.5 rounded-full bg-secondary/10 border border-secondary/20 flex items-center gap-1 sm:hidden">
+                              <div className="w-1 h-1 rounded-full bg-secondary animate-pulse" />
+                              <span className="text-[6px] fw-black text-secondary uppercase tracking-widest">Cloud</span>
+                           </div>
+                         </div>
+                         <span className="text-xs sm:text-sm fw-black text-white">GitHub (Remote)</span>
                       </div>
                    </div>
-                   <div className="px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 flex items-center gap-2">
+                   <div className="hidden sm:flex px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 items-center gap-2">
                       <div className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
                       <span className="text-[8px] fw-black text-secondary uppercase tracking-widest">Cloud Sync</span>
                    </div>
@@ -1595,19 +1609,21 @@ function RemoteSyncLab() {
                    </div>
                 </div>
 
-                <div className="mt-auto pt-6 border-t border-secondary/5 flex items-center justify-center gap-2 text-[10px] fw-black text-secondary/30 uppercase tracking-[0.3em]">
-                   <Search size={12} />
-                   Public Repository Visibility
+                <div className="mt-auto pt-2 sm:pt-6 border-t border-secondary/5 flex items-center justify-center gap-2 text-[8px] sm:text-[10px] fw-black text-secondary/30 uppercase tracking-[0.3em]">
+                   <Search size={10} className="sm:hidden" />
+                   <Search size={12} className="hidden sm:block" />
+                   Remote Visibility
                 </div>
              </div>
           </div>
        </div>
 
-       <div className="w-full bg-black/40 rounded-3xl p-4 sm:p-6 border border-white/5 flex flex-col gap-5 z-10 backdrop-blur-sm mt-4">
-          <p className="text-sm sm:text-base text-white/80 leading-relaxed fw-medium italic">"{current.desc}"</p>
-          <div className="bg-black/60 border border-white/10 rounded-2xl p-4 flex items-center gap-4 shadow-inner">
-             <div className="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
-                <TermIcon size={18} />
+       <div className="w-full bg-black/40 rounded-3xl p-3 sm:p-6 border border-white/5 flex flex-col gap-2 sm:gap-5 z-10 backdrop-blur-sm mt-2 sm:mt-4">
+          <p className="text-[11px] sm:text-base text-white/80 leading-relaxed fw-medium italic text-center sm:text-left">"{current.desc}"</p>
+          <div className="bg-black/60 border border-white/10 rounded-2xl p-2 sm:p-4 flex items-center gap-3 sm:gap-4 shadow-inner">
+             <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
+                <TermIcon size={14} className="sm:hidden" />
+                <TermIcon size={18} className="hidden sm:block" />
              </div>
              <code className="text-[15px] font-mono text-secondary fw-bold flex items-center gap-2">
                 <span className="text-muted opacity-30 select-none">course @ git:</span>
