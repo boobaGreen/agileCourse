@@ -108,8 +108,8 @@ git rebase --abort`,
     },
     {
       type: 'game',
-      title: 'Lab: Dividi ed Unisci',
-      content: 'Questo è il workflow più comune: Biforca la storia creando una feature e poi riuniscila con un merge commit.',
+      title: 'Lab: Safe Experimentation',
+      content: 'This is the most common workflow: Split the history by creating a feature branch and then rejoin it with a merge commit.',
       gameType: 'git-graph-sim',
       gameData: {
         startState: {
@@ -121,10 +121,10 @@ git rebase --abort`,
           head: { type: 'branch', target: 'main' }
         },
         tasks: [
-          { id: '1', instruction: 'Crea un branch chiamato "feature" (usa il comando branch)', condition: 'BRANCH_EXISTS:feature' },
-          { id: '2', instruction: 'Spostati sul branch "feature" appena creato', condition: 'CURRENT_BRANCH:feature' },
-          { id: '3', instruction: 'Ora che sei su feature, fai un commit per simulare del nuovo lavoro isolato', condition: 'COMMIT_COUNT:feature:3' },
-          { id: '4', instruction: 'Torna su main e uniscici dentro il lavoro che hai fatto su feature', condition: 'MERGED:feature' } 
+          { id: '1', instruction: 'Create a branch named "feature" (use the branch command)', condition: 'BRANCH_EXISTS:feature' },
+          { id: '2', instruction: 'Switch to the newly created "feature" branch', condition: 'CURRENT_BRANCH:feature' },
+          { id: '3', instruction: 'Now that you are on feature, make a commit to simulate some isolated new work', condition: 'COMMIT_COUNT:feature:3' },
+          { id: '4', instruction: 'Return to main and merge the work you did on feature into it', condition: 'MERGED:feature' } 
         ]
       }
     },

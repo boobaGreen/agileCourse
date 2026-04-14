@@ -797,25 +797,26 @@ function EducationAnimation({ type }: { type: string }) {
       <div className="w-full flex flex-col items-center gap-6 p-4">
         {/* Storyboard Navigation */}
         <div className="w-full max-w-lg bg-white/5 p-4 rounded-3xl border border-white/10 shadow-2xl backdrop-blur-md">
-           <div className="flex items-center justify-between mb-4">
+           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <div className="flex flex-col">
                  <span className="text-[10px] text-primary fw-black uppercase tracking-widest leading-none mb-1">Concept Mastery • Step {step + 1}</span>
                  <h3 className="text-sm fw-black text-white">{steps[step].title}</h3>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 w-full sm:w-auto">
                  <button 
                    disabled={step === 0}
                    onClick={() => setStep(s => s - 1)}
-                   className="p-2 rounded-xl bg-white/5 border border-white/10 text-white disabled:opacity-20 hover:bg-white/10 transition-all"
+                   className="flex-1 sm:flex-none p-2 rounded-xl bg-white/5 border border-white/10 text-white disabled:opacity-20 hover:bg-white/10 transition-all flex justify-center"
                  >
                     <ArrowLeft size={16} />
                  </button>
                  <button 
                    disabled={step === steps.length - 1}
                    onClick={() => setStep(s => s + 1)}
-                   className="px-4 py-2 rounded-xl bg-primary text-white shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 fw-bold text-xs"
+                   className="flex-[2] sm:flex-none px-4 py-2 rounded-xl bg-primary text-white shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 fw-bold text-xs"
                  >
-                    Next Step
+                    <span className="hidden xs:inline">Next Step</span>
+                    <span className="xs:hidden">Next</span>
                     <ArrowRight size={16} />
                  </button>
               </div>
@@ -829,7 +830,7 @@ function EducationAnimation({ type }: { type: string }) {
            </div>
         </div>
 
-        <div className="relative w-full aspect-[2/1] bg-black/40 rounded-3xl border border-white/5 p-6 flex flex-col overflow-hidden shadow-2xl">
+        <div className="relative w-full aspect-[4/3] sm:aspect-[2/1] bg-black/40 rounded-3xl border border-white/5 p-3 sm:p-6 flex flex-col overflow-hidden shadow-2xl mt-4">
            <svg viewBox="0 0 400 200" className="w-full h-full">
              {/* Area Labels */}
              <text x="65" y="30" textAnchor="middle" className="text-[7px] fw-black uppercase tracking-widest" fill="rgba(255,255,255,0.4)">Working Dir</text>
@@ -986,25 +987,26 @@ function EducationAnimation({ type }: { type: string }) {
       <div className="w-full flex flex-col items-center gap-6 p-4">
         {/* Storyboard Navigation */}
         <div className="w-full max-w-lg bg-white/5 p-4 rounded-3xl border border-white/10 shadow-2xl backdrop-blur-md">
-           <div className="flex items-center justify-between mb-4">
+           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <div className="flex flex-col">
                  <span className="text-[10px] text-danger fw-black uppercase tracking-widest leading-none mb-1">Warning Simulation • Step {step + 1}</span>
                  <h3 className="text-sm fw-black text-white">{steps[step].title}</h3>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 w-full sm:w-auto">
                  <button 
                    disabled={step === 0}
                    onClick={() => setStep(s => s - 1)}
-                   className="p-2 rounded-xl bg-white/5 border border-white/10 text-white disabled:opacity-20 hover:bg-white/10 transition-all"
+                   className="flex-1 sm:flex-none p-2 rounded-xl bg-white/5 border border-white/10 text-white disabled:opacity-20 hover:bg-white/10 transition-all flex justify-center"
                  >
                     <ArrowLeft size={16} />
                  </button>
                  <button 
                    disabled={step === steps.length - 1}
                    onClick={() => setStep(s => s + 1)}
-                   className="px-4 py-2 rounded-xl bg-danger text-white shadow-lg shadow-danger/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 fw-bold text-xs"
+                   className="flex-[2] sm:flex-none px-4 py-2 rounded-xl bg-danger text-white shadow-lg shadow-danger/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 fw-bold text-xs"
                  >
-                    Next Step
+                    <span className="hidden xs:inline">Next Step</span>
+                    <span className="xs:hidden">Next</span>
                     <ArrowRight size={16} />
                  </button>
               </div>
@@ -1018,7 +1020,7 @@ function EducationAnimation({ type }: { type: string }) {
            </div>
         </div>
 
-        <div className="relative w-full aspect-[2/1] bg-black/40 rounded-3xl border border-white/5 p-6 flex flex-col overflow-hidden shadow-2xl">
+        <div className="relative w-full aspect-[4/3] sm:aspect-[2/1] bg-black/40 rounded-3xl border border-white/5 p-3 sm:p-6 flex flex-col overflow-hidden shadow-2xl mt-4">
            <svg viewBox="0 0 400 200" className="w-full h-full">
              {/* Track Labels */}
              <text x="10" y="55" className="text-[8px] font-black uppercase tracking-wider" fill="#4fd1c5">Remote (Origin)</text>
@@ -1114,13 +1116,13 @@ function EducationAnimation({ type }: { type: string }) {
                      </div>
 
                      {/* Mini-Terminal Badge */}
-                     <div className="bg-black/60 rounded-xl p-2.5 border border-white/5 shadow-inner flex items-center gap-3">
-                        <div className="flex gap-1">
+                     <div className="bg-black/60 rounded-xl p-2.5 border border-white/5 shadow-inner flex items-center gap-3 overflow-x-auto min-w-0">
+                        <div className="flex gap-1 shrink-0">
                            <div className="w-1.5 h-1.5 rounded-full bg-red-500/50" />
                            <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/50" />
                            <div className="w-1.5 h-1.5 rounded-full bg-green-500/50" />
                         </div>
-                        <code className={`text-[10px] mono ${step === 3 ? 'text-danger' : 'text-git'} fw-bold overflow-hidden text-ellipsis whitespace-nowrap`}>
+                        <code className="text-[9px] sm:text-[10px] mono text-git fw-bold whitespace-nowrap">
                            <span className="text-muted opacity-50 mr-2">$</span>
                            {steps[step].cmd}
                         </code>
@@ -1154,9 +1156,6 @@ function EducationAnimation({ type }: { type: string }) {
     return <ManualVsGitLab />
   }
 
-  if (type === 'git-hash-lab') {
-    return <HashLab />
-  }
 
   if (type === 'git-stash-lab') {
     return <StashLab />
@@ -1226,36 +1225,6 @@ function ManualVsGitLab() {
   )
 }
 
-function HashLab() {
-  const [text, setText] = useState('Type something...')
-  const hash = Array.from(text).reduce((acc, char) => (acc << 5) - acc + char.charCodeAt(0), 0).toString(16).padEnd(7, '0').slice(0, 7)
-  
-  return (
-    <div className="w-full flex flex-col items-center gap-6 p-8 bg-surface/30 rounded-3xl border border-white/5">
-       <div className="w-full max-w-xs relative">
-          <input 
-            type="text" 
-            value={text} 
-            onChange={(e) => setText(e.target.value)}
-            className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white text-sm focus:border-primary transition-all outline-none text-center font-mono"
-          />
-          <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-muted opacity-30" size={16} />
-       </div>
-       <div className="flex flex-col items-center gap-2">
-          <div className="text-[9px] fw-black text-muted uppercase tracking-widest">The SHA-1 Fingerprint</div>
-          <motion.div 
-             key={hash}
-             initial={{ scale: 1.2, color: '#ffb703' }}
-             animate={{ scale: 1, color: '#fff' }}
-             className="text-4xl font-mono font-black tracking-tighter"
-          >
-             {hash}
-          </motion.div>
-       </div>
-       <p className="text-[10px] text-muted text-center max-w-sm italic">Change a single pixel, and the Hash becomes completely different! 🔒</p>
-    </div>
-  )
-}
 
 function MergeRebaseLab() {
   const [mode, setMode] = useState<'merge' | 'rebase'>('merge')

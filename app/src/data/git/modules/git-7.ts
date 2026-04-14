@@ -63,7 +63,7 @@ git status                  # What's happening?`,
     {
       type: 'game',
       title: 'Lab: Detached HEAD',
-      content: 'Scollega la tua testa (HEAD) dal branch attuale per viaggiare nel tempo e ispezionare commit passati senza alterare la storia principale.',
+      content: 'Detach your HEAD from the current branch to travel back in time and inspect past commits without altering the main history.',
       gameType: 'git-graph-sim',
       gameData: {
         startState: {
@@ -77,8 +77,8 @@ git status                  # What's happening?`,
           head: { type: 'branch', target: 'main' }
         },
         tasks: [
-          { id: '1', instruction: 'Sganciati dal branch corrente facendo checkout direttamente verso l\'hash C2', condition: 'DETACHED_HEAD:C2' },
-          { id: '2', instruction: 'Torna al presente riagganciando la HEAD sul branch main', condition: 'CURRENT_BRANCH:main' }
+          { id: '1', instruction: 'Detach from the current branch by checking out directly to hash C2', condition: 'DETACHED_HEAD:C2' },
+          { id: '2', instruction: 'Return to the present by re-attaching HEAD to the main branch', condition: 'CURRENT_BRANCH:main' }
         ]
       }
     },

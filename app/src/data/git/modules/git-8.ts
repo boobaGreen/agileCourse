@@ -31,8 +31,8 @@ export const git8: Module = {
     },
     {
       type: 'game',
-      title: 'Lab: Cancella o Annulla?',
-      content: 'Usa `reset` per riscrivere la storia locale, ma usa `revert` per riparare codice che hai già condiviso coi colleghi.',
+      title: 'Lab: Reset or Revert?',
+      content: 'Use `reset` to rewrite local history, but use `revert` to fix code that you have already shared with colleagues.',
       gameType: 'git-graph-sim',
       gameData: {
         startState: {
@@ -45,7 +45,7 @@ export const git8: Module = {
           head: { type: 'branch', target: 'main' }
         },
         tasks: [
-          { id: '1', instruction: 'Non puoi usare reset perché cancelleresti history pubblica. Usa il comando corretto per creare un "anti-commit" che annulli C3 in sicurezza.', condition: 'COMMIT_COUNT:main:4' }
+          { id: '1', instruction: 'You can\'t use reset because you would delete public history. Use the correct command to create an "anti-commit" that safely undoes C3.', condition: 'COMMIT_COUNT:main:4' }
         ]
       }
     },

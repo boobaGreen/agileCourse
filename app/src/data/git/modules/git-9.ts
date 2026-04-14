@@ -58,8 +58,8 @@ export const git9: Module = {
     },
     {
       type: 'game',
-      title: 'Lab: La Raccolta Delle Ciliegie',
-      content: 'Il tuo collega ha fatto un disastro sul suo branch, ma ci sono due commit eccellenti in mezzo al casino. Rubali per il tuo main.',
+      title: 'Lab: Cherry-picking Harvest',
+      content: 'Your colleague made a mess on their branch, but there are two excellent commits in the middle of the chaos. Steal them for your main branch.',
       gameType: 'git-graph-sim',
       gameData: {
         startState: {
@@ -74,8 +74,8 @@ export const git9: Module = {
           head: { type: 'branch', target: 'main' }
         },
         tasks: [
-          { id: '1', instruction: 'Assicurati di essere su main. Usa il comando per "rubare" (cherry-pick) unicamente il commit C3', condition: 'COMMIT_COUNT:main:3' },
-          { id: '2', instruction: 'Ripeti l\'operazione per rubarne un altro: porta dentro anche C5, ignorando il bug', condition: 'COMMIT_COUNT:main:4' }
+          { id: '1', instruction: 'Make sure you are on main. Use the command to "steal" (cherry-pick) only commit C3', condition: 'COMMIT_COUNT:main:3' },
+          { id: '2', instruction: 'Repeat the operation to steal another one: bring in C5 as well, ignoring the bug', condition: 'COMMIT_COUNT:main:4' }
         ]
       }
     },

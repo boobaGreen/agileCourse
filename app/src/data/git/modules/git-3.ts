@@ -35,10 +35,9 @@ export const git3: Module = {
       content: 'A commit isn\'t just a list of changes; it\'s a **complete snapshot** of every file in your project. Each commit has a unique **SHA identifier** (e.g., `a1b2c3d`) — a digital fingerprint. A full Git hash is exactly **40 hexadecimal characters** long, ensuring your history can never be tampered with.'
     },
     {
-      type: 'animation',
-      title: '🧪 The Hashing Lab',
-      content: 'Every commit has a unique SHA fingerprint. Change a single character in your code, and the fingerprint changes completely!',
-      animationType: 'git-hash-lab'
+      type: 'concept',
+      title: '🧪 The Hashing Logic',
+      content: 'Every commit has a unique SHA fingerprint. Git uses this to ensure that no part of your history can be changed without it noticing. If you change even a single character in your code, the fingerprint changes completely!\n\n**Examples of Git Hashes:**\n- `a1b2c3d` (A shortened 7-character hash)\n- `e69de29bb2d1d6434b8b29ae775ad8c2e48c5391` (A full 40-character version)'
     },
     {
       type: 'concept',
@@ -73,8 +72,8 @@ export const git3: Module = {
     },
     {
       type: 'game',
-      title: 'Lab: I Primi Passi',
-      content: 'Mettiamo in pratica! Apri il terminale interattivo qui sotto e fai due commit per far avanzare la storia sul branch main.',
+      title: 'Lab: First Steps',
+      content: 'Let\'s put it into practice! Open the interactive terminal below and make two commits to advance the history on the main branch.',
       gameType: 'git-graph-sim',
       gameData: {
         startState: {
@@ -83,8 +82,8 @@ export const git3: Module = {
           head: { type: 'branch', target: 'main' }
         },
         tasks: [
-          { id: '1', instruction: 'Fai un nuovo commit sulla history (il messaggio o il contenuto non importa in questa simulazione)', condition: 'COMMIT_COUNT:main:2' },
-          { id: '2', instruction: 'Fai un ulteriore commit per allungare il branch', condition: 'COMMIT_COUNT:main:3' }
+          { id: '1', instruction: 'Create a new commit in the history (the message or content doesn\'t matter in this simulation)', condition: 'COMMIT_COUNT:main:2' },
+          { id: '2', instruction: 'Create another commit to extend the branch', condition: 'COMMIT_COUNT:main:3' }
         ]
       }
     },

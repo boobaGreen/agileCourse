@@ -62,7 +62,7 @@ export const git6: Module = {
     {
       type: 'game',
       title: 'Lab: Professional Workflow',
-      content: 'Simula un tipico workflow aziendale: crea un branch per una nuova funzionalità, lavoraci sopra isolato, e poi uniscilo al master una volta terminato.',
+      content: 'Simulate a typical corporate workflow: create a branch for a new feature, work on it in isolation, and then merge it into main once finished.',
       gameType: 'git-graph-sim',
       gameData: {
         startState: {
@@ -74,10 +74,10 @@ export const git6: Module = {
           head: { type: 'branch', target: 'main' }
         },
         tasks: [
-          { id: '1', instruction: 'Crea un nuovo branch chiamato "feature-login"', condition: 'BRANCH_EXISTS:feature-login' },
-          { id: '2', instruction: 'Spostati sul branch appena creato', condition: 'CURRENT_BRANCH:feature-login' },
-          { id: '3', instruction: 'Fai un commit per simulare il lavoro sulla login', condition: 'COMMIT_COUNT:feature-login:3' },
-          { id: '4', instruction: 'Torna su main e unisci il lavoro fatto su feature-login', condition: 'MERGED:feature-login' }
+          { id: '1', instruction: 'Create a new branch named "feature-login"', condition: 'BRANCH_EXISTS:feature-login' },
+          { id: '2', instruction: 'Switch to the newly created branch', condition: 'CURRENT_BRANCH:feature-login' },
+          { id: '3', instruction: 'Make a commit to simulate working on the login', condition: 'COMMIT_COUNT:feature-login:3' },
+          { id: '4', instruction: 'Return to main and merge the work done on feature-login', condition: 'MERGED:feature-login' }
         ]
       }
     },

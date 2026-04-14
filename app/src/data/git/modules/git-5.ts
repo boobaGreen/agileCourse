@@ -100,8 +100,8 @@ git push -u origin main`,
     },
     {
       type: 'game',
-      title: 'Lab: Sincronizza il Team',
-      content: 'Fai finta di aver appena fatto `git fetch` e di aver scaricato dal server un nuovo branch chiamato `origin/main` coi commit del tuo team. Uniscilo al tuo lavoro locale senza creare conflitti!',
+      title: 'Lab: Sync the Team',
+      content: 'Imagine you just ran `git fetch` and downloaded a new branch called `origin/main` with your team\'s commits. Merge it into your local work to finalize the synchronization!',
       gameType: 'git-graph-sim',
       gameData: {
         startState: {
@@ -114,7 +114,7 @@ git push -u origin main`,
           head: { type: 'branch', target: 'main' }
         },
         tasks: [
-          { id: '1', instruction: 'Trovi il nuovo lavoro sul branch origin/main: uniscilo al tuo branch per finire la sincronizzazione!', condition: 'MERGED:origin/main' }
+          { id: '1', instruction: 'You find new work on the origin/main branch: merge it into your branch to finish the synchronization!', condition: 'MERGED:origin/main' }
         ]
       }
     },
