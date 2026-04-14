@@ -54,19 +54,32 @@ export const git10: Module = {
       videoUrl: 'https://www.youtube.com/playlist?list=PLymYmPL9yPGp5bcyx3LqHZmS8KDYsT4NY'
     },
 
+    // ── GIT KATAS ────────────────────────────────────────────────────
+    {
+      type: 'concept',
+      title: '🥋 Git Katas: Deliberate CLI Practice',
+      content: 'A collection of **30+ hands-on exercises** created by Eficode Academy, inspired by the martial arts concept of "Kata" — deliberate, repetitive practice to build muscle memory.\n\nEach kata is a self-contained challenge: you clone the repo, run a setup script, and solve a specific Git problem in your own terminal. From `basic-commits` to `interactive-rebase` and `merge-conflict` resolution.\n\n**Best for**: Developers who want to practice **real CLI commands** in a safe sandbox.\n**Difficulty**: Beginner to Advanced (30+ exercises, progressive)\n**Play Mode**: Local terminal — Clone & Practice\n\n📂 [Clone Git Katas](https://github.com/eficode-academy/git-katas)\n📖 [GitHub Katas (PRs & Issues)](https://github.com/eficode-academy/github-katas)'
+    },
+    {
+      type: 'video',
+      title: '📺 Git for Professionals — Exercises & Best Practices',
+      content: 'A high-quality tutorial covering practical Git exercises, branching strategies, and workflows — the same skills you will practice with Git Katas.',
+      videoUrl: 'https://www.youtube.com/watch?v=Uszj_k0DGsg'
+    },
+
     // ── COMPARISON TABLE ─────────────────────────────────────────────
     {
       type: 'table',
-      title: '⚔️ Which game should you start with?',
+      title: '⚔️ Which tool should you start with?',
       content: 'A quick comparison to help you choose:',
       tableData: {
-        headers: ['Feature', 'Oh My Git! 🎮', 'Learn Git Branching 🌐'],
+        headers: ['Feature', 'Oh My Git! 🎮', 'Learn Git Branching 🌐', 'Git Katas 🥋'],
         rows: [
-          ['**Platform**', 'Desktop app (download)', 'Web browser (instant)'],
-          ['**Interface**', 'Card-based drag & drop', 'Terminal commands + visual tree'],
-          ['**Best for**', 'Absolute beginners', 'Intermediate to advanced Git concepts'],
-          ['**Topics covered**', 'add, commit, branch, merge fundamentals', 'Branching, rebasing, cherry-pick, remote ops'],
-          ['**Cost**', 'Free & Open Source', 'Free']
+          ['**Platform**', 'Desktop app (download)', 'Web browser (instant)', 'Local terminal (clone repo)'],
+          ['**Interface**', 'Card-based drag & drop', 'Terminal + visual tree', 'Real CLI with setup scripts'],
+          ['**Best for**', 'Absolute beginners', 'Visualizing branches & merges', 'Building real CLI muscle memory'],
+          ['**Topics covered**', 'add, commit, branch, merge', 'Branch, rebase, cherry-pick, remotes', 'All: staging, merge conflicts, rebase, stash, hooks, submodules'],
+          ['**Cost**', 'Free & Open Source', 'Free', 'Free & Open Source']
         ]
       }
     },
@@ -80,7 +93,7 @@ export const git10: Module = {
     {
       type: 'tip',
       title: '🎯 Suggested Learning Path',
-      content: '**Step 1**: Start with **Oh My Git!** to build intuition with the visual card system.\n**Step 2**: Move to **Learn Git Branching** and complete the Introduction Sequence.\n**Step 3**: Challenge yourself with the Remote levels in Learn Git Branching.\n**Step 4**: Come back here and ace the Final Quiz! 🏆'
+      content: '**Step 1**: Start with **Oh My Git!** to build intuition with the visual card system.\n**Step 2**: Move to **Learn Git Branching** and complete the Introduction Sequence.\n**Step 3**: Clone the **Git Katas** repo and practice `basic-commits`, `basic-staging`, and `basic-branching`.\n**Step 4**: Challenge yourself with the Remote levels in Learn Git Branching.\n**Step 5**: Tackle advanced katas: `merge-conflict`, `rebase-branch`, `cherry-pick`.\n**Step 6**: Come back here and ace the Final Quiz! 🏆'
     }
   ]
 }
