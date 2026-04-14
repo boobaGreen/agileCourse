@@ -26,9 +26,20 @@ export interface Section {
   videoUrl?: string
   imageUrl?: string
   animationType?: string
-  gameType?: 'drag-order' | 'drag-classify' | 'choose-path' | 'terminal-sim' | 'external'
-  gameData?: unknown
+  gameType?: 'drag-order' | 'drag-classify' | 'choose-path' | 'terminal-sim' | 'git-graph-sim' | 'external'
+  gameData?: unknown // Type will be narrowed by components
   externalLink?: { label: string, url: string, xpPrompt: string }
+}
+
+export interface GitGraphState {
+  commits: Record<string, { id: string, parents: string[], message: string }>;
+  branches: Record<string, string>; // name -> commit id
+  head: { type: 'branch' | 'commit', target: string };
+}
+
+export interface GitGraphGameData {
+  startState: GitGraphState;
+  tasks: { id: string, instruction: string, condition: string, completed?: boolean }[];
 }
 
 export interface Module {

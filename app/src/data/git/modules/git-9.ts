@@ -21,10 +21,9 @@ export const git9: Module = {
       content: 'Imagine there is a critical bugfix on a messy "experimental" branch. You don\'t want to merge the whole messy branch, you just want that **one specific fix**. \n\n**Cherry-pick** lets you grab a commit from anywhere and apply it to your current branch. It\'s like picking the best fruit from a tree without taking the whole branch.'
     },
     {
-      type: 'animation',
-      title: '🧪 Cherry-Pick Simulation',
-      content: 'See how to surgically move a single commit between branches.',
-      animationType: 'git-cherry-pick-lab'
+      type: 'concept',
+      title: '🧪 Cherry-Pick Visualization',
+      content: 'Cherry-picking is like copy-pasting a specific commit from one branch to another. It creates a brand new commit on your current branch with the exact same changes as the source.'
     },
     {
        type: 'concept',
@@ -32,10 +31,9 @@ export const git9: Module = {
        content: 'When joining branches, you have two philosophies:\n\n1. **Merge**: "Preserve the historical truth." It creates a merge commit showing exactly when branches rejoined.\n2. **Rebase**: "Maintain a clean, linear history." It rewrites your commits to look like they were built on top of the latest version of the main branch.\n\n**Beginner Tip**: Keep it simple. Merge is safer for teams; Rebase is better for keeping a clean personal history.'
     },
     {
-      type: 'animation',
-      title: '🧪 The Rebase vs Merge Lab',
-      content: 'Compare the two ways of joining work and see how the timeline changes.',
-      animationType: 'git-merge-rebase-lab'
+      type: 'concept',
+      title: '🧪 Rebase vs Merge Flow',
+      content: 'A **Merge** creates a diamond shape in your graph. A **Rebase** creates a straight line. Rebase is like saying: "I want my changes to look like they were always meant to be at the front of the line."'
     },
     {
       type: 'concept',
@@ -43,10 +41,9 @@ export const git9: Module = {
       content: '**The Problem**: A bug was introduced somewhere in the last 100 commits, but you don\'t know which one. Testing each one manually would take hours.\n\n**The Solution**: `git bisect` uses **Binary Search**. It picks a commit in the middle and asks you "Is it broken?". Based on your answer, it eliminates half the commits and repeats. It finds the culprit with surgical precision in minutes.'
     },
     {
-      type: 'animation',
-      title: '🕹️ Bisect Logic Game',
-      content: 'Play the binary search game to find the bug in a timeline of commits.',
-      animationType: 'git-bisect-lab'
+      type: 'concept',
+      title: '🕹️ Bisect Logic',
+      content: 'When debugging, `git bisect start` marks the "Bad" (broken) and "Good" (working) points. Git then checks out the point right in the middle for you to test.'
     },
     {
       type: 'concept',
@@ -58,6 +55,29 @@ export const git9: Module = {
       title: '📦 The .gitignore Builder',
       content: 'Practice identifying which files should be tracked and which should be ignored.',
       animationType: 'git-ignore-lab'
+    },
+    {
+      type: 'game',
+      title: 'Lab: La Raccolta Delle Ciliegie',
+      content: 'Il tuo collega ha fatto un disastro sul suo branch, ma ci sono due commit eccellenti in mezzo al casino. Rubali per il tuo main.',
+      gameType: 'git-graph-sim',
+      gameData: {
+        startState: {
+          commits: { 
+            'C1': { id: 'C1', parents: [], message: 'Initial commit' },
+            'C2': { id: 'C2', parents: ['C1'], message: 'Main work' },
+            'C3': { id: 'C3', parents: ['C1'], message: 'Good feature 1' },
+            'C4': { id: 'C4', parents: ['C3'], message: 'Terrible bug' },
+            'C5': { id: 'C5', parents: ['C4'], message: 'Good feature 2' }
+          },
+          branches: { 'main': 'C2', 'chaos': 'C5' },
+          head: { type: 'branch', target: 'main' }
+        },
+        tasks: [
+          { id: '1', instruction: 'Assicurati di essere su main. Usa il comando per "rubare" (cherry-pick) unicamente il commit C3', condition: 'COMMIT_COUNT:main:3' },
+          { id: '2', instruction: 'Ripeti l\'operazione per rubarne un altro: porta dentro anche C5, ignorando il bug', condition: 'COMMIT_COUNT:main:4' }
+        ]
+      }
     },
     {
       type: 'tip',

@@ -43,7 +43,7 @@ git branch -d feature/login-page`,
     {
       type: 'animation',
       title: '🧪 Merge vs Rebase Lab',
-      content: 'Interactive comparison: See how \`merge\` creates a new path while \`rebase\` rewrites history for a clean line.',
+      content: 'Interactive comparison: See how `merge` creates a new path while `rebase` rewrites history for a clean line.',
       animationType: 'git-merge-rebase-lab'
     },
     {
@@ -99,12 +99,34 @@ git rebase --abort`,
     {
       type: 'concept',
       title: '⏩ Fast-Forward Merge',
-      content: 'A **fast-forward merge** happens when the target branch (e.g. \`main\`) has had **no new commits** since you branched off. In this case, Git doesn\'t need to create a merge commit — it simply moves the branch pointer forward to the tip of your feature branch.\n\nThis results in a perfectly linear history, as if you had committed directly to \`main\`. Git does fast-forward merges automatically when possible.\n\n💡 You can force a merge commit even in fast-forward scenarios with \`git merge --no-ff feature/x\` — useful for keeping a record of the feature branch in history.'
+      content: 'A **fast-forward merge** happens when the target branch (e.g. `main`) has had **no new commits** since you branched off. In this case, Git doesn\'t need to create a merge commit — it simply moves the branch pointer forward to the tip of your feature branch.\n\nThis results in a perfectly linear history, as if you had committed directly to `main`. Git does fast-forward merges automatically when possible.\n\n💡 You can force a merge commit even in fast-forward scenarios with `git merge --no-ff feature/x` — useful for keeping a record of the feature branch in history.'
     },
     {
       type: 'tip',
       title: '⚠️ Golden Rule of Rebase',
       content: '**Never rebase commits that have been pushed to a shared remote branch.** Rebase rewrites history — if others have already fetched those commits, you\'ll create chaos. Only rebase local, unpublished commits.'
+    },
+    {
+      type: 'game',
+      title: 'Lab: Dividi ed Unisci',
+      content: 'Questo è il workflow più comune: Biforca la storia creando una feature e poi riuniscila con un merge commit.',
+      gameType: 'git-graph-sim',
+      gameData: {
+        startState: {
+          commits: { 
+            'C1': { id: 'C1', parents: [], message: 'Initial commit' },
+            'C2': { id: 'C2', parents: ['C1'], message: 'Add index' }
+          },
+          branches: { 'main': 'C2' },
+          head: { type: 'branch', target: 'main' }
+        },
+        tasks: [
+          { id: '1', instruction: 'Crea un branch chiamato "feature" (usa il comando branch)', condition: 'BRANCH_EXISTS:feature' },
+          { id: '2', instruction: 'Spostati sul branch "feature" appena creato', condition: 'CURRENT_BRANCH:feature' },
+          { id: '3', instruction: 'Ora che sei su feature, fai un commit per simulare del nuovo lavoro isolato', condition: 'COMMIT_COUNT:feature:3' },
+          { id: '4', instruction: 'Torna su main e uniscici dentro il lavoro che hai fatto su feature', condition: 'MERGED:feature' } 
+        ]
+      }
     },
     {
       type: 'tip',

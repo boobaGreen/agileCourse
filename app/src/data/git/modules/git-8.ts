@@ -15,27 +15,39 @@ export const git8: Module = {
       content: 'Git lets you "undo" almost anything. But you need to know which tool to use for which mistake.'
     },
     {
-      type: 'animation',
-      title: '📍 Understanding HEAD',
-      content: 'See where the "You Are Here" pointer (HEAD) actually lives and how it moves when you switch branches.',
-      animationType: 'git-head-lab'
+      type: 'concept',
+      title: '📍 Visualizing HEAD',
+      content: 'Think of **HEAD** as the "You Are Here" pointer on a map. When you checkout a branch, HEAD points to that branch nickname. When you checkout a commit, HEAD points to the raw hash.\n\nRun `git log --oneline --graph --all` to see your HEAD in relation to all other branches.'
     },
     {
-      type: 'animation',
-      title: '🧪 The Undo Sandbox',
-      content: 'Compare `git revert` (safe history) vs `git reset --hard` (permanent deletion). Use with caution!',
-      animationType: 'git-undo-lab'
-    },
-    {
-      type: 'animation',
-      title: '📦 The Emergency Stash',
-      content: 'Need to switch branches but your work isn\'t ready to commit?',
-      animationType: 'git-stash-lab'
+      type: 'concept',
+      title: '🧪 Reset vs Revert',
+      content: '**Reset**: Moves the branch pointer backward. It effectively "deletes" commits from history. Use ONLY on personal, local branches.\n\n**Revert**: Creates a NEW commit that does the exact opposite of a past commit. It preserves history and is safe for shared/public branches.'
     },
     {
       type: 'concept',
       title: '🔌 Detached HEAD — Lost in Time',
       content: 'Normally, **HEAD** is a pointer that points to your current branch. However, if you checkout a specific commit hash directly (e.g., `git checkout a1b2c3d`), HEAD points directly to that commit instead of a branch. This is the **detached HEAD** state. Any new commits here are not on a branch and may get lost!'
+    },
+    {
+      type: 'game',
+      title: 'Lab: Cancella o Annulla?',
+      content: 'Usa `reset` per riscrivere la storia locale, ma usa `revert` per riparare codice che hai già condiviso coi colleghi.',
+      gameType: 'git-graph-sim',
+      gameData: {
+        startState: {
+          commits: { 
+            'C1': { id: 'C1', parents: [], message: 'Initial commit' },
+            'C2': { id: 'C2', parents: ['C1'], message: 'Working code' },
+            'C3': { id: 'C3', parents: ['C2'], message: 'FATAL CRASH BUG' }
+          },
+          branches: { 'main': 'C3', 'shared': 'C3' },
+          head: { type: 'branch', target: 'main' }
+        },
+        tasks: [
+          { id: '1', instruction: 'Non puoi usare reset perché cancelleresti history pubblica. Usa il comando corretto per creare un "anti-commit" che annulli C3 in sicurezza.', condition: 'COMMIT_COUNT:main:4' }
+        ]
+      }
     },
     {
       type: 'tip',

@@ -35,12 +35,15 @@ interface AppStore extends UserProgress {
 
 const BADGES: Record<string, Badge> = {
   'git-seedling':   { id: 'git-seedling',   emoji: '🌱', title: 'Git Seedling',     description: 'Completed your first Git module' },
-  'git-branching':  { id: 'git-branching',  emoji: '🌿', title: 'Branching Out',    description: 'Completed all Git modules' },
+  'git-branching':  { id: 'git-branching',  emoji: '🌿', title: 'Branch Master',    description: 'Mastered branching and merging logic' },
+  'git-workflow':   { id: 'git-workflow',   emoji: '🏗️', title: 'The Architect',     description: 'Mastered professional Git workflows' },
+  'git-destructive':{ id: 'git-destructive', emoji: '🛡️', title: 'Safety First',      description: 'Mastered Reset and Revert safety' },
+  'git-pro':        { id: 'git-pro',        emoji: '🏆', title: 'Git Pro',           description: 'Completed the entire Git track' },
   'docker-swim':    { id: 'docker-swim',    emoji: '🐳', title: 'First Swim',        description: 'Completed your first Docker module' },
   'docker-harbor':  { id: 'docker-harbor',  emoji: '⚓', title: 'Harbor Master',     description: 'Completed all Docker modules' },
   'k8s-deck':       { id: 'k8s-deck',       emoji: '☸️', title: 'Deck Hand',         description: 'Completed your first K8s module' },
   'k8s-helmsman':   { id: 'k8s-helmsman',   emoji: '🎖️', title: 'The Helmsman',      description: 'Completed all K8s modules' },
-  'full-stack':     { id: 'full-stack',     emoji: '🏆', title: 'Full Stack Sailor', description: 'Completed all three tracks' },
+  'full-stack':     { id: 'full-stack',     emoji: '🥇', title: 'Full Stack Sailor', description: 'Completed all three tracks' },
 }
 
 export { BADGES }

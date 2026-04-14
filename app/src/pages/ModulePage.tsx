@@ -5,7 +5,7 @@ import { useAppStore } from '../store/useAppStore'
 import { GIT_MODULES } from '../data/git/modules/index'
 import { DOCKER_MODULES } from '../data/docker/modules/index'
 import { K8S_MODULES } from '../data/k8s/modules/index'
-import type { Section, QuizQuestion } from '../data/types'
+import type { Section, QuizQuestion, GitGraphGameData } from '../data/types'
 import {
   ArrowLeft, ArrowRight, Zap,
   ExternalLink, BookOpen, Code2, Lightbulb, Sparkles,
@@ -13,6 +13,7 @@ import {
   AlertTriangle, Users, RefreshCcw, RotateCcw, Terminal as TermIcon,
   Laptop, Cloud, Search, ShieldCheck, ArrowUp
 } from 'lucide-react'
+import { GitGraphSim } from '../components/games/git-simulator/GitGraphSim'
 import confetti from 'canvas-confetti'
 
 type GameDataItem = { id: string, label: string }
@@ -96,6 +97,21 @@ export default function ModulePage() {
     }
   }, [mod, quizData, quizAnswers, saveQuizScore, addXP])
 
+  const handleInternalGameComplete = useCallback((moduleId: string, gameTitle: string) => {
+    addXP(50)
+    
+    // Badge dinamici al completamento di lab specifici
+    if (moduleId === 'git-6') {
+      awardBadge({ id: 'git-workflow', emoji: '🏗️', title: 'The Architect', description: 'Mastered professional Git workflows' })
+    }
+    if (moduleId === 'git-8') {
+      awardBadge({ id: 'git-destructive', emoji: '🛡️', title: 'Safety First', description: 'Mastered Reset and Revert safety' })
+    }
+    
+    // Notifica discreta
+    console.log(`Lab Completed: ${gameTitle} in ${moduleId}`)
+  }, [addXP, awardBadge])
+
   const handleCompleteTheory = () => {
     if (!mod) return
 
@@ -118,12 +134,16 @@ export default function ModulePage() {
     if (!completedModules.includes(mod.id)) {
       completeModule(mod.id)
       
+      // Track milestones and Badges
       if (mod.id === 'git-1') awardBadge({ id: 'git-seedling', emoji: '🌱', title: 'Git Seedling', description: 'Completed your first Git module' })
-      if (mod.id === 'git-9') awardBadge({ id: 'git-branching', emoji: '🌿', title: 'Branching Out', description: 'Completed all Git modules' })
-      if (mod.id === 'docker-1') awardBadge({ id: 'docker-mate', emoji: '⚓', title: 'First Mate', description: 'Mastered the basics of containers' })
-      if (mod.id === 'docker-9') awardBadge({ id: 'docker-harbor', emoji: '🐋', title: 'Harbor Master', description: 'Completed the full Docker curriculum' })
-      if (mod.id === 'k8s-1') awardBadge({ id: 'k8s-kybernitis', emoji: '☸️', title: 'Kybernitis', description: 'Started the Kubernetes journey' })
-      if (mod.id === 'k8s-9') awardBadge({ id: 'k8s-admiral', emoji: '🤴', title: 'Fleet Admiral', description: 'Mastered the art of orchestration' })
+      if (mod.id === 'git-9') awardBadge({ id: 'git-branching', emoji: '🌿', title: 'Branch Master', description: 'Mastered branching and merging logic' })
+      if (mod.id === 'git-11') awardBadge({ id: 'git-pro', emoji: '🏆', title: 'Git Pro', description: 'Completed the entire Git track' })
+      
+      if (mod.id === 'docker-1') awardBadge({ id: 'docker-swim', emoji: '🐳', title: 'First Swim', description: 'Completed your first Docker module' })
+      if (mod.id === 'docker-9') awardBadge({ id: 'docker-harbor', emoji: '⚓', title: 'Harbor Master', description: 'Completed all Docker modules' })
+      
+      if (mod.id === 'k8s-1') awardBadge({ id: 'k8s-deck', emoji: '☸️', title: 'Deck Hand', description: 'Completed your first K8s module' })
+      if (mod.id === 'k8s-11') awardBadge({ id: 'k8s-helmsman', emoji: '🎖️', title: 'The Helmsman', description: 'Completed all K8s modules' })
     }
 
     const trackModules = mod.track === 'git' ? GIT_MODULES : mod.track === 'docker' ? DOCKER_MODULES : K8S_MODULES
@@ -213,7 +233,12 @@ export default function ModulePage() {
                 {/* Content Sections */}
                 <div className="flex flex-col gap-4">
                   {mod.sections.map((section, i) => (
-                    <SectionCard key={i} section={section} />
+                    <SectionCard 
+                      key={i} 
+                      section={section} 
+                      moduleId={mod.id} 
+                      onCompleteGame={(title) => handleInternalGameComplete(mod.id, title)} 
+                    />
                   ))}
                 </div>
 
@@ -407,7 +432,7 @@ export default function ModulePage() {
   )
 }
 
-function SectionCard({ section }: { section: Section }) {
+function SectionCard({ section, moduleId, onCompleteGame }: { section: Section, moduleId: string, onCompleteGame: (title: string) => void }) {
   const icons: Record<string, React.ElementType> = {
     intro: BookOpen,
     concept: Sparkles,
@@ -589,7 +614,11 @@ function SectionCard({ section }: { section: Section }) {
       {/* Mini-Games */}
       {section.type === 'game' && section.gameType && (
         <div className="mt-4">
-           <MiniGame gameType={section.gameType} gameData={section.gameData as GameDataItem[] | GameDataClassify} />
+           <MiniGame 
+             gameType={section.gameType} 
+             gameData={section.gameData} 
+             onComplete={() => onCompleteGame(section.title || 'Challenge')} 
+           />
         </div>
       )}
     </div>
@@ -2055,25 +2084,33 @@ function CherryPickLab() {
   )
 }
 
-function MiniGame({ gameType, gameData }: { gameType: string, gameData: GameDataItem[] | GameDataClassify | TerminalGameData }) {
+interface GameDataItem { id: string, label: string }
+interface GameDataClassify { categories: { id: string, label: string }[], items: { id: string, label: string, categoryId: string }[] }
+interface TerminalGameData { startText?: string, steps: { instruction: string, expectedCommand: string, output?: string }[] }
+
+function MiniGame({ gameType, gameData, onComplete }: { gameType: string, gameData: unknown, onComplete?: () => void }) {
   if (gameType === 'drag-order') {
-    return <DragOrderGame items={gameData as GameDataItem[]} />
+    return <DragOrderGame items={gameData as GameDataItem[]} onComplete={onComplete} />
   }
 
   if (gameType === 'drag-classify') {
     const data = gameData as GameDataClassify
-    return <DragClassifyGame categories={data.categories} items={data.items} />
+    return <DragClassifyGame categories={data.categories} items={data.items} onComplete={onComplete} />
   }
 
-  if (gameType === 'terminal') {
-    return <TerminalSimulatorGame data={gameData as TerminalGameData} />
+  if (gameType === 'terminal-sim') {
+    return <TerminalSimulatorGame data={gameData as TerminalGameData} onComplete={onComplete} />
+  }
+
+  if (gameType === 'git-graph-sim') {
+    return <GitGraphSim data={gameData as GitGraphGameData} onComplete={onComplete} />
   }
 
   return <div className="p-10 text-center text-muted border border-dashed rounded-xl">Game Module Coming Soon...</div>
 }
 
 
-function DragOrderGame({ items }: { items: { id: string, label: string }[] }) {
+function DragOrderGame({ items, onComplete }: { items: { id: string, label: string }[], onComplete?: () => void }) {
   const [solved, setSolved] = useState(false)
   const [currentOrder, setCurrentOrder] = useState(() => [...items].sort(() => Math.random() - 0.5))
   
@@ -2081,7 +2118,10 @@ function DragOrderGame({ items }: { items: { id: string, label: string }[] }) {
     if (solved) return
     setCurrentOrder(newOrder)
     const isCorrect = newOrder.every((item, i) => item.id === items[i].id)
-    if (isCorrect) setSolved(true)
+    if (isCorrect) {
+        setSolved(true)
+        if (onComplete) onComplete()
+    }
   }
 
   return (
@@ -2122,7 +2162,7 @@ function DragOrderGame({ items }: { items: { id: string, label: string }[] }) {
   )
 }
 
-function DragClassifyGame({ categories, items }: { categories: { id: string, label: string }[], items: { id: string, label: string, categoryId: string }[] }) {
+function DragClassifyGame({ categories, items, onComplete }: { categories: { id: string, label: string }[], items: { id: string, label: string, categoryId: string }[], onComplete?: () => void }) {
   const [solved, setSolved] = useState(false)
   const [selections, setSelections] = useState<Record<string, string>>({}) // itemId -> categoryId
   const [currentItems] = useState(() => [...items].sort(() => Math.random() - 0.5))
@@ -2133,7 +2173,10 @@ function DragClassifyGame({ categories, items }: { categories: { id: string, lab
     
     const allDone = items.length === Object.keys(newSels).length
     const allCorrect = items.every(item => newSels[item.id] === item.categoryId)
-    if (allDone && allCorrect) setSolved(true)
+    if (allDone && allCorrect) {
+        setSolved(true)
+        if (onComplete) onComplete()
+    }
   }
 
   return (
@@ -2399,9 +2442,10 @@ function BisectLab() {
   )
 }
 
-function IgnoreLab() {
+function IgnoreLab({ onComplete }: { onComplete?: () => void }) {
   const [ignored, setIgnored] = useState<string[]>([])
   const [feedback, setFeedback] = useState<string | null>(null)
+  const [isDone, setIsDone] = useState(false)
   
   const files = [
     { name: 'index.html', type: 'code', shouldIgnore: false, tip: "Keep! This is your project's heart." },
@@ -2413,6 +2457,7 @@ function IgnoreLab() {
   ]
 
   const handleToggle = (name: string) => {
+    if (isDone) return;
     const file = files.find(f => f.name === name)
     if (!file) return
     
@@ -2427,25 +2472,35 @@ function IgnoreLab() {
 
   const score = files.filter(f => (f.shouldIgnore && ignored.includes(f.name)) || (!f.shouldIgnore && !ignored.includes(f.name))).length
 
+  useEffect(() => {
+    if (score === files.length && !isDone) {
+      setIsDone(true)
+      if (onComplete) {
+        // Delay slight completion to avoid cascading update warning
+        setTimeout(onComplete, 0)
+      }
+    }
+  }, [score, files.length, onComplete, isDone])
+
   return (
-    <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/10 shadow-2xl">
+    <div className="w-full flex flex-col gap-6 p-6 bg-[#0d1117]/80 rounded-3xl border border-white/10 shadow-2xl backdrop-blur-xl">
        <div className="flex justify-between items-center mb-2">
           <div className="flex flex-col">
-             <span className="text-xs text-secondary fw-black uppercase tracking-widest leading-none mb-2">Security Lab • .gitignore</span>
-             <h3 className="text-xl fw-black text-white">The Filtering Game</h3>
+             <span className="text-xs text-secondary font-black uppercase tracking-widest leading-none mb-2">Security Lab • .gitignore</span>
+             <h3 className="text-xl font-black text-white">The Filtering Game</h3>
           </div>
-          <div className="px-4 py-2 rounded-xl bg-black/40 border border-white/10 text-[10px] fw-black text-muted">
-             ACCURACY: <span className={score === files.length ? 'text-git' : 'text-primary'}>{Math.round((score/files.length)*100)}%</span>
+          <div className="px-4 py-2 rounded-xl bg-black/40 border border-white/10 text-[10px] font-black text-muted">
+             ACCURACY: <span className={score === files.length ? 'text-[#06d6a0]' : 'text-primary'}>{Math.round((score/files.length)*100)}%</span>
           </div>
        </div>
 
        <div className="w-full bg-black/60 rounded-2xl p-5 border border-white/10 flex flex-col gap-4">
-          <p className="text-sm text-white/90 leading-relaxed fw-medium">Click on the files you think should be **ignored** (kept out of Git).</p>
+          <p className="text-sm text-white/90 leading-relaxed font-medium">Click on the files you think should be **ignored** (kept out of Git).</p>
           <AnimatePresence mode="wait">
             {feedback && (
               <motion.div 
                 initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }}
-                className="p-3 rounded-lg bg-primary/10 border border-primary/20 text-primary text-[11px] fw-bold flex items-center gap-2"
+                className="p-3 rounded-lg bg-primary/10 border border-primary/20 text-primary text-[11px] font-bold flex items-center gap-2"
               >
                 <Lightbulb size={14} /> {feedback}
               </motion.div>
@@ -2462,16 +2517,16 @@ function IgnoreLab() {
               whileTap={{ scale: 0.98 }}
               className={`p-4 rounded-2xl border-2 transition-all flex flex-col items-center gap-3 relative ${
                 ignored.includes(f.name) 
-                  ? 'bg-black/60 border-secondary shadow-lg shadow-secondary/10' 
-                  : 'bg-surface border-white/5 hover:border-white/10'
+                  ? 'bg-black/60 border-[#06d6a0] shadow-lg shadow-[#06d6a0]/10' 
+                  : 'bg-[#1c2128] border-white/5 hover:border-white/10 hover:bg-[#22272e]'
               }`}
             >
-               <div className={`p-3 rounded-xl ${ignored.includes(f.name) ? 'bg-secondary/10 text-secondary' : 'bg-white/5 text-muted'}`}>
+               <div className={`p-3 rounded-xl ${ignored.includes(f.name) ? 'bg-[#06d6a0]/10 text-[#06d6a0]' : 'bg-white/5 text-muted'}`}>
                   {f.type === 'secret' ? <ShieldCheck size={20} /> : f.type === 'bulky' ? <Cloud size={20} /> : <Code2 size={20} />}
                </div>
-               <span className={`text-[10px] fw-black uppercase tracking-wider ${ignored.includes(f.name) ? 'text-white' : 'text-muted'}`}>{f.name}</span>
+               <span className={`text-[10px] font-black uppercase tracking-wider ${ignored.includes(f.name) ? 'text-white' : 'text-muted'}`}>{f.name}</span>
                {ignored.includes(f.name) && (
-                 <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-secondary text-black flex items-center justify-center">
+                 <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[#06d6a0] text-black flex items-center justify-center shadow-lg shadow-[#06d6a0]/40">
                     <CheckCircle size={14} />
                  </motion.div>
                )}
@@ -2480,19 +2535,20 @@ function IgnoreLab() {
        </div>
 
        {score === files.length && (
-         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-git/10 border border-git/20 p-4 rounded-xl flex items-center justify-center gap-3">
-            <Trophy className="text-git" size={20} />
-            <span className="text-xs fw-black text-git uppercase tracking-widest">Perfect Selection! Your repo is safe and clean.</span>
+         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-[#06d6a0]/10 border border-[#06d6a0]/20 p-4 rounded-xl flex items-center justify-center gap-3">
+            <Trophy className="text-[#06d6a0]" size={20} />
+            <span className="text-xs font-black text-[#06d6a0] uppercase tracking-widest italic">Mission Cleared! Your repo is safe and clean.</span>
          </motion.div>
        )}
     </div>
   )
 }
 
-function TerminalSimulatorGame({ data }: { data: TerminalGameData }) {
+function TerminalSimulatorGame({ data, onComplete }: { data: TerminalGameData, onComplete?: () => void }) {
   const [currentStep, setCurrentStep] = useState(0)
   const [input, setInput] = useState('')
   const [history, setHistory] = useState<{type: 'cmd' | 'out', text: string}[]>([])
+  const [isDone, setIsDone] = useState(false)
   
   // Use a ref to scroll to bottom
   const scrollRef = React.useRef<HTMLDivElement>(null)
@@ -2507,12 +2563,14 @@ function TerminalSimulatorGame({ data }: { data: TerminalGameData }) {
   const isFinished = data?.steps && currentStep >= data.steps.length
 
   useEffect(() => {
-    if (isFinished && data?.steps?.length > 0) {
-       import('canvas-confetti').then((confetti) => {
-          confetti.default({ particleCount: 100, spread: 70, origin: { y: 0.6 } })
-       })
+    if (isFinished && data?.steps?.length > 0 && !isDone) {
+       setIsDone(true)
+       if (onComplete) {
+         setTimeout(onComplete, 0)
+       }
+       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } })
     }
-  }, [isFinished, data])
+  }, [isFinished, data, onComplete, isDone])
 
   if (!data?.steps) return null
 
@@ -2539,10 +2597,10 @@ function TerminalSimulatorGame({ data }: { data: TerminalGameData }) {
     <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/10 shadow-2xl">
       <div className="flex justify-between items-center mb-2">
          <div className="flex flex-col">
-            <span className="text-xs text-secondary fw-black uppercase tracking-widest leading-none mb-2">Interactive Terminal</span>
-            <h3 className="text-xl fw-black text-white">Command Line Simulator</h3>
+            <span className="text-xs text-secondary font-black uppercase tracking-widest leading-none mb-2">Interactive Terminal</span>
+            <h3 className="text-xl font-black text-white">Command Line Simulator</h3>
          </div>
-         <div className="px-4 py-2 rounded-xl bg-black/40 border border-white/10 text-[10px] fw-black text-muted">
+         <div className="px-4 py-2 rounded-xl bg-black/40 border border-white/10 text-[10px] font-black text-muted">
             STEP: <span className={isFinished ? 'text-git' : 'text-primary'}>{Math.min(currentStep + 1, data.steps.length)} / {data.steps.length}</span>
          </div>
       </div>
@@ -2553,7 +2611,7 @@ function TerminalSimulatorGame({ data }: { data: TerminalGameData }) {
              {step.instruction}
            </p>
          ) : (
-           <div className="p-3 bg-git/10 text-git rounded-xl border border-git/20 text-xs fw-black tracking-wider uppercase text-center flex items-center justify-center gap-2">
+           <div className="p-3 bg-git/10 text-git rounded-xl border border-git/20 text-xs font-black tracking-wider uppercase text-center flex items-center justify-center gap-2">
              <CheckCircle size={16} /> Simulator Completed!
            </div>
          )}
@@ -2567,17 +2625,18 @@ function TerminalSimulatorGame({ data }: { data: TerminalGameData }) {
              </div>
            ))}
            {!isFinished && (
-             <div className="flex items-center text-white mt-2">
-               <span className="text-primary mr-2 whitespace-pre">{data.startText}</span>
+             <div className="flex items-center mt-3 gap-2 bg-black/50 border border-white/10 focus-within:border-primary/50 focus-within:bg-black/80 rounded-md p-2 transition-all shadow-inner">
+               <span className="text-primary font-black whitespace-pre">{data.startText || '$ '}</span>
                <input 
                  type="text"
                  value={input}
                  onChange={e => setInput(e.target.value)}
                  onKeyDown={handleKeyDown}
                  spellCheck={false}
-                 className="flex-1 bg-transparent outline-none border-none text-white font-mono caret-primary min-w-[200px]"
+                 className="flex-1 bg-transparent outline-none border-none text-primary placeholder:text-white/20 font-mono caret-primary min-w-[200px]"
                  placeholder="Type here..."
                />
+               <div className="text-[10px] text-white/30 font-sans px-2 hidden sm:block">Premi INVIO</div>
              </div>
            )}
         </div>

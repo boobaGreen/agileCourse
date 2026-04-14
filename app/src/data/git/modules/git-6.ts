@@ -60,6 +60,28 @@ export const git6: Module = {
       content: 'For most small-to-medium web projects, **GitHub Flow** is the sweet spot: Create a branch from `main`, push commits, open a PR, merge after approval. Simple, clean, and effective.'
     },
     {
+      type: 'game',
+      title: 'Lab: Professional Workflow',
+      content: 'Simula un tipico workflow aziendale: crea un branch per una nuova funzionalità, lavoraci sopra isolato, e poi uniscilo al master una volta terminato.',
+      gameType: 'git-graph-sim',
+      gameData: {
+        startState: {
+          commits: { 
+            'C1': { id: 'C1', parents: [], message: 'Starting project' },
+            'C2': { id: 'C2', parents: ['C1'], message: 'Initial boilerplate' }
+          },
+          branches: { 'main': 'C2' },
+          head: { type: 'branch', target: 'main' }
+        },
+        tasks: [
+          { id: '1', instruction: 'Crea un nuovo branch chiamato "feature-login"', condition: 'BRANCH_EXISTS:feature-login' },
+          { id: '2', instruction: 'Spostati sul branch appena creato', condition: 'CURRENT_BRANCH:feature-login' },
+          { id: '3', instruction: 'Fai un commit per simulare il lavoro sulla login', condition: 'COMMIT_COUNT:feature-login:3' },
+          { id: '4', instruction: 'Torna su main e unisci il lavoro fatto su feature-login', condition: 'MERGED:feature-login' }
+        ]
+      }
+    },
+    {
       type: 'tip',
       title: '🎮 Practice This Module',
       content: '**Learn Git Branching**: Complete *Remote Tab — Advanced* levels 9-10 (Push Main!, Merging with Remotes)\n\n**Oh My Git!**: Play the *Workflows* chapter\n\n🚀 [Launch Learn Git Branching](https://learngitbranching.js.org/) · 📥 [Oh My Git!](https://ohmygit.org/)'

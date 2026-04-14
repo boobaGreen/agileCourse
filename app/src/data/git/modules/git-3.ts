@@ -72,6 +72,23 @@ export const git3: Module = {
       ]
     },
     {
+      type: 'game',
+      title: 'Lab: I Primi Passi',
+      content: 'Mettiamo in pratica! Apri il terminale interattivo qui sotto e fai due commit per far avanzare la storia sul branch main.',
+      gameType: 'git-graph-sim',
+      gameData: {
+        startState: {
+          commits: { 'C1': { id: 'C1', parents: [], message: 'Initial commit' } },
+          branches: { 'main': 'C1' },
+          head: { type: 'branch', target: 'main' }
+        },
+        tasks: [
+          { id: '1', instruction: 'Fai un nuovo commit sulla history (il messaggio o il contenuto non importa in questa simulazione)', condition: 'COMMIT_COUNT:main:2' },
+          { id: '2', instruction: 'Fai un ulteriore commit per allungare il branch', condition: 'COMMIT_COUNT:main:3' }
+        ]
+      }
+    },
+    {
       type: 'tip',
       title: '🎮 Practice This Module',
       content: '**Learn Git Branching**: Complete *Introduction Sequence — Level 1* (Introduction to Git Commits)\n\n**Oh My Git!**: Play the *Intro* and *Files* chapters\n\n**Git Kata**: `basic-commits`, `basic-staging`\n\n🚀 [Launch Learn Git Branching](https://learngitbranching.js.org/) · 📥 [Oh My Git!](https://ohmygit.org/) · 📂 [Git Katas](https://github.com/eficode-academy/git-katas)'

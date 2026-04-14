@@ -52,7 +52,7 @@ git push -u origin main`,
     {
       type: 'concept',
       title: '📦 Bare Repositories',
-      content: 'On a server or remote (like GitHub), repositories are often **"bare"**. A bare repo has no working directory (you can\'t edit files there); it only contains the Git history database. It is created with \`git init --bare\`.'
+      content: 'On a server or remote (like GitHub), repositories are often **"bare"**. A bare repo has no working directory (you can\'t edit files there); it only contains the Git history database. It is created with `git init --bare`.'
     },
     {
       type: 'animation',
@@ -78,7 +78,7 @@ git push -u origin main`,
     {
       type: 'concept',
       title: '⬇️ fetch vs pull — what\'s the difference?',
-      content: '**`git fetch`** downloads new commits from the remote but does **not** change your local files. You can inspect what changed before integrating.\n\n**`git pull`** is \`fetch + merge\` in one command. It downloads and immediately integrates remote changes into your current branch.\n\n💡 Prefer \`fetch\` + inspect + \`merge\` when you want more control.'
+      content: '**`git fetch`** downloads new commits from the remote but does **not** change your local files. You can inspect what changed before integrating.\n\n**`git pull`** is `fetch + merge` in one command. It downloads and immediately integrates remote changes into your current branch.\n\n💡 Prefer `fetch` + inspect + `merge` when you want more control.'
     },
     {
       type: 'table',
@@ -97,6 +97,26 @@ git push -u origin main`,
     {
       type: 'animation',
       content: 'git-force-danger'
+    },
+    {
+      type: 'game',
+      title: 'Lab: Sincronizza il Team',
+      content: 'Fai finta di aver appena fatto `git fetch` e di aver scaricato dal server un nuovo branch chiamato `origin/main` coi commit del tuo team. Uniscilo al tuo lavoro locale senza creare conflitti!',
+      gameType: 'git-graph-sim',
+      gameData: {
+        startState: {
+          commits: { 
+            'C1': { id: 'C1', parents: [], message: 'Initial commit' },
+            'C2': { id: 'C2', parents: ['C1'], message: 'Your local commit' },
+            'C3': { id: 'C3', parents: ['C1'], message: 'Teammates commit' }
+          },
+          branches: { 'main': 'C2', 'origin/main': 'C3' },
+          head: { type: 'branch', target: 'main' }
+        },
+        tasks: [
+          { id: '1', instruction: 'Trovi il nuovo lavoro sul branch origin/main: uniscilo al tuo branch per finire la sincronizzazione!', condition: 'MERGED:origin/main' }
+        ]
+      }
     },
     {
       type: 'tip',

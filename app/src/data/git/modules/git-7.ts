@@ -61,6 +61,28 @@ git status                  # What's happening?`,
       }
     },
     {
+      type: 'game',
+      title: 'Lab: Detached HEAD',
+      content: 'Scollega la tua testa (HEAD) dal branch attuale per viaggiare nel tempo e ispezionare commit passati senza alterare la storia principale.',
+      gameType: 'git-graph-sim',
+      gameData: {
+        startState: {
+          commits: { 
+            'C1': { id: 'C1', parents: [], message: 'Initial commit' },
+            'C2': { id: 'C2', parents: ['C1'], message: 'Feature A works' },
+            'C3': { id: 'C3', parents: ['C2'], message: 'Feature B buggy' },
+            'C4': { id: 'C4', parents: ['C3'], message: 'Feature C added' }
+          },
+          branches: { 'main': 'C4' },
+          head: { type: 'branch', target: 'main' }
+        },
+        tasks: [
+          { id: '1', instruction: 'Sganciati dal branch corrente facendo checkout direttamente verso l\'hash C2', condition: 'DETACHED_HEAD:C2' },
+          { id: '2', instruction: 'Torna al presente riagganciando la HEAD sul branch main', condition: 'CURRENT_BRANCH:main' }
+        ]
+      }
+    },
+    {
       type: 'tip',
       title: '🎮 Practice This Module',
       content: '**Learn Git Branching**: Revisit *Introduction Sequence — Level 1* (Introduction to Git Commits)\n\n**Oh My Git!**: Play the *Files* and *Index* chapters\n\n**Git Kata**: `basic-commits`, `basic-staging`, `basic-cleaning`\n\n🚀 [Launch Learn Git Branching](https://learngitbranching.js.org/) · 📥 [Oh My Git!](https://ohmygit.org/) · 📂 [Git Katas](https://github.com/eficode-academy/git-katas)'
