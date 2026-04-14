@@ -687,8 +687,8 @@ function EducationAnimation({ type }: { type: string }) {
               <CheckCircle size={14} className="text-primary" />
               <span className="text-[10px] text-primary fw-black uppercase tracking-widest">Git Snapshot ID (SHA-1)</span>
             </div>
-            <div className="w-full flex justify-center">
-              <div className="mono text-[11px] sm:text-xs text-xp tracking-widest bg-black/40 py-3 px-4 rounded-xl border border-white/10 text-center flex flex-col gap-1 shadow-inner w-full min-w-0 overflow-hidden items-center justify-center">
+            <div className="w-full hidden sm:flex justify-center">
+              <div className="mono text-[11px] sm:text-xs text-xp tracking-widest bg-black/40 py-3 px-4 rounded-xl border border-white/10 text-center flex flex-row shadow-inner w-full min-w-0 overflow-hidden items-center justify-center">
                 <div className="whitespace-nowrap">
                   {hash.substring(0, 20).split('').map((char, i) => (
                     <motion.span 
