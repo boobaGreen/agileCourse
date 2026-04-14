@@ -56,7 +56,7 @@ export const DOCKER_MODULES: Module[] = [
         type: 'video',
         title: '📺 Docker Architecture Full Breakdown',
         content: 'A fantastic visual explanation by TechWorld with Nana comparing VMs to Docker Engine.',
-        videoUrl: 'https://www.youtube.com/watch?v=3c-iZaI7x0E'
+        videoUrl: 'https://www.youtube.com/watch?v=a1M_thDTqmU'
       },
       {
         type: 'tip',
@@ -141,7 +141,7 @@ export const DOCKER_MODULES: Module[] = [
         type: 'video',
         title: '📺 Images vs Containers Visualized',
         content: 'Check out this clear explanation of how the read/write layers actually stack on top of each other.',
-        videoUrl: 'https://www.youtube.com/watch?v=JofsaYGcg0I'
+        videoUrl: 'https://www.youtube.com/watch?v=YFl2mCHdv24'
       },
       {
         type: 'concept',
@@ -181,7 +181,7 @@ export const DOCKER_MODULES: Module[] = [
         type: 'game',
         title: 'Terminal: Your First Container',
         content: 'Let\'s pull an image and run it. The command structure is: `docker [action] [image]`.',
-        gameType: 'terminal',
+        gameType: 'terminal-sim',
         gameData: {
           startText: 'ubuntu@docker-host:~$ ',
           steps: [
@@ -271,7 +271,7 @@ export const DOCKER_MODULES: Module[] = [
         type: 'video',
         title: '📺 Writing a Dockerfile from Scratch',
         content: 'A perfect 12-minute breakdown on how to construct a Dockerfile and minimize its final size.',
-        videoUrl: 'https://www.youtube.com/watch?v=wmWgIGZOmB4'
+        videoUrl: 'https://www.youtube.com/watch?v=WmcdMiyqfZs'
       },
       {
         type: 'game',
@@ -311,7 +311,7 @@ export const DOCKER_MODULES: Module[] = [
         type: 'game',
         title: 'Terminal: Build & Tag',
         content: 'Let\'s use the Docker CLI to build a Dockerfile.',
-        gameType: 'terminal',
+        gameType: 'terminal-sim',
         gameData: {
           startText: 'ubuntu@docker-host:~/my-app$ ',
           steps: [
@@ -386,7 +386,7 @@ export const DOCKER_MODULES: Module[] = [
         type: 'video',
         title: '📺 Sharing Docker Images',
         content: 'Learn how to pull, tag, and push images to registries like a professional.',
-        videoUrl: 'https://www.youtube.com/watch?v=FjI1K7RksZI'
+        videoUrl: 'https://www.youtube.com/watch?v=mAzHELZWE-Y'
       },
       {
         type: 'table',
@@ -414,7 +414,7 @@ export const DOCKER_MODULES: Module[] = [
         type: 'game',
         title: 'Terminal: Publish to the World',
         content: 'Let\'s log in and push an image to Docker Hub.',
-        gameType: 'terminal',
+        gameType: 'terminal-sim',
         gameData: {
           startText: 'ubuntu@docker-host:~$ ',
           steps: [
@@ -492,7 +492,7 @@ export const DOCKER_MODULES: Module[] = [
         type: 'video',
         title: '📺 Docker Volumes Masterclass',
         content: 'A deep dive into how data permanence works in Docker environments.',
-        videoUrl: 'https://www.youtube.com/watch?v=p2H5qPzzsPc'
+        videoUrl: 'https://www.youtube.com/watch?v=p2PH_YPCsis'
       },
       {
         type: 'concept',
@@ -517,7 +517,7 @@ export const DOCKER_MODULES: Module[] = [
         type: 'game',
         title: 'Terminal: Persist It',
         content: 'Let\'s create a named volume and mount it to a database container.',
-        gameType: 'terminal',
+        gameType: 'terminal-sim',
         gameData: {
           startText: 'ubuntu@docker-host:~$ ',
           steps: [
@@ -605,7 +605,7 @@ export const DOCKER_MODULES: Module[] = [
         type: 'game',
         title: 'Terminal: Bridge the Gap',
         content: 'Expose an internal NGINX server to your computer.',
-        gameType: 'terminal',
+        gameType: 'terminal-sim',
         gameData: {
           startText: 'ubuntu@docker-host:~$ ',
           steps: [
@@ -663,7 +663,7 @@ export const DOCKER_MODULES: Module[] = [
         type: 'video',
         title: '📺 Docker Compose Explained',
         content: 'See exactly how to transition from painful CLI commands to elegant, declarative YAML files.',
-        videoUrl: 'https://www.youtube.com/watch?v=MEljGea1pDk'
+        videoUrl: 'https://www.youtube.com/watch?v=hP77Rua1E0c'
       },
       {
         type: 'table',
@@ -719,7 +719,7 @@ volumes:
         type: 'game',
         title: 'Terminal: Orchestrate the Stack',
         content: 'Launch a multi-container stack with a single command.',
-        gameType: 'terminal',
+        gameType: 'terminal-sim',
         gameData: {
           startText: 'ubuntu@docker-host:~/my-project$ ',
           steps: [
@@ -797,7 +797,7 @@ volumes:
         type: 'video',
         title: '📺 Intro to Play with Docker',
         content: 'A quick tour of how the PWD interface works safely in the browser.',
-        videoUrl: 'https://www.youtube.com/watch?v=JmItCgXXwE8'
+        videoUrl: 'https://www.youtube.com/watch?v=KLTT4FfiKHQ'
       },
       {
         type: 'concept',

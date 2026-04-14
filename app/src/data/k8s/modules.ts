@@ -295,7 +295,7 @@ export const K8S_MODULES: Module[] = [
         type: 'video',
         title: '📺 Imperative vs Declarative',
         content: 'Understand why Kubernetes uses a Declarative system instead of a list of bash scripts.',
-        videoUrl: 'https://www.youtube.com/watch?v=kOa_llowQ1c'
+        videoUrl: 'https://www.youtube.com/watch?v=X48VuDVv0do'
       },
       {
         type: 'concept',
@@ -427,7 +427,7 @@ spec:
         type: 'video',
         title: '📺 Services vs Ingress',
         content: 'A great visual comparison of how traffic flows internally vs from the public internet.',
-        videoUrl: 'https://www.youtube.com/watch?v=WwwvA4Yngi4'
+        videoUrl: 'https://www.youtube.com/watch?v=7Xw2ON_lI6c'
       },
       {
         type: 'table',
