@@ -42,11 +42,39 @@ export interface GitGraphGameData {
   tasks: { id: string, instruction: string, condition: string, completed?: boolean }[];
 }
 
+export interface DockerImage {
+  id: string;
+  name: string;
+  tag: string;
+  size: string;
+}
+
+export interface DockerContainer {
+  id: string;
+  name: string;
+  image: string;
+  status: 'running' | 'exited';
+  ports: string[];
+  volumes?: string[];
+  networks?: string[];
+}
+
+export interface DockerVolume {
+  id: string;
+  name: string;
+}
+
+export interface DockerNetwork {
+  id: string;
+  name: string;
+  driver: string;
+}
+
 export interface DockerState {
-  images: { id: string, name: string, tag: string, size: string }[];
-  containers: { id: string, name: string, image: string, status: 'running' | 'exited', ports: string[], volumes?: string[], networks?: string[] }[];
-  volumes?: { id: string, name: string }[];
-  networks?: { id: string, name: string, driver: string }[];
+  images: DockerImage[];
+  containers: DockerContainer[];
+  volumes?: DockerVolume[];
+  networks?: DockerNetwork[];
 }
 
 export interface DockerGameData {
@@ -54,15 +82,74 @@ export interface DockerGameData {
   tasks: { id: string, instruction: string, condition: string, completed?: boolean }[];
 }
 
+export interface K8sNode {
+  id: string;
+  name: string;
+  status: 'Ready' | 'NotReady';
+}
+
+export interface K8sPod {
+  id: string;
+  name: string;
+  node: string;
+  status: 'Running' | 'Pending' | 'Error';
+  labels: Record<string, string>;
+  env?: Record<string, string>;
+  volumes?: string[];
+}
+
+export interface K8sService {
+  id: string;
+  name: string;
+  type: string;
+  selector: Record<string, string>;
+  clusterIP: string;
+  externalIP?: string;
+}
+
+export interface K8sDeployment {
+  id: string;
+  name: string;
+  replicas: number;
+  selector: Record<string, string>;
+}
+
+export interface K8sConfigMap {
+  id: string;
+  name: string;
+  data: Record<string, string>;
+}
+
+export interface K8sSecret {
+  id: string;
+  name: string;
+  data: Record<string, string>;
+  type: string;
+}
+
+export interface K8sPVC {
+  id: string;
+  name: string;
+  size: string;
+  status: 'Bound' | 'Pending' | 'Lost';
+}
+
+export interface K8sPV {
+  id: string;
+  name: string;
+  capacity: string;
+  status: 'Bound' | 'Available';
+}
+
 export interface K8sState {
-  nodes: { id: string, name: string, status: 'Ready' | 'NotReady' }[];
-  pods: { id: string, name: string, node: string, status: 'Running' | 'Pending' | 'Error', labels: Record<string, string>, env?: Record<string, string>, volumes?: string[] }[];
-  services: { id: string, name: string, type: string, selector: Record<string, string>, clusterIP: string, externalIP?: string }[];
-  deployments: { id: string, name: string, replicas: number, selector: Record<string, string> }[];
-  configMaps?: { id: string, name: string, data: Record<string, string> }[];
-  secrets?: { id: string, name: string, data: Record<string, string>, type: string }[];
-  pvc?: { id: string, name: string, size: string, status: 'Bound' | 'Pending' | 'Lost' }[];
-  pv?: { id: string, name: string, capacity: string, status: 'Bound' | 'Available' }[];
+  nodes: K8sNode[];
+  pods: K8sPod[];
+  services: K8sService[];
+  deployments: K8sDeployment[];
+  configMaps?: K8sConfigMap[];
+  secrets?: K8sSecret[];
+  pvc?: K8sPVC[];
+  pv?: K8sPV[];
 }
 
 export interface K8sGameData {

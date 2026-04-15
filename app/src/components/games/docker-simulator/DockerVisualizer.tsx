@@ -133,33 +133,31 @@ export function DockerVisualizer({ state }: Props) {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <div className="flex flex-wrap gap-1">
-                    {container.ports.map(port => (
-                      <span key={port} className="text-[9px] bg-white/5 border border-white/5 rounded px-1.5 py-0.5 text-white/50 font-mono">
-                        {port}
-                      </span>
-                    ))}
-                  </div>
-                  
-                  {container.volumes && container.volumes.length > 0 && (
-                    <div className="flex flex-wrap gap-1">
-                       {container.volumes.map(v => (
-                         <span key={v} className="text-[9px] bg-xp/10 text-xp border border-xp/10 rounded px-1.5 py-0.5 flex items-center gap-1">
-                           <Database size={8} /> {v.split(':')[0]}
-                         </span>
-                       ))}
-                    </div>
-                  )}
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {container.ports.map((port: string) => (
+                          <span key={port} className="px-1.5 py-0.5 rounded bg-white/10 text-[8px] text-white/50 border border-white/5">{port}</span>
+                        ))}
+                      </div>
+                      
+                      {container.volumes && container.volumes.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-1 opacity-60">
+                          {container.volumes.map((v: string) => (
+                            <span key={v} className="flex items-center gap-1 text-[8px] text-xp font-bold">
+                              <Database size={8} /> {v}
+                            </span>
+                          ))}
+                        </div>
+                      )}
 
-                  {container.networks && container.networks.length > 0 && (
-                    <div className="flex flex-wrap gap-1">
-                       {container.networks.map(n => (
-                         <span key={n} className="text-[9px] bg-blue-400/10 text-blue-400 border border-blue-400/10 rounded px-1.5 py-0.5 flex items-center gap-1">
-                           <Share2 size={8} /> {n}
-                         </span>
-                       ))}
-                    </div>
-                  )}
+                      {container.networks && container.networks.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-1 opacity-60">
+                          {container.networks.map((n: string) => (
+                            <span key={n} className="flex items-center gap-1 text-[8px] text-blue-400 font-bold">
+                              <Share2 size={8} /> {n}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                 </div>
 
                 <div className={`mt-auto pt-2 text-[9px] font-black uppercase tracking-widest ${container.status === 'running' ? 'text-[#06d6a0]' : 'text-danger'} border-t border-white/5`}>
