@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore, BADGES } from '../store/useAppStore'
@@ -10,7 +10,7 @@ import type { Module } from '../data/types'
 import { useSearchParams } from 'react-router-dom'
 import { 
   BarChart, Bar, XAxis, YAxis, 
-  Tooltip, ResponsiveContainer, Cell 
+  ResponsiveContainer, Cell 
 } from 'recharts'
 
 const certPaths = [
@@ -105,6 +105,20 @@ export default function ProfilePage() {
     })).filter(path => path.certs.length > 0)
   }, [filter, earnedBadgeIds, completedModules])
 
+  // Scroll to hash on mount or tab change
+  useEffect(() => {
+    const hash = window.location.hash
+    if (hash) {
+      const id = hash.replace('#', '')
+      setTimeout(() => {
+        const element = document.getElementById(id)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+      }, 100)
+    }
+  }, [activeTab])
+
   const gitCompleted = completedModules.filter((m) => m.startsWith('git-')).length
   const totalGit = GIT_MODULES.length
   const gitPct = Math.round((gitCompleted / totalGit) * 100)
@@ -117,10 +131,26 @@ export default function ProfilePage() {
   const totalK8s = K8S_MODULES.length
   const k8sPct = Math.round((k8sCompleted / totalK8s) * 100)
 
+  const allModules = useMemo(() => [...GIT_MODULES, ...DOCKER_MODULES, ...K8S_MODULES], [])
+  
   const quizCount = Object.keys(quizScores).length
-  const avgScore = quizCount > 0 
-    ? Math.round(Object.values(quizScores).reduce((a, b) => a + b, 0) / quizCount * 10)
-    : 0
+  const avgScore = useMemo(() => {
+    if (quizCount === 0) return 0
+    
+    let totalPct = 0
+    let count = 0
+    
+    Object.entries(quizScores).forEach(([modId, score]) => {
+      const mod = allModules.find(m => m.id === modId)
+      if (mod && mod.quiz) {
+        const pct = (score / mod.quiz.length) * 100
+        totalPct += pct
+        count++
+      }
+    })
+    
+    return count > 0 ? Math.round(totalPct / count) : 0
+  }, [quizScores, allModules, quizCount])
 
   const trackXPData = useMemo(() => [
     { name: 'Git', xp: completedModules.filter(m => m.startsWith('git-')).length * 50, color: 'var(--color-git)' },
@@ -219,10 +249,6 @@ export default function ProfilePage() {
             <BarChart data={trackXPData} layout="vertical" margin={{ left: 80, right: 20 }}>
               <XAxis type="number" hide />
               <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: 'white', fontWeight: 'bold', fontSize: 12 }} />
-              <Tooltip 
-                cursor={{ fill: 'rgba(255,255,255,0.05)' }}
-                contentStyle={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: '12px' }}
-              />
               <Bar dataKey="xp" radius={[0, 4, 4, 0]} barSize={30}>
                 {trackXPData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />

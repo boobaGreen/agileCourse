@@ -1218,7 +1218,12 @@ function ManualVsGitLab() {
     <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/5">
        <div className="flex justify-between items-center px-4">
           <h4 className="text-[10px] fw-black text-muted uppercase tracking-widest">Scaling to {count} changes</h4>
-          <button onClick={() => setCount(c => Math.min(c + 1, 5))} className="px-3 py-1 rounded-lg bg-primary text-white text-[10px] fw-bold hover:scale-105 active:scale-95 transition-all">+ Add Change</button>
+          <button 
+            onClick={() => setCount(c => Math.min(c + 1, 5))} 
+            className="px-4 py-2 rounded-xl bg-primary text-white text-xs fw-black hover:scale-105 active:scale-95 transition-all shadow-lg shadow-primary/20 flex items-center gap-2 border border-white/10"
+          >
+            <Zap size={14} fill="currentColor" /> + ADD CHANGE
+          </button>
        </div>
        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex flex-col gap-3">

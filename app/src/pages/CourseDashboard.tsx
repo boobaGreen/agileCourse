@@ -152,7 +152,7 @@ export default function CourseDashboard() {
              </div>
              
              <div 
-               onClick={() => navigate('/profile')}
+               onClick={() => navigate('/profile?tab=stats#badges')}
                className="flex-1 md:flex-none card p-4 py-3 border-purple-500/20 bg-purple-500/5 flex items-center gap-4 cursor-pointer hover:bg-purple-500/10 transition-all group/badge"
              >
                 <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400 group-hover/badge:scale-110 transition-transform">
