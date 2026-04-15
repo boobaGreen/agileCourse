@@ -5,7 +5,7 @@ import { useAppStore } from '../store/useAppStore'
 import { GIT_MODULES } from '../data/git/modules/index'
 import { DOCKER_MODULES } from '../data/docker/modules/index'
 import { K8S_MODULES } from '../data/k8s/modules/index'
-import type { Section, QuizQuestion, GitGraphGameData } from '../data/types'
+import type { Section, QuizQuestion, GitGraphGameData, DockerGameData, K8sGameData } from '../data/types'
 import {
   ArrowLeft, ArrowRight, Zap,
   ExternalLink, BookOpen, Code2, Lightbulb, Sparkles,
@@ -14,6 +14,8 @@ import {
   Laptop, Cloud, Search, ShieldCheck, ArrowUp
 } from 'lucide-react'
 import { GitGraphSim } from '../components/games/git-simulator/GitGraphSim'
+import { DockerSimulator } from '../components/games/docker-simulator/DockerSimulator'
+import { K8sSimulator } from '../components/games/k8s-simulator/K8sSimulator'
 import confetti from 'canvas-confetti'
 
 type GameDataItem = { id: string, label: string }
@@ -2139,6 +2141,14 @@ function MiniGame({ gameType, gameData, onComplete }: { gameType: string, gameDa
 
   if (gameType === 'git-graph-sim') {
     return <GitGraphSim data={gameData as GitGraphGameData} onComplete={onComplete} />
+  }
+
+  if (gameType === 'docker-sim') {
+    return <DockerSimulator data={gameData as DockerGameData} onComplete={onComplete} />
+  }
+
+  if (gameType === 'k8s-sim') {
+    return <K8sSimulator data={gameData as K8sGameData} onComplete={onComplete} />
   }
 
   return <div className="p-10 text-center text-muted border border-dashed rounded-xl">Game Module Coming Soon...</div>

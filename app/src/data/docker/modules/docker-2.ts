@@ -76,37 +76,18 @@ export const docker2: Module = {
     },
     {
       type: 'game',
-      title: 'Terminal: Your First Container',
-      content: 'Let\'s pull an image and run it. The command structure is: `docker [action] [image]`.',
-      gameType: 'terminal-sim',
+      title: 'Lab: Your First Container',
+      content: 'Let\'s pull an image and run it. In this simulator, commands actually update the visual state of your "Docker Host".',
+      gameType: 'docker-sim',
       gameData: {
-        startText: 'ubuntu@docker-host:~$ ',
-        steps: [
-          {
-            instruction: 'First, let\'s download the official alpine linux image. Type: docker pull alpine',
-            expectedCommand: 'docker pull alpine',
-            output: 'Using default tag: latest\nlatest: Pulling from library/alpine\n4abcf2066143: Pull complete\nDigest: sha256:c5b1261d6d3e...1ad6b\nStatus: Downloaded newer image for alpine:latest'
-          },
-          {
-            instruction: 'Now verify it is on our disk. Type: docker images',
-            expectedCommand: 'docker images',
-            output: 'REPOSITORY    TAG       IMAGE ID       CREATED        SIZE\nalpine        latest    05455a08881e   2 weeks ago    7.38MB'
-          },
-          {
-            instruction: 'Let\'s spin up a container from this image and echo a word. Type: docker run alpine echo hello',
-            expectedCommand: 'docker run alpine echo hello',
-            output: 'hello'
-          },
-          {
-            instruction: 'See the list of currently running containers. Type: docker ps',
-            expectedCommand: 'docker ps',
-            output: 'CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES\n(Empty list because the container exited immediately after echoing!)'
-          },
-          {
-            instruction: 'To see containers that have finished executing, type: docker ps -a',
-            expectedCommand: 'docker ps -a',
-            output: 'CONTAINER ID   IMAGE     COMMAND        CREATED          STATUS                      PORTS     NAMES\na1b2c3d4e5f6   alpine    "echo hello"   14 seconds ago   Exited (0) 13 seconds ago             dazzling_turing'
-          }
+        startState: {
+          images: [],
+          containers: []
+        },
+        tasks: [
+          { id: '1', instruction: 'Pull the official "nginx" image', condition: 'PULLED:nginx' },
+          { id: '2', instruction: 'Run a detached container from the nginx image', condition: 'RUNNING:nginx' },
+          { id: '3', instruction: 'Try to stop the container (docker stop [id/name])', condition: 'STOPPED:nginx' }
         ]
       }
     }

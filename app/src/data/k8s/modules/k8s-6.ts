@@ -57,6 +57,26 @@ spec:
       type: 'tip',
       title: '💡 The "Sealed Secrets" Problem',
       content: 'Wait, if I write a Secret in a YAML file so I can `kubectl apply` it, anyone who hacks my GitHub repository can read my plaintext passwords! \nTo solve this, advanced teams use tools like **Bitnami Sealed Secrets**. It cryptographically encrypts the YAML file so it\'s perfectly safe to upload to public GitHub. Only the K8s cluster possesses the private key to decrypt it back into a real K8s Secret.'
+    },
+    {
+      type: 'game',
+      title: 'Lab: Injecting the Configuration',
+      content: 'In this simulation, you will apply a configuration manifest and watch it enter the cluster state. Later, this would be injected into your pods.',
+      gameType: 'k8s-sim',
+      gameData: {
+        startState: {
+          nodes: [{ id: 'node-1', name: 'minikube', status: 'Ready' }],
+          pods: [],
+          services: [],
+          deployments: [],
+          configMaps: [],
+          secrets: []
+        },
+        tasks: [
+          { id: '1', instruction: 'Apply the application configuration: `kubectl apply -f app-config.yaml`', condition: 'CONFIGMAP_EXISTS:app-config' },
+          { id: '2', instruction: 'Verify the ConfigMap exists in the cluster: `kubectl get cm`', condition: 'CONFIGMAP_EXISTS:app-config' }
+        ]
+      }
     }
   ],
   quiz: [

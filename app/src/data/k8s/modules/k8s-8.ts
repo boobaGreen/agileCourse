@@ -47,6 +47,24 @@ export const k8s8: Module = {
           ['`OOMKilled`', 'The container tried to use more RAM than allowed', 'Memory leak or resource limit set too low']
         ]
       }
+    },
+    {
+      type: 'game',
+      title: 'Lab: The Internal Sandbox',
+      content: 'Practice your skills right here! This simulator tracks state just like a real cluster. Try to deploy an app and expose it.',
+      gameType: 'k8s-sim',
+      gameData: {
+        startState: {
+          nodes: [{ id: 'node-1', name: 'minikube', status: 'Ready' }],
+          pods: [],
+          services: [],
+          deployments: []
+        },
+        tasks: [
+          { id: '1', instruction: 'Deploy the nginx application: `kubectl apply -f nginx-deployment.yaml`', condition: 'PODS_RUNNING:2' },
+          { id: '2', instruction: 'Expose it to the world: `kubectl expose deployment nginx --type=LoadBalancer --port=80`', condition: 'SERVICE_EXISTS:nginx' }
+        ]
+      }
     }
   ]
 }

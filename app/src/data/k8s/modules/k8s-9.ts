@@ -12,7 +12,25 @@ export const k8s9: Module = {
   sections: [
     {
       type: 'intro',
-      content: 'So you think you understand the orchestrator? Prove it. 10 deep questions covering architecture, lifecycles, and debugging edge cases.'
+      content: 'So you think you understand the orchestrator? Prove it. In this final challenge, you must use **Helm**, the Kubernetes package manager, to deploy a complete stack.'
+    },
+    {
+      type: 'game',
+      title: 'Certification Lab: The Helm Master',
+      content: 'Install the "enterprise-stack" chart using Helm. It will provision everything: Redis, the backend, and secrets.',
+      gameType: 'k8s-sim',
+      gameData: {
+        startState: {
+          nodes: [{ id: 'node-1', name: 'prod-cluster', status: 'Ready' }],
+          pods: [],
+          services: [],
+          deployments: []
+        },
+        tasks: [
+          { id: '1', instruction: 'Install the chart: `helm install enterprise-stack ./my-chart`', condition: 'PODS_RUNNING:3' },
+          { id: '2', instruction: 'Verify the release is running: `kubectl get pods`', condition: 'PODS_RUNNING:3' }
+        ]
+      }
     }
   ],
   quiz: [

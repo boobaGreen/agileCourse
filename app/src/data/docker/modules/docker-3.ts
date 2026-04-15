@@ -66,22 +66,16 @@ export const docker3: Module = {
     },
     {
       type: 'game',
-      title: 'Terminal: Build & Tag',
-      content: 'Let\'s use the Docker CLI to build a Dockerfile.',
-      gameType: 'terminal-sim',
+      title: 'Lab: Build Your Custom Image',
+      content: 'In this simulator, you will actually build a custom image from a Dockerfile. Watch the "Image Registry" update as you tag your work.',
+      gameType: 'docker-sim',
       gameData: {
-        startText: 'ubuntu@docker-host:~/my-app$ ',
-        steps: [
-          {
-            instruction: 'Build the image in the current directory (.) and tag it with the name "myapp:v1". Type: docker build -t myapp:v1 .',
-            expectedCommand: 'docker build -t myapp:v1 .',
-            output: 'Sending build context to Docker daemon  2.048kB\nStep 1/5 : FROM node:18-alpine\n ---> 34c8w912f\nStep 2/5 : WORKDIR /app\n ---> Running in a2bf12\nRemoving intermediate container a2bf12\n ---> 78c31fe\nStep 3/5 : COPY . .\n ---> 21ad22f\nSuccessfully built 21ad22f\nSuccessfully tagged myapp:v1'
-          },
-          {
-            instruction: 'Verify your new custom image exists. Type: docker images',
-            expectedCommand: 'docker images',
-            output: 'REPOSITORY    TAG       IMAGE ID       CREATED         SIZE\nmyapp         v1        21ad22f4b1e2   2 seconds ago   174MB\nalpine        latest    05455a08881e   2 weeks ago     7.38MB'
-          }
+        startState: {
+          images: [{ id: 'img-node', name: 'node', tag: '18-alpine', size: '160MB' }],
+          containers: []
+        },
+        tasks: [
+          { id: '1', instruction: 'Build the current directory and tag it as "myapp:v1" (use `docker build -t myapp:v1 .`)', condition: 'PULLED:myapp' }
         ]
       }
     }

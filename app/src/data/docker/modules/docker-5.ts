@@ -56,22 +56,18 @@ export const docker5: Module = {
     },
     {
       type: 'game',
-      title: 'Terminal: Persist It',
-      content: 'Let\'s create a named volume and mount it to a database container.',
-      gameType: 'terminal-sim',
+      title: 'Lab: The Immortal Volume',
+      content: 'In this lab, you will create a managed volume and connect it to a database. If the container dies, the volume remains!',
+      gameType: 'docker-sim',
       gameData: {
-        startText: 'ubuntu@docker-host:~$ ',
-        steps: [
-          {
-            instruction: 'First, ask Docker to create a secure named volume called "dbstore". Type: docker volume create dbstore',
-            expectedCommand: 'docker volume create dbstore',
-            output: 'dbstore'
-          },
-          {
-            instruction: 'Now run a postgres container in the background (-d), and mount the volume (-v) to its internal data path. Type: docker run -d -v dbstore:/var/lib/postgresql/data postgres',
-            expectedCommand: 'docker run -d -v dbstore:/var/lib/postgresql/data postgres',
-            output: '9f2a4b1c2d3e4f5a6b7c...\nYour database is now safe and persistent!'
-          }
+        startState: {
+          images: [{ id: 'img-pg', name: 'postgres', tag: 'latest', size: '250MB' }],
+          containers: [],
+          volumes: []
+        },
+        tasks: [
+          { id: '1', instruction: 'Create a named volume called "dbstore": `docker volume create dbstore`', condition: 'VOLUME_EXISTS:dbstore' },
+          { id: '2', instruction: 'Run a postgres container using that volume: `docker run -d -v dbstore:/var/lib/postgresql/data postgres`', condition: 'CONTAINER_RUNNING:postgres' }
         ]
       }
     }

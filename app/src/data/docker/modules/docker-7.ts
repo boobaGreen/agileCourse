@@ -72,27 +72,19 @@ volumes:
     },
     {
       type: 'game',
-      title: 'Terminal: Orchestrate the Stack',
-      content: 'Launch a multi-container stack with a single command.',
-      gameType: 'terminal-sim',
+      title: 'Lab: Orchestrate the Stack',
+      content: 'In this simulation, you will launch a multi-container stack defined in a YAML file. Watch how Docker Compose handles the complexity for you!',
+      gameType: 'docker-sim',
       gameData: {
-        startText: 'ubuntu@docker-host:~/my-project$ ',
-        steps: [
-          {
-            instruction: 'Start all the services defined in your docker-compose.yml, and run them detached in the background. Type: docker-compose up -d',
-            expectedCommand: 'docker-compose up -d',
-            output: 'Creating network "my-project_default" with the default driver\nCreating volume "my-project_db-data" with default driver\nCreating my-project_db_1 ... done\nCreating my-project_web_1 ... done'
-          },
-          {
-            instruction: 'Your stack is running! If you want to check the live logs from ALL services at once, type: docker-compose logs -f',
-            expectedCommand: 'docker-compose logs -f',
-            output: 'db_1   | PostgreSQL init process complete; ready for start up.\nweb_1  | Server listening on port 5000...\n^C'
-          },
-          {
-            instruction: 'Now, completely destroy the stack and clean up the networks. Type: docker-compose down',
-            expectedCommand: 'docker-compose down',
-            output: 'Stopping my-project_web_1 ... done\nStopping my-project_db_1 ... done\nRemoving my-project_web_1 ... done\nRemoving my-project_db_1 ... done\nRemoving network my-project_default'
-          }
+        startState: {
+          images: [{ id: 'img-myapp', name: 'myapp', tag: 'latest', size: '150MB' }],
+          containers: [],
+          volumes: [],
+          networks: []
+        },
+        tasks: [
+          { id: '1', instruction: 'Start the entire stack in detached mode: `docker-compose up -d`', condition: 'CONTAINER_RUNNING:web' },
+          { id: '2', instruction: 'Stop and remove everything in the stack: `docker-compose down`', condition: 'CONTAINER_RUNNING:0' }
         ]
       }
     }

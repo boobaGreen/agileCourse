@@ -154,7 +154,7 @@ export function GitVisualGraph({ state }: GitVisualGraphProps) {
         {layout.nodes.map(node => {
           // Find all branches pointing to this node
           const branchesHere = Object.entries(state.branches)
-                                     .filter(([_, target]) => target === node.id)
+                                     .filter(([, target]) => target === node.id)
                                      .map(([name]) => name);
           
           if (branchesHere.length === 0) return null;

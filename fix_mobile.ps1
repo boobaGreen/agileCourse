@@ -6,9 +6,6 @@ $old1 = 'className="bg-black/60 rounded-xl p-2.5 border border-white/5 shadow-in
 $new1 = 'className="bg-black/60 rounded-xl p-2.5 border border-white/5 shadow-inner flex items-center gap-3 overflow-x-auto min-w-0 scrollbar-hide">'
 $content = $content.Replace($old1, $new1)
 
-$old1b = 'className="flex gap-1">'
-# This occurs in git-core-sim dots - but it also occurs elsewhere. Let's be more specific.
-# We target the specific code classname instead
 $old1c = 'className="text-[10px] mono text-git fw-bold">'
 $new1c = 'className="text-[10px] sm:text-[11px] mono text-git fw-bold whitespace-nowrap pr-6">'
 $content = $content.Replace($old1c, $new1c)

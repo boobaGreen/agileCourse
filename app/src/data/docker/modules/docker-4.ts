@@ -49,27 +49,17 @@ export const docker4: Module = {
     },
     {
       type: 'game',
-      title: 'Terminal: Publish to the World',
-      content: 'Let\'s log in and push an image to Docker Hub.',
-      gameType: 'terminal-sim',
+      title: 'Lab: Publish to the World',
+      content: 'In this simulator, you will prepare an image for the cloud. Tag your local image and "push" it to simulate a registry upload.',
+      gameType: 'docker-sim',
       gameData: {
-        startText: 'ubuntu@docker-host:~$ ',
-        steps: [
-          {
-            instruction: 'First, log into your Docker Hub account via CLI. Type: docker login',
-            expectedCommand: 'docker login',
-            output: 'Authenticating with existing credentials...\nLogin Succeeded'
-          },
-          {
-            instruction: 'Tag your local "myapp:v1" image with your Docker Hub username. Type: docker tag myapp:v1 devguru/myapp:v1',
-            expectedCommand: 'docker tag myapp:v1 devguru/myapp:v1',
-            output: ''
-          },
-          {
-            instruction: 'Now push it to the public cloud registry! Type: docker push devguru/myapp:v1',
-            expectedCommand: 'docker push devguru/myapp:v1',
-            output: 'The push refers to repository [docker.io/devguru/myapp]\n21ad22f4b1e2: Pushed\nv1: digest: sha256:8b4c3... size: 1993'
-          }
+        startState: {
+          images: [{ id: 'img-app', name: 'myapp', tag: 'v1', size: '180MB' }],
+          containers: []
+        },
+        tasks: [
+          { id: '1', instruction: 'Tag "myapp:v1" as "devguru/myapp:v1" (use `docker tag myapp:v1 devguru/myapp:v1`)', condition: 'PULLED:devguru/myapp' },
+          { id: '2', instruction: 'Push the new tagged image to Docker Hub (use `docker push devguru/myapp:v1`)', condition: 'PULLED:devguru/myapp' }
         ]
       }
     }

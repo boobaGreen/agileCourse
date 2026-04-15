@@ -42,22 +42,21 @@ export const k8s7: Module = {
     },
     {
       type: 'game',
-      title: 'Terminal: Diagnosing State',
-      content: 'Common status checks every admin does.',
-      gameType: 'terminal-sim',
+      title: 'Lab: Reserving the Disk',
+      content: 'In this simulation, you will apply a PersistentVolumeClaim. Watch how Kubernetes automatically binds it to a physical volume!',
+      gameType: 'k8s-sim',
       gameData: {
-        startText: 'k8s-admin@k8s-master:~$ ',
-        steps: [
-          {
-            instruction: 'List your Persistent Volume Claims to see their statuses. Type: kubectl get pvc',
-            expectedCommand: 'kubectl get pvc',
-            output: 'NAME          STATUS    VOLUME   CAPACITY   ACCESS MODES   AGE\npg-data-pvc   Bound     pvc-x7   5Gi        RWO            10d\nminio-pvc     Pending                       RWO            2m'
-          },
-          {
-            instruction: 'The minio-pvc is stuck in "Pending". We need clues. Describe it using the describe command. Type: kubectl describe pvc minio-pvc',
-            expectedCommand: 'kubectl describe pvc minio-pvc',
-            output: '...\nEvents:\n  Type     Reason              Age               From                         Message\n  ----     ------              ----              ----                         -------\n  Warning  ProvisioningFailed  12s (x4 over 2m)  persistentvolume-controller  no volume plugin matched'
-          }
+        startState: {
+          nodes: [{ id: 'node-1', name: 'minikube', status: 'Ready' }],
+          pods: [],
+          services: [],
+          deployments: [],
+          pvc: [],
+          pv: []
+        },
+        tasks: [
+          { id: '1', instruction: 'Apply the persistent volume claim: `kubectl apply -f web-pvc.yaml`', condition: 'PVC_EXISTS:web-pvc' },
+          { id: '2', instruction: 'Check the status of your claims: `kubectl get pvc`', condition: 'PVC_EXISTS:web-pvc' }
         ]
       }
     }

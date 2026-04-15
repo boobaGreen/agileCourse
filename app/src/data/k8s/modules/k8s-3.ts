@@ -51,32 +51,21 @@ export const k8s3: Module = {
     },
     {
       type: 'game',
-      title: 'Terminal: Meet kubectl',
-      content: 'Let\'s run some basic commands against a virtual cluster.',
-      gameType: 'terminal-sim',
+      title: 'Lab: Orchestrating an App',
+      content: 'Let\'s deploy a real structure. In this lab, your `kubectl` commands will live-update the cluster topology above.',
+      gameType: 'k8s-sim',
       gameData: {
-        startText: 'k8s-admin@k8s-master:~$ ',
-        steps: [
-          {
-            instruction: 'First, see what pods are currently running. Type: kubectl get pods',
-            expectedCommand: 'kubectl get pods',
-            output: 'NAME                     READY   STATUS    RESTARTS   AGE\nnginx-web-6b7df-x8mqp    1/1     Running   0          10m\nredis-cache-4f2xx        1/1     Running   0          5m'
-          },
-          {
-            instruction: 'The nginx pod has "READY 1/1", which means its 1 container is healthy. Let\'s see its logs. Type: kubectl logs nginx-web-6b7df-x8mqp',
-            expectedCommand: 'kubectl logs nginx-web-6b7df-x8mqp',
-            output: '10.244.1.1 - - [14/Apr/2026:10:00:01] "GET / HTTP/1.1" 200 612\n10.244.1.1 - - [14/Apr/2026:10:00:05] "GET /images/logo.png HTTP/1.1" 200 4500'
-          },
-          {
-            instruction: 'What happens if we forcefully destroy the pod? Type: kubectl delete pod nginx-web-6b7df-x8mqp',
-            expectedCommand: 'kubectl delete pod nginx-web-6b7df-x8mqp',
-            output: 'pod "nginx-web-6b7df-x8mqp" deleted'
-          },
-          {
-            instruction: 'Now quickly check the pods again! Type: kubectl get pods',
-            expectedCommand: 'kubectl get pods',
-            output: 'NAME                     READY   STATUS              RESTARTS   AGE\nnginx-web-6b7df-z9rtc    0/1     ContainerCreating   0          2s\nredis-cache-4f2xx        1/1     Running             0          6m'
-          }
+        startState: {
+          nodes: [{ id: 'node-1', name: 'minikube-worker', status: 'Ready' }],
+          pods: [],
+          services: [],
+          deployments: []
+        },
+        tasks: [
+          { id: '1', instruction: 'Apply the deployment manifest: `kubectl apply -f nginx-deployment.yaml`', condition: 'DEPLOYMENT_EXISTS:nginx' },
+          { id: '2', instruction: 'Expose the deployment with a service: `kubectl apply -f nginx-service.yaml`', condition: 'SERVICE_EXISTS:nginx-svc' },
+          { id: '3', instruction: 'Scale the deployment to 3 replicas: `kubectl scale deployment/nginx --replicas=3`', condition: 'REPLICAS:nginx:3' },
+          { id: '4', instruction: 'Verify you have at least 3 pods running: `kubectl get pods`', condition: 'PODS_RUNNING:3' }
         ]
       }
     },

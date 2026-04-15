@@ -39,6 +39,24 @@ export const docker8: Module = {
       type: 'tip',
       title: '🎯 Suggested Learning Path',
       content: '**Step 1**: Use the PWD sandbox to rerun the commands we covered in the Terminal simulations.\n**Step 2**: Follow the 3 Recommended Labs in Docker Classroom.\n**Step 3**: Come back here and obliterate the Final Quiz! 🏆'
+    },
+    {
+      type: 'game',
+      title: 'Lab: The Docker Sandbox',
+      content: 'Practice everything you\'ve learned! This simulator tracks images, containers, volumes, and networks. Try to run a full stack manually.',
+      gameType: 'docker-sim',
+      gameData: {
+        startState: {
+          images: [{ id: 'img-ng', name: 'nginx', tag: 'latest', size: '140MB' }],
+          containers: [],
+          volumes: [],
+          networks: []
+        },
+        tasks: [
+          { id: '1', instruction: 'Create a private network: `docker network create my-net`', condition: 'NETWORK_EXISTS:my-net' },
+          { id: '2', instruction: 'Run Nginx on that network: `docker run -d --name web --network my-net nginx`', condition: 'CONTAINER_RUNNING:web' }
+        ]
+      }
     }
   ]
 }

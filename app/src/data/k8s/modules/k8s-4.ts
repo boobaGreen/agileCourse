@@ -66,27 +66,20 @@ spec:
     },
     {
       type: 'game',
-      title: 'Terminal: The Force Multiplier',
-      content: 'Apply a declarative file and scale millions of requests.',
-      gameType: 'terminal-sim',
+      title: 'Lab: The Self-Healing Cluster',
+      content: 'Experience the power of Declarative state. In this lab, you\'ll try to break the cluster, only to see K8s fix it for you automatically.',
+      gameType: 'k8s-sim',
       gameData: {
-        startText: 'k8s-admin@k8s-master:~/configs$ ',
-        steps: [
-          {
-            instruction: 'We have a web.yml file. Apply it to the cluster to create the Deployment. Type: kubectl apply -f web.yml',
-            expectedCommand: 'kubectl apply -f web.yml',
-            output: 'deployment.apps/web-deployment created'
-          },
-          {
-            instruction: 'Let\'s check the pods it created. Type: kubectl get pods',
-            expectedCommand: 'kubectl get pods',
-            output: 'NAME                               READY   STATUS    RESTARTS   AGE\nweb-deployment-7bb9x               1/1     Running   0          4s\nweb-deployment-2ab4c               1/1     Running   0          4s\nweb-deployment-9zq1f               1/1     Running   0          4s'
-          },
-          {
-            instruction: 'Traffic just spiked 10x! We need more power. Scale the deployment immediately to 10 replicas. Type: kubectl scale deployment web-deployment --replicas=10',
-            expectedCommand: 'kubectl scale deployment web-deployment --replicas=10',
-            output: 'deployment.apps/web-deployment scaled'
-          }
+        startState: {
+          nodes: [{ id: 'node-1', name: 'worker-1', status: 'Ready' }],
+          pods: [],
+          services: [],
+          deployments: []
+        },
+        tasks: [
+          { id: '1', instruction: 'Apply the web deployment manifest: `kubectl apply -f web.yml`', condition: 'DEPLOYMENT_EXISTS:web-deployment' },
+          { id: '2', instruction: 'Delete one of the pods (get the name first with `kubectl get pods`)', condition: 'PODS_RUNNING:3' },
+          { id: '3', instruction: 'Scale the deployment to 6 replicas: `kubectl scale deployment/web-deployment --replicas=6`', condition: 'REPLICAS:web-deployment:6' }
         ]
       }
     }

@@ -51,6 +51,29 @@ export const k8s5: Module = {
       type: 'concept',
       title: '🚪 Enter the Ingress',
       content: 'A `LoadBalancer` service is expensive. If you have 5 web apps, you don\'t want to pay for 5 AWS Load Balancers. \n\nInstead, you deploy ONE **Ingress Controller**. It is a smart router (like Nginx) that sits at the front door. It looks at the URL requested (e.g. `myapp.com/api`) and routes the traffic to the correct internal ClusterIP service.'
+    },
+    {
+      type: 'game',
+      title: 'Lab: The Front Door',
+      content: 'Expose your application to the network. Watch the LoadBalancer provision an IP and route traffic to your pods.',
+      gameType: 'k8s-sim',
+      gameData: {
+        startState: {
+          nodes: [{ id: 'node-1', name: 'worker-minikube', status: 'Ready' }],
+          pods: [
+            { id: 'web-1', name: 'web-7bb9x', node: 'node-1', status: 'Running', labels: { app: 'web' } },
+            { id: 'web-2', name: 'web-2ab4c', node: 'node-1', status: 'Running', labels: { app: 'web' } }
+          ],
+          services: [],
+          deployments: [
+            { id: 'dep-web', name: 'web-deployment', replicas: 2, selector: { app: 'web' } }
+          ]
+        },
+        tasks: [
+          { id: '1', instruction: 'Expose the web deployment as a LoadBalancer service: `kubectl expose deployment web-deployment --type=LoadBalancer --port=80`', condition: 'SERVICE_EXISTS:web-deployment' },
+          { id: '2', instruction: 'Check the assigned IP for your new service: `kubectl get service`', condition: 'PODS_RUNNING:2' }
+        ]
+      }
     }
   ],
   quiz: [

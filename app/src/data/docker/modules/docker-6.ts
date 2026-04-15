@@ -41,22 +41,18 @@ export const docker6: Module = {
     },
     {
       type: 'game',
-      title: 'Terminal: Bridge the Gap',
-      content: 'Expose an internal NGINX server to your computer.',
-      gameType: 'terminal-sim',
+      title: 'Lab: The Bridge Network',
+      content: 'In this simulation, you will create a custom isolated network and connect a web server to it. Watch the visualizer connect the dots!',
+      gameType: 'docker-sim',
       gameData: {
-        startText: 'ubuntu@docker-host:~$ ',
-        steps: [
-          {
-            instruction: 'Run an nginx container in the background, mapping your laptop\'s port 8080 to the container\'s internal port 80. Type: docker run -d -p 8080:80 nginx',
-            expectedCommand: 'docker run -d -p 8080:80 nginx',
-            output: 'bf4d9a...'
-          },
-          {
-            instruction: 'Now curl localhost on your laptop port to see if the web server responds. Type: curl localhost:8080',
-            expectedCommand: 'curl localhost:8080',
-            output: '<!DOCTYPE html>\n<html>\n<head>\n<title>Welcome to nginx!</title>\n...\n</html>'
-          }
+        startState: {
+          images: [{ id: 'img-ng', name: 'nginx', tag: 'latest', size: '140MB' }],
+          containers: [],
+          networks: [{ id: 'net-bridge', name: 'bridge', driver: 'bridge' }]
+        },
+        tasks: [
+          { id: '1', instruction: 'Create a new network called "frontend-net": `docker network create frontend-net`', condition: 'NETWORK_EXISTS:frontend-net' },
+          { id: '2', instruction: 'Run an Nginx container on that network and expose port 8080: `docker run -d --name web -p 8080:80 --network frontend-net nginx`', condition: 'CONTAINER_RUNNING:web' }
         ]
       }
     }
