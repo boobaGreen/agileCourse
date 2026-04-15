@@ -54,7 +54,7 @@ export const docker1: Module = {
     {
       type: 'video',
       title: '📺 Docker Architecture Full Breakdown',
-      content: 'A fantastic visual explanation by TechWorld with Nana comparing VMs to Docker Engine.',
+      content: 'A fantastic visual explanation comparing VMs to Docker Engine.',
       videoUrl: 'https://www.youtube.com/watch?v=a1M_thDTqmU'
     },
     {
