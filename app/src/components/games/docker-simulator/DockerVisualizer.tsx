@@ -1,5 +1,6 @@
 import { Box, Layers, Play, Square, Activity, Database, Share2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import type { DockerState, DockerImage, DockerContainer, DockerVolume, DockerNetwork } from '../../../data/types';
 
 interface Props {
   state: DockerState;
@@ -18,7 +19,7 @@ export function DockerVisualizer({ state }: Props) {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <AnimatePresence>
-              {state.images.map(img => (
+              {state.images.map((img: DockerImage) => (
                 <motion.div
                   key={img.id}
                   initial={{ opacity: 0, x: -10 }}
@@ -49,7 +50,7 @@ export function DockerVisualizer({ state }: Props) {
              </div>
              <div className="flex flex-wrap gap-2">
                 <AnimatePresence>
-                  {state.volumes?.map(vol => (
+                  {state.volumes?.map((vol: DockerVolume) => (
                     <motion.div 
                       key={vol.id}
                       initial={{ scale: 0 }}
@@ -74,7 +75,7 @@ export function DockerVisualizer({ state }: Props) {
              </div>
              <div className="flex flex-wrap gap-2">
                 <AnimatePresence>
-                  {state.networks?.map(net => (
+                  {state.networks?.map((net: DockerNetwork) => (
                     <motion.div 
                       key={net.id}
                       initial={{ scale: 0 }}
@@ -98,7 +99,7 @@ export function DockerVisualizer({ state }: Props) {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <AnimatePresence>
-            {state.containers.map(container => (
+            {state.containers.map((container: DockerContainer) => (
               <motion.div
                 key={container.id}
                 layout

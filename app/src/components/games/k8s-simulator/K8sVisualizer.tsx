@@ -1,5 +1,6 @@
 import { HardDrive, Circle, Network, Zap, Shield, FileJson, Database } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import type { K8sState, K8sService, K8sConfigMap, K8sSecret, K8sNode, K8sPod, K8sPVC } from '../../../data/types';
 
 interface Props {
   state: K8sState;
@@ -19,7 +20,7 @@ export function K8sVisualizer({ state }: Props) {
             </div>
             <div className="flex flex-wrap gap-4">
               <AnimatePresence>
-                {state.services.map(svc => (
+                {state.services.map((svc: K8sService) => (
                   <motion.div
                     key={svc.id}
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -46,12 +47,12 @@ export function K8sVisualizer({ state }: Props) {
           </div>
           <div className="flex flex-wrap gap-3">
             <AnimatePresence>
-              {state.configMaps?.map(cm => (
+              {state.configMaps?.map((cm: K8sConfigMap) => (
                 <motion.div key={cm.id} layout className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg flex items-center gap-2 text-[10px] text-white/70">
                   <FileJson size={12} className="text-primary" /> {cm.name}
                 </motion.div>
               ))}
-              {state.secrets?.map(sec => (
+              {state.secrets?.map((sec: K8sSecret) => (
                 <motion.div key={sec.id} layout className="px-3 py-1 bg-white/5 border border-white/20 rounded-lg flex items-center gap-2 text-[10px] text-white/70">
                   <Shield size={12} className="text-danger" /> {sec.name}
                 </motion.div>
@@ -71,7 +72,7 @@ export function K8sVisualizer({ state }: Props) {
           </div>
           
           <div className="flex flex-col gap-4">
-            {state.nodes.map(node => (
+            {state.nodes.map((node: K8sNode) => (
               <div key={node.id} className="w-full bg-white/5 border border-white/10 rounded-2xl p-5 flex flex-col gap-4 backdrop-blur-sm">
                 <div className="flex justify-between items-center border-b border-white/5 pb-2">
                   <span className="text-sm font-black text-white">{node.name}</span>
@@ -80,7 +81,7 @@ export function K8sVisualizer({ state }: Props) {
 
                 <div className="grid grid-cols-4 sm:grid-cols-6 gap-3 min-h-[60px] content-start">
                   <AnimatePresence>
-                    {state.pods.filter(p => p.node === node.id).map(pod => (
+                    {state.pods.filter(p => p.node === node.id).map((pod: K8sPod) => (
                       <motion.div
                         key={pod.id}
                         layout
@@ -112,7 +113,7 @@ export function K8sVisualizer({ state }: Props) {
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col gap-3">
              <AnimatePresence>
-                {state.pvc?.map(pvc => (
+                {state.pvc?.map((pvc: K8sPVC) => (
                   <motion.div 
                     key={pvc.id}
                     initial={{ x: 20, opacity: 0 }}
