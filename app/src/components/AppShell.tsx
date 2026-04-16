@@ -106,9 +106,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <button onClick={() => setMobileOpen(true)} className="text-slate-400 hover:text-white bg-transparent border-none cursor-pointer">
             <Menu size={22} />
           </button>
-          <div className="flex items-center gap-2">
-            <span className="text-xl">⚓</span>
-            <span className="fw-black text-white">DevHarbor</span>
+          <div className="flex items-center gap-3">
+            <div className="brand-logo-container p-1 w-8 h-8">
+              <img src="/agilelab.jpg" alt="Logo" className="brand-logo w-full h-full" />
+            </div>
+            <span className="fw-black text-white text-sm">Agile Lab</span>
           </div>
           <div className="flex items-center gap-1 text-xp text-sm">
             <Zap size={14} />{xp} XP
@@ -143,9 +145,11 @@ function SidebarContent({ collapsed, location, userName, xp, badges, onNavigate,
   return (
     <div className="flex flex-col h-full">
       {/* Header/Logo */}
-      <div className="flex items-center gap-3 px-4 py-5 border-b" style={{ borderColor: 'var(--color-border)' }}>
-        <span className="text-2xl flex-shrink-0 animate-float">⚓</span>
-        {!collapsed && <span className="fw-black text-white text-lg tracking-tight">DevHarbor</span>}
+      <div className="flex items-center gap-3 px-4 py-6 border-b" style={{ borderColor: 'var(--color-border)' }}>
+        <div className={`brand-logo-container transition-all duration-300 ${collapsed ? 'w-10 h-10 p-1.5' : 'w-12 h-12 p-2'}`}>
+          <img src="/agilelab.jpg" alt="Logo" className="brand-logo w-full h-full" />
+        </div>
+        {!collapsed && <span className="fw-black text-white text-base tracking-tight">Agile Training</span>}
       </div>
 
       {/* User profile card */}
@@ -197,7 +201,7 @@ function SidebarContent({ collapsed, location, userName, xp, badges, onNavigate,
       {/* Sidebar Footer */}
       {!collapsed && (
         <div className="p-4 text-xs text-muted text-center border-t" style={{ borderColor: 'var(--color-border)' }}>
-          DevHarbor v1.1
+          Agile Training v1.1
         </div>
       )}
     </div>

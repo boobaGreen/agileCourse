@@ -78,12 +78,23 @@ export default function LandingPage() {
           exit={{ opacity: 0, scale: 0.95 }}
           className="w-full max-w-md"
         >
-          <div className="text-center mb-8">
-            <div className="text-5xl mb-4 animate-float">⚓</div>
+          <div className="text-center mb-10">
+            <div className="mb-6 flex justify-center">
+              <motion.div 
+                className="brand-logo-container p-2 shadow-2xl shadow-primary/20"
+                whileHover={{ scale: 1.05 }}
+              >
+                <img 
+                  src="/agilelab.jpg" 
+                  alt="Agile Lab Logo" 
+                  className="brand-logo w-48 h-auto"
+                />
+              </motion.div>
+            </div>
             <h1 className="text-4xl fw-black text-white tracking-tight">
-              Dev<span className="text-git">Harbor</span>
+              Agile <span className="text-docker">Learning</span>
             </h1>
-            <p className="text-sub mt-2">Internal Training Platform</p>
+            <p className="text-sub mt-2 fw-med">Professional Training Platform</p>
           </div>
 
           <div className="card p-8">

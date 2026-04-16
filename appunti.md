@@ -24,3 +24,4 @@ va bene che ci sia logini su browser?
 serve db? per score o altro?
 altrimenti se db come loggarsi? mail-solo aziendale-github?
 come raccolgo i bug / consigli / feedback senza db?
+dove lo hostiamo?

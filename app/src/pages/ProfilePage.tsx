@@ -163,7 +163,7 @@ export default function ProfilePage() {
       <div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-white/5 pb-8">
         <div>
           <h1 className="text-4xl fw-black text-white">User <span className="text-primary">Profile</span></h1>
-          <p className="text-muted mt-1 uppercase tracking-[0.2em] text-[10px] fw-bold">DevHarbor Identity Console</p>
+          <p className="text-muted mt-1 uppercase tracking-[0.2em] text-[10px] fw-bold">Agile Lab Identity Console</p>
         </div>
 
         {/* Tab Navigation */}
@@ -470,7 +470,7 @@ export default function ProfilePage() {
                <p className="text-sub text-sm max-w-2xl mx-auto leading-relaxed fw-med">
                 Official exam vouchers are often covered by our professional development budget. 
                 Once you satisfy the internal <span className="text-white fw-bold">#badge</span> requirements, 
-                reach out to your mentor to initiate the certification attempt!
+                reach out to your Agile Lab mentor to initiate the certification attempt!
                </p>
             </div>
           </motion.div>
