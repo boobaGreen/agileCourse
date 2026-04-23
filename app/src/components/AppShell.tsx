@@ -169,9 +169,6 @@ function SidebarContent({ collapsed, location, userName, xp, badges, onNavigate,
               <Award size={12} /> {badges}
             </div>
           </div>
-          <div className="mt-4 flex justify-center border-t border-white/5 pt-4">
-            <LanguageSwitcher />
-          </div>
         </div>
       )}
 
@@ -206,10 +203,13 @@ function SidebarContent({ collapsed, location, userName, xp, badges, onNavigate,
         </div>
       )}
 
-      {/* Sidebar Footer */}
+      {/* Language Switcher and Sidebar Footer */}
       {!collapsed && (
-        <div className="p-4 text-xs text-muted text-center border-t" style={{ borderColor: 'var(--color-border)' }}>
-          Agile Training v1.1
+        <div className="mt-auto px-4 py-4 border-t" style={{ borderColor: 'var(--color-border)' }}>
+          <LanguageSwitcher />
+          <div className="mt-4 text-[10px] text-muted text-center uppercase tracking-widest opacity-40">
+            Agile Training v1.1
+          </div>
         </div>
       )}
     </div>
