@@ -1,78 +1,73 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
-import { Globe, Check } from 'lucide-react';
 
 export function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage();
 
+  const FlagIT = () => (
+    <svg viewBox="0 0 3 2" className="w-4 h-4 rounded-full shadow-sm">
+      <rect width="1" height="2" fill="#008C45"/>
+      <rect width="1" height="2" x="1" fill="#F4F5F0"/>
+      <rect width="1" height="2" x="2" fill="#CD212A"/>
+    </svg>
+  );
+
+  const FlagEN = () => (
+    <svg viewBox="0 0 60 30" className="w-4 h-4 rounded-full shadow-sm">
+      <clipPath id="s">
+        <path d="M0,0 v30 h60 v-30 z"/>
+      </clipPath>
+      <path d="M0,0 v30 h60 v-30 z" fill="#012169"/>
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6"/>
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" strokeWidth="4"/>
+      <path d="M30,0 v30 M0,15 h60" stroke="#fff" strokeWidth="10"/>
+      <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" strokeWidth="6"/>
+    </svg>
+  );
+
   return (
-    <div className="flex flex-col gap-3 p-4 rounded-2xl bg-white/[0.03] border border-white/5 backdrop-blur-md shadow-2xl">
-      <div className="flex items-center justify-between px-1">
-        <div className="flex items-center gap-2">
+    <div className="flex items-center p-1 bg-white/5 backdrop-blur-xl rounded-full border border-white/10 shadow-lg transition-all hover:border-white/20">
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => setLanguage('en')}
+        className={`relative flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${
+          language === 'en' ? 'text-white' : 'text-muted hover:text-white/70'
+        }`}
+      >
+        {language === 'en' && (
           <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            className="text-primary"
-          >
-            <Globe size={14} />
-          </motion.div>
-          <span className="text-[10px] fw-black text-muted uppercase tracking-[0.2em]">Locale</span>
+            layoutId="active-pill"
+            className="absolute inset-0 bg-white/10 rounded-full border border-white/10 shadow-[0_0_10px_rgba(255,255,255,0.1)]"
+            transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
+          />
+        )}
+        <div className="relative z-10 flex items-center gap-2">
+          <FlagEN />
+          <span className="text-[10px] fw-black tracking-wider">EN</span>
         </div>
-        <span className="text-[10px] fw-bold text-primary/80 px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20">
-          {language === 'en' ? 'ENGLISH' : 'ITALIANO'}
-        </span>
-      </div>
-      
-      <div className="grid grid-cols-2 gap-2 relative p-1 bg-black/40 rounded-xl border border-white/10">
-        {/* EN Button */}
-        <button
-          onClick={() => setLanguage('en')}
-          className={`group relative flex items-center justify-center gap-2 py-2.5 rounded-lg transition-all duration-500 overflow-hidden ${
-            language === 'en' ? 'text-white' : 'text-muted hover:text-white/60'
-          }`}
-        >
-          {language === 'en' && (
-            <motion.div
-              layoutId="active-bg"
-              className="absolute inset-0 bg-gradient-to-r from-primary/20 to-blue-500/20 border border-primary/30 shadow-[0_0_20px_rgba(var(--color-primary-rgb),0.2)]"
-              transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-            />
-          )}
-          <span className="relative z-10 text-[11px] fw-black tracking-widest">EN</span>
-          {language === 'en' && (
-            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="relative z-10">
-              <Check size={10} className="text-primary" />
-            </motion.div>
-          )}
-        </button>
+      </button>
 
-        {/* IT Button */}
-        <button
-          onClick={() => setLanguage('it')}
-          className={`group relative flex items-center justify-center gap-2 py-2.5 rounded-lg transition-all duration-500 overflow-hidden ${
-            language === 'it' ? 'text-white' : 'text-muted hover:text-white/60'
-          }`}
-        >
-          {language === 'it' && (
-            <motion.div
-              layoutId="active-bg"
-              className="absolute inset-0 bg-gradient-to-r from-secondary/20 to-orange-500/20 border border-secondary/30 shadow-[0_0_20px_rgba(var(--color-secondary-rgb),0.2)]"
-              transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-            />
-          )}
-          <span className="relative z-10 text-[11px] fw-black tracking-widest">IT</span>
-          {language === 'it' && (
-            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="relative z-10">
-              <Check size={10} className="text-secondary" />
-            </motion.div>
-          )}
-        </button>
-      </div>
-
-      {/* Subtle Hint */}
-      <p className="text-[9px] text-muted text-center italic opacity-50">
-        Changes interface & module content
-      </p>
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => setLanguage('it')}
+        className={`relative flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${
+          language === 'it' ? 'text-white' : 'text-muted hover:text-white/70'
+        }`}
+      >
+        {language === 'it' && (
+          <motion.div
+            layoutId="active-pill"
+            className="absolute inset-0 bg-white/10 rounded-full border border-white/10 shadow-[0_0_10px_rgba(255,255,255,0.1)]"
+            transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
+          />
+        )}
+        <div className="relative z-10 flex items-center gap-2">
+          <FlagIT />
+          <span className="text-[10px] fw-black tracking-wider">IT</span>
+        </div>
+      </button>
     </div>
   );
 }

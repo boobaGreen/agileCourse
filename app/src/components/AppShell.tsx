@@ -148,11 +148,14 @@ function SidebarContent({ collapsed, location, userName, xp, badges, onNavigate,
   return (
     <div className="flex flex-col h-full">
       {/* Header/Logo */}
-      <div className="flex items-center gap-3 px-4 py-6 border-b" style={{ borderColor: 'var(--color-border)' }}>
-        <div className={`brand-logo-container transition-all duration-300 ${collapsed ? 'w-10 h-10 p-1.5' : 'w-12 h-12 p-2'}`}>
-          <img src="/agilelab.jpg" alt="Logo" className="brand-logo w-full h-full" />
+      <div className="flex items-center justify-between px-4 py-6 border-b" style={{ borderColor: 'var(--color-border)' }}>
+        <div className="flex items-center gap-3">
+          <div className={`brand-logo-container transition-all duration-300 ${collapsed ? 'w-10 h-10 p-1.5' : 'w-12 h-12 p-2'}`}>
+            <img src="/agilelab.jpg" alt="Logo" className="brand-logo w-full h-full" />
+          </div>
+          {!collapsed && <span className="fw-black text-white text-base tracking-tight">Agile Training</span>}
         </div>
-        {!collapsed && <span className="fw-black text-white text-base tracking-tight">Agile Training</span>}
+        {!collapsed && <LanguageSwitcher />}
       </div>
 
 
@@ -203,11 +206,10 @@ function SidebarContent({ collapsed, location, userName, xp, badges, onNavigate,
         </div>
       )}
 
-      {/* Language Switcher and Sidebar Footer */}
+      {/* Sidebar Footer */}
       {!collapsed && (
-        <div className="mt-auto px-4 py-4 border-t" style={{ borderColor: 'var(--color-border)' }}>
-          <LanguageSwitcher />
-          <div className="mt-4 text-[10px] text-muted text-center uppercase tracking-widest opacity-40">
+        <div className="mt-auto px-4 py-6 border-t" style={{ borderColor: 'var(--color-border)' }}>
+          <div className="text-[10px] text-muted text-center uppercase tracking-widest opacity-40">
             Agile Training v1.1
           </div>
         </div>
