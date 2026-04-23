@@ -171,3 +171,22 @@ export interface Module {
   quiz?: QuizQuestion[]
   externalLink?: { label: string; url: string; xpPrompt: string }
 }
+
+export interface GameDataItem {
+  id: string;
+  label: string;
+}
+
+export interface GameDataClassify {
+  categories: { id: string, label: string }[];
+  items: { id: string, label: string, categoryId: string }[];
+}
+
+export interface TerminalGameData {
+  startText?: string;
+  steps: {
+    instruction: string;
+    expectedCommand: string;
+    output?: string;
+  }[];
+}
