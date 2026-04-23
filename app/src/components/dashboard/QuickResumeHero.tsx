@@ -14,7 +14,7 @@ interface QuickResumeHeroProps {
 
 export function QuickResumeHero({ activeTrack, nextModule, activeTrackId, setActiveTrackId, tracks }: QuickResumeHeroProps) {
   const navigate = useNavigate()
-  const { resolveString } = useLanguage()
+  const { t, resolveString } = useLanguage()
 
   return (
     <motion.div 
@@ -31,7 +31,7 @@ export function QuickResumeHero({ activeTrack, nextModule, activeTrackId, setAct
       <div className="relative z-20 p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-8">
         <div className="flex-1">
            <span className="text-[10px] fw-black tracking-[0.3em] text-muted uppercase mb-3 block">
-             Status: <span style={{ color: activeTrack.color }}>Ready for Next Mission</span>
+             {t('dashboard.status')}: <span style={{ color: activeTrack.color }}>{t('dashboard.missionReady')}</span>
            </span>
            {nextModule ? (
              <>
@@ -49,12 +49,12 @@ export function QuickResumeHero({ activeTrack, nextModule, activeTrackId, setAct
                <div className="flex items-center gap-4 text-[10px] md:text-xs text-muted fw-bold uppercase mt-6 bg-white/5 w-fit px-4 py-2 rounded-full border border-white/5">
                   <span className="flex items-center gap-2">
                     <Activity size={14} style={{ color: activeTrack.color }} /> 
-                    Estimated {nextModule.duration}
+                    {t('dashboard.estimated')} {nextModule.duration}
                   </span>
                   <span className="w-1 h-1 rounded-full bg-white/20" />
                   <span className="flex items-center gap-2 text-xp">
                     <Zap size={14} /> 
-                    +{nextModule.xpReward} XP Reward
+                    +{nextModule.xpReward} {t('dashboard.xpReward')}
                   </span>
                </div>
              </>
@@ -64,8 +64,8 @@ export function QuickResumeHero({ activeTrack, nextModule, activeTrackId, setAct
                    <Trophy size={48} />
                 </div>
                 <div>
-                   <h2 className="text-2xl md:text-4xl fw-black text-white leading-tight">Track Mastered!</h2>
-                   <p className="text-sub text-base mt-2">You've conquered every challenge in the {activeTrack.label} track. Incredible achievement!</p>
+                   <h2 className="text-2xl md:text-4xl fw-black text-white leading-tight">{t('dashboard.trackMastered')}</h2>
+                   <p className="text-sub text-base mt-2">{t('dashboard.conqueredStart')} {resolveString(activeTrack.label)} {t('dashboard.conqueredEnd')}</p>
                 </div>
              </div>
            )}
@@ -79,7 +79,7 @@ export function QuickResumeHero({ activeTrack, nextModule, activeTrackId, setAct
               style={{ background: activeTrack.color, color: '#fff' }}
             >
               <span className="absolute inset-0 rounded-2xl animate-ping opacity-20 pointer-events-none" style={{ backgroundColor: activeTrack.color }} />
-              CONTINUE LEARNING <ArrowRight className="group-hover:translate-x-1.5 transition-transform" />
+              {t('dashboard.resume').toUpperCase()} <ArrowRight className="group-hover:translate-x-1.5 transition-transform" />
             </button>
           ) : (
             <button
@@ -89,7 +89,7 @@ export function QuickResumeHero({ activeTrack, nextModule, activeTrackId, setAct
               }}
               className="w-full md:w-auto px-10 py-5 rounded-2xl fw-black text-lg bg-surface2 text-white border border-white/10 hover:bg-white/5 transition-all shadow-xl"
             >
-              EXPLORE NEXT TRACK
+              {t('dashboard.explore').toUpperCase()}
             </button>
           )}
         </div>

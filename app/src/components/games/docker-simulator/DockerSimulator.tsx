@@ -5,6 +5,7 @@ import { DockerParser } from './DockerParser';
 import { DockerVisualizer } from './DockerVisualizer';
 import { CheckCircle, TerminalSquare, RotateCcw } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface Props {
   data: DockerGameData;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export function DockerSimulator({ data, onComplete }: Props) {
+  const { t, resolveString } = useLanguage();
   const [state, setState] = useState<DockerState>(data.startState);
   const [history, setHistory] = useState<{type: 'cmd'|'out', text: string}[]>([]);
   const [input, setInput] = useState('');
@@ -62,7 +64,7 @@ export function DockerSimulator({ data, onComplete }: Props) {
       const engine = new DockerEngine(state);
       const result = DockerParser.execute(engine, cmd);
       
-      setHistory(prev => [...prev, { type: 'out', text: result.out }]);
+      setHistory(prev => [...prev, { type: 'out', text: resolveString(result.out) }]);
       
       if (result.success) {
         const newState = engine.getState();
@@ -80,7 +82,7 @@ export function DockerSimulator({ data, onComplete }: Props) {
 
   const handleReset = () => {
     setState(data.startState);
-    setHistory([{ type: 'out', text: 'Docker daemon restarted. State cleared.' }]);
+    setHistory([{ type: 'out', text: resolveString({ en: 'Docker daemon restarted. State cleared.', it: 'Daemon Docker riavviato. Stato cancellato.' }) }]);
     setCompletedTasks(new Set());
     setInput('');
   };
@@ -109,18 +111,18 @@ export function DockerSimulator({ data, onComplete }: Props) {
          <div className="flex flex-col">
             <span className="text-xs text-primary font-black uppercase tracking-widest leading-none mb-2">Docker Engine Simulator</span>
             <div className="flex items-center gap-4">
-              <h3 className="text-xl font-black text-white">Interactive Lab</h3>
+              <h3 className="text-xl font-black text-white">{resolveString({ en: 'Interactive Lab', it: 'Laboratorio Interattivo' })}</h3>
               <button 
                 onClick={handleReset}
                 className="px-3 py-1 flex items-center gap-2 text-xs bg-white/5 hover:bg-danger/20 text-muted hover:text-danger rounded border border-white/10 hover:border-danger/30 transition-colors"
               >
-                <RotateCcw size={12} /> Reset
+                <RotateCcw size={12} /> {t('common.restart')}
               </button>
             </div>
          </div>
          {allCompleted && (
            <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="px-4 py-2 rounded-xl bg-[#06d6a0]/20 border border-[#06d6a0]/30 text-[#06d6a0] text-xs font-black uppercase flex gap-2 items-center">
-              <CheckCircle size={16} /> Image Built & Shipped!
+              <CheckCircle size={16} /> {resolveString({ en: 'Image Built & Shipped!', it: 'Immagine Creata e Spedita!' })}
            </motion.div>
          )}
       </div>
@@ -133,13 +135,13 @@ export function DockerSimulator({ data, onComplete }: Props) {
 
          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-black/40 border border-white/10 rounded-xl p-5 flex flex-col gap-3 h-full">
-              <span className="text-[10px] text-muted font-black uppercase tracking-widest border-b border-white/5 pb-2">Mission Objectives</span>
+              <span className="text-[10px] text-muted font-black uppercase tracking-widest border-b border-white/5 pb-2">{resolveString({ en: 'Mission Objectives', it: 'Obiettivi Missione' })}</span>
               {tasks.map(t => (
                 <div key={t.id} className="flex gap-3 items-center">
                   <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${t.completed ? 'bg-[#06d6a0] border-[#06d6a0]' : 'border-white/20 bg-black'}`}>
                     {t.completed && <CheckCircle className="text-white" size={10} />}
                   </div>
-                  <span className={`text-xs font-bold transition-colors ${t.completed ? 'text-white/50 line-through' : 'text-white'}`}>{t.instruction}</span>
+                  <span className={`text-xs font-bold transition-colors ${t.completed ? 'text-white/50 line-through' : 'text-white'}`}>{resolveString(t.instruction)}</span>
                 </div>
               ))}
             </div>
@@ -167,7 +169,7 @@ export function DockerSimulator({ data, onComplete }: Props) {
                       onKeyDown={handleCommand}
                       spellCheck={false}
                       autoFocus
-                      placeholder="Type docker command..."
+                      placeholder={resolveString({ en: 'Type docker command...', it: 'Scrivi comando docker...' })}
                       className="flex-1 bg-transparent outline-none border-none text-[#06d6a0] placeholder:text-white/20 font-mono text-sm min-w-0"
                     />
                   </div>

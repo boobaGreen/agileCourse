@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion'
 import { Award, ArrowRight, GitBranch, Package, Ship } from 'lucide-react'
 import type { Track } from '../../data/types'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 export function CertificationWidget({ tracks, completedModules, onNavigate }: { 
   tracks: Track[], 
   completedModules: string[], 
   onNavigate: () => void 
 }) {
+  const { t } = useLanguage()
   const milestones = [
     { trackId: 'git', certName: 'GitHub Foundations', badge: 'git-branching', color: 'var(--color-git)', icon: GitBranch },
     { trackId: 'docker', certName: 'Docker Certified Associate', badge: 'docker-harbor', color: 'var(--color-docker)', icon: Package },
@@ -41,21 +43,21 @@ export function CertificationWidget({ tracks, completedModules, onNavigate }: {
               <Award size={24} />
             </div>
             <div>
-              <p className="text-[10px] fw-black text-muted uppercase tracking-widest">Next Career Goal</p>
+              <p className="text-[10px] fw-black text-muted uppercase tracking-widest">{t('cert.goal')}</p>
               <h4 className="text-white fw-black text-lg">{m.certName}</h4>
             </div>
           </div>
 
           <p className="text-sub text-xs leading-relaxed mb-6">
-            Your progress in the <span className="fw-bold text-white">{m.trackId.toUpperCase()}</span> track has unlocked a professional milestone. Explore the official syllabus.
+            {t('cert.progressStart')} <span className="fw-bold text-white">{m.trackId.toUpperCase()}</span> {t('cert.progressEnd')}
           </p>
 
           <div className="flex items-center justify-between pt-4 border-t border-white/5">
             <span className="text-[10px] fw-black text-muted flex items-center gap-1">
-              <m.icon size={12} style={{ color: m.color }} /> VERIFIED BY DEVHARBOR
+              <m.icon size={12} style={{ color: m.color }} /> {t('cert.verified')}
             </span>
             <div className="flex items-center gap-1 text-primary text-[10px] fw-black uppercase">
-              View Roadmap <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+              {t('cert.viewRoadmap')} <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
             </div>
           </div>
         </div>

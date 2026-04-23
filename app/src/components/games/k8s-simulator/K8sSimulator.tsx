@@ -5,6 +5,7 @@ import { K8sParser } from './K8sParser';
 import { K8sVisualizer } from './K8sVisualizer';
 import { CheckCircle, TerminalSquare, RotateCcw, Info } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface Props {
   data: K8sGameData;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export function K8sSimulator({ data, onComplete }: Props) {
+  const { resolveString } = useLanguage();
   const [state, setState] = useState<K8sState>(data.startState);
   const [history, setHistory] = useState<{type: 'cmd'|'out', text: string}[]>([]);
   const [input, setInput] = useState('');
@@ -62,7 +64,7 @@ export function K8sSimulator({ data, onComplete }: Props) {
       const engine = new K8sEngine(state);
       const result = K8sParser.execute(engine, cmd);
       
-      setHistory(prev => [...prev, { type: 'out', text: result.out }]);
+      setHistory(prev => [...prev, { type: 'out', text: resolveString(result.out) }]);
       
       if (result.success) {
         const newState = engine.getState();
@@ -80,7 +82,7 @@ export function K8sSimulator({ data, onComplete }: Props) {
 
   const handleReset = () => {
     setState(data.startState);
-    setHistory([{ type: 'out', text: 'Kubernetes cluster reset. API server restarted.' }]);
+    setHistory([{ type: 'out', text: resolveString({ en: 'Kubernetes cluster reset. API server restarted.', it: 'Cluster Kubernetes resettato. API server riavviato.' }) }]);
     setCompletedTasks(new Set());
     setInput('');
   };
@@ -109,18 +111,18 @@ export function K8sSimulator({ data, onComplete }: Props) {
          <div className="flex flex-col">
             <span className="text-xs text-secondary font-black uppercase tracking-widest leading-none mb-2">Kubernetes Cluster Simulator</span>
             <div className="flex items-center gap-4">
-              <h3 className="text-xl font-black text-white">Cloud Laboratory</h3>
+              <h3 className="text-xl font-black text-white">{resolveString({ en: 'Cloud Laboratory', it: 'Laboratorio Cloud' })}</h3>
               <button 
                 onClick={handleReset}
                 className="px-3 py-1 flex items-center gap-2 text-xs bg-white/5 hover:bg-danger/20 text-muted hover:text-danger rounded border border-white/10 hover:border-danger/30 transition-colors"
               >
-                <RotateCcw size={12} /> Reset Cluster
+                <RotateCcw size={12} /> {resolveString({ en: 'Reset Cluster', it: 'Resetta Cluster' })}
               </button>
             </div>
          </div>
          {allCompleted && (
            <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="px-4 py-2 rounded-xl bg-secondary/20 border border-secondary/30 text-secondary text-xs font-black uppercase flex gap-2 items-center">
-              <CheckCircle size={16} /> Orchestration Successful!
+              <CheckCircle size={16} /> {resolveString({ en: 'Orchestration Successful!', it: 'Orchestrazione Riuscita!' })}
            </motion.div>
          )}
       </div>
@@ -133,13 +135,13 @@ export function K8sSimulator({ data, onComplete }: Props) {
 
          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-black/40 border border-white/10 rounded-xl p-5 flex flex-col gap-3 h-full">
-              <span className="text-[10px] text-muted font-black uppercase tracking-widest border-b border-white/5 pb-2">Cluster Objectives</span>
+              <span className="text-[10px] text-muted font-black uppercase tracking-widest border-b border-white/5 pb-2">{resolveString({ en: 'Cluster Objectives', it: 'Obiettivi del Cluster' })}</span>
               {tasks.map(t => (
                 <div key={t.id} className="flex gap-3 items-center">
                   <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${t.completed ? 'bg-secondary border-secondary' : 'border-white/20 bg-black'}`}>
                     {t.completed && <CheckCircle className="text-white" size={10} />}
                   </div>
-                  <span className={`text-xs font-bold transition-colors ${t.completed ? 'text-white/50 line-through' : 'text-white'}`}>{t.instruction}</span>
+                  <span className={`text-xs font-bold transition-colors ${t.completed ? 'text-white/50 line-through' : 'text-white'}`}>{resolveString(t.instruction)}</span>
                 </div>
               ))}
             </div>
@@ -171,7 +173,7 @@ export function K8sSimulator({ data, onComplete }: Props) {
                       onKeyDown={handleCommand}
                       spellCheck={false}
                       autoFocus
-                      placeholder="Type kubectl command..."
+                      placeholder={resolveString({ en: 'Type kubectl command...', it: 'Scrivi comando kubectl...' })}
                       className="flex-1 bg-transparent outline-none border-none text-secondary placeholder:text-white/20 font-mono text-sm min-w-0"
                     />
                   </div>

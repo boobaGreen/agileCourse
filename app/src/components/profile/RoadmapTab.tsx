@@ -1,10 +1,12 @@
 import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { Filter, CheckCircle, Clock, ExternalLink, Zap } from 'lucide-react'
+import { Filter, CheckCircle, Clock, Zap, ExternalLink } from 'lucide-react'
 import { useAppStore } from '../../store/useAppStore'
 import { certPaths } from '../../data/certifications'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 export function RoadmapTab() {
+  const { t, resolveString } = useLanguage()
   const { completedModules, badges } = useAppStore()
   const [filter, setFilter] = useState<'all' | 'ready' | 'progress'>('all')
   const earnedBadgeIds = badges.map(b => b.id)
@@ -35,15 +37,15 @@ export function RoadmapTab() {
     >
       <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6 bg-surface2/30 p-8 rounded-3xl border border-white/5">
         <div className="max-w-md">
-          <h2 className="text-2xl fw-black text-white mb-2 italic">Scale the Mountain</h2>
-          <p className="text-sub text-sm leading-relaxed">External certifications bridge the gap between internal learning and global industry recognition.</p>
+          <h2 className="text-2xl fw-black text-white mb-2 italic">{t('roadmap.title')}</h2>
+          <p className="text-sub text-sm leading-relaxed">{t('roadmap.subtitle')}</p>
         </div>
         
         <div className="flex bg-black/40 p-1 rounded-xl border border-white/5 gap-1 shrink-0">
           {[
-            { id: 'all', label: 'All Exams', icon: Filter },
-            { id: 'ready', label: 'Ready', icon: CheckCircle },
-            { id: 'progress', label: 'In Progress', icon: Clock },
+            { id: 'all', label: t('roadmap.filterAll'), icon: Filter },
+            { id: 'ready', label: t('roadmap.filterReady'), icon: CheckCircle },
+            { id: 'progress', label: t('roadmap.filterProgress'), icon: Clock },
           ].map((btn) => (
             <button
               key={btn.id}
@@ -66,11 +68,11 @@ export function RoadmapTab() {
 
         <div className="flex flex-col gap-12 relative z-10">
           {filteredPaths.map((path) => (
-            <div key={path.category} className="relative">
+            <div key={resolveString(path.category)} className="relative">
               <div className="flex justify-center mb-10">
                  <div className="bg-surface2 px-6 py-2 rounded-full border border-white/10 shadow-xl relative z-20">
                    <h2 className="text-sm fw-black text-white uppercase tracking-[0.3em]" style={{ color: path.color }}>
-                     {path.category}
+                     {resolveString(path.category)}
                    </h2>
                  </div>
               </div>
@@ -100,17 +102,17 @@ export function RoadmapTab() {
                             <span className="badge-pill bg-surface2 text-muted mono text-[10px]">LVL: {cert.level}</span>
                             {isReady ? (
                               <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ repeat: Infinity, duration: 2 }} className="text-green flex items-center gap-1 text-[10px] fw-black uppercase">
-                                <CheckCircle size={12} /> Ready to test
+                                <CheckCircle size={12} /> {t('roadmap.statusReady')}
                               </motion.div>
                             ) : (
                               <div className="text-sub flex items-center gap-1 text-[10px] fw-black uppercase">
-                                <Clock size={12} /> Training...
+                                <Clock size={12} /> {t('roadmap.statusTraining')}
                               </div>
                             )}
                           </div>
                           
                           <h3 className="text-xl fw-black text-white group-hover/card:text-primary transition-colors mb-2 relative z-10">{cert.name}</h3>
-                          <p className="text-muted text-xs leading-relaxed mb-4 relative z-10">{cert.description}</p>
+                          <p className="text-muted text-xs leading-relaxed mb-4 relative z-10">{resolveString(cert.description)}</p>
                           
                           <div className="flex flex-wrap gap-2 mb-6 relative z-10">
                              {cert.topics.map(t => (
@@ -119,12 +121,12 @@ export function RoadmapTab() {
                           </div>
 
                           <div className="pt-4 border-t border-border flex items-center justify-between relative z-10">
-                             <div className="flex items-center gap-2 text-[10px] text-muted">
+                              <div className="flex items-center gap-2 text-[10px] text-muted">
                                <Zap size={10} style={{ color: path.color }} />
-                               Requires: <span className="text-sub fw-bold">#{path.badge}</span>
+                               {t('roadmap.requires')}: <span className="text-sub fw-bold">#{path.badge}</span>
                              </div>
                              <a href={cert.url} target="_blank" rel="noopener" className="btn btn-primary h-8 px-4 text-[9px] gap-1 fw-black">
-                               SYLLABUS <ExternalLink size={10} />
+                               {t('roadmap.syllabus')} <ExternalLink size={10} />
                              </a>
                           </div>
                         </div>
@@ -140,11 +142,9 @@ export function RoadmapTab() {
       
       <div className="mt-20 card p-10 bg-primary/5 border-primary/10 text-center relative overflow-hidden">
          <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 blur-[80px] rounded-full" />
-         <p className="text-primary text-xs fw-black uppercase tracking-widest mb-3">Institutional Support</p>
+         <p className="text-primary text-xs fw-black uppercase tracking-widest mb-3">{t('roadmap.supportTitle')}</p>
          <p className="text-sub text-sm max-w-2xl mx-auto leading-relaxed fw-med">
-          Official exam vouchers are often covered by our professional development budget. 
-          Once you satisfy the internal <span className="text-white fw-bold">#badge</span> requirements, 
-          reach out to your Agile Lab mentor to initiate the certification attempt!
+           {t('roadmap.supportText')}
          </p>
       </div>
     </motion.div>

@@ -5,7 +5,7 @@ import { useAppStore } from '../store/useAppStore'
 import { GIT_MODULES } from '../data/git/modules/index'
 import { DOCKER_MODULES } from '../data/docker/modules/index'
 import { K8S_MODULES } from '../data/k8s/modules/index'
-import type { QuizQuestion } from '../data/types'
+import type { QuizQuestion, LocalizedString } from '../data/types'
 import {
   ArrowLeft, ArrowRight, Zap,
   ExternalLink, BookOpen, Sparkles
@@ -30,7 +30,7 @@ export default function ModulePage() {
   const [prevId, setPrevId] = useState(id)
   
   interface ShuffledQuiz extends QuizQuestion {
-    shuffledOptions: string[]
+    shuffledOptions: LocalizedString[]
     shuffledCorrect: number
   }
   const [quizData, setQuizData] = useState<ShuffledQuiz[]>([])
@@ -224,10 +224,10 @@ export default function ModulePage() {
                 <h3 className="text-white fw-bold mb-4 flex items-center gap-2">
                   <ExternalLink size={18} style={{ color: trackColor }} /> Practical Mission
                 </h3>
-                <p className="text-sub text-sm mb-6">{mod.externalLink.xpPrompt}</p>
+                <p className="text-sub text-sm mb-6">{resolveString(mod.externalLink.xpPrompt)}</p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <a href={mod.externalLink.url} target="_blank" rel="noopener noreferrer" className="btn flex-1 justify-center" style={{ background: trackColor, color: 'white' }}>
-                    Launch {mod.externalLink.label} <ExternalLink size={14} />
+                    Launch {resolveString(mod.externalLink.label)} <ExternalLink size={14} />
                   </a>
                   <div className="flex gap-2 flex-1">
                     <input type="number" placeholder="Report level achieved..." value={xpImport} onChange={(e) => setXpImport(e.target.value)} className="flex-1 bg-surface2 border border-border p-3 rounded-xl text-white outline-none" />
@@ -277,12 +277,12 @@ export default function ModulePage() {
               {quizData.map((q, idx) => (
                 <div key={q.id} className="card">
                   <p className="text-white fw-bold mb-5 flex gap-3">
-                    <span className="text-muted mono">Q{idx+1}</span> {q.question}
+                    <span className="text-muted mono">Q{idx+1}</span> {resolveString(q.question)}
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {q.shuffledOptions.map((opt, oi) => (
                       <button key={oi} onClick={() => handleAnswer(q.id, oi)} className={`quiz-option ${quizAnswers[q.id] === oi ? 'selected' : ''}`}>
-                        <span className="mono fw-black opacity-50">{String.fromCharCode(65 + oi)}</span> {opt}
+                        <span className="mono fw-black opacity-50">{String.fromCharCode(65 + oi)}</span> {resolveString(opt)}
                       </button>
                     ))}
                   </div>
@@ -310,15 +310,15 @@ export default function ModulePage() {
             <div className="flex flex-col gap-4 mb-10">
               {quizData.map((q, idx) => (
                 <div key={q.id} className="card p-5" style={{ borderColor: quizAnswers[q.id] === q.shuffledCorrect ? 'rgba(34,197,94,0.3)' : 'rgba(239,68,68,0.3)' }}>
-                  <p className="text-white fw-bold mb-4 flex gap-3"><span className="text-muted mono">Q{idx+1}</span> {q.question}</p>
+                  <p className="text-white fw-bold mb-4 flex gap-3"><span className="text-muted mono">Q{idx+1}</span> {resolveString(q.question)}</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4">
                     {q.shuffledOptions.map((opt, oi) => (
                       <div key={oi} className={`quiz-option cursor-default ${oi === q.shuffledCorrect ? 'correct' : ''} ${oi === quizAnswers[q.id] && oi !== q.shuffledCorrect ? 'wrong' : ''}`}>
-                        <span className="mono fw-black">{oi === q.shuffledCorrect ? '✓' : oi === quizAnswers[q.id] ? '✗' : String.fromCharCode(65 + oi)}</span> {opt}
+                        <span className="mono fw-black">{oi === q.shuffledCorrect ? '✓' : oi === quizAnswers[q.id] ? '✗' : String.fromCharCode(65 + oi)}</span> {resolveString(opt)}
                       </div>
                     ))}
                   </div>
-                  <div className="explanation"><strong>Explanation: </strong> {q.explanation}</div>
+                  <div className="explanation"><strong>Explanation: </strong> {resolveString(q.explanation)}</div>
                 </div>
               ))}
             </div>

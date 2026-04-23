@@ -24,6 +24,13 @@ State-of-the-art UI components that react to every command:
 - **Infrastructure Overlays**: View networking connections and storage bindings with modern iconography and smooth animations (Framer Motion).
 - **Gamified Feedback**: An integrated XP system that rewards students for completing tasks and conquering certification challenges.
 
+### 🌍 Multi-language Support (i18n)
+
+The platform is fully localized to support a global audience:
+- **English**: Default international language for DevOps professionals.
+- **Italiano**: Native support for Italian students and teams.
+- **Dynamic Switching**: Toggle languages instantly without page reloads using the integrated language switcher.
+
 ## 🚀 Detailed Curriculum (Modules)
 
 ### 🐳 Docker Track (9 Modules)

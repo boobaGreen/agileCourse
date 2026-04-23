@@ -43,14 +43,14 @@ export function SectionCard({ section, onCompleteGame }: { section: Section, onC
       )}
       
       <div className="text-sub text-sm leading-relaxed">
-        {resolveString(section.content).split('\n').map((line, i) => {
+        {resolveString(section.content).split('\n').map((line: string, i: number) => {
           const isDesktopOnly = line.includes('<!-- desktop-only -->');
           const cleanLine = line.replace('<!-- desktop-only -->', '');
           return (
           <div key={i} className={`mb-2 last:mb-0 ${isDesktopOnly ? 'hidden sm:block' : ''}`}>
              {cleanLine.includes(' · ') && cleanLine.includes('[') ? (
                 <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-3 mt-4">
-                   {line.split(' · ').map((part, pi) => {
+                   {line.split(' · ').map((part: string, pi: number) => {
                       const match = part.match(/\[([^\]]+)\]\(([^)]+)\)/);
                       const emoji = part.match(/^([\u2600-\u27BF]|[\uD83C-\uD83E][\uDC00-\uDFFF])/);
                       if (match) {
@@ -69,7 +69,7 @@ export function SectionCard({ section, onCompleteGame }: { section: Section, onC
                       return <span key={pi}>{part}</span>;
                    })}
                 </div>
-             ) : line.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\)|https?:\/\/[^\s)]+)/g).map((part, pi) => {
+             ) : line.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\)|https?:\/\/[^\s)]+)/g).map((part: string, pi: number) => {
                  const boldMatch = part.match(/^\*\*(.*?)\*\*$/)
                  if (boldMatch) return <strong key={`${pi}-${i}`} className="text-white fw-black">{boldMatch[1]}</strong>
                  
@@ -185,7 +185,7 @@ export function SectionCard({ section, onCompleteGame }: { section: Section, onC
             src={section.videoUrl.includes('playlist?list=')
               ? section.videoUrl.replace('youtube.com/playlist?list=', 'youtube.com/embed/videoseries?list=')
               : section.videoUrl.replace('watch?v=', 'embed/')}
-            title={section.title || 'Educational Video'}
+            title={resolveString(section.title) || 'Educational Video'}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           />
@@ -205,8 +205,8 @@ export function SectionCard({ section, onCompleteGame }: { section: Section, onC
       {/* Specialized Animations */}
       {section.type === 'animation' && (
         <div className="mt-4 p-6 rounded-2xl border border-white/5 bg-surface2/30 flex items-center justify-center overflow-hidden min-h-[150px]">
-           <GitLabs type={section.animationType || section.content} onComplete={() => onCompleteGame(section.title || 'Lab')} />
-           <EducationAnimation type={section.animationType || section.content} />
+           <GitLabs type={resolveString(section.animationType || section.content)} onComplete={() => onCompleteGame(resolveString(section.title) || 'Lab')} />
+           <EducationAnimation type={resolveString(section.animationType || section.content)} />
         </div>
       )}
 
@@ -216,7 +216,7 @@ export function SectionCard({ section, onCompleteGame }: { section: Section, onC
            <MiniGame 
              gameType={section.gameType} 
              gameData={section.gameData} 
-             onComplete={() => onCompleteGame(section.title || 'Challenge')} 
+             onComplete={() => onCompleteGame(resolveString(section.title) || 'Challenge')} 
            />
         </div>
       )}

@@ -17,9 +17,9 @@ import { AnalyticsSection } from '../components/dashboard/AnalyticsSection'
 import { useLanguage } from '../contexts/LanguageContext'
 
 const tracks = [
-  { id: 'git', icon: GitBranch, emoji: '🔴', label: 'Git', color: 'var(--color-git)', glow: 'rgba(249,115,22,0.2)', modules: GIT_MODULES, available: true },
-  { id: 'docker', icon: Package, emoji: '🐳', label: 'Docker', color: 'var(--color-docker)', glow: 'rgba(56,189,248,0.2)', modules: DOCKER_MODULES, available: true },
-  { id: 'k8s', icon: Ship, emoji: '☸️', label: 'Kubernetes', color: 'var(--color-k8s)', glow: 'rgba(167,139,250,0.2)', modules: K8S_MODULES, available: true },
+  { id: 'git', icon: GitBranch, emoji: '🔴', label: { en: 'Git', it: 'Git' }, color: 'var(--color-git)', glow: 'rgba(249,115,22,0.2)', modules: GIT_MODULES, available: true },
+  { id: 'docker', icon: Package, emoji: '🐳', label: { en: 'Docker', it: 'Docker' }, color: 'var(--color-docker)', glow: 'rgba(56,189,248,0.2)', modules: DOCKER_MODULES, available: true },
+  { id: 'k8s', icon: Ship, emoji: '☸️', label: { en: 'Kubernetes', it: 'Kubernetes' }, color: 'var(--color-k8s)', glow: 'rgba(167,139,250,0.2)', modules: K8S_MODULES, available: true },
 ]
 
 export default function CourseDashboard() {
@@ -42,11 +42,11 @@ export default function CourseDashboard() {
   // Calculate skill data for radar chart
   const radarData = useMemo(() => {
     const skills = [
-      { subject: 'Architecture', value: 0, fullMark: 100 },
-      { subject: 'Workflows', value: 0, fullMark: 100 },
-      { subject: 'Networking', value: 0, fullMark: 100 },
-      { subject: 'Persistence', value: 0, fullMark: 100 },
-      { subject: 'Ops & Scale', value: 0, fullMark: 100 },
+      { subject: { en: 'Architecture', it: 'Architettura' }, value: 0, fullMark: 100 },
+      { subject: { en: 'Workflows', it: 'Workflow' }, value: 0, fullMark: 100 },
+      { subject: { en: 'Networking', it: 'Networking' }, value: 0, fullMark: 100 },
+      { subject: { en: 'Persistence', it: 'Persistenza' }, value: 0, fullMark: 100 },
+      { subject: { en: 'Ops & Scale', it: 'Ops e Scalabilità' }, value: 0, fullMark: 100 },
     ]
 
     const getSkillValue = (track: string, moduleFilter: (id: string) => boolean, maxModules = 2) => {

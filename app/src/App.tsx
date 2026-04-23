@@ -7,7 +7,7 @@ import ProfilePage from './pages/ProfilePage.tsx'
 import AppShell from './components/AppShell.tsx'
 import ScrollToTop from './components/ScrollToTop.tsx'
 
-import { LanguageProvider } from './contexts/LanguageContext.tsx'
+import { LanguageProvider } from './contexts/LanguageProvider.tsx'
 
 function App() {
   const userName = useAppStore((s) => s.userName)

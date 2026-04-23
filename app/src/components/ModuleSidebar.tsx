@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { CheckCircle, ChevronRight } from 'lucide-react'
 import type { Module } from '../data/types'
+import { useLanguage } from '../contexts/LanguageContext'
 
 interface ModuleSidebarProps {
   modules: Module[]
@@ -21,13 +22,14 @@ export default function ModuleSidebar({
   isCollapsed 
 }: ModuleSidebarProps) {
   const navigate = useNavigate()
+  const { t, resolveString } = useLanguage()
   
   if (isCollapsed) return null
 
   return (
     <div className="flex flex-col gap-2 h-full">
       <div className="mb-4 px-2">
-        <h3 className="text-xs fw-black text-muted uppercase tracking-widest mb-1 opacity-50">Track Curriculum</h3>
+        <h3 className="text-xs fw-black text-muted uppercase tracking-widest mb-1 opacity-50">{t('nav.curriculum')}</h3>
         <div className="h-1 w-8 rounded-full" style={{ background: trackColor }} />
       </div>
       
@@ -65,8 +67,8 @@ export default function ModuleSidebar({
                 <div className="flex items-center gap-3 min-w-0">
                   <span className="text-xl shrink-0">{m.emoji}</span>
                   <div className="flex flex-col min-w-0 pr-2">
-                    <span className="text-[10px] text-muted mono block uppercase mb-1">Module {m.order}</span>
-                    <h4 className="text-[13px] fw-black text-white leading-snug line-clamp-2">{m.title}</h4>
+                    <span className="text-[10px] text-muted mono block uppercase mb-1">{t('dashboard.module')} {m.order}</span>
+                    <h4 className="text-[13px] fw-black text-white leading-snug line-clamp-2">{resolveString(m.title)}</h4>
                   </div>
                 </div>
                 

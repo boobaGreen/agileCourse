@@ -12,17 +12,11 @@ import { useLanguage } from '../contexts/LanguageContext'
 import { LanguageSwitcher } from './LanguageSwitcher.tsx'
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
-  const { t } = useLanguage()
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
   const { userName, xp, badges } = useAppStore()
-
-  const navItems = [
-    { path: '/dashboard', label: t('nav.dashboard'), icon: LayoutDashboard },
-    { path: '/profile', label: t('nav.profile'), icon: User },
-  ]
 
   const sidebarWidth = collapsed ? 72 : 272
 
@@ -137,6 +131,12 @@ function SidebarContent({ collapsed, location, userName, xp, badges, onNavigate,
   onNavigate: (path: string) => void
   onItemClick: () => void
 }) {
+  const { t } = useLanguage()
+  const navItems = [
+    { path: '/dashboard', label: t('nav.dashboard'), icon: LayoutDashboard },
+    { path: '/profile', label: t('nav.profile'), icon: User },
+  ]
+
   const match = matchPath({ path: '/:track/module/:id' }, location.pathname)
   const trackId = match?.params.track
   const moduleId = match?.params.id

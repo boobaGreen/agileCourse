@@ -5,6 +5,7 @@ import { GitParser } from './GitParser';
 import { GitVisualGraph } from './GitVisualGraph';
 import { CheckCircle, TerminalSquare, RotateCcw } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface Props {
   data: GitGraphGameData;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export function GitGraphSim({ data, onComplete }: Props) {
+  const { t, resolveString } = useLanguage();
   const [state, setState] = useState<GitGraphState>(data.startState);
   const [history, setHistory] = useState<{type: 'cmd'|'out', text: string}[]>([]);
   const [input, setInput] = useState('');
@@ -128,7 +130,7 @@ export function GitGraphSim({ data, onComplete }: Props) {
       const engine = new GitEngine(state);
       const result = GitParser.execute(engine, cmd);
       
-      newHistory.push({ type: 'out' as const, text: result.out });
+      newHistory.push({ type: 'out' as const, text: resolveString(result.out) });
       
       if (result.success) {
         const newState = engine.getState();
@@ -148,7 +150,7 @@ export function GitGraphSim({ data, onComplete }: Props) {
 
   const handleReset = () => {
     setState(data.startState);
-    setHistory([{ type: 'out', text: 'Time rewound. Scenario reset.' }]);
+    setHistory([{ type: 'out', text: resolveString({ en: 'Time rewound. Scenario reset.', it: 'Tempo riavvolto. Scenario resettato.' }) }]);
     setCompletedTasks(new Set());
     setInput('');
   };
@@ -163,15 +165,15 @@ export function GitGraphSim({ data, onComplete }: Props) {
               <button 
                 onClick={handleReset}
                 className="px-3 py-1 flex items-center gap-2 text-xs bg-white/5 hover:bg-danger/20 text-muted hover:text-danger rounded border border-white/10 hover:border-danger/30 transition-colors"
-                title="Restart level from scratch"
+                title={resolveString({ en: 'Restart level from scratch', it: 'Ricomincia livello da zero' })}
               >
-                <RotateCcw size={12} /> Reset
+                <RotateCcw size={12} /> {t('common.restart')}
               </button>
             </div>
          </div>
          {allCompleted && (
            <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="px-4 py-2 rounded-xl bg-git/20 border border-git/30 text-git text-xs font-black uppercase flex gap-2 items-center">
-              <CheckCircle size={16} /> Level Cleared!
+              <CheckCircle size={16} /> {resolveString({ en: 'Level Cleared!', it: 'Livello Completato!' })}
            </motion.div>
          )}
       </div>
@@ -194,7 +196,7 @@ export function GitGraphSim({ data, onComplete }: Props) {
                     <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${t.completed ? 'bg-git border-git' : 'border-danger/50 bg-black'}`}>
                       {t.completed && <CheckCircle className="text-white" size={10} />}
                     </div>
-                    <span className={`text-xs font-bold transition-colors ${t.completed ? 'text-white/50 line-through' : 'text-white'}`}>{t.instruction}</span>
+                    <span className={`text-xs font-bold transition-colors ${t.completed ? 'text-white/50 line-through' : 'text-white'}`}>{resolveString(t.instruction)}</span>
                   </div>
                 ))}
               </div>
@@ -229,7 +231,7 @@ export function GitGraphSim({ data, onComplete }: Props) {
                       onKeyDown={handleCommand}
                       spellCheck={false}
                       autoFocus
-                      placeholder="Type git command..."
+                      placeholder={resolveString({ en: 'Type git command...', it: 'Scrivi comando git...' })}
                       className="flex-1 bg-transparent outline-none border-none text-[#06d6a0] placeholder:text-white/20 font-mono text-sm min-w-0"
                     />
                     <div className="text-[10px] text-white/30 font-sans px-2 hidden sm:block text-right">ENTER</div>

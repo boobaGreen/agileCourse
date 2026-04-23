@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, type KeyboardEvent } from 'react'
 import { motion, Reorder } from 'framer-motion'
 import { CheckCircle, Trophy } from 'lucide-react'
 import confetti from 'canvas-confetti'
+import { useLanguage } from '../../../contexts/LanguageContext'
 
 // Types
 import type { 
@@ -48,6 +49,7 @@ export function MiniGame({ gameType, gameData, onComplete }: { gameType: string,
 }
 
 export function DragOrderGame({ items, onComplete }: { items: GameDataItem[], onComplete?: () => void }) {
+  const { resolveString } = useLanguage()
   const [solved, setSolved] = useState(false)
   const [currentOrder, setCurrentOrder] = useState(() => [...items].sort(() => Math.random() - 0.5))
   
@@ -78,12 +80,12 @@ export function DragOrderGame({ items, onComplete }: { items: GameDataItem[], on
              `}
            >
               <div className="flex items-center gap-3 select-none">
-                 <div className="w-6 h-6 rounded-lg bg-black/20 flex items-center justify-center text-[10px] fw-black text-muted group-hover:text-white transition-colors">
+                  <div className="w-6 h-6 rounded-lg bg-black/20 flex items-center justify-center text-[10px] fw-black text-muted group-hover:text-white transition-colors">
                     {idx + 1}
-                 </div>
-                 <span className="text-sm fw-bold text-sub group-hover:text-white transition-colors">{item.label}</span>
-              </div>
-              {solved && <CheckCircle size={14} className="text-green" />}
+                  </div>
+                  <span className="text-sm fw-bold text-sub group-hover:text-white transition-colors">{resolveString(item.label)}</span>
+               </div>
+               {solved && <CheckCircle size={14} className="text-green" />}
            </Reorder.Item>
          ))}
       </Reorder.Group>
@@ -100,6 +102,7 @@ export function DragOrderGame({ items, onComplete }: { items: GameDataItem[], on
 }
 
 export function DragClassifyGame({ categories, items, onComplete }: { categories: GameDataClassify['categories'], items: GameDataClassify['items'], onComplete?: () => void }) {
+  const { resolveString } = useLanguage()
   const [solved, setSolved] = useState(false)
   const [selections, setSelections] = useState<Record<string, string>>({}) // itemId -> categoryId
   const [currentItems] = useState(() => [...items].sort(() => Math.random() - 0.5))
@@ -126,11 +129,11 @@ export function DragClassifyGame({ categories, items, onComplete }: { categories
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
          {categories.map(cat => (
            <div key={cat.id} className="p-4 rounded-xl border border-white/10 bg-black/20 text-center min-h-[120px] flex flex-col items-center gap-3">
-              <span className="text-[10px] sm:text-xs fw-black text-white uppercase tracking-widest">{cat.label}</span>
+              <span className="text-[10px] sm:text-xs fw-black text-white uppercase tracking-widest">{resolveString(cat.label)}</span>
               <div className="flex flex-wrap justify-center gap-2">
                  {items.filter(i => selections[i.id] === cat.id).map(i => (
                    <div key={i.id} className="px-2 py-1 rounded bg-white/10 text-[10px] sm:text-xs text-white">
-                      {i.label}
+                      {resolveString(i.label)}
                    </div>
                  ))}
               </div>
@@ -141,7 +144,7 @@ export function DragClassifyGame({ categories, items, onComplete }: { categories
       <div className="flex flex-wrap justify-center gap-3">
          {currentItems.filter(i => !selections[i.id]).map(item => (
            <div key={item.id} className="p-3 pr-2 rounded-xl bg-surface2 border border-white/5 flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
-              <span className="text-xs fw-bold text-white text-center sm:text-left">{item.label}</span>
+              <span className="text-xs fw-bold text-white text-center sm:text-left">{resolveString(item.label)}</span>
               <div className="flex gap-1 flex-wrap justify-center">
                  {categories.map(cat => (
                    <button 
@@ -149,7 +152,7 @@ export function DragClassifyGame({ categories, items, onComplete }: { categories
                      onClick={() => classify(item.id, cat.id)}
                      className="px-3 py-1.5 rounded text-[10px] sm:text-xs fw-black bg-white/5 hover:bg-primary hover:text-white transition-colors uppercase"
                    >
-                     {cat.label}
+                     {resolveString(cat.label)}
                    </button>
                  ))}
               </div>
@@ -169,6 +172,7 @@ export function DragClassifyGame({ categories, items, onComplete }: { categories
 }
 
 export function TerminalSimulatorGame({ data, onComplete }: { data: TerminalGameData, onComplete?: () => void }) {
+  const { resolveString } = useLanguage()
   const [currentStep, setCurrentStep] = useState(0)
   const [input, setInput] = useState('')
   const [history, setHistory] = useState<{type: 'cmd' | 'out', text: string}[]>([])
@@ -190,11 +194,12 @@ export function TerminalSimulatorGame({ data, onComplete }: { data: TerminalGame
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && input.trim() !== '') {
       const val = input.trim()
-      const newHistory = [...history, { type: 'cmd' as const, text: (data.startText || '$ ') + val }]
+      const startText = resolveString(data.startText || { en: '$ ', it: '$ ' })
+      const newHistory = [...history, { type: 'cmd' as const, text: startText + val }]
       
       if (!isFinished && val === step?.expectedCommand) {
          if (step.output) {
-           newHistory.push({ type: 'out' as const, text: step.output })
+           newHistory.push({ type: 'out' as const, text: resolveString(step.output) })
          }
          const nextStep = currentStep + 1;
          setCurrentStep(nextStep);
@@ -227,9 +232,9 @@ export function TerminalSimulatorGame({ data, onComplete }: { data: TerminalGame
 
       <div className="w-full bg-black/60 rounded-2xl p-5 border border-white/10 flex flex-col gap-4">
          {!isFinished ? (
-           <p className="text-sm text-white/90 leading-relaxed fw-medium">
-             {step.instruction}
-           </p>
+            <p className="text-sm text-white/90 leading-relaxed fw-medium">
+              {resolveString(step.instruction)}
+            </p>
          ) : (
            <div className="p-3 bg-git/10 text-git rounded-xl border border-git/20 text-xs font-black tracking-wider uppercase text-center flex items-center justify-center gap-2">
              <CheckCircle size={16} /> Simulator Completed!
@@ -244,9 +249,9 @@ export function TerminalSimulatorGame({ data, onComplete }: { data: TerminalGame
                {h.text}
              </div>
            ))}
-           {!isFinished && (
-             <div className="flex items-center mt-3 gap-2 bg-black/50 border border-white/10 focus-within:border-primary/50 focus-within:bg-black/80 rounded-md p-2 transition-all shadow-inner">
-               <span className="text-primary font-black whitespace-pre">{data.startText || '$ '}</span>
+            {!isFinished && (
+              <div className="flex items-center mt-3 gap-2 bg-black/50 border border-white/10 focus-within:border-primary/50 focus-within:bg-black/80 rounded-md p-2 transition-all shadow-inner">
+                <span className="text-primary font-black whitespace-pre">{resolveString(data.startText || { en: '$ ', it: '$ ' })}</span>
                <input 
                  type="text"
                  value={input}

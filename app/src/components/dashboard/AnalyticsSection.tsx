@@ -1,30 +1,39 @@
 import { Target, Activity } from 'lucide-react'
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer } from 'recharts'
-import type { Track } from '../../data/types'
+import type { Track, LocalizedString } from '../../data/types'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 interface AnalyticsSectionProps {
-  radarData: { subject: string, value: number, fullMark: number }[]
+  radarData: { subject: LocalizedString, value: number, fullMark: number }[]
   activeTrack: Track
   heatmapData: { date: string, count: number }[][]
 }
 
 export function AnalyticsSection({ radarData, activeTrack, heatmapData }: AnalyticsSectionProps) {
+  const { t, resolveString } = useLanguage()
+
+  // Pre-resolve radar data for Recharts
+  const localizedRadarData = radarData.map(d => ({
+    ...d,
+    subject: resolveString(d.subject)
+  }))
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-24">
       {/* Skills Radar */}
       <div className="lg:col-span-1 card p-6 bg-surface/40 flex flex-col items-center justify-center min-h-[320px] min-w-0">
         <div className="w-full flex justify-between items-center mb-4">
           <h3 className="text-xs fw-black text-muted uppercase tracking-widest flex items-center gap-2">
-            <Target size={14} className="text-primary" /> Skill Radar
+            <Target size={14} className="text-primary" /> {t('analytics.skillRadar')}
           </h3>
         </div>
         <div className="w-full h-[220px]">
           <ResponsiveContainer width="100%" height="100%">
-            <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
+            <RadarChart cx="50%" cy="50%" outerRadius="80%" data={localizedRadarData}>
               <PolarGrid stroke="rgba(255,255,255,0.05)" />
               <PolarAngleAxis dataKey="subject" tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 'bold' }} />
               <Radar
-                name="Skills"
+                name={t('analytics.skills')}
                 dataKey="value"
                 stroke={activeTrack.color}
                 fill={activeTrack.color}
@@ -39,7 +48,7 @@ export function AnalyticsSection({ radarData, activeTrack, heatmapData }: Analyt
       <div className="lg:col-span-2 card p-6 bg-surface/40 min-w-0">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <h3 className="text-xs fw-black text-muted uppercase tracking-widest flex items-center gap-2">
-            <Activity size={14} className="text-green" /> Activity Heatmap
+            <Activity size={14} className="text-green" /> {t('analytics.activityHeatmap')}
           </h3>
         </div>
 
@@ -64,15 +73,15 @@ export function AnalyticsSection({ radarData, activeTrack, heatmapData }: Analyt
             ))}
           </div>
           <div className="flex items-center justify-between text-[10px] text-muted fw-bold">
-            <span>1 YEAR OF ACTIVITY</span>
+            <span>{t('analytics.yearActivity')}</span>
             <div className="flex items-center gap-2">
-              <span>Less</span>
+              <span>{t('analytics.less')}</span>
               <div className="flex gap-1">
                 <div className="w-2.5 h-2.5 rounded-sm bg-white/5" />
                 <div className="w-2.5 h-2.5 rounded-sm opacity-50" style={{ background: activeTrack.color }} />
                 <div className="w-2.5 h-2.5 rounded-sm" style={{ background: activeTrack.color }} />
               </div>
-              <span>More</span>
+              <span>{t('analytics.more')}</span>
             </div>
           </div>
         </div>

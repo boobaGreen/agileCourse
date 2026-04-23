@@ -41,7 +41,7 @@ export interface GitGraphState {
 
 export interface GitGraphGameData {
   startState: GitGraphState;
-  tasks: { id: string, instruction: string, condition: string, completed?: boolean }[];
+  tasks: { id: string, instruction: LocalizedString, condition: string, completed?: boolean }[];
 }
 
 export interface DockerImage {
@@ -81,7 +81,7 @@ export interface DockerState {
 
 export interface DockerGameData {
   startState: DockerState;
-  tasks: { id: string, instruction: string, condition: string, completed?: boolean }[];
+  tasks: { id: string, instruction: LocalizedString, condition: string, completed?: boolean }[];
 }
 
 export interface K8sNode {
@@ -156,7 +156,7 @@ export interface K8sState {
 
 export interface K8sGameData {
   startState: K8sState;
-  tasks: { id: string, instruction: string, condition: string, completed?: boolean }[];
+  tasks: { id: string, instruction: LocalizedString, condition: string, completed?: boolean }[];
 }
 
 
@@ -188,19 +188,19 @@ export interface Track {
 
 export interface GameDataItem {
   id: string;
-  label: string;
+  label: LocalizedString;
 }
 
 export interface GameDataClassify {
-  categories: { id: string, label: string }[];
-  items: { id: string, label: string, categoryId: string }[];
+  categories: { id: string, label: LocalizedString }[];
+  items: { id: string, label: LocalizedString, categoryId: string }[];
 }
 
 export interface TerminalGameData {
-  startText?: string;
+  startText?: LocalizedString;
   steps: {
-    instruction: string;
+    instruction: LocalizedString;
     expectedCommand: string;
-    output?: string;
+    output?: LocalizedString;
   }[];
 }

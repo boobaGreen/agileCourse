@@ -1,13 +1,14 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import type { LocalizedString } from '../data/types'
 
 export type Track = 'git' | 'docker' | 'k8s'
 
 export interface Badge {
   id: string
-  title: string
+  title: LocalizedString
   emoji: string
-  description: string
+  description: LocalizedString
   earnedAt?: string
 }
 
@@ -34,16 +35,66 @@ interface AppStore extends UserProgress {
 }
 
 const BADGES: Record<string, Badge> = {
-  'git-seedling':   { id: 'git-seedling',   emoji: '🌱', title: 'Git Seedling',     description: 'Completed your first Git module' },
-  'git-branching':  { id: 'git-branching',  emoji: '🌿', title: 'Branch Master',    description: 'Mastered branching and merging logic' },
-  'git-workflow':   { id: 'git-workflow',   emoji: '🏗️', title: 'The Architect',     description: 'Mastered professional Git workflows' },
-  'git-destructive':{ id: 'git-destructive', emoji: '🛡️', title: 'Safety First',      description: 'Mastered Reset and Revert safety' },
-  'git-pro':        { id: 'git-pro',        emoji: '🏆', title: 'Git Pro',           description: 'Completed the entire Git track' },
-  'docker-swim':    { id: 'docker-swim',    emoji: '🐳', title: 'First Swim',        description: 'Completed your first Docker module' },
-  'docker-harbor':  { id: 'docker-harbor',  emoji: '⚓', title: 'Harbor Master',     description: 'Completed all Docker modules' },
-  'k8s-deck':       { id: 'k8s-deck',       emoji: '☸️', title: 'Deck Hand',         description: 'Completed your first K8s module' },
-  'k8s-helmsman':   { id: 'k8s-helmsman',   emoji: '🎖️', title: 'The Helmsman',      description: 'Completed all K8s modules' },
-  'full-stack':     { id: 'full-stack',     emoji: '🥇', title: 'Full Stack Sailor', description: 'Completed all three tracks' },
+  'git-seedling': { 
+    id: 'git-seedling', 
+    emoji: '🌱', 
+    title: { en: 'Git Seedling', it: 'Germoglio Git' }, 
+    description: { en: 'Completed your first Git module', it: 'Completato il primo modulo Git' } 
+  },
+  'git-branching': { 
+    id: 'git-branching', 
+    emoji: '🌿', 
+    title: { en: 'Branch Master', it: 'Maestro dei Branch' }, 
+    description: { en: 'Mastered branching and merging logic', it: 'Padroneggiata la logica di branching e merging' } 
+  },
+  'git-workflow': { 
+    id: 'git-workflow', 
+    emoji: '🏗️', 
+    title: { en: 'The Architect', it: 'L\'Architetto' }, 
+    description: { en: 'Mastered professional Git workflows', it: 'Padroneggiati i workflow Git professionali' } 
+  },
+  'git-destructive': { 
+    id: 'git-destructive', 
+    emoji: '🛡️', 
+    title: { en: 'Safety First', it: 'Sicurezza Prima di Tutto' }, 
+    description: { en: 'Mastered Reset and Revert safety', it: 'Padroneggiata la sicurezza con Reset e Revert' } 
+  },
+  'git-pro': { 
+    id: 'git-pro', 
+    emoji: '🏆', 
+    title: { en: 'Git Pro', it: 'Esperto Git' }, 
+    description: { en: 'Completed the entire Git track', it: 'Completata l\'intera track Git' } 
+  },
+  'docker-swim': { 
+    id: 'docker-swim', 
+    emoji: '🐳', 
+    title: { en: 'First Swim', it: 'Prima Nuotata' }, 
+    description: { en: 'Completed your first Docker module', it: 'Completato il primo modulo Docker' } 
+  },
+  'docker-harbor': { 
+    id: 'docker-harbor', 
+    emoji: '⚓', 
+    title: { en: 'Harbor Master', it: 'Mastro del Porto' }, 
+    description: { en: 'Completed all Docker modules', it: 'Completati tutti i moduli Docker' } 
+  },
+  'k8s-deck': { 
+    id: 'k8s-deck', 
+    emoji: '☸️', 
+    title: { en: 'Deck Hand', it: 'Mozzo' }, 
+    description: { en: 'Completed your first K8s module', it: 'Completato il primo modulo K8s' } 
+  },
+  'k8s-helmsman': { 
+    id: 'k8s-helmsman', 
+    emoji: '🎖️', 
+    title: { en: 'The Helmsman', it: 'Il Timoniere' }, 
+    description: { en: 'Completed all K8s modules', it: 'Completati tutti i moduli K8s' } 
+  },
+  'full-stack': { 
+    id: 'full-stack', 
+    emoji: '🥇', 
+    title: { en: 'Full Stack Sailor', it: 'Marinaio Full Stack' }, 
+    description: { en: 'Completed all three tracks', it: 'Completate tutte e tre le track' } 
+  },
 }
 
 export { BADGES }

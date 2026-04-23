@@ -7,8 +7,10 @@ import { GIT_MODULES } from '../../data/git/modules/index'
 import { DOCKER_MODULES } from '../../data/docker/modules/index'
 import { K8S_MODULES } from '../../data/k8s/modules/index'
 import { ModuleTinyCard } from './ModuleTinyCard'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 export function StatsTab() {
+  const { t, resolveString } = useLanguage()
   const { userName, xp, completedModules, quizScores, badges } = useAppStore()
 
   const gitCompleted = completedModules.filter((m) => m.startsWith('git-')).length
@@ -78,7 +80,7 @@ export function StatsTab() {
 
         <div className="flex items-center justify-center gap-10 md:gap-16 w-full max-w-lg border-t border-white/5 pt-8 z-10">
           <div className="text-center w-32">
-            <p className="text-muted text-[10px] md:text-xs fw-black uppercase tracking-widest mb-2">Total Experience</p>
+            <p className="text-muted text-[10px] md:text-xs fw-black uppercase tracking-widest mb-2">{t('stats.totalExperience')}</p>
             <p className="text-4xl md:text-5xl fw-black text-xp flex items-center justify-center gap-2">
               <Zap size={28} className="text-xp" /> {xp}
             </p>
@@ -87,7 +89,7 @@ export function StatsTab() {
           <div className="w-px h-16 bg-white/10 hidden sm:block" />
           
           <div className="text-center w-32">
-            <p className="text-muted text-[10px] md:text-xs fw-black uppercase tracking-widest mb-2">Current Level</p>
+            <p className="text-muted text-[10px] md:text-xs fw-black uppercase tracking-widest mb-2">{t('stats.currentLevel')}</p>
             <p className="text-4xl md:text-5xl fw-black text-white">
               {Math.floor(xp / 100) + 1}
             </p>
@@ -98,7 +100,7 @@ export function StatsTab() {
       {/* Track XP Chart */}
       <div className="card p-6 mb-10 bg-surface/40">
         <h3 className="text-xs fw-black text-muted uppercase tracking-widest flex items-center gap-2 mb-6">
-          <BarChart3 size={14} className="text-primary" /> Track XP Distribution
+          <BarChart3 size={14} className="text-primary" /> {t('stats.trackDistribution')}
         </h3>
         <div className="w-full h-[200px]">
           <ResponsiveContainer width="100%" height="100%">
@@ -118,10 +120,10 @@ export function StatsTab() {
       {/* Grid Stats */}
       <div className="page-grid-4 mb-12">
         {[
-          { label: 'Git Progress', value: `${gitPct}%`, icon: GitBranch, color: 'var(--color-git)', sub: `${gitCompleted}/${totalGit} modules` },
-          { label: 'Docker Progress', value: `${dockerPct}%`, icon: Package, color: 'var(--color-docker)', sub: `${dockerCompleted}/${totalDocker} modules` },
-          { label: 'K8s Progress', value: `${k8sPct}%`, icon: Ship, color: 'var(--color-k8s)', sub: `${k8sCompleted}/${totalK8s} modules` },
-          { label: 'Avg Quiz', value: `${avgScore}%`, icon: CheckCircle, color: 'var(--color-green)', sub: `${quizCount} attempts` },
+          { label: t('stats.gitProgress'), value: `${gitPct}%`, icon: GitBranch, color: 'var(--color-git)', sub: `${gitCompleted}/${totalGit} ${t('stats.modules')}` },
+          { label: t('stats.dockerProgress'), value: `${dockerPct}%`, icon: Package, color: 'var(--color-docker)', sub: `${dockerCompleted}/${totalDocker} ${t('stats.modules')}` },
+          { label: t('stats.k8sProgress'), value: `${k8sPct}%`, icon: Ship, color: 'var(--color-k8s)', sub: `${k8sCompleted}/${totalK8s} ${t('stats.modules')}` },
+          { label: t('stats.avgQuiz'), value: `${avgScore}%`, icon: CheckCircle, color: 'var(--color-green)', sub: `${quizCount} ${t('stats.attempts')}` },
         ].map((s, i) => (
           <div key={i} className="stat-card p-6 border border-border/50 bg-surface/50 rounded-2xl">
             <div className="flex items-center gap-2 mb-3">
@@ -182,7 +184,7 @@ export function StatsTab() {
       {/* Badge Trophy Case */}
       <div className="mb-10" id="badges">
         <h3 className="text-white fw-bold mb-6 flex items-center gap-2">
-          <Award size={20} className="text-k8s" /> Achievement Gallery
+          <Award size={20} className="text-k8s" /> {t('stats.achievementGallery')}
         </h3>
         <div className="page-grid-4">
           {Object.values(BADGES).map((b, i) => {
@@ -190,11 +192,11 @@ export function StatsTab() {
             return (
               <div key={b.id} className={`card p-5 text-center transition-all ${!hasIt ? 'opacity-20 grayscale' : 'border-purple-500/30'}`}>
                 <div className="text-5xl mb-4 animate-float" style={{ animationDelay: `${i * 0.15}s` }}>{b.emoji}</div>
-                <h4 className="text-white fw-black text-sm md:text-base mb-1">{b.title}</h4>
-                <p className="text-muted text-[10px] md:text-xs uppercase fw-bold">{b.description}</p>
+                <h4 className="text-white fw-black text-sm md:text-base mb-1">{resolveString(b.title)}</h4>
+                <p className="text-muted text-[10px] md:text-xs uppercase fw-bold">{resolveString(b.description)}</p>
                 {hasIt?.earnedAt && (
                    <div className="mt-4 pt-4 border-t border-border text-[9px] md:text-[10px] text-sub uppercase tracking-wider">
-                     Unlocked {new Date(hasIt.earnedAt).toLocaleDateString()}
+                     {t('stats.unlocked')} {new Date(hasIt.earnedAt).toLocaleDateString()}
                    </div>
                 )}
               </div>
