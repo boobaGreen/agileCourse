@@ -98,10 +98,10 @@ export const git3: Module = {
       id: 'git-3-q1',
       question: 'What is a Git repository?',
       options: [
-        'A single file tracked by Git',
-        'The entire project folder with all history and branches',
-        'A cloud backup service',
-        'A type of commit message'
+        'A specific individual file that is currently being tracked by the Git system',
+        'The entire project folder containing all history, snapshots, and branches',
+        'A remote cloud-based backup service where your files are securely stored',
+        'A descriptive message that explains what changed in a specific set of files'
       ],
       correct: 1,
       explanation: 'A repository contains all project files AND the complete history of every change ever made. It\'s the entire database of your project.'
@@ -117,10 +117,10 @@ export const git3: Module = {
       id: 'git-3-q3',
       question: 'What happens when you create a new branch?',
       options: [
-        'The entire repository is duplicated on disk',
-        'All existing commits are deleted',
+        'The entire repository and all its files are physically duplicated elsewhere on your local disk',
+        'All existing commits in your history are permanently deleted to make room for new ones',
         'A new independent line of development is created, sharing history up to that point',
-        'Your changes are automatically pushed to GitHub'
+        'Your local changes are automatically pushed to a remote server like GitHub or GitLab'
       ],
       correct: 2,
       explanation: 'Creating a branch is extremely lightweight. Git just creates a new pointer — all existing commits are shared. No duplication happens.'
@@ -129,10 +129,10 @@ export const git3: Module = {
       id: 'git-3-q4',
       question: 'What is a SHA hash in Git?',
       options: [
-        'A security password for your repository',
-        'A unique identifier for each commit',
-        'A type of branch name',
-        'A compression algorithm for files'
+        'A temporary security password for accessing your private cloud repository',
+        'A unique 40-character fingerprint that identifies a specific commit',
+        'A descriptive name given to a branch to indicate its primary purpose',
+        'A mathematical algorithm used to compress large files for storage'
       ],
       correct: 1,
       explanation: 'Every commit gets a unique SHA-1 hash (40 hexadecimal characters). This fingerprint lets Git reference any commit precisely — you can usually use just the first 7 characters.'
@@ -141,10 +141,10 @@ export const git3: Module = {
       id: 'git-3-q5',
       question: 'What is a merge conflict?',
       options: [
-        'When two branches have the same name',
-        'When Git cannot automatically combine changes because two people modified the same part of a file',
-        'When you try to commit without a message',
-        'When the remote repository is offline'
+        'A situation where two different branches have been given the exact same name',
+        'When Git cannot automatically combine changes because of overlapping modifications',
+        'An error that occurs when you try to save a commit without providing a message',
+        'A connectivity issue that happens when the remote repository goes offline'
       ],
       correct: 1,
       explanation: 'A merge conflict occurs when Git sees that two different branches changed the same lines of the same file. Git stops and asks you to decide which version (or combination) to keep.'

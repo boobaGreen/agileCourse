@@ -68,10 +68,10 @@ export const docker1: Module = {
       id: 'docker-1-q1',
       question: 'What is the primary architectural difference between a Container and a VM?',
       options: [
-        'Containers are more secure than VMs at a hardware level',
+        'Containers provide a higher level of security than VMs at a physical hardware level',
         'Containers share the host OS kernel, while VMs include a full Guest OS',
-        'VMs are faster to start than containers',
-        'Containers can only run on Linux servers'
+        'Virtual Machines are significantly faster to start and shut down than containers',
+        'Docker containers can only ever be executed on servers running a Linux kernel'
       ],
       correct: 1,
       explanation: 'Containers are lightweight because they share the host operating system kernel directly via the Docker Engine. VMs are "heavyweight" because each one boots an entirely separate OS on virtualized hardware.'
@@ -80,10 +80,10 @@ export const docker1: Module = {
       id: 'docker-1-q2',
       question: 'What massive industry problem did Docker solve?',
       options: [
-        'The lack of modern programming languages',
+        'The lack of modern high-performance programming languages for backend development',
         'The "works on my machine" problem by ensuring perfect environment consistency',
-        'The high cost of cloud storage solutions',
-        'The inability to write functional UI code'
+        'The excessively high cost of storing large amounts of data in cloud storage solutions',
+        'The inherent inability of web developers to write functional and responsive UI code'
       ],
       correct: 1,
       explanation: 'By packaging an app together with its exact environment (libraries, config, runtime), Docker ensures it runs the exact same way on a laptop, in a testing lab, and in production.'
@@ -92,10 +92,10 @@ export const docker1: Module = {
       id: 'docker-1-q3',
       question: 'Why are containers generally considered "lighter" than VMs?',
       options: [
-        'They don\'t have IP addresses',
-        'They don\'t include a Guest OS overhead',
-        'They only run compiled languages like C++',
-        'They bypass CPU and only use RAM'
+        'Containers do not require their own unique IP addresses for network communication',
+        'Containers do not include the heavy resource overhead of a full Guest OS',
+        'They are specifically designed to only run compiled languages such as C++ or Rust',
+        'They completely bypass the system CPU and only utilize available system RAM'
       ],
       correct: 1,
       explanation: 'Because containers leverage the Host OS kernel directly, they skip the GigaBytes of bloat required to boot a separate Windows or Linux installation.'

@@ -68,10 +68,10 @@ export const k8s1: Module = {
       id: 'k8s-1-q2',
       question: 'What happens in a Kubernetes cluster if a physical server (node) suddenly loses power?',
       options: [
-        'The entire cluster goes completely offline',
-        'An administrator must write a YAML file to buy a new server',
+        'The entire cluster immediately shuts down and goes completely offline until power is manually restored',
+        'A system administrator is automatically notified and must write a new YAML configuration to buy a server',
         'Kubernetes detects the dead node and automatically schedules its containers onto healthy surviving nodes',
-        'The containers on that server are permanently deleted along with their data'
+        'All containers that were running on that specific server are permanently deleted along with all their data'
       ],
       correct: 2,
       explanation: 'This is the "Self-healing" mechanism. The Control Plane notices the worker is dead and immediately asks other workers to spin up replacement containers.'

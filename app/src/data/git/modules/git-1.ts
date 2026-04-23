@@ -97,10 +97,10 @@ export const git1: Module = {
       id: 'git-1-q1',
       question: 'What is the main advantage of a distributed version control system like Git?',
       options: [
-        'It requires an internet connection at all times',
-        'Every developer has a full copy of the repository history',
-        'It only allows one person to work at a time',
-        'It automatically deploys your code'
+        'It requires a high-speed internet connection at all times to function',
+        'Every developer has a full copy of the repository history on their machine',
+        'It only allows one person to work on a specific file at any given time',
+        'It automatically deploys your code to a production server after every save'
       ],
       correct: 1,
       explanation: 'In distributed systems like Git, every developer clones the full repository including all history. This means you can work offline and there\'s no single point of failure.'
@@ -109,10 +109,10 @@ export const git1: Module = {
       id: 'git-1-q2',
       question: 'Which of these problems does version control NOT solve?',
       options: [
-        'Tracking who changed a file and when',
-        'Automatically writing better code',
-        'Allowing multiple people to collaborate on the same file',
-        'Rolling back to a previous working version'
+        'Tracking who changed a specific file and at what exact time',
+        'Automatically writing more efficient and bug-free code for you',
+        'Allowing multiple people to collaborate on the same file simultaneously',
+        'Rolling back to a previous working version if the current one breaks'
       ],
       correct: 1,
       explanation: 'Version control tracks history, enables collaboration, and allows rollbacks — but it can\'t write code for you (that\'s a different kind of tool!).'
@@ -121,10 +121,10 @@ export const git1: Module = {
       id: 'git-1-q3',
       question: 'What is a "branch" in version control?',
       options: [
-        'A backup copy stored on a cloud server',
+        'A secondary backup copy stored on a secure remote cloud server',
         'An independent line of development diverging from the main codebase',
-        'A team member\'s personal account',
-        'A type of commit message'
+        'A team member\'s personal account used to access the repository',
+        'A specific type of commit message used for documentation purposes'
       ],
       correct: 1,
       explanation: 'A branch is an independent line of development. You can create a branch to work on a feature or fix a bug without affecting the main codebase.'
@@ -140,10 +140,10 @@ export const git1: Module = {
       id: 'git-1-q5',
       question: 'What does "commit" mean in Git?',
       options: [
-        'Uploading files to GitHub',
-        'Saving a snapshot of your changes to the repository history',
-        'Merging two branches together',
-        'Downloading someone else\'s code'
+        'The process of uploading your local files to a platform like GitHub',
+        'Saving a snapshot of your changes to the repository history forever',
+        'Merging two different branches together into a single unified history',
+        'Downloading someone else\'s code to your local development machine'
       ],
       correct: 1,
       explanation: 'A commit is a saved snapshot of your changes. It records what changed, who changed it, and when — creating a permanent point in history you can always return to.'

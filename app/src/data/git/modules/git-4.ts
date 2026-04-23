@@ -151,10 +151,10 @@ git rebase --abort`,
       id: 'git-4-q2',
       question: 'What is the key difference between merge and rebase?',
       options: [
-        'Merge is for adding files, rebase is for removing them',
-        'Merge preserves full history with a merge commit, rebase creates a linear history by replaying commits',
-        'Merge works only locally, rebase only on remotes',
-        'There is no difference'
+        'Merge is used exclusively for adding new files, while rebase is used for removing old commits from history',
+        'Merge preserves history with a special merge commit, while rebase creates a linear line by replaying commits',
+        'Merge is a strictly local operation, whereas rebase must be performed on a remote server like GitHub or GitLab',
+        'There is actually no technical difference between the two commands as they both achieve the exact same result'
       ],
       correct: 1,
       explanation: 'Merge joins branches by creating a new merge commit, preserving the full history. Rebase replays commits as if they were made from a different starting point, creating a cleaner linear history.'
@@ -163,10 +163,10 @@ git rebase --abort`,
       id: 'git-4-q3',
       question: 'When should you NOT use rebase?',
       options: [
-        'On commits that are still local and not yet pushed',
-        'On commits that have already been pushed to a shared remote branch',
-        'When your branch has more than 5 commits',
-        'On the main branch'
+        'On local commits that have not yet been pushed to any remote repository for sharing with teammates',
+        'On commits that have already been pushed and shared with other developers on a public or team branch',
+        'Whenever your current feature branch has accumulated more than five individual commits in its history',
+        'When you are working directly on the main production branch and want to keep your own local history clean'
       ],
       correct: 1,
       explanation: 'Rebase rewrites commit history. If others have already based their work on those commits, rebasing will create divergent histories and cause major confusion.'
@@ -175,10 +175,10 @@ git rebase --abort`,
       id: 'git-4-q4',
       question: 'What is a "fast-forward" merge?',
       options: [
-        'A merge that happens extremely quickly due to high internet speed',
-        'A merge where Git simply moves the branch pointer forward because there are no conflicting changes on main',
-        'A merge that automatically deletes the feature branch',
-        'A merge that requires a special license'
+        'A specialized type of merge that happens extremely quickly due to optimized internet bandwidth and speed',
+        'A merge where Git simply moves the branch pointer forward because there were no new changes on the base branch',
+        'An automated merge process that deletes the feature branch immediately after the changes have been integrated',
+        'A premium Git feature that requires a professional enterprise license to use in large-scale corporate projects'
       ],
       correct: 1,
       explanation: 'If main hasn\'t changed since you branched off, Git simply moves main\'s pointer to your latest commit. No merge commit is needed.'
@@ -187,10 +187,10 @@ git rebase --abort`,
       id: 'git-4-q5',
       question: 'Why are Pull Requests (PRs) used in professional teams?',
       options: [
-        'Because Git cannot merge files without a PR',
-        'To allow for code review, discussion, and automated testing before code is integrated',
-        'To make the repository larger',
-        'To slow down the development process'
+        'Because the Git command line tool is technically incapable of merging any files without a PR being opened',
+        'To facilitate collaborative code review, team discussion, and automated testing before any code is merged',
+        'To intentionally increase the size of the repository database for better archival and backup purposes',
+        'To add an extra layer of bureaucracy to the development process in order to slow down rapid release cycles'
       ],
       correct: 1,
       explanation: 'PRs provide a platform for human review and automated quality checks, ensuring that only high-quality code enters the main branch.'

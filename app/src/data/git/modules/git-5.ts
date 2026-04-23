@@ -129,10 +129,10 @@ git push -u origin main`,
       id: 'git-5-q1',
       question: 'What is "origin" in Git?',
       options: [
-        'The first commit ever made',
+        'The cryptographic identifier of the first commit ever made in the project history',
         'The default name for the remote repository URL your local repo was cloned from',
-        'The main branch of a repository',
-        'A Git configuration file'
+        'The primary production branch used for all stable releases of the application',
+        'A local configuration file used to store user credentials and environment settings'
       ],
       correct: 1,
       explanation: '"origin" is just a conventional name for the primary remote. When you clone a repo, Git automatically names that source "origin".'
@@ -141,10 +141,10 @@ git push -u origin main`,
       id: 'git-5-q2',
       question: 'What is the difference between `git fetch` and `git pull`?',
       options: [
-        'fetch is for files, pull is for commits',
+        'fetch is used for downloading files, while pull is used for synchronizing commits',
         'fetch downloads remote changes without merging; pull downloads AND merges them',
-        'fetch only works on GitHub, pull works everywhere',
-        'There is no difference'
+        'fetch only works on enterprise GitHub servers, while pull works on any remote',
+        'There is actually no technical difference between these two synchronization commands'
       ],
       correct: 1,
       explanation: '`git fetch` is safe — it downloads remote changes but leaves your working files untouched. `git pull` goes further by also merging (or rebasing) those changes into your current branch.'
@@ -153,10 +153,10 @@ git push -u origin main`,
       id: 'git-5-q3',
       question: 'What is a Pull Request?',
       options: [
-        'A Git command to download files',
-        'A platform feature (GitHub/GitLab) for requesting that your branch be reviewed and merged into another branch',
-        'A command for rebasing branches',
-        'A way to resolve merge conflicts'
+        'A specialized Git command used to download binary files from a remote server',
+        'A platform feature for requesting that your branch be reviewed and then merged',
+        'A terminal command used for rebasing your local branches against a remote main',
+        'A standard Git method for resolving complex merge conflicts in large teams'
       ],
       correct: 1,
       explanation: 'A Pull Request is a platform feature, not a Git command. It\'s a formal request saying "please review my changes and merge this branch." The review process is central to modern team workflows.'
@@ -164,7 +164,12 @@ git push -u origin main`,
     {
       id: 'git-5-q4',
       question: 'Which command is "safer" because it downloads remote data but does not modify your local code until you are ready?',
-      options: ['git pull', 'git fetch', 'git push', 'git update'],
+      options: [
+        'git pull (downloads and merges automatically)',
+        'git fetch (downloads only for your inspection)',
+        'git push (uploads your local work to remote)',
+        'git update (a generic command for refreshing)'
+      ],
       correct: 1,
       explanation: '`git fetch` downloads the latest data from the remote server so you can inspect it. It doesn\'t force a merge, so it won\'t create conflicts or change your files until you manually run merge or rebase.'
     },
@@ -172,10 +177,10 @@ git push -u origin main`,
       id: 'git-5-q5',
       question: 'What happens if you try to `git push` but a teammate has already pushed other changes to the same branch on the server?',
       options: [
-        'Git automatically merges them for you on the server',
-        'Git rejects your push (Rejected: non-fast-forward)',
-        'Your changes overwrite the teammate\'s changes',
-        'Git deletes the remote branch'
+        'Git automatically merges both sets of changes for you on the remote server',
+        'Git rejects your push because your local history is behind the remote version',
+        'Your local changes will completely overwrite whatever the teammate previously pushed',
+        'Git will delete the remote branch to prevent any further history divergence'
       ],
       correct: 1,
       explanation: 'Git is protective. If the remote history has moved forward since your last pull, it will reject your push. You must `git pull` first, resolve any conflicts, and then push.'

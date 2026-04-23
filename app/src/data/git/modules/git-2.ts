@@ -81,10 +81,10 @@ export const git2: Module = {
       id: 'git-2-q3',
       question: 'Why did Linus Torvalds create Git?',
       options: [
-        'To compete with GitHub',
-        'Because the Linux team lost access to their previous version control tool (BitKeeper)',
-        'As a university project',
-        'To replace email as a file-sharing method'
+        'He wanted to create a commercial competitor to the newly launched GitHub platform',
+        'The Linux team lost access to BitKeeper, their previous proprietary version control tool',
+        'It was originally started as a university research project on distributed computing',
+        'He needed a better way to replace email as the primary method for sharing large files'
       ],
       correct: 1,
       explanation: 'The Linux kernel team had been using BitKeeper for free, but that arrangement ended in 2005. Linus created Git as a replacement.'
@@ -93,10 +93,10 @@ export const git2: Module = {
       id: 'git-2-q4',
       question: 'What does the Git logo represent?',
       options: [
-        'A tree of files',
-        'A graph of nodes and connections (like commits and branches)',
-        'The letter G',
-        'A network of servers'
+        'A simplified tree structure representing a hierarchical filesystem of project folders',
+        'A graph of nodes and connections representing the relationships between commits',
+        'A stylized version of the letter G designed to be easily recognizable and scalable',
+        'A distributed network of independent servers communicating over a global mesh'
       ],
       correct: 1,
       explanation: 'The geometric Git logo represents a graph — Git\'s actual internal data structure. Nodes are commits, lines are the relationships between them.'
@@ -105,10 +105,10 @@ export const git2: Module = {
       id: 'git-2-q5',
       question: 'Unlike older version control systems that store file changes as a list of "diffs", Git stores your data as:',
       options: [
-        'A series of text instructions',
-        'A stream of snapshots (mini-filesystems)',
-        'A collection of ZIP files',
-        'A spreadsheet of changes'
+        'A complex series of text-based instructions for rebuilding every single file',
+        'A stream of snapshots that act like miniature filesystems for every commit',
+        'A collection of compressed ZIP files containing every version of every file',
+        'A spreadsheet of changes tracking every character addition or deletion'
       ],
       correct: 1,
       explanation: 'Git thinks of its data more like a series of snapshots of a miniature filesystem. Every time you commit, Git takes a picture of what all your files look like at that moment.'
