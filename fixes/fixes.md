@@ -34,7 +34,7 @@
 - [ ] **Quote Parser**: Verifica che `git commit -m 'init"` (o simili errori di virgolette) restituisca errore nel simulatore.
 - [ ] **Terminologia (Feature Flags)**: Verifica la nuova formulazione della domanda 7 nel Modulo 11.
 - [ ] **Spiegazione SVN & Grafico**: Verifica che la differenza tra SVN e Git sia chiara e che la nuova animazione "Distributed Network" nel Modulo 1 rappresenti meglio il concetto (senza frecce lineari).
-- [ ] **Rimozione Video Modulo 10**: Verifica che nel Modulo 10 sia rimasto solo il primo video di "Oh My Git!" e che l'intervista ai maintainers sia stata rimossa.
+- [ ] **Rimozione Video Modulo 10**: Verifica che nel Modulo 10 sia rimasto solo il video aggiornato di "Oh My Git!" (quello nuovo) e che l'intervista sia stata rimossa.
 
 ---
 
