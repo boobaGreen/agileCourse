@@ -1321,15 +1321,18 @@ function MergeRebaseLab() {
              <div className="flex gap-2 w-full sm:w-auto justify-end shrink-0">
                 <button disabled={step === 0} onClick={() => setStep(s => s - 1)} className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-white disabled:opacity-20 hover:bg-white/10 transition-all shadow-lg"><ArrowLeft size={16} /></button>
                 <button 
-                  disabled={step === steps.length - 1} 
-                  onClick={() => setStep(s => s + 1)} 
+                  onClick={() => step === steps.length - 1 ? setStep(0) : setStep(s => s + 1)} 
                   className={`flex-1 sm:flex-none px-6 py-2.5 rounded-xl text-white shadow-lg transition-all text-xs fw-black flex gap-2 items-center justify-center ${
                     mode === 'merge' 
                       ? 'bg-gradient-to-r from-orange-500 to-red-600 shadow-orange-900/40' 
                       : 'bg-gradient-to-r from-indigo-400 to-purple-500 shadow-indigo-900/40'
-                  } disabled:opacity-30`}
+                  }`}
                 >
-                  Next Step <ArrowRight size={16} />
+                  {step === steps.length - 1 ? (
+                    <>Reset <RotateCcw size={16} /></>
+                  ) : (
+                    <>Next Step <ArrowRight size={16} /></>
+                  )}
                 </button>
              </div>
           </div>
