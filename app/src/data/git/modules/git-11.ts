@@ -75,10 +75,10 @@ export const git11: Module = {
     },
     {
       id: 'git-11-q7',
-      question: 'Which workflow uses feature flags for continuous deployment?',
+      question: 'Which modern Git workflow often relies on "feature flags" to keep the main branch stable while merging frequent updates?',
       options: ['Gitflow', 'Trunk-based Development', 'GitHub Flow', 'Waterfall'],
       correct: 1,
-      explanation: 'Trunk-based development relies on flags to keep main stable while merging often.'
+      explanation: 'Trunk-based development uses feature flags to hide unfinished work, allowing developers to merge small, frequent commits into the main branch without breaking the build.'
     },
     {
       id: 'git-11-q8',
