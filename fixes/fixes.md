@@ -1,7 +1,5 @@
 # Git Course Review - Feedback & Fixes
 
-**Reviewer Note:** _Ciao Claudio, ho appena finito di fare la review del corso su Git. Ottimo lavoro!_
-
 ## General Feedback & UI/UX
 
 - [ ] **Chapter Navigation**: Quando si cambia capitolo la vista rimane a fondo pagina, sarebbe bello ripartisse dall'alto.
