@@ -1048,7 +1048,6 @@ function EducationAnimation({ type }: { type: string }) {
            </svg>
         </div>
     </div>
-    </div>
     )
   }
 
