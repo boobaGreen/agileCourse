@@ -35,7 +35,7 @@
 - [ ] **Terminologia (Feature Flags)**: Verifica la nuova formulazione della domanda 7 nel Modulo 11.
 - [ ] **Spiegazione SVN & Grafico**: Verifica che la differenza tra SVN e Git sia chiara e che la nuova animazione "Distributed Network" nel Modulo 1 rappresenti meglio il concetto (senza frecce lineari).
 - [ ] **Rimozione Video Modulo 10**: Verifica che nel Modulo 10 sia rimasto solo il video aggiornato di "Oh My Git!" (quello nuovo) e che l'intervista sia stata rimossa.
-- [ ] **Layout Modulo 3 (The Three Areas)**: Verifica che la sezione "Conceptual Logic" (il testo e il terminale) sia ora posizionata SOPRA l'immagine principale e più vicina ai tasti di navigazione.
+- [ ] **Layout Modulo 3 (The Three Areas)**: Verifica che la sezione "Conceptual Logic" sia SOPRA l'immagine. Verifica anche che il tasto "Indietro" sia stato rimosso e che al termine dei passaggi compaia il tasto "Reset".
 
 ---
 
