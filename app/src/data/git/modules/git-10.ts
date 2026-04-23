@@ -26,7 +26,7 @@ export const git10: Module = {
       type: 'video',
       title: '📺 Oh My Git! — Gameplay & First Impressions',
       content: 'See someone play Oh My Git! from scratch — a great way to understand how the card system and visual Git tree interact.',
-      videoUrl: 'https://www.youtube.com/watch?v=EhcBoefiO4Y'
+      videoUrl: 'https://www.youtube.com/watch?v=dnAy6aIbIWo'
     },
 
     // ── LEARN GIT BRANCHING ──────────────────────────────────────────
