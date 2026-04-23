@@ -2,10 +2,20 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, ArrowRight, RotateCcw, Terminal as TermIcon, Laptop, Cloud, Search } from 'lucide-react'
 
+interface LabStep {
+  title: string
+  desc: string
+  cmd: string
+  label?: string
+  local: string[]
+  remote: string[]
+  tracking: string[]
+}
+
 export function RemoteSyncLab() {
   const [step, setStep] = useState(0)
 
-  const steps = [
+  const steps: LabStep[] = [
     {
       title: "1. Divergence",
       desc: "You have a new local commit (C2), but your teammate has already pushed (T1) to the server. You are out of sync!",
@@ -267,10 +277,10 @@ export function RemoteSyncLab() {
           <p className="text-[11px] sm:text-base text-white/80 leading-relaxed fw-medium italic text-center sm:text-left">"{current.desc}"</p>
           
           <div className="flex flex-col gap-2">
-             {(current as any).label && (
+             {current.label && (
                <div className="flex items-center gap-2 px-1">
                  <div className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-                 <span className="text-[9px] sm:text-[10px] fw-black text-secondary/60 uppercase tracking-[0.2em]">{(current as any).label}</span>
+                 <span className="text-[9px] sm:text-[10px] fw-black text-secondary/60 uppercase tracking-[0.2em]">{current.label}</span>
                </div>
              )}
              <div className="bg-black/60 border border-white/10 rounded-2xl p-2 sm:p-4 flex items-center gap-3 sm:gap-4 shadow-inner overflow-x-auto min-w-0 scrollbar-hide">
