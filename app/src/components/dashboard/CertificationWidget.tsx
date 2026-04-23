@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion'
 import { Award, ArrowRight, GitBranch, Package, Ship } from 'lucide-react'
+import type { Track } from '../../data/types'
 
 export function CertificationWidget({ tracks, completedModules, onNavigate }: { 
-  tracks: any[], 
+  tracks: Track[], 
   completedModules: string[], 
   onNavigate: () => void 
 }) {

@@ -172,6 +172,17 @@ export interface Module {
   externalLink?: { label: string; url: string; xpPrompt: string }
 }
 
+export interface Track {
+  id: string
+  icon: any
+  emoji: string
+  label: string
+  color: string
+  glow: string
+  modules: Module[]
+  available: boolean
+}
+
 export interface GameDataItem {
   id: string;
   label: string;

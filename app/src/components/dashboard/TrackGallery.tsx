@@ -1,10 +1,12 @@
-import { motion, Star } from 'framer-motion'
+import { motion } from 'framer-motion'
+import { Star } from 'lucide-react'
+import type { Track, Module } from '../../data/types'
 
 interface TrackGalleryProps {
-  tracks: any[]
+  tracks: Track[]
   activeTrackId: string
   setActiveTrackId: (id: string) => void
-  getTrackProgress: (tId: string, mods: any[]) => number
+  getTrackProgress: (tId: string, mods: Module[]) => number
 }
 
 export function TrackGallery({ tracks, activeTrackId, setActiveTrackId, getTrackProgress }: TrackGalleryProps) {

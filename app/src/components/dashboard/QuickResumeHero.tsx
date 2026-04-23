@@ -1,13 +1,14 @@
 import { motion } from 'framer-motion'
 import { ArrowRight, Activity, Zap, Trophy } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import type { Track, Module } from '../../data/types'
 
 interface QuickResumeHeroProps {
-  activeTrack: any
-  nextModule: any
+  activeTrack: Track
+  nextModule: Module | undefined
   activeTrackId: string
   setActiveTrackId: (id: string) => void
-  tracks: any[]
+  tracks: Track[]
 }
 
 export function QuickResumeHero({ activeTrack, nextModule, activeTrackId, setActiveTrackId, tracks }: QuickResumeHeroProps) {

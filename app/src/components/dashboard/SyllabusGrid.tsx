@@ -1,13 +1,14 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle, ArrowRight, Zap } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import type { Track, Module } from '../../data/types'
 
 interface SyllabusGridProps {
   activeTrackId: string
-  activeTrack: any
-  currentModules: any[]
+  activeTrack: Track
+  currentModules: Module[]
   completedModules: string[]
-  nextModule: any
+  nextModule: Module | undefined
 }
 
 export function SyllabusGrid({ activeTrackId, activeTrack, currentModules, completedModules, nextModule }: SyllabusGridProps) {

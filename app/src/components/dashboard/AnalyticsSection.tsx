@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion'
 import { Target, Activity } from 'lucide-react'
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer } from 'recharts'
+import type { Track } from '../../data/types'
 
 interface AnalyticsSectionProps {
-  radarData: any[]
-  activeTrack: any
-  heatmapData: any[][]
+  radarData: { subject: string, value: number, fullMark: number }[]
+  activeTrack: Track
+  heatmapData: { date: string, count: number }[][]
 }
 
 export function AnalyticsSection({ radarData, activeTrack, heatmapData }: AnalyticsSectionProps) {
