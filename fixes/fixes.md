@@ -33,6 +33,7 @@
 - [ ] **Terminal History (UP Arrow)**: Verifica che nel simulatore il tasto ⬆️ funzioni correttamente.
 - [ ] **Quote Parser**: Verifica che `git commit -m 'init"` (o simili errori di virgolette) restituisca errore nel simulatore.
 - [ ] **Terminologia (Feature Flags)**: Verifica la nuova formulazione della domanda 7 nel Modulo 11.
+- [ ] **Spiegazione SVN**: Verifica che la differenza tra sistemi centralizzati (SVN) e distribuiti nel Modulo 1 sia ora più chiara.
 
 ---
 
