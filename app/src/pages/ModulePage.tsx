@@ -934,7 +934,50 @@ function EducationAnimation({ type }: { type: string }) {
            </div>
         </div>
 
-        <div className="relative w-full aspect-[4/3] sm:aspect-[2/1] bg-black/40 rounded-3xl border border-white/5 p-3 sm:p-6 flex flex-col overflow-hidden shadow-2xl mt-4">
+        {/* Narrative Panel (Moved above diagram) */}
+        <div className="w-full flex flex-col items-center gap-4">
+          <AnimatePresence mode="wait">
+          <motion.div 
+            key={step}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="w-full max-w-lg bg-black/40 backdrop-blur-xl border border-white/10 p-5 rounded-3xl shadow-2xl"
+          >
+             <div className="flex items-start gap-4">
+                <div className="p-2.5 rounded-2xl bg-primary/20 text-primary shrink-0">
+                   <LayoutGrid size={18} />
+                </div>
+                <div className="flex flex-col gap-3 w-full min-w-0">
+                   <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-2">
+                         <span className="text-[10px] text-primary fw-black uppercase tracking-widest whitespace-nowrap">Conceptual Logic</span>
+                         <div className="h-[1px] w-full bg-white/10" />
+                      </div>
+                      <p className="text-xs text-white/90 leading-relaxed fw-medium">
+                         {steps[step].desc}
+                      </p>
+                   </div>
+
+                   {/* Terminal */}
+                   <div className="bg-black/60 rounded-xl p-2.5 border border-white/5 shadow-inner flex items-center gap-3 overflow-x-auto min-w-0 scrollbar-hide">
+                      <div className="flex gap-1 shrink-0">
+                         <div className="w-1.5 h-1.5 rounded-full bg-red-500/50" />
+                         <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/50" />
+                         <div className="w-1.5 h-1.5 rounded-full bg-green-500/50" />
+                      </div>
+                      <code className="text-[10px] sm:text-[11px] mono text-git fw-bold whitespace-nowrap pr-6">
+                         <span className="text-muted opacity-50 mr-2">$</span>
+                         {steps[step].cmd}
+                      </code>
+                   </div>
+                </div>
+             </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+        <div className="relative w-full aspect-[4/3] sm:aspect-[2/1] bg-black/40 rounded-3xl border border-white/5 p-3 sm:p-6 flex flex-col overflow-hidden shadow-2xl">
            <svg viewBox="0 0 400 200" className="w-full h-full">
              {/* Area Labels */}
              <text x="65" y="30" textAnchor="middle" className="text-[7px] fw-black uppercase tracking-widest" fill="rgba(255,255,255,0.4)">Working Dir</text>
@@ -1004,49 +1047,7 @@ function EducationAnimation({ type }: { type: string }) {
              </motion.g>
            </svg>
         </div>
-
-        {/* Narrative Panel */}
-        <div className="w-full">
-          <AnimatePresence mode="wait">
-          <motion.div 
-            key={step}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="w-full max-w-lg bg-black/40 backdrop-blur-xl border border-white/10 p-5 rounded-3xl shadow-2xl"
-          >
-             <div className="flex items-start gap-4">
-                <div className="p-2.5 rounded-2xl bg-primary/20 text-primary shrink-0">
-                   <LayoutGrid size={18} />
-                </div>
-                <div className="flex flex-col gap-3 w-full min-w-0">
-                   <div className="flex flex-col gap-1">
-                      <div className="flex items-center gap-2">
-                         <span className="text-[10px] text-primary fw-black uppercase tracking-widest whitespace-nowrap">Conceptual Logic</span>
-                         <div className="h-[1px] w-full bg-white/10" />
-                      </div>
-                      <p className="text-xs text-white/90 leading-relaxed fw-medium">
-                         {steps[step].desc}
-                      </p>
-                   </div>
-
-                   {/* Terminal */}
-                   <div className="bg-black/60 rounded-xl p-2.5 border border-white/5 shadow-inner flex items-center gap-3 overflow-x-auto min-w-0 scrollbar-hide">
-                      <div className="flex gap-1 shrink-0">
-                         <div className="w-1.5 h-1.5 rounded-full bg-red-500/50" />
-                         <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/50" />
-                         <div className="w-1.5 h-1.5 rounded-full bg-green-500/50" />
-                      </div>
-                      <code className="text-[10px] sm:text-[11px] mono text-git fw-bold whitespace-nowrap pr-6">
-                         <span className="text-muted opacity-50 mr-2">$</span>
-                         {steps[step].cmd}
-                      </code>
-                   </div>
-                </div>
-             </div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
+    </div>
     </div>
     )
   }
