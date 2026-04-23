@@ -26,7 +26,7 @@ export function LanguageSwitcher() {
   );
 
   return (
-    <div className="flex items-center p-1 bg-white/5 backdrop-blur-xl rounded-full border border-white/10 shadow-lg transition-all hover:border-white/20">
+    <div className="flex items-center gap-1 p-1 bg-white/5 backdrop-blur-xl rounded-full border border-white/10 shadow-lg transition-all hover:border-white/20">
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
@@ -42,11 +42,11 @@ export function LanguageSwitcher() {
             transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
           />
         )}
-        <div className="relative z-10 flex items-center gap-2">
+        <div className="relative z-10 flex items-center gap-3">
           <FlagEN />
-          <span className="text-[10px] fw-black tracking-wider">EN</span>
+          <span className="text-[10px] fw-black tracking-widest">EN</span>
         </div>
-      </button>
+      </motion.button>
 
       <motion.button
         whileHover={{ scale: 1.05 }}
@@ -63,11 +63,11 @@ export function LanguageSwitcher() {
             transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
           />
         )}
-        <div className="relative z-10 flex items-center gap-2">
+        <div className="relative z-10 flex items-center gap-3">
           <FlagIT />
-          <span className="text-[10px] fw-black tracking-wider">IT</span>
+          <span className="text-[10px] fw-black tracking-widest">IT</span>
         </div>
-      </button>
+      </motion.button>
     </div>
   );
 }
