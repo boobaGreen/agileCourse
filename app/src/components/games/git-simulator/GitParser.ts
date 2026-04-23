@@ -9,16 +9,50 @@ export class GitParser {
       return { success: false, out: `bash: ${cmd.split(' ')[0]}: command not found` };
     }
 
-    // Pulisce anche eventuali virgolette attorno agli argomenti (es: git branch "feature")
-    const args = cmd.substring(4).split(' ').map(a => a.replace(/^["']|["']$/g, ''));
-    const action = args[0];
+    // Tokenizer that respects quotes
+    const tokens: string[] = [];
+    let currentToken = '';
+    let inQuote: string | null = null;
+
+    for (let i = 4; i < cmd.length; i++) {
+      const char = cmd[i];
+      if (inQuote) {
+        if (char === inQuote) {
+          inQuote = null;
+        } else {
+          currentToken += char;
+        }
+      } else if (char === '"' || char === "'") {
+        inQuote = char;
+      } else if (char === ' ') {
+        if (currentToken) {
+          tokens.push(currentToken);
+          currentToken = '';
+        }
+      } else {
+        currentToken += char;
+      }
+    }
+    if (currentToken) tokens.push(currentToken);
+
+    if (inQuote) {
+      return { success: false, out: `error: unclosed quotation mark found in command.` };
+    }
+
+    const action = tokens[0];
+    const args = tokens; // tokens already contains everything after 'git '
+
+    // Special check for mixed/invalid quotes if needed, 
+    // but the loop above handles basic pairing.
+    // If we want to strictly fail on 'msg", the loop logic actually handles it 
+    // by staying in "inQuote" state until the end.
 
     switch (action) {
       case 'commit': {
         const msgIndex = args.indexOf('-m');
         let msg = 'New commit';
         if (msgIndex !== -1 && args[msgIndex + 1]) {
-          msg = args.slice(msgIndex + 1).join(' ').replace(/["']/g, '');
+          msg = args[msgIndex + 1];
         }
         const result = engine.commit(msg);
         return { success: result.success, out: result.msg };
