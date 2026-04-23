@@ -94,11 +94,37 @@ export function GitGraphSim({ data, onComplete }: Props) {
     }
   }, [allCompleted, onComplete]);
 
+  const [commandHistory, setCommandHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+
   const handleCommand = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && input.trim()) {
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (commandHistory.length > 0) {
+        const nextIndex = historyIndex + 1;
+        if (nextIndex < commandHistory.length) {
+          setHistoryIndex(nextIndex);
+          setInput(commandHistory[commandHistory.length - 1 - nextIndex]);
+        }
+      }
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (historyIndex > 0) {
+        const nextIndex = historyIndex - 1;
+        setHistoryIndex(nextIndex);
+        setInput(commandHistory[commandHistory.length - 1 - nextIndex]);
+      } else if (historyIndex === 0) {
+        setHistoryIndex(-1);
+        setInput('');
+      }
+    } else if (e.key === 'Enter' && input.trim()) {
       const cmd = input.trim();
       const newHistory = [...history, { type: 'cmd' as const, text: `$ ${cmd}` }];
       
+      // Update command history
+      setCommandHistory(prev => [...prev, cmd]);
+      setHistoryIndex(-1);
+
       const engine = new GitEngine(state);
       const result = GitParser.execute(engine, cmd);
       
