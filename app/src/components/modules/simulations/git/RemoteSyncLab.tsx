@@ -9,7 +9,8 @@ export function RemoteSyncLab() {
     {
       title: "1. Divergence",
       desc: "You have a new local commit (C2), but your teammate has already pushed (T1) to the server. You are out of sync!",
-      cmd: "# Check remote status...",
+      cmd: "git fetch origin",
+      label: "Check remote status",
       local: ['C1', 'C2'],
       remote: ['C1', 'T1'],
       tracking: ['C1']
@@ -18,6 +19,7 @@ export function RemoteSyncLab() {
       title: "2. The Fetch",
       desc: "Git downloads the teammate's commit (T1) into your 'Remote Tracking' branch (origin/main) so you can see it safely.",
       cmd: "git fetch origin",
+      label: "Download updates",
       local: ['C1', 'C2'],
       remote: ['C1', 'T1'],
       tracking: ['C1', 'T1']
@@ -26,6 +28,7 @@ export function RemoteSyncLab() {
       title: "3. The Integration",
       desc: "Merge the remote changes into your local branch. Now your history contains both your work (C2) and theirs (T1).",
       cmd: "git merge origin/main",
+      label: "Sync history",
       local: ['C1', 'T1', 'C2'],
       remote: ['C1', 'T1'],
       tracking: ['C1', 'T1']
@@ -34,6 +37,7 @@ export function RemoteSyncLab() {
       title: "4. The Push",
       desc: "Now that you are up-to-date, you can safely push your commit (C2) to the server for the whole team to see.",
       cmd: "git push origin",
+      label: "Update server",
       local: ['C1', 'T1', 'C2'],
       remote: ['C1', 'T1', 'C2'],
       tracking: ['C1', 'T1', 'C2']
@@ -259,18 +263,27 @@ export function RemoteSyncLab() {
           </div>
        </div>
 
-       <div className="w-full bg-black/40 rounded-3xl p-3 sm:p-6 border border-white/5 flex flex-col gap-2 sm:gap-5 z-10 backdrop-blur-sm mt-2 sm:mt-4">
+       <div className="w-full bg-black/40 rounded-3xl p-3 sm:p-6 border border-white/5 flex flex-col gap-2 sm:gap-4 z-10 backdrop-blur-sm mt-2 sm:mt-4">
           <p className="text-[11px] sm:text-base text-white/80 leading-relaxed fw-medium italic text-center sm:text-left">"{current.desc}"</p>
-          <div className="bg-black/60 border border-white/10 rounded-2xl p-2 sm:p-4 flex items-center gap-3 sm:gap-4 shadow-inner overflow-x-auto min-w-0 scrollbar-hide">
-             <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
-                <TermIcon size={14} className="sm:hidden" />
-                <TermIcon size={18} className="hidden sm:block" />
+          
+          <div className="flex flex-col gap-2">
+             {(current as any).label && (
+               <div className="flex items-center gap-2 px-1">
+                 <div className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
+                 <span className="text-[9px] sm:text-[10px] fw-black text-secondary/60 uppercase tracking-[0.2em]">{(current as any).label}</span>
+               </div>
+             )}
+             <div className="bg-black/60 border border-white/10 rounded-2xl p-2 sm:p-4 flex items-center gap-3 sm:gap-4 shadow-inner overflow-x-auto min-w-0 scrollbar-hide">
+                <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
+                   <TermIcon size={14} className="sm:hidden" />
+                   <TermIcon size={18} className="hidden sm:block" />
+                </div>
+                <code className="text-[11px] sm:text-[15px] font-mono text-secondary fw-bold flex items-center gap-2 whitespace-nowrap pr-6">
+                   <span className="text-muted opacity-30 select-none">course @ git:</span>
+                   <span className="text-white">{current.cmd}</span>
+                   <motion.span animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 1 }} className="w-2 h-5 bg-secondary/50 rounded-sm" />
+                </code>
              </div>
-             <code className="text-[11px] sm:text-[15px] font-mono text-secondary fw-bold flex items-center gap-2 whitespace-nowrap pr-6">
-                <span className="text-muted opacity-30 select-none">course @ git:</span>
-                <span className="text-white">{current.cmd}</span>
-                <motion.span animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 1 }} className="w-2 h-5 bg-secondary/50 rounded-sm" />
-             </code>
           </div>
        </div>
     </div>

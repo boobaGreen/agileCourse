@@ -22,16 +22,20 @@
 - [x] **Issue**: Minor: qui "feature flag" é un abuso di terminologia o mi sbaglio?
 - **Location**: Git Modulo 11, Domanda 7 ("Which workflow uses feature flags for continuous deployment?")
 
+### 4. Module 3 Lab 1/4 - Divergence UI
+
+- [ ] **Issue**: Il commento `# Check remote status...` nel primo step (Divergence) dovrebbe essere integrato con il comando successivo (`git fetch`) o rimosso dal terminale per evitare confusione (non deve apparire come comando/commento nel terminale).
+
 ---
 
 ## Verifica Manuale (User Check)
 
 _Queste voci rappresentano i fix effettuati da Antigravity che richiedono una verifica manuale da parte dell'utente._
 
-- [ ] **Scroll to Top**: Verifica che al cambio modulo o inizio quiz la pagina torni in cima.
-- [ ] **Quiz Balance**: Verifica che nei moduli Git, Docker e K8s le risposte corrette non siano sistematicamente le più lunghe.
-- [ ] **Terminal History (UP Arrow)**: Verifica che nel simulatore il tasto ⬆️ funzioni correttamente.
-- [ ] **Quote Parser**: Verifica che `git commit -m 'init"` (o simili errori di virgolette) restituisca errore nel simulatore.
+- [x] **Scroll to Top**: Verifica che al cambio modulo o inizio quiz la pagina torni in cima.
+- [x] **Quiz Balance**: Verifica che nei moduli Git, Docker e K8s le risposte corrette non siano sistematicamente le più lunghe.
+- [x] **Terminal History (UP Arrow)**: Verifica che nel simulatore il tasto ⬆️ funzioni correttamente.
+- [x] **Quote Parser**: Verifica che `git commit -m 'init"` (o simili errori di virgolette) restituisca errore nel simulatore.
 - [ ] **Terminologia (Feature Flags)**: Verifica la nuova formulazione della domanda 7 nel Modulo 11.
 - [x] **Spiegazione SVN & Grafico**: Verifica che la differenza tra SVN e Git sia chiara e che la nuova animazione "Distributed Network" nel Modulo 1 rappresenti meglio il concetto (senza frecce lineari).
 - [x] **Rimozione Video Modulo 10**: Verifica che nel Modulo 10 sia rimasto solo il video aggiornato di "Oh My Git!" (quello nuovo) e che l'intervista sia stata rimossa.
