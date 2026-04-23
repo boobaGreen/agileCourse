@@ -2,15 +2,15 @@
 
 ## General Feedback & UI/UX
 
-- [ ] **Chapter Navigation**: Quando si cambia capitolo la vista rimane a fondo pagina, sarebbe bello ripartisse dall'alto.
-- [ ] **Quiz Pitfalls**: Nei quiz la risposta più lunga é generalmente quella corretta (95% delle volte), questo é un pitfall delle risposte generate dall AI.
-- [ ] **Interactive Sessions (NICE TO HAVE)**: Nelle sessioni interattive con comandi premere il tasto ⬆️ UP portasse all'autocompletamento del comando precedente.
+- [x] **Chapter Navigation**: Quando si cambia capitolo la vista rimane a fondo pagina, sarebbe bello ripartisse dall'alto.
+- [x] **Quiz Pitfalls**: Nei quiz la risposta più lunga é generalmente quella corretta (95% delle volte), questo é un pitfall delle risposte generate dall AI.
+- [x] **Interactive Sessions (NICE TO HAVE)**: Nelle sessioni interattive con comandi premere il tasto ⬆️ UP portasse all'autocompletamento del comando precedente.
 
 ## Bug Report & Detailed Issues
 
 ### 1. Command Parser - Quotes Handling
 
-- [ ] **Issue**: Quote/double quotes spaiate non generano errori nel terminale. Esempio: `git commit -m 'init"` (l'uso di virgolette miste o non chiuse non viene rilevato come errore).
+- [x] **Issue**: Quote/double quotes spaiate non generano errori nel terminale. Esempio: `git commit -m 'init"` (l'uso di virgolette miste o non chiuse non viene rilevato come errore).
 
 ### 2. Module 5 - Game Logic
 
@@ -19,7 +19,7 @@
 
 ### 3. Terminology Review
 
-- [ ] **Issue**: Minor: qui "feature flag" é un abuso di terminologia o mi sbaglio?
+- [x] **Issue**: Minor: qui "feature flag" é un abuso di terminologia o mi sbaglio?
 - **Location**: Git Modulo 11, Domanda 7 ("Which workflow uses feature flags for continuous deployment?")
 
 ---
