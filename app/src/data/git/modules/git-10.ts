@@ -87,7 +87,7 @@ export const git10: Module = {
     {
       type: 'tip',
       title: '🎯 Suggested Learning Path',
-      content: '**Step 1**: Start with **Oh My Git!** to build intuition with the visual card system.\n**Step 2**: Move to **Learn Git Branching** and complete the Introduction Sequence.\n**Step 3**: Clone the **Git Katas** repo and practice `basic-commits`, `basic-staging`, and `basic-branching`.\n**Step 4**: Challenge yourself with the Remote levels in Learn Git Branching.\n**Step 5**: Tackle advanced katas: `merge-conflict`, `rebase-branch`, `cherry-pick`.\n**Step 6**: Come back here and ace the Final Quiz! 🏆'
+      content: '**Step 1**: Start with **Oh My Git!** to build intuition with the visual card system.\n**Step 2**: Move to **Learn Git Branching** and complete the Introduction Sequence.\n**Step 3**: Clone the **Git Katas** repo and practice `basic-commits`, `basic-staging`, and `basic-branching`.\n**Step 4**: Challenge yourself with the Remote levels in Learn Git Branching.\n**Step 5**: Tackle advanced katas: `merge-conflict`, `rebase-branch`, `cherry-pick`.\n**Step 6**: Quando ti senti pronto, affronta il **Final Quiz** per completare la track! 🏆 (Puoi comunque saltare direttamente al quiz in qualsiasi momento se preferisci).'
     }
   ]
 }
