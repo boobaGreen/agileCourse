@@ -907,22 +907,23 @@ function EducationAnimation({ type }: { type: string }) {
                  <h3 className="text-sm fw-black text-white">{steps[step].title}</h3>
               </div>
               <div className="flex gap-2 w-full sm:w-auto">
-                 <button 
-                   disabled={step === 0}
-                   onClick={() => setStep(s => s - 1)}
-                   className="flex-1 sm:flex-none p-2 rounded-xl bg-white/5 border border-white/10 text-white disabled:opacity-20 hover:bg-white/10 transition-all flex justify-center"
-                 >
-                    <ArrowLeft size={16} />
-                 </button>
-                 <button 
-                   disabled={step === steps.length - 1}
-                   onClick={() => setStep(s => s + 1)}
-                   className="flex-[2] sm:flex-none px-4 py-2 rounded-xl bg-primary text-white shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 fw-bold text-xs"
-                 >
-                    <span className="hidden xs:inline">Next Step</span>
-                    <span className="xs:hidden">Next</span>
-                    <ArrowRight size={16} />
-                 </button>
+                 {step === steps.length - 1 ? (
+                   <button 
+                     onClick={() => setStep(0)}
+                     className="flex-1 sm:flex-none px-6 py-2 rounded-xl bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-all flex items-center justify-center gap-2 fw-bold text-xs shadow-lg"
+                   >
+                      Reset <RotateCcw size={16} />
+                   </button>
+                 ) : (
+                   <button 
+                     onClick={() => setStep(s => s + 1)}
+                     className="flex-1 sm:flex-none px-6 py-2 rounded-xl bg-primary text-white shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 fw-bold text-xs"
+                   >
+                      <span className="hidden xs:inline">Next Step</span>
+                      <span className="xs:hidden">Next</span>
+                      <ArrowRight size={16} />
+                   </button>
+                 )}
               </div>
            </div>
            
