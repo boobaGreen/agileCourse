@@ -8,18 +8,21 @@ import { GIT_MODULES } from '../data/git/modules/index'
 import { DOCKER_MODULES } from '../data/docker/modules/index'
 import { K8S_MODULES } from '../data/k8s/modules/index'
 import ModuleSidebar from './ModuleSidebar'
-
-const navItems = [
-  { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/profile', label: 'My Profile', icon: User },
-]
+import { useLanguage } from '../contexts/LanguageContext'
+import { LanguageSwitcher } from './LanguageSwitcher.tsx'
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
+  const { t } = useLanguage()
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
   const { userName, xp, badges } = useAppStore()
+
+  const navItems = [
+    { path: '/dashboard', label: t('nav.dashboard'), icon: LayoutDashboard },
+    { path: '/profile', label: t('nav.profile'), icon: User },
+  ]
 
   const sidebarWidth = collapsed ? 72 : 272
 
@@ -152,6 +155,8 @@ function SidebarContent({ collapsed, location, userName, xp, badges, onNavigate,
         {!collapsed && <span className="fw-black text-white text-base tracking-tight">Agile Training</span>}
       </div>
 
+
+
       {/* User profile card */}
       {!collapsed && (
         <div className="mx-3 my-4 p-4 rounded-xl" style={{ background: 'var(--color-surface2)' }}>
@@ -163,6 +168,9 @@ function SidebarContent({ collapsed, location, userName, xp, badges, onNavigate,
             <div className="flex items-center gap-1 text-k8s text-xs fw-med">
               <Award size={12} /> {badges}
             </div>
+          </div>
+          <div className="mt-4 flex justify-center border-t border-white/5 pt-4">
+            <LanguageSwitcher />
           </div>
         </div>
       )}
