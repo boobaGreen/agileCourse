@@ -1,29 +1,29 @@
 import { motion } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
 
+const FlagIT = () => (
+  <svg viewBox="0 0 3 2" className="w-4 h-4 rounded-full shadow-sm">
+    <rect width="1" height="2" fill="#008C45"/>
+    <rect width="1" height="2" x="1" fill="#F4F5F0"/>
+    <rect width="1" height="2" x="2" fill="#CD212A"/>
+  </svg>
+);
+
+const FlagEN = () => (
+  <svg viewBox="0 0 60 30" className="w-4 h-4 rounded-full shadow-sm">
+    <clipPath id="s">
+      <path d="M0,0 v30 h60 v-30 z"/>
+    </clipPath>
+    <path d="M0,0 v30 h60 v-30 z" fill="#012169"/>
+    <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6"/>
+    <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" strokeWidth="4"/>
+    <path d="M30,0 v30 M0,15 h60" stroke="#fff" strokeWidth="10"/>
+    <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" strokeWidth="6"/>
+  </svg>
+);
+
 export function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage();
-
-  const FlagIT = () => (
-    <svg viewBox="0 0 3 2" className="w-4 h-4 rounded-full shadow-sm">
-      <rect width="1" height="2" fill="#008C45"/>
-      <rect width="1" height="2" x="1" fill="#F4F5F0"/>
-      <rect width="1" height="2" x="2" fill="#CD212A"/>
-    </svg>
-  );
-
-  const FlagEN = () => (
-    <svg viewBox="0 0 60 30" className="w-4 h-4 rounded-full shadow-sm">
-      <clipPath id="s">
-        <path d="M0,0 v30 h60 v-30 z"/>
-      </clipPath>
-      <path d="M0,0 v30 h60 v-30 z" fill="#012169"/>
-      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6"/>
-      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" strokeWidth="4"/>
-      <path d="M30,0 v30 M0,15 h60" stroke="#fff" strokeWidth="10"/>
-      <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" strokeWidth="6"/>
-    </svg>
-  );
 
   return (
     <div className="flex items-center gap-1 p-1 bg-white/5 backdrop-blur-xl rounded-full border border-white/10 shadow-lg transition-all hover:border-white/20">
