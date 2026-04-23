@@ -6,8 +6,10 @@ import { useSearchParams } from 'react-router-dom'
 import { StatsTab } from '../components/profile/StatsTab'
 import { RoadmapTab } from '../components/profile/RoadmapTab'
 import { ResetProgressModal } from '../components/profile/ResetProgressModal'
+import { useLanguage } from '../contexts/LanguageContext'
 
 export default function ProfilePage() {
+  const { t } = useLanguage()
   const { resetProgress } = useAppStore()
   const [showConfirmModal, setShowConfirmModal] = useState(false)
   const [searchParams, setSearchParams] = useSearchParams()
@@ -31,15 +33,15 @@ export default function ProfilePage() {
     <div className="animate-fade-up w-full">
       <div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-white/5 pb-8">
         <div>
-          <h1 className="text-4xl fw-black text-white">User <span className="text-primary">Profile</span></h1>
-          <p className="text-muted mt-1 uppercase tracking-[0.2em] text-[10px] fw-bold">Agile Lab Identity Console</p>
+          <h1 className="text-4xl fw-black text-white">{t('profile.title')} <span className="text-primary">{t('profile.subtitle')}</span></h1>
+          <p className="text-muted mt-1 uppercase tracking-[0.2em] text-[10px] fw-bold">{t('profile.console')}</p>
         </div>
 
         {/* Tab Navigation */}
         <div className="flex bg-surface/50 p-1.5 rounded-2xl border border-white/5 gap-2 backdrop-blur-xl">
           {[
-            { id: 'stats', label: 'My Expertise', icon: BarChart3 },
-            { id: 'roadmap', label: 'Career Roadmap', icon: Award },
+            { id: 'stats', label: t('profile.expertise'), icon: BarChart3 },
+            { id: 'roadmap', label: t('profile.roadmap'), icon: Award },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -63,11 +65,11 @@ export default function ProfilePage() {
       {/* Danger Zone */}
       <div className="mt-24 card p-6 border-red-900/30 bg-red-900/5">
         <h3 className="text-white fw-bold mb-2 flex items-center gap-2">
-          <RotateCcw size={18} className="text-red-400" /> Data Management
+          <RotateCcw size={18} className="text-red-400" /> {t('profile.danger')}
         </h3>
-        <p className="text-sub text-sm mb-6">Resetting your progress will permanently remove all XP, badges, and completed modules.</p>
+        <p className="text-sub text-sm mb-6">{t('profile.dangerDesc')}</p>
         <button onClick={() => setShowConfirmModal(true)} className="btn btn-danger text-xs px-6">
-          Wipe Progress Data
+          {t('profile.wipe')}
         </button>
       </div>
 

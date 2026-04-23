@@ -14,6 +14,7 @@ import { QuickResumeHero } from '../components/dashboard/QuickResumeHero'
 import { TrackGallery } from '../components/dashboard/TrackGallery'
 import { SyllabusGrid } from '../components/dashboard/SyllabusGrid'
 import { AnalyticsSection } from '../components/dashboard/AnalyticsSection'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const tracks = [
   { id: 'git', icon: GitBranch, emoji: '🔴', label: 'Git', color: 'var(--color-git)', glow: 'rgba(249,115,22,0.2)', modules: GIT_MODULES, available: true },
@@ -22,6 +23,7 @@ const tracks = [
 ]
 
 export default function CourseDashboard() {
+  const { t } = useLanguage()
   const { userName, xp, completedModules, activityLog, badges } = useAppStore()
   const [activeTrackId, setActiveTrackId] = useState('git')
   const navigate = useNavigate()
@@ -115,9 +117,9 @@ export default function CourseDashboard() {
         <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
           <div>
             <h1 className="text-4xl fw-black text-white mb-1">
-              Mission <span style={{ color: activeTrack.color }}>Control</span>
+              {t('dashboard.mission')} <span style={{ color: activeTrack.color }}>{t('dashboard.control')}</span>
             </h1>
-            <p className="text-muted">Welcome back, {userName}. Your DevOps journey continues.</p>
+            <p className="text-muted">{t('dashboard.welcome')}, {userName}. {t('dashboard.journey')}</p>
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
@@ -126,7 +128,7 @@ export default function CourseDashboard() {
                    <Zap size={20} />
                 </div>
                 <div>
-                   <p className="text-[10px] text-muted uppercase fw-bold">Global XP</p>
+                   <p className="text-[10px] text-muted uppercase fw-bold">{t('dashboard.globalXp')}</p>
                    <p className="text-xl fw-black text-xp"><AnimatedCounter value={xp} /></p>
                 </div>
              </div>
@@ -139,7 +141,7 @@ export default function CourseDashboard() {
                    <Trophy size={20} />
                 </div>
                 <div>
-                   <p className="text-[10px] text-muted uppercase fw-bold">Badges</p>
+                   <p className="text-[10px] text-muted uppercase fw-bold">{t('dashboard.badges')}</p>
                    <p className="text-xl fw-black text-white">{badges.length}</p>
                 </div>
              </div>

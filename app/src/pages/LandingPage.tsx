@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '../store/useAppStore'
 import { ArrowRight, Sparkles, GitBranch, Box, Workflow, Terminal, Database, Code2, type LucideIcon } from 'lucide-react'
+import { useLanguage } from '../contexts/LanguageContext'
 
 
 const PARTICLE_ICONS = [GitBranch, Box, Workflow, Terminal, Database, Code2]
@@ -28,6 +29,7 @@ const STATIC_PARTICLES: Particle[] = [...Array(24)].map((_, i) => ({
 }))
 
 export default function LandingPage() {
+  const { t } = useLanguage()
   const [name, setName] = useState('')
   const setUserName = useAppStore((s) => s.setUserName)
   const userName = useAppStore((s) => s.userName)
@@ -94,17 +96,17 @@ export default function LandingPage() {
             <h1 className="text-4xl fw-black text-white tracking-tight">
               Agile <span className="text-docker">Learning</span>
             </h1>
-            <p className="text-sub mt-2 fw-med">Professional Training Platform</p>
+            <p className="text-sub mt-2 fw-med">{t('landing.subtitle')}</p>
           </div>
 
           <div className="card p-8">
             <h2 className="text-lg fw-bold text-white mb-6 flex items-center gap-2">
-              <Sparkles size={18} className="text-git" /> Welcome Learner
+              <Sparkles size={18} className="text-git" /> {t('landing.welcome')}
             </h2>
             <form onSubmit={handleNameSubmit} className="flex flex-col gap-4">
               <input
                 type="text"
-                placeholder="Enter your name..."
+                placeholder={t('landing.placeholder')}
                 autoFocus
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -115,7 +117,7 @@ export default function LandingPage() {
                 disabled={name.trim().length < 2}
                 className={`btn btn-git py-4 text-lg justify-center ${name.trim().length < 2 ? 'opacity-30' : ''}`}
               >
-                Enter Harbor <ArrowRight size={18} />
+                {t('landing.enter')} <ArrowRight size={18} />
               </button>
             </form>
           </div>
