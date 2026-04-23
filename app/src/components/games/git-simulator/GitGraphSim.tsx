@@ -82,10 +82,15 @@ export function GitGraphSim({ data, onComplete }: Props) {
 
   const allCompleted = tasks.length > 0 && tasks.every(t => t.completed);
 
+  const hasNotifiedRef = useRef(false);
+
   // Notifica al parent quando il livello è finito
   useEffect(() => {
-    if (allCompleted && onComplete) {
+    if (allCompleted && onComplete && !hasNotifiedRef.current) {
+      hasNotifiedRef.current = true;
       onComplete();
+    } else if (!allCompleted) {
+      hasNotifiedRef.current = false;
     }
   }, [allCompleted, onComplete]);
 

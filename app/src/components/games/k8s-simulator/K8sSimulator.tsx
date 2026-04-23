@@ -92,9 +92,14 @@ export function K8sSimulator({ data, onComplete }: Props) {
 
   const allCompleted = tasks.length > 0 && tasks.every(t => t.completed);
 
+  const hasNotifiedRef = useRef(false);
+
   useEffect(() => {
-    if (allCompleted && onComplete) {
+    if (allCompleted && onComplete && !hasNotifiedRef.current) {
+      hasNotifiedRef.current = true;
       onComplete();
+    } else if (!allCompleted) {
+      hasNotifiedRef.current = false;
     }
   }, [allCompleted, onComplete]);
 
