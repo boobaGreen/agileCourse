@@ -1,10 +1,12 @@
+export type LocalizedString = string | { en: string; it: string }
+
 export interface QuizQuestion {
   id: string
   track?: 'git' | 'docker' | 'k8s'
-  question: string
-  options: string[]
+  question: LocalizedString
+  options: LocalizedString[]
   correct: number
-  explanation: string
+  explanation: LocalizedString
 }
 
 export interface Section {
@@ -16,13 +18,13 @@ export interface Section {
     | 'game'           // mini-giochi
     | 'video'          // embed video
     | 'infographic'    // immagini/infografiche
-  title?: string
-  content: string
+  title?: LocalizedString
+  content: LocalizedString
   code?: string
   language?: string
   // Rich content fields
-  tableData?: { headers: string[], rows: string[][] }
-  diagramSteps?: { label: string, icon?: string, color?: string }[]
+  tableData?: { headers: LocalizedString[], rows: LocalizedString[][] }
+  diagramSteps?: { label: LocalizedString, icon?: string, color?: string }[]
   videoUrl?: string
   imageUrl?: string
   animationType?: string
@@ -157,26 +159,27 @@ export interface K8sGameData {
   tasks: { id: string, instruction: string, condition: string, completed?: boolean }[];
 }
 
+
 export interface Module {
   id: string
   track: 'git' | 'docker' | 'k8s'
   order: number
-  title: string
-  subtitle: string
+  title: LocalizedString
+  subtitle: LocalizedString
   emoji: string
   duration: string          // estimated read/play time
   xpReward: number
-  funFact?: string
+  funFact?: LocalizedString
   sections: Section[]
   quiz?: QuizQuestion[]
-  externalLink?: { label: string; url: string; xpPrompt: string }
+  externalLink?: { label: LocalizedString; url: string; xpPrompt: LocalizedString }
 }
 
 export interface Track {
   id: string
   icon: React.ElementType
   emoji: string
-  label: string
+  label: LocalizedString
   color: string
   glow: string
   modules: Module[]

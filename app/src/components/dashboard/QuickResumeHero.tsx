@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { ArrowRight, Activity, Zap, Trophy } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import type { Track, Module } from '../../data/types'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 interface QuickResumeHeroProps {
   activeTrack: Track
@@ -13,6 +14,7 @@ interface QuickResumeHeroProps {
 
 export function QuickResumeHero({ activeTrack, nextModule, activeTrackId, setActiveTrackId, tracks }: QuickResumeHeroProps) {
   const navigate = useNavigate()
+  const { resolveString } = useLanguage()
 
   return (
     <motion.div 
@@ -39,9 +41,9 @@ export function QuickResumeHero({ activeTrack, nextModule, activeTrackId, setAct
                  </div>
                  <div>
                    <h2 className="text-2xl md:text-3xl fw-black text-white leading-tight">
-                     {nextModule.title}
+                     {resolveString(nextModule.title)}
                    </h2>
-                   <p className="text-sub text-base mt-1 line-clamp-1">{nextModule.subtitle}</p>
+                   <p className="text-sub text-base mt-1 line-clamp-1">{resolveString(nextModule.subtitle)}</p>
                  </div>
                </div>
                <div className="flex items-center gap-4 text-[10px] md:text-xs text-muted fw-bold uppercase mt-6 bg-white/5 w-fit px-4 py-2 rounded-full border border-white/5">

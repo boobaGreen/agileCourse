@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { LocalizedString } from '../data/types';
 
 type Language = 'en' | 'it';
 
@@ -6,6 +7,7 @@ interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string, section?: string) => string;
+  resolveString: (str: LocalizedString | undefined) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -94,8 +96,14 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return uiTranslations[language][key] || key;
   };
 
+  const resolveString = (str: LocalizedString | undefined): string => {
+    if (!str) return '';
+    if (typeof str === 'string') return str;
+    return str[language] || str['en'] || '';
+  };
+
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, resolveString }}>
       {children}
     </LanguageContext.Provider>
   );

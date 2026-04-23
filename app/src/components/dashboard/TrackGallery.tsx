@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Star } from 'lucide-react'
 import type { Track, Module } from '../../data/types'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 interface TrackGalleryProps {
   tracks: Track[]
@@ -10,6 +11,8 @@ interface TrackGalleryProps {
 }
 
 export function TrackGallery({ tracks, activeTrackId, setActiveTrackId, getTrackProgress }: TrackGalleryProps) {
+  const { resolveString } = useLanguage()
+
   return (
     <div className="flex flex-col md:grid md:grid-cols-3 gap-4 md:gap-6 mb-12">
       {tracks.map((track) => {
@@ -40,7 +43,7 @@ export function TrackGallery({ tracks, activeTrackId, setActiveTrackId, getTrack
                 {track.emoji}
               </span>
               <div className="flex-1">
-                <h3 className="text-base md:text-lg fw-black text-white uppercase tracking-tight">{track.label}</h3>
+                <h3 className="text-base md:text-lg fw-black text-white uppercase tracking-tight">{resolveString(track.label)}</h3>
                 <p className="hidden md:block text-[10px] text-muted fw-bold uppercase">{track.modules.length} Modules</p>
                 
                 <div className="md:hidden flex items-center gap-3 mt-1">

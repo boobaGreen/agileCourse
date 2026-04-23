@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle, ArrowRight, Zap } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import type { Track, Module } from '../../data/types'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 interface SyllabusGridProps {
   activeTrackId: string
@@ -13,6 +14,7 @@ interface SyllabusGridProps {
 
 export function SyllabusGrid({ activeTrackId, activeTrack, currentModules, completedModules, nextModule }: SyllabusGridProps) {
   const navigate = useNavigate()
+  const { resolveString } = useLanguage()
 
   return (
     <AnimatePresence mode="wait">
@@ -27,7 +29,7 @@ export function SyllabusGrid({ activeTrackId, activeTrack, currentModules, compl
           <div className="h-[1px] flex-1 bg-primary/20" />
           <div className="flex items-center gap-2 px-6">
              <span className="text-[10px] text-muted uppercase fw-black tracking-[0.2em]">Syllabus for</span>
-             <span className="text-xs fw-black uppercase tracking-[0.1em]" style={{ color: activeTrack.color }}>{activeTrack.label} Hub</span>
+             <span className="text-xs fw-black uppercase tracking-[0.1em]" style={{ color: activeTrack.color }}>{resolveString(activeTrack.label)} Hub</span>
           </div>
           <div className="h-[1px] flex-1 bg-primary/20" />
         </div>
@@ -67,12 +69,12 @@ export function SyllabusGrid({ activeTrackId, activeTrack, currentModules, compl
                    </div>
                    <div className="flex-1">
                      <span className="text-[11px] md:text-xs text-muted mono block uppercase mb-0.5">Module {mod.order}</span>
-                     <h3 className="text-white fw-black text-base md:text-lg leading-tight line-clamp-1">{mod.title}</h3>
+                     <h3 className="text-white fw-black text-base md:text-lg leading-tight line-clamp-1">{resolveString(mod.title)}</h3>
                    </div>
                 </div>
                 
                 <p className="text-muted text-xs md:text-sm leading-relaxed mb-6 line-clamp-2">
-                  {mod.subtitle}
+                  {resolveString(mod.subtitle)}
                 </p>
 
                 <div className="mt-auto flex justify-between items-center pt-4 border-t border-white/5">

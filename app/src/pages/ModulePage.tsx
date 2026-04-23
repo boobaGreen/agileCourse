@@ -12,10 +12,11 @@ import {
 } from 'lucide-react'
 import confetti from 'canvas-confetti'
 
-// Modular Components
 import { SectionCard } from '../components/modules/SectionCard'
+import { useLanguage } from '../contexts/LanguageContext'
 
 export default function ModulePage() {
+  const { resolveString } = useLanguage()
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { completedModules, completeModule, saveQuizScore, addXP, awardBadge } = useAppStore()
@@ -179,7 +180,7 @@ export default function ModulePage() {
           <ArrowLeft size={12} /> Dashboard
         </button>
         <span className="opacity-30">/</span>
-        <span className="text-sub">Module {mod.order}: {mod.title}</span>
+        <span className="text-sub">Module {mod.order}: {resolveString(mod.title)}</span>
       </div>
 
       <AnimatePresence mode="wait">
@@ -196,8 +197,8 @@ export default function ModulePage() {
                     </span>
                     <span className="text-xs text-muted fw-med">⏱ {mod.duration}</span>
                   </div>
-                  <h1 className="text-2xl sm:text-3xl fw-black text-white">{mod.title}</h1>
-                  <p className="text-sub mt-2">{mod.subtitle}</p>
+                  <h1 className="text-2xl sm:text-3xl fw-black text-white">{resolveString(mod.title)}</h1>
+                  <p className="text-sub mt-2">{resolveString(mod.subtitle)}</p>
                 </div>
                 <div className="sm:text-right flex sm:flex-col items-center sm:items-end gap-2 sm:gap-0">
                   <p className="text-xs text-muted uppercase tracking-wider mb-1">XP Reward</p>
@@ -207,7 +208,7 @@ export default function ModulePage() {
               {mod.funFact && (
                 <div className="funfact mt-6 flex gap-3">
                   <Sparkles size={18} className="text-purple-400 shrink-0" />
-                  <p><strong>Fun fact: </strong>{mod.funFact}</p>
+                  <p><strong>Fun fact: </strong>{resolveString(mod.funFact)}</p>
                 </div>
               )}
             </div>

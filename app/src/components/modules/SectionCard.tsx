@@ -13,7 +13,10 @@ import { EducationAnimation } from './EducationAnimation'
 import { MiniGame } from './simulations/Games'
 import { GitLabs } from './simulations/GitLabs'
 
+import { useLanguage } from '../../contexts/LanguageContext'
+
 export function SectionCard({ section, onCompleteGame }: { section: Section, onCompleteGame: (title: string) => void }) {
+  const { resolveString } = useLanguage()
   const icons: Record<string, ElementType> = {
     intro: BookOpen,
     concept: Sparkles,
@@ -35,12 +38,12 @@ export function SectionCard({ section, onCompleteGame }: { section: Section, onC
       {section.title && (
         <div className="flex items-center gap-2 mb-3">
           <Icon size={16} className={`text-${section.type === 'code' ? 'git' : section.type === 'intro' ? 'blue-400' : 'purple-400'}`} />
-          <h3 className="fw-bold text-white text-sm">{section.title}</h3>
+          <h3 className="fw-bold text-white text-sm">{resolveString(section.title)}</h3>
         </div>
       )}
       
       <div className="text-sub text-sm leading-relaxed">
-        {section.content.split('\n').map((line, i) => {
+        {resolveString(section.content).split('\n').map((line, i) => {
           const isDesktopOnly = line.includes('<!-- desktop-only -->');
           const cleanLine = line.replace('<!-- desktop-only -->', '');
           return (
@@ -117,7 +120,7 @@ export function SectionCard({ section, onCompleteGame }: { section: Section, onC
               <thead>
                 <tr className="border-b border-white/10 bg-white/5">
                   {section.tableData.headers.map((h, i) => (
-                    <th key={i} className="p-3 text-[10px] fw-black text-white uppercase tracking-wider">{h}</th>
+                    <th key={i} className="p-3 text-[10px] fw-black text-white uppercase tracking-wider">{resolveString(h)}</th>
                   ))}
                 </tr>
               </thead>
@@ -125,7 +128,7 @@ export function SectionCard({ section, onCompleteGame }: { section: Section, onC
                 {section.tableData.rows.map((row, ri) => (
                   <tr key={ri} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors last:border-0">
                     {row.map((cell, ci) => (
-                      <td key={ci} className="p-3 text-xs text-sub leading-relaxed">{cell}</td>
+                      <td key={ci} className="p-3 text-xs text-sub leading-relaxed">{resolveString(cell)}</td>
                     ))}
                   </tr>
                 ))}
@@ -156,7 +159,7 @@ export function SectionCard({ section, onCompleteGame }: { section: Section, onC
                   style={{ borderColor: step.color ? `${step.color}50` : undefined }}
                 >
                   {step.icon && <span className="text-2xl sm:text-3xl mb-1">{step.icon}</span>}
-                  <span className="text-[11px] sm:text-sm fw-bold text-white leading-tight whitespace-pre-line">{step.label}</span>
+                  <span className="text-[11px] sm:text-sm fw-bold text-white leading-tight whitespace-pre-line">{resolveString(step.label)}</span>
                 </motion.div>
                 {si < section.diagramSteps!.length - 1 && (
                   <motion.span

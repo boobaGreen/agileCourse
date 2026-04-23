@@ -4,31 +4,31 @@ export const git1: Module = {
   id: 'git-1',
   track: 'git',
   order: 1,
-  title: 'What is Version Control?',
-  subtitle: 'Why "save as final_FINAL_v2.docx" is never the answer',
+  title: { en: 'What is Version Control?', it: 'Cos\'è il Version Control?' },
+  subtitle: { en: 'Why "save as final_FINAL_v2.docx" is never the answer', it: 'Perché "salva come final_FINAL_v2.docx" non è mai la soluzione' },
   emoji: '⏱️',
   duration: '8 min',
   xpReward: 50,
-  funFact: 'Before version control, teams shared code by emailing ZIP files. Git was created in just 10 days by Linus Torvalds in 2005.',
+  funFact: { en: 'Before version control, teams shared code by emailing ZIP files. Git was created in just 10 days by Linus Torvalds in 2005.', it: 'Prima del version control, i team condividevano il codice inviandosi file ZIP via email. Git è stato creato in soli 10 giorni da Linus Torvalds nel 2005.' },
   sections: [
     {
       type: 'intro',
-      content: 'Imagine working on a document and needing to undo a change you made three weeks ago. Or needing to work on two different versions of the same file simultaneously. Version control solves all of this — and much more.'
+      content: { en: 'Imagine working on a document and needing to undo a change you made three weeks ago. Or needing to work on two different versions of the same file simultaneously. Version control solves all of this — and much more.', it: 'Immagina di lavorare a un documento e dover annullare una modifica fatta tre settimane fa. Oppure di dover lavorare su due versioni diverse dello stesso file contemporaneamente. Il version control risolve tutto questo — e molto altro.' }
     },
     {
       type: 'flowchart',
-      content: '**The Timeline in Action**\nA visual trace of every single change you made, forever safely stored.',
+      content: { en: '**The Timeline in Action**\nA visual trace of every single change you made, forever safely stored.', it: '**La Timeline in Azione**\nUna traccia visiva di ogni singola modifica, archiviata al sicuro per sempre.' },
       diagramSteps: [
-        { label: 'Initial File\n(v1.0)', icon: '📄', color: '#ffb703' },
-        { label: 'Added Header\n(v1.1)', icon: '🟢', color: '#06d6a0' },
-        { label: 'Fixed Typo\n(v1.2)', icon: '🟡', color: '#118ab2' },
-        { label: 'Deleted Paragraph\n(v1.3)', icon: '🔴', color: '#ff4b4b' }
+        { label: { en: 'Initial File\n(v1.0)', it: 'File Iniziale\n(v1.0)' }, icon: '📄', color: '#ffb703' },
+        { label: { en: 'Added Header\n(v1.1)', it: 'Aggiunto Header\n(v1.1)' }, icon: '🟢', color: '#06d6a0' },
+        { label: { en: 'Fixed Typo\n(v1.2)', it: 'Risolto Refuso\n(v1.2)' }, icon: '🟡', color: '#118ab2' },
+        { label: { en: 'Deleted Paragraph\n(v1.3)', it: 'Eliminato Paragrafo\n(v1.3)' }, icon: '🔴', color: '#ff4b4b' }
       ]
     },
     {
       type: 'analogy',
-      title: '📷 Think of it like a game save system',
-      content: 'Version control is like a save system in a video game. You can save your progress at any point, go back to an earlier save, or even branch off to explore a different path — without losing your main storyline.'
+      title: { en: '📷 Think of it like a game save system', it: '📷 Pensalo come al sistema di salvataggio di un gioco' },
+      content: { en: 'Version control is like a save system in a video game. You can save your progress at any point, go back to an earlier save, or even branch off to explore a different path — without losing your main storyline.', it: 'Il version control è come il sistema di salvataggio in un videogioco. Puoi salvare i tuoi progressi in qualsiasi momento, tornare a un salvataggio precedente o persino creare un ramo per esplorare un percorso diverso — senza perdere la tua storia principale.' }
     },
     {
       type: 'game',
