@@ -106,7 +106,7 @@ export function UndoSandbox() {
        <div className="w-full bg-surface2/40 rounded-2xl border border-white/5 p-12 relative min-h-[160px] flex flex-col items-center justify-center gap-12 mt-2">
           <div className="flex items-center gap-4 relative">
              <AnimatePresence mode="popLayout">
-                {currentStep.commits.map((c, i) => (
+                {currentStep.commits.map((c) => (
                   <motion.div 
                     key={c}
                     layoutId={`undo-${mode}-${c}`}
