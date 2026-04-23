@@ -24,7 +24,7 @@
 
 ### 4. Module 3 Lab 1/4 - Divergence UI
 
-- [ ] **Issue**: Il commento `# Check remote status...` nel primo step (Divergence) dovrebbe essere integrato con il comando successivo (`git fetch`) o rimosso dal terminale per evitare confusione (non deve apparire come comando/commento nel terminale).
+- [x] **Issue**: Nel primo step (Divergence), il comando è stato cambiato in `git status` per riflettere l'ispezione iniziale, evitando la ripetizione di `git fetch` e l'uso di commenti nel terminale.
 
 ---
 

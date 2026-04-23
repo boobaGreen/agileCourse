@@ -9,8 +9,8 @@ export function RemoteSyncLab() {
     {
       title: "1. Divergence",
       desc: "You have a new local commit (C2), but your teammate has already pushed (T1) to the server. You are out of sync!",
-      cmd: "git fetch origin",
-      label: "Check remote status",
+      cmd: "git status",
+      label: "Inspect repository",
       local: ['C1', 'C2'],
       remote: ['C1', 'T1'],
       tracking: ['C1']
