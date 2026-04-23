@@ -58,13 +58,9 @@ export const git1: Module = {
       content: 'Older systems like **SVN (Subversion)** are **Centralized**: there is only one "Source of Truth" server. To see the history or make a commit, you **must** be connected to that server. If the server goes down or you are offline, you can\'t work.\n\n**Git is Distributed**: every developer has a **complete copy** of the entire project history on their own machine. You can commit, view history, and switch branches while sitting on a plane without internet. You only need the server when you want to share your work with others.'
     },
     {
-      type: 'flowchart',
-      content: '**Git is Distributed**',
-      diagramSteps: [
-        { label: 'GitHub Cloud\n(Remote)', icon: '☁️', color: '#118ab2' },
-        { label: 'Alice\'s Laptop\n(Full Copy)', icon: '👩‍💻', color: '#06d6a0' },
-        { label: 'Bob\'s PC\n(Full Copy)', icon: '👨‍💻', color: '#ffb703' }
-      ]
+      type: 'animation',
+      title: '🕸️ Distributed Network',
+      content: 'distributed'
     },
     {
       type: 'animation',

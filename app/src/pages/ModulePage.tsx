@@ -795,6 +795,80 @@ function EducationAnimation({ type }: { type: string }) {
     )
   }
 
+  if (type.toLowerCase().includes('distributed') || type.toLowerCase().includes('network')) {
+    return (
+      <div className="w-full flex flex-col items-center gap-6 py-4">
+        <div className="text-[10px] text-muted uppercase fw-black tracking-widest text-center">Distributed Architecture</div>
+        <div className="relative w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center">
+          {/* Central Cloud (The concept of a shared remote) */}
+          <motion.div 
+            animate={{ y: [0, -5, 0], opacity: [0.6, 1, 0.6] }}
+            transition={{ repeat: Infinity, duration: 4 }}
+            className="text-4xl z-20 bg-surface rounded-full p-4 border border-white/10 shadow-[0_0_30px_rgba(17,138,178,0.2)]"
+          >
+            ☁️
+          </motion.div>
+          
+          {/* Connection lines from center to peers */}
+          <svg className="absolute inset-0 w-full h-full opacity-30 pointer-events-none" viewBox="0 0 200 200">
+             {[0, 45, 135, 180, 225, 315].map((angle, i) => {
+               const r = 85;
+               const rad = (angle - 90) * (Math.PI / 180);
+               const x = 100 + Math.cos(rad) * r;
+               const y = 100 + Math.sin(rad) * r;
+               return (
+                 <motion.line 
+                   key={i}
+                   x1="100" y1="100" x2={x} y2={y} 
+                   stroke="var(--color-primary)" 
+                   strokeWidth="1.5" 
+                   strokeDasharray="4 4"
+                   initial={{ pathLength: 0 }}
+                   animate={{ pathLength: 1 }}
+                   transition={{ delay: i * 0.1, duration: 1 }}
+                 />
+               );
+             })}
+          </svg>
+          
+          {/* Peer Nodes around */}
+          {[0, 60, 120, 180, 240, 300].map((angle, i) => {
+            const r = 75;
+            const rad = (angle - 90) * (Math.PI / 180);
+            const x = Math.cos(rad) * r;
+            const y = Math.sin(angle === 180 ? rad + 0.1 : rad) * r; // Tiny jitter
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5 + i * 0.1, type: 'spring' }}
+                style={{ 
+                  position: 'absolute',
+                  left: `calc(50% + ${x}px - 16px)`, 
+                  top: `calc(50% + ${y}px - 16px)` 
+                }}
+                className="flex flex-col items-center group cursor-help"
+              >
+                <div className="text-xl sm:text-2xl bg-surface2 rounded-xl p-2 border border-white/5 shadow-lg group-hover:border-primary/50 transition-colors">
+                  {i === 0 ? '👩‍💻' : i === 3 ? '👨‍💻' : '💻'}
+                </div>
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.5 }}
+                  className="text-[7px] text-primary/70 fw-black uppercase mt-1 tracking-tighter"
+                >
+                  FULL COPY
+                </motion.div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    )
+  }
+
   if (type.toLowerCase().includes('core') || type === 'git-core-sim') {
     const steps = [
       { 
