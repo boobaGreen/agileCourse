@@ -55,7 +55,7 @@ export const git1: Module = {
     {
       type: 'concept',
       title: 'Centralized vs Distributed',
-      content: 'Old systems (like SVN) had one central server — if it went down, work stopped. **Git is distributed**: every developer has a full copy of the entire history. No single point of failure.'
+      content: 'Older systems like **SVN (Subversion)** are **Centralized**: there is only one "Source of Truth" server. To see the history or make a commit, you **must** be connected to that server. If the server goes down or you are offline, you can\'t work.\n\n**Git is Distributed**: every developer has a **complete copy** of the entire project history on their own machine. You can commit, view history, and switch branches while sitting on a plane without internet. You only need the server when you want to share your work with others.'
     },
     {
       type: 'flowchart',
