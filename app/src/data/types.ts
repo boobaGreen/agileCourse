@@ -174,7 +174,7 @@ export interface Module {
 
 export interface Track {
   id: string
-  icon: any
+  icon: React.ElementType
   emoji: string
   label: string
   color: string

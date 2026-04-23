@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion'
 import { Target, Activity } from 'lucide-react'
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer } from 'recharts'
 import type { Track } from '../../data/types'

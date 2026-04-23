@@ -82,7 +82,7 @@ export function QuickResumeHero({ activeTrack, nextModule, activeTrackId, setAct
           ) : (
             <button
               onClick={() => {
-                const nextIndex = (tracks.findIndex((t: any) => t.id === activeTrackId) + 1) % tracks.length
+                const nextIndex = (tracks.findIndex((t) => t.id === activeTrackId) + 1) % tracks.length
                 setActiveTrackId(tracks[nextIndex].id)
               }}
               className="w-full md:w-auto px-10 py-5 rounded-2xl fw-black text-lg bg-surface2 text-white border border-white/10 hover:bg-white/5 transition-all shadow-xl"
