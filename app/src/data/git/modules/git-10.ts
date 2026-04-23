@@ -28,12 +28,6 @@ export const git10: Module = {
       content: 'See someone play Oh My Git! from scratch — a great way to understand how the card system and visual Git tree interact.',
       videoUrl: 'https://www.youtube.com/watch?v=EhcBoefiO4Y'
     },
-    {
-      type: 'video',
-      title: '📺 Oh My Git! — OSS Maintainers Interview',
-      content: 'An in-depth interview with the Oh My Git! creators explaining the project, its educational philosophy, and a live walkthrough of the game.',
-      videoUrl: 'https://www.youtube.com/watch?v=2oEXT7suqfk'
-    },
 
     // ── LEARN GIT BRANCHING ──────────────────────────────────────────
     {
