@@ -97,10 +97,10 @@ export const docker2: Module = {
       id: 'docker-2-q1',
       question: 'An Image is to a Container as a...',
       options: [
-        'Computer is to a Mouse',
-        'Recipe is to a baked Pizza',
-        'File is to a Folder',
-        'User is to a Password'
+        'Physical computer is to a peripheral mouse',
+        'Recipe is to a baked and ready-to-eat Pizza',
+        'Single file is to a nested project folder',
+        'Logged-in user is to a encrypted password'
       ],
       correct: 1,
       explanation: 'An image is a static template (recipe). A container is a live, running instance of that template (pizza).'
@@ -109,10 +109,10 @@ export const docker2: Module = {
       id: 'docker-2-q2',
       question: 'What happens to the underlying Image when a Container is deleted?',
       options: [
-        'The image is also deleted',
-        'The image remains completely unchanged',
-        'The image loses its most recent layer',
-        'The image file size gets larger'
+        'The image and all its layers are also deleted',
+        'The image remains completely and safely unchanged',
+        'The image loses its most recent read-only layer',
+        'The image file size gets larger on the local disk'
       ],
       correct: 1,
       explanation: 'Images are immutable (read-only). Containers are temporary. Deleting a container safely discards its read-write layer, leaving the template image untouched.'
@@ -121,10 +121,10 @@ export const docker2: Module = {
       id: 'docker-2-q3',
       question: 'If you run `docker ps` and see nothing, but `docker ps -a` shows listed containers, what does this mean?',
       options: [
-        'Docker has crashed',
-        'Your user lacks permissions',
+        'The Docker daemon has crashed and needs a restart',
+        'Your current user lacks the necessary permissions',
         'The containers have stopped or finished executing',
-        'The images are downloading in the background'
+        'The images are still downloading in the background'
       ],
       correct: 2,
       explanation: '`docker ps` only shows running containers. `docker ps -a` (all) includes containers that have finished their run (exited), which is common if the container only ran a single command and finished.'

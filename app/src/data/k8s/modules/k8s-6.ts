@@ -84,10 +84,10 @@ spec:
       id: 'k8s-6-q1',
       question: 'Why is it considered a bad practice to tightly couple configuration settings directly into a Docker image?',
       options: [
-        'It creates a syntax error during Docker build',
-        'It forces you to rebuild an entirely new image for every single environment (Dev, Staging, Prod), defeating the purpose of the "Build Once, Run Anywhere" philosophy.',
-        'Images containing configuration data are blocked by Docker Hub',
-        'It consumes massive amounts of RAM'
+        'It causes a severe syntax error during the image layer compression phase',
+        'It forces you to rebuild an entirely new image for every single environment',
+        'Images containing any configuration data are automatically blocked by registries',
+        'It consumes massive amounts of RAM when the container process starts'
       ],
       correct: 1,
       explanation: 'Images should be completely stateless. The exact same image artifact that passes QA testing must be the artifact that deploys to Prod. Only the K8s ConfigMap should inject the difference (e.g. `DB_URL_PROD`).'
@@ -96,10 +96,10 @@ spec:
       id: 'k8s-6-q2',
       question: 'Which of the following is true about standard Kubernetes Secrets by default?',
       options: [
-        'They correspond to military-grade AES-256 encryption automatically',
-        'They are simply Base64-encoded, which is easily decoded. Do not commit naked Secret YAMLs to GitHub!',
-        'They cannot be used as environment variables',
-        'They require an payment to CNCF'
+        'They are protected by military-grade AES-256 encryption automatically',
+        'They are simply Base64-encoded and can be easily decoded by anyone',
+        'They are strictly forbidden from being used as environment variables',
+        'They require an active subscription and payment to the Linux Foundation'
       ],
       correct: 1,
       explanation: 'Base64 is an encoding format, NOT encryption. Anyone who runs `echo "cGFzc3dvcmQ=" | base64 --decode` gets the plain text password instantly.'

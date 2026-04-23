@@ -85,10 +85,10 @@ export const docker3: Module = {
       id: 'docker-3-q1',
       question: 'What is the critical difference between the RUN and CMD instructions?',
       options: [
-        'There is no functional difference',
+        'There is no functional or technical difference between these two instructions',
         'RUN executes during image creation, CMD defines the default runtime executable',
-        'RUN is used for downloading images, CMD is used for pushing them',
-        'RUN is for Windows containers, CMD is for Linux containers'
+        'RUN is used for downloading base images, CMD is used for pushing them to registry',
+        'RUN is specifically for Windows containers, CMD is for Linux based containers'
       ],
       correct: 1,
       explanation: '`RUN` runs during the `docker build` phase and bakes files into the image layers. `CMD` runs nothing during build; it simply tells the container what command to launch when someone calls `docker run`.'
@@ -97,10 +97,10 @@ export const docker3: Module = {
       id: 'docker-3-q2',
       question: 'Why do sophisticated Dockerfiles separate `COPY package.json` from `COPY .` (the rest of the code)?',
       options: [
-        'Because Docker cannot copy large folders all at once',
+        'Because the Docker engine cannot handle copying large folders in a single step',
         'To optimize the layer cache so dependencies aren\'t re-installed every time code changes',
-        'To ensure malicious files aren\'t copied',
-        'Because package.json must be executed as a script'
+        'To ensure that potentially malicious or hidden files aren\'t copied into the layer',
+        'Because the package.json file must be explicitly executed as a build script'
       ],
       correct: 1,
       explanation: 'If `COPY . .` happens before `RUN npm install`, then ANY tiny code change invalidates the cache for the heavy install step, making builds incredibly slow. By copying package.json first, Docker caches the heavy install unless the dependencies actually change.'
@@ -108,7 +108,7 @@ export const docker3: Module = {
     {
       id: 'docker-3-q3',
       question: 'Which flag is used in `docker build` to assign a human-readable name to an image?',
-      options: ['-n', '-name', '--tag', '-t'],
+      options: ['-n (name)', '-name (full)', '--tag (label)', '-t (tag)'],
       correct: 3,
       explanation: 'The `-t` (or `--tag`) flag assigns a repository name and an optional tag (e.g. `docker build -t my-app:latest`).'
     }

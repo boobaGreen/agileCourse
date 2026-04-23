@@ -90,10 +90,10 @@ export const git9: Module = {
       id: 'git-9-q1',
       question: 'In which scenario is `git cherry-pick` the most useful?',
       options: [
-        'When you want to merge two entire branches together',
+        'When you need to merge two entire branches including all their commits',
         'When you want to take a specific bugfix commit from a feature branch into production',
-        'When you want to delete a commit from history',
-        'When you want to rename your current branch'
+        'When you need to delete a specific commit from the remote history forever',
+        'When you want to rename your current local branch to a different name'
       ],
       correct: 1,
       explanation: 'Cherry-picking is "surgical." It\'s best when you need just one or two specific changes from another branch without bringing in all the other work.'
@@ -102,10 +102,10 @@ export const git9: Module = {
       id: 'git-9-q2',
       question: 'What is the main advantage of using `git bisect`?',
       options: [
-        'It automatically fixes the bug for you',
+        'It automatically fixes the bug for you without any user intervention',
         'It finds the exact commit that introduced a bug using binary search',
-        'It highlights syntax errors in your code',
-        'It deletes bad code automatically'
+        'It highlights syntax errors and logic bugs directly in your source code',
+        'It deletes all bad code commits from the repository automatically'
       ],
       correct: 1,
       explanation: '`git bisect` is a debugging tool. It helps you find the "culprit" commit by narrowing down the history using a "search and eliminate" strategy.'
@@ -113,7 +113,12 @@ export const git9: Module = {
     {
       id: 'git-9-q3',
       question: 'Which of these files should NEVER be committed to Git for security reasons?',
-      options: ['index.html', 'style.css', '.env (API Keys)', 'README.md'],
+      options: [
+        'index.html (The main entry point)',
+        'style.css (The presentation layer)',
+        '.env (Containing secret API Keys)',
+        'README.md (The documentation file)'
+      ],
       correct: 2,
       explanation: 'Files like `.env` contain sensitive secrets like passwords or API keys. If committed, they could be leaked to anyone with access to the repo (especially on GitHub!).'
     },
@@ -121,10 +126,10 @@ export const git9: Module = {
       id: 'git-9-q4',
       question: 'What happens to the timeline when you use `git rebase`?',
       options: [
-        'It creates a big "Merge Commit" node',
+        'It creates a permanent "Merge Commit" node to join two different branches',
         'It rewrites history to create a clean, linear line of commits',
-        'It deletes the feature branch permanently',
-        'It sends an email to the team leader'
+        'It deletes the feature branch permanently from your local repository',
+        'It sends an automatic email notification to the team leader or project manager'
       ],
       correct: 1,
       explanation: 'Rebasing "re-bases" your work on top of the latest commit, making it look like you started your work just now. This results in a cleaner, straight-line history.'
@@ -133,10 +138,10 @@ export const git9: Module = {
       id: 'git-9-q5',
       question: 'Why do we ignore `node_modules` or `dist/` folders in `.gitignore`?',
       options: [
-        'Because they are illegal to share',
-        'Because they are large, generated files that can easily be rebuilt on other machines',
-        'Because Git cannot compress them',
-        'Because they cause merge conflicts 100% of the time'
+        'Because sharing these folders over a public network is strictly illegal',
+        'Because they are large, generated files that can easily be rebuilt elsewhere',
+        'Because the Git compression algorithm cannot handle large binary folders',
+        'Because including them causes merge conflicts 100% of the time'
       ],
       correct: 1,
       explanation: 'Generated files are bulky and slow down Git. Since anyone can run `npm install` or `npm run build` to get them back, we don\'t waste space saving them in history.'

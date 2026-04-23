@@ -19,7 +19,12 @@ export const docker9: Module = {
     {
       id: 'docker-9-q1',
       question: 'Which is NOT a structural benefit of Containers over VMs?',
-      options: ['Lightweight filesystem', 'Fraction of a second startup time', 'Includes a completely isolated Guest OS kernel', 'High portability across clouds'],
+      options: [
+        'Lightweight and high-efficiency filesystem layers', 
+        'Fraction of a second startup time for new instances', 
+        'Includes a completely isolated Guest OS kernel image', 
+        'High portability across different cloud provider environments'
+      ],
       correct: 2,
       explanation: 'Containers explicitly DO NOT contain a Guest OS kernel; they share the Host OS kernel. That is what makes them lightweight.'
     },
@@ -33,21 +38,36 @@ export const docker9: Module = {
     {
       id: 'docker-9-q3',
       question: 'What happens when a container reaches the end of the script specified in its `CMD` instruction?',
-      options: ['It waits for further user input', 'It gracefully exits and its status changes to "Exited"', 'It reboots continuously', 'It deletes itself entirely'],
+      options: [
+        'It waits indefinitely for further user or interactive input', 
+        'It gracefully exits and its status changes to "Exited"', 
+        'It reboots continuously until it is manually stopped', 
+        'It deletes itself entirely from the local disk storage'
+      ],
       correct: 1,
       explanation: 'A container lives exactly as long as its main process (the CMD). Once that process concludes, the container naturally exits.'
     },
     {
       id: 'docker-9-q4',
       question: 'In a Dockerfile, why should `RUN npm install` typically be placed BEFORE `COPY . .`?',
-      options: ['To bypass security checks', 'To ensure syntax errors are caught early', 'To maximize layer caching and drastically speed up future builds', 'To force npm to run as root'],
+      options: [
+        'To bypass internal Docker engine security and permission checks', 
+        'To ensure syntax errors in the package file are caught early on', 
+        'To maximize layer caching and drastically speed up future builds', 
+        'To force the npm process to run with elevated root privileges'
+      ],
       correct: 2,
       explanation: 'Docker builds cache layer by layer. Copying only package.json and installing allows Docker to cache the heavy "node_modules" layer, bypassing the install step on future builds as long as dependencies haven\'t changed.'
     },
     {
       id: 'docker-9-q5',
       question: 'To guarantee that your PostgreSQL database doesn\'t lose records when its container crashes or updates, you MUST use:',
-      options: ['Bind mounts on /var/log', 'Named Volumes or explicit Host Bind Mounts', 'A larger Docker Image', 'Redis Caching'],
+      options: [
+        'Bind mounts on the /var/log/syslog directory', 
+        'Named Volumes or explicit Host Bind Mounts', 
+        'A larger and more complex Docker Base Image', 
+        'Redis Caching for temporary data storage'
+      ],
       correct: 1,
       explanation: 'Without external mounts, data is written to the ephemeral container layer. Volumes ensure data physically resides on the host machine and outlives the container.'
     },
@@ -61,7 +81,12 @@ export const docker9: Module = {
     {
       id: 'docker-9-q7',
       question: 'In Docker Compose, what does `depends_on` parameter achieve?',
-      options: ['It guarantees the app won\'t crash', 'It delays the start of a service until its dependencies have successfully started', 'It installs node modules automatically', 'It mounts dependent volumes'],
+      options: [
+        'It guarantees the web application will never crash or exit', 
+        'It delays the start of a service until its dependencies have successfully started', 
+        'It installs required node modules automatically during the startup phase', 
+        'It mounts dependent volumes from other containers in the project'
+      ],
       correct: 1,
       explanation: 'It controls the absolute startup order. If `web` depends on `db`, compose starts `db` first.'
     },
@@ -82,7 +107,12 @@ export const docker9: Module = {
     {
       id: 'docker-9-q10',
       question: 'What is the danger of using the `latest` tag in `docker run ubuntu:latest` for a production critical application?',
-      options: ['It violates GPL licensing', 'It disables volume mounts', 'It is non-deterministic; the underlying image it points to can unexpectedly change causing breaking bugs', 'It is a deprecated command syntax'],
+      options: [
+        'It violates standard open source GPL licensing rules', 
+        'It disables all persistent volume mounts for security', 
+        'It is non-deterministic and can unexpectedly cause breaking bugs', 
+        'It is considered a deprecated and legacy command syntax'
+      ],
       correct: 2,
       explanation: 'Pinning to specific versions (like `ubuntu:22.04`) ensures immutability. `latest` is a moving target.'
     }

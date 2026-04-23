@@ -66,10 +66,10 @@ export const k8s7: Module = {
       id: 'k8s-7-q1',
       question: 'What is the primary reason K8s splits storage into two objects (PV and PVC)?',
       options: [
-        'To increase the speed of SSDs',
-        'Separation of concerns: It allows Cloud Admins to deal with the exact hardware details (PV), while Developers only need to write generic requests for size and access modes (PVC).',
-        'Because AWS requires it',
-        'To allow K8s to compress the data automatically'
+        'To significantly increase the read/write speed of physical SSD drives',
+        'Separation of concerns between infrastructure admins and application developers',
+        'Because cloud providers like AWS and Azure strictly require this separation',
+        'To allow the Kubernetes engine to compress and deduplicate data automatically'
       ],
       correct: 1,
       explanation: 'A developer shouldn\'t have to know the exact ARN of an AWS disk. They just want 10GB of space. By splitting the logic, the file becomes portable. It works on AWS, and if moved to Azure, it binds to Azure disks transparently.'
@@ -78,10 +78,10 @@ export const k8s7: Module = {
       id: 'k8s-7-q2',
       question: 'If a PVC is stuck in the "Pending" state, what does it most likely mean?',
       options: [
-        'The K8s cluster ran out of memory',
-        'The Pod crashed inside',
-        'Kubernetes could not find a physical volume (PV) that met the exact size and access requirements requested in the PVC.',
-        'The base64 secret failed to decrypt'
+        'The underlying Kubernetes worker node has completely ran out of available RAM',
+        'The specific Pod container has crashed or failed its internal health check',
+        'Kubernetes could not find a physical volume matching the specific claim request',
+        'The base64 encoded secret failed to decrypt during the volume mounting phase'
       ],
       correct: 2,
       explanation: 'A claim must bind to a volume. If you ask for a 50GB fast SSD, and the cluster only has 10GB slow HDDs available, the claim stays Pending forever until an Admin provisions the right hardware.'

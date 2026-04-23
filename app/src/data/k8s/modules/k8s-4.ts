@@ -89,10 +89,10 @@ spec:
       id: 'k8s-4-q1',
       question: 'Why is a declarative approach (writing YAML files) better than an imperative approach (running terminal scripts sequentially)?',
       options: [
-        'Imperative approaches cannot run on Linux servers',
-        'Declarative files tell K8s exactly what the END RESULT should be, allowing the system to handle the complexity, self-healing, and drift-correction automatically.',
-        'Declarative approaches use less CPU',
-        'Declarative files are impossible to delete'
+        'Imperative approaches can only be executed on legacy local Linux hardware',
+        'Declarative files let K8s manage complexity, self-healing, and state correction',
+        'Declarative approaches use significantly less CPU and memory for the controller',
+        'Declarative files are cached at the kernel level and are impossible to delete'
       ],
       correct: 1,
       explanation: 'If a node dies in an imperative script, you have to write a script to detect and fix it. In a declarative system, you simply stated "I want 3 pods." The system constantly acts to make reality match that file.'
@@ -101,10 +101,10 @@ spec:
       id: 'k8s-4-q2',
       question: 'During a Rolling Update with a Deployment, what happens if the newly deployed v2 Pod immediately crashes?',
       options: [
-        'The entire cluster reboots',
-        'The update proceeds anyway, destroying all old v1 pods',
-        'The Deployment halts the rollout indefinitely until human intervention, preserving the remaining v1 pods so the app doesn\'t go totally offline',
-        'The database is wiped'
+        'The entire cluster reboots automatically to clear the internal cache',
+        'The update proceeds anyway, systematically destroying all stable v1 pods',
+        'The Deployment halts the rollout indefinitely until a human intervention',
+        'The underlying persistent database is wiped to prevent any data corruption'
       ],
       correct: 2,
       explanation: 'A key feature of Deployments is that they verify "readiness" of new pods. If the new pod crashes (e.g. `CrashLoopBackOff`), the rollout stops, preventing a catastrophic 100% outage.'
