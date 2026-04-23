@@ -161,6 +161,10 @@ export default function ModulePage() {
 
   // --- EFFECTS ---
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [id, view])
+
+  useEffect(() => {
     let timer: number
     if (view === 'quiz' && !submitted && timeLeft > 0) {
       timer = window.setInterval(() => {
