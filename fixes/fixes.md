@@ -26,16 +26,16 @@
 
 ## Verifica Manuale (User Check)
 
-*Queste voci rappresentano i fix effettuati da Antigravity che richiedono una verifica manuale da parte dell'utente.*
+_Queste voci rappresentano i fix effettuati da Antigravity che richiedono una verifica manuale da parte dell'utente._
 
 - [ ] **Scroll to Top**: Verifica che al cambio modulo o inizio quiz la pagina torni in cima.
 - [ ] **Quiz Balance**: Verifica che nei moduli Git, Docker e K8s le risposte corrette non siano sistematicamente le più lunghe.
 - [ ] **Terminal History (UP Arrow)**: Verifica che nel simulatore il tasto ⬆️ funzioni correttamente.
 - [ ] **Quote Parser**: Verifica che `git commit -m 'init"` (o simili errori di virgolette) restituisca errore nel simulatore.
 - [ ] **Terminologia (Feature Flags)**: Verifica la nuova formulazione della domanda 7 nel Modulo 11.
-- [ ] **Spiegazione SVN & Grafico**: Verifica che la differenza tra SVN e Git sia chiara e che la nuova animazione "Distributed Network" nel Modulo 1 rappresenti meglio il concetto (senza frecce lineari).
-- [ ] **Rimozione Video Modulo 10**: Verifica che nel Modulo 10 sia rimasto solo il video aggiornato di "Oh My Git!" (quello nuovo) e che l'intervista sia stata rimossa.
-- [ ] **Layout Modulo 3 (The Three Areas)**: Verifica che la sezione "Conceptual Logic" sia SOPRA l'immagine. Verifica anche che il tasto "Indietro" sia stato rimosso e che al termine dei passaggi compaia il tasto "Reset".
+- [x] **Spiegazione SVN & Grafico**: Verifica che la differenza tra SVN e Git sia chiara e che la nuova animazione "Distributed Network" nel Modulo 1 rappresenti meglio il concetto (senza frecce lineari).
+- [x] **Rimozione Video Modulo 10**: Verifica che nel Modulo 10 sia rimasto solo il video aggiornato di "Oh My Git!" (quello nuovo) e che l'intervista sia stata rimossa.
+- [x] **Layout Modulo 3 (The Three Areas)**: Verifica che la sezione "Conceptual Logic" sia SOPRA l'immagine. Verifica anche che il tasto "Indietro" sia stato rimosso e che al termine dei passaggi compaia il tasto "Reset".
 
 ---
 
