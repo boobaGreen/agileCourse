@@ -1,5 +1,5 @@
 import { GitEngine } from './GitEngine';
-import { LocalizedString } from '../../../data/types';
+import type { LocalizedString } from '../../../data/types';
 
 const KNOWN_GIT_COMMANDS = [
   'add', 'am', 'archive', 'bisect', 'branch', 'bundle', 'checkout', 'cherry-pick',
