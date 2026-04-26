@@ -9,7 +9,7 @@ import { ResetProgressModal } from '../components/profile/ResetProgressModal'
 import { useLanguage } from '../contexts/LanguageContext'
 
 export default function ProfilePage() {
-  const { t } = useLanguage()
+  const { t, resolveString } = useLanguage()
   const { resetProgress } = useAppStore()
   const [showConfirmModal, setShowConfirmModal] = useState(false)
   const [searchParams, setSearchParams] = useSearchParams()
@@ -30,11 +30,18 @@ export default function ProfilePage() {
   }, [activeTab])
 
   return (
-    <div className="animate-fade-up w-full">
+    <div className="animate-fade-up w-full pt-4 md:pt-8 pb-12">
       <div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-white/5 pb-8">
         <div>
-          <h1 className="text-4xl fw-black text-white">{t('profile.title')} <span className="text-primary">{t('profile.subtitle')}</span></h1>
-          <p className="text-muted mt-1 uppercase tracking-[0.2em] text-[10px] fw-bold">{t('profile.console')}</p>
+          <h1 className="text-4xl md:text-5xl fw-black text-white mb-2">
+            {t('profile.title')} <span className="text-primary">{t('profile.subtitle')}</span>
+          </h1>
+          <p className="text-muted text-lg max-w-2xl">
+            {resolveString({
+              en: 'Manage your professional identity, track your skills progression, and view your certification roadmap.',
+              it: 'Gestisci la tua identità professionale, traccia la progressione delle tue competenze e visualizza la tua roadmap delle certificazioni.'
+            })}
+          </p>
         </div>
 
         {/* Tab Navigation */}

@@ -112,14 +112,16 @@ export default function CourseDashboard() {
         style={{ background: activeTrack.color }}
       />
       
-      <div className="animate-fade-up relative z-10 max-w-7xl mx-auto px-8 sm:px-12 lg:px-16 pt-24 pb-12">
+      <div className="animate-fade-up relative z-10 pt-4 md:pt-8 pb-12">
         {/* Welcome Header */}
         <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
           <div>
-            <h1 className="text-4xl fw-black text-white mb-1">
+            <h1 className="text-4xl md:text-5xl fw-black text-white mb-2">
               {t('dashboard.mission')} <span style={{ color: activeTrack.color }}>{t('dashboard.control')}</span>
             </h1>
-            <p className="text-muted">{t('dashboard.welcome')}, {userName}. {t('dashboard.journey')}</p>
+            <p className="text-muted text-lg max-w-2xl">
+              {t('dashboard.welcome')}, {userName}. {t('dashboard.journey')}
+            </p>
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">

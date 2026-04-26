@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '../store/useAppStore'
-import { LayoutDashboard, User, Award, ChevronLeft, ChevronRight, Zap, Menu, X } from 'lucide-react'
+import { LayoutDashboard, User, Award, ChevronLeft, ChevronRight, Zap, Menu, X, BookOpen } from 'lucide-react'
 import { matchPath } from 'react-router-dom'
 import { GIT_MODULES } from '../data/git/modules/index'
 import { DOCKER_MODULES } from '../data/docker/modules/index'
@@ -134,6 +134,7 @@ function SidebarContent({ collapsed, location, userName, xp, badges, onNavigate,
   const { t } = useLanguage()
   const navItems = [
     { path: '/dashboard', label: t('nav.dashboard'), icon: LayoutDashboard },
+    { path: '/cheatsheet', label: t('nav.cheatsheet'), icon: BookOpen },
     { path: '/profile', label: t('nav.profile'), icon: User },
   ]
 

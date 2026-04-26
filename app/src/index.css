@@ -263,6 +263,7 @@ body {
 .text-docker{ color: #38bdf8; }
 .text-k8s   { color: #a78bfa; }
 .text-green { color: #22c55e; }
+.text-primary { color: var(--color-primary); }
 .text-muted { color: #8a99ae; }
 .text-sub   { color: #a3b3c9; }
 

@@ -2,6 +2,7 @@ export const uiTranslations: Record<string, Record<string, string>> = {
   en: {
     'nav.dashboard': 'Dashboard',
     'nav.profile': 'Profile',
+    'nav.cheatsheet': 'Git Cheatsheet',
     'nav.settings': 'Settings',
     'nav.logout': 'Logout',
     'nav.curriculum': 'Track Curriculum',
@@ -79,6 +80,7 @@ export const uiTranslations: Record<string, Record<string, string>> = {
   it: {
     'nav.dashboard': 'Dashboard',
     'nav.profile': 'Profilo',
+    'nav.cheatsheet': 'Git Cheat Sheet',
     'nav.settings': 'Impostazioni',
     'nav.logout': 'Esci',
     'nav.curriculum': 'Curriculum del Percorso',
