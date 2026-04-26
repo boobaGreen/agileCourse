@@ -1,10 +1,28 @@
 import { GitEngine } from './GitEngine';
+import { LocalizedString } from '../../../data/types';
+
+const KNOWN_GIT_COMMANDS = [
+  'add', 'am', 'archive', 'bisect', 'branch', 'bundle', 'checkout', 'cherry-pick',
+  'citool', 'clean', 'clone', 'commit', 'describe', 'diff', 'fetch', 'format-patch',
+  'gc', 'grep', 'gui', 'init', 'log', 'merge', 'mv', 'notes', 'pull', 'push',
+  'range-diff', 'rebase', 'reset', 'restore', 'revert', 'rm', 'shortlog', 'show',
+  'stash', 'status', 'submodule', 'switch', 'tag', 'worktree', 'config', 'help', 'remote'
+];
 
 export class GitParser {
-  public static execute(engine: GitEngine, input: string): { success: boolean, out: string } {
+  public static execute(engine: GitEngine, input: string): { success: boolean, out: LocalizedString } {
     const cmd = input.trim().replace(/\s+/g, ' '); // normalize spaces
     
-    // Support aliases/shorthands
+    if (cmd === 'git') {
+      return { 
+        success: false, 
+        out: {
+          en: "usage: git <command> [<args>]\n\nCommon commands: commit, branch, checkout, merge, reset, revert.",
+          it: "utilizzo: git <comando> [<argomenti>]\n\nComandi comuni: commit, branch, checkout, merge, reset, revert."
+        }
+      };
+    }
+
     if (!cmd.startsWith('git ')) {
       return { success: false, out: `bash: ${cmd.split(' ')[0]}: command not found` };
     }
@@ -41,11 +59,6 @@ export class GitParser {
 
     const action = tokens[0];
     const args = tokens; // tokens already contains everything after 'git '
-
-    // Special check for mixed/invalid quotes if needed, 
-    // but the loop above handles basic pairing.
-    // If we want to strictly fail on 'msg", the loop logic actually handles it 
-    // by staying in "inQuote" state until the end.
 
     switch (action) {
       case 'commit': {
@@ -117,8 +130,34 @@ export class GitParser {
         return { success: result.success, out: result.msg };
       }
 
+      case 'status': {
+          return {
+              success: true,
+              out: {
+                  en: "On branch main\nnothing to commit, working tree clean",
+                  it: "Sul branch main\nnulla da committare, working tree pulito"
+              }
+          };
+      }
+
       default:
-        return { success: false, out: `git: '${action}' is not a git command or not supported in this simulator.` };
+        if (action && KNOWN_GIT_COMMANDS.includes(action)) {
+          return { 
+            success: false, 
+            out: {
+              en: `git: '${action}' is a valid git command, but it is not supported in this simulation or not needed for this exercise.`,
+              it: `git: '${action}' è un comando git valido, ma non è supportato in questo simulatore o non è necessario per questo esercizio.`
+            } 
+          };
+        }
+        return { 
+          success: false, 
+          out: {
+            en: `git: '${action}' is not a git command. See 'git --help'.`,
+            it: `git: '${action}' non è un comando git. Vedi 'git --help'.`
+          }
+        };
     }
   }
 }
+

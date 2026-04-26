@@ -1,8 +1,3 @@
-# Proposta Miglioramenti e Impressioni Generali - Git Course
-
-Ciao Nino, grazie mille per i feedback sulla review! Ho già iniziato a lavorare sulle correzioni segnalate questo weekend. 
-
-Di seguito ho riassunto alcune idee per l'evoluzione del corso e alcuni punti su cui mi piacerebbe avere un tuo parere.
 
 ## 1. Architettura e Backend
 L'introduzione di un backend permetterebbe di fare un salto di qualità su diversi fronti:
@@ -30,7 +25,4 @@ Mi piacerebbe confrontarmi con te su questi punti per capire se:
 - La quantità di quiz è bilanciata.
 - Il numero di animazioni/infografiche è adeguato o va tarato.
 
-**Disponibilità**: Saresti disponibile per una call di 15/30 minuti la prossima settimana? In alternativa, possiamo continuare il confronto via chat.
 
----
-*Documento creato il 2026-04-23*
