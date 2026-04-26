@@ -14,7 +14,7 @@
 
 ### 2. Module 5 - Game Logic
 
-- [ ] **Issue**: Nel modulo 5 il simulatore non riconosce comandi base di rete.
+- [x] **Issue**: Nel modulo 5 il simulatore non riconosce comandi base di rete.
 - **Dettagli**: Comandi come `git pull`, `git pull origin main`, `git fetch` restituiscono l'errore: `git: 'command' is not a git command or not supported in this simulator`.
 
 ### 3. Terminology Review
