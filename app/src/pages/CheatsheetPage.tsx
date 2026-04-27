@@ -1,19 +1,32 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
-import { GIT_CHEATSHEET } from '../data/git/cheatsheet';
-import { Copy, Check, Search, Filter } from 'lucide-react';
-import { useState } from 'react';
+import { GIT_CHEATSHEET, type CheatsheetCommand } from '../data/git/cheatsheet';
+import { CommandVisual } from '../components/cheatsheet/CommandVisual';
+import { Copy, Check, Search, Filter, Eye, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 export default function CheatsheetPage() {
   const { resolveString } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [copiedCommand, setCopiedCommand] = useState<string | null>(null);
+  const [selectedCommand, setSelectedCommand] = useState<CheatsheetCommand | null>(null);
 
-  const copyToClipboard = (text: string) => {
+  const copyToClipboard = (text: string, e: React.MouseEvent) => {
+    e.stopPropagation();
     navigator.clipboard.writeText(text);
     setCopiedCommand(text);
     setTimeout(() => setCopiedCommand(null), 2000);
   };
+
+  // Close modal on Escape
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelectedCommand(null);
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, []);
 
   const filteredCheatsheet = GIT_CHEATSHEET.map(category => ({
     ...category,
@@ -42,8 +55,8 @@ export default function CheatsheetPage() {
             className="text-muted text-lg max-w-2xl"
           >
             {resolveString({
-              en: 'A curated collection of the most essential Git commands, from basic setup to advanced history manipulation.',
-              it: 'Una collezione curata dei comandi Git più essenziali, dal setup di base alla manipolazione avanzata della cronologia.'
+              en: 'Click any command to see an interactive visual diagram of how it works.',
+              it: 'Clicca un comando per vedere un diagramma visivo interattivo di come funziona.'
             })}
           </motion.p>
         </div>
@@ -65,7 +78,7 @@ export default function CheatsheetPage() {
         </motion.div>
       </header>
 
-      <div className="grid grid-cols-1 gap-12">
+      <div className="grid grid-cols-1 gap-12 w-full">
         {filteredCheatsheet.map((category, catIndex) => (
           <motion.section 
             key={catIndex}
@@ -85,29 +98,49 @@ export default function CheatsheetPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {category.commands.map((cmd, cmdIndex) => (
-                <motion.div 
-                  key={cmdIndex}
-                  whileHover={{ y: -4, scale: 1.02 }}
-                  className="group bg-surface/40 backdrop-blur-sm border border-white/5 rounded-2xl p-5 flex flex-col gap-3 hover:bg-surface/60 hover:border-white/20 transition-all cursor-default"
-                >
-                  <div className="flex justify-between items-start gap-2">
-                    <code className="text-git font-black text-sm bg-git/5 px-4 py-2 rounded-xl border border-git/10 group-hover:bg-git/10 transition-all shadow-sm">
-                      {cmd.command}
-                    </code>
-                    <button 
-                      onClick={() => copyToClipboard(cmd.command)}
-                      className="text-muted hover:text-white transition-colors p-1"
-                      title="Copy to clipboard"
-                    >
-                      {copiedCommand === cmd.command ? <Check size={14} className="text-[#06d6a0]" /> : <Copy size={14} />}
-                    </button>
-                  </div>
-                  <p className="text-muted text-sm leading-relaxed">
-                    {resolveString(cmd.description)}
-                  </p>
-                </motion.div>
-              ))}
+              {category.commands.map((cmd, cmdIndex) => {
+                const hasVisual = !!cmd.visualType;
+
+                return (
+                  <motion.div 
+                    key={cmdIndex}
+                    whileHover={{ y: -4, scale: 1.02 }}
+                    onClick={() => hasVisual && setSelectedCommand(cmd)}
+                    className={`group bg-surface/40 backdrop-blur-sm border border-white/5 rounded-2xl p-5 flex flex-col gap-3 hover:bg-surface/60 hover:border-white/20 transition-all ${hasVisual ? 'cursor-pointer' : 'cursor-default'}`}
+                  >
+                    <div className="flex justify-between items-start gap-2">
+                      <code className="text-git font-black text-sm bg-git/5 px-4 py-2 rounded-xl border border-git/10 group-hover:bg-git/10 transition-all shadow-sm">
+                        {cmd.command}
+                      </code>
+                      <div className="flex items-center gap-1">
+                        {hasVisual && (
+                          <div className="p-1 text-muted/30 group-hover:text-git transition-colors">
+                            <Eye size={13} />
+                          </div>
+                        )}
+                        <button 
+                          onClick={(e) => copyToClipboard(cmd.command, e)}
+                          className="text-muted hover:text-white transition-colors p-1"
+                          title="Copy to clipboard"
+                        >
+                          {copiedCommand === cmd.command ? <Check size={14} className="text-[#06d6a0]" /> : <Copy size={14} />}
+                        </button>
+                      </div>
+                    </div>
+                    <p className="text-muted text-sm leading-relaxed">
+                      {resolveString(cmd.description)}
+                    </p>
+                    {hasVisual && (
+                      <div className="flex items-center gap-1.5 text-[10px] text-muted/30 group-hover:text-muted/60 transition-colors mt-auto pt-1">
+                        <Eye size={9} />
+                        <span className="font-medium uppercase tracking-wider">
+                          {resolveString({ en: 'click to visualize', it: 'clicca per visualizzare' })}
+                        </span>
+                      </div>
+                    )}
+                  </motion.div>
+                );
+              })}
             </div>
           </motion.section>
         ))}
@@ -118,6 +151,72 @@ export default function CheatsheetPage() {
           <Filter size={48} className="opacity-20" />
           <p className="text-lg">No commands found matching "{searchTerm}"</p>
         </div>
+      )}
+
+      {/* ── Full-screen Modal for Visual Diagram (Portal) ── */}
+      {createPortal(
+        <AnimatePresence>
+          {selectedCommand && selectedCommand.visualType && selectedCommand.visualHighlight && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}
+              onClick={() => setSelectedCommand(null)}
+            >
+              {/* Backdrop */}
+              <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)' }} />
+
+              {/* Modal Content */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                transition={{ duration: 0.3, type: 'spring', stiffness: 300, damping: 30 }}
+                onClick={(e) => e.stopPropagation()}
+                style={{ position: 'relative', width: '100%', maxWidth: '768px', background: 'rgba(17,24,39,0.97)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '1.5rem', boxShadow: '0 0 60px rgba(249,115,22,0.12)', overflow: 'hidden' }}
+              >
+                {/* Glow top accent */}
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-git/60 to-transparent" />
+
+                {/* Header */}
+                <div className="flex items-center justify-between p-6 pb-4 border-b border-white/5">
+                  <div className="flex flex-col gap-2">
+                    <code className="text-git font-black text-lg md:text-xl bg-git/8 px-5 py-2.5 rounded-xl border border-git/15 inline-block">
+                      {selectedCommand.command}
+                    </code>
+                    <p className="text-muted text-sm md:text-base">
+                      {resolveString(selectedCommand.description)}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setSelectedCommand(null)}
+                    className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-muted hover:text-white transition-colors shrink-0 ml-4"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+
+                {/* Diagram - large and prominent */}
+                <div className="p-6 md:p-10">
+                  <CommandVisual
+                    type={selectedCommand.visualType}
+                    highlight={selectedCommand.visualHighlight}
+                  />
+                </div>
+
+                {/* Footer hint */}
+                <div className="px-6 pb-5 flex justify-center">
+                  <span className="text-[10px] text-muted/40 uppercase tracking-widest font-medium">
+                    {resolveString({ en: 'Press ESC or click outside to close', it: 'Premi ESC o clicca fuori per chiudere' })}
+                  </span>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
       )}
     </div>
   );
