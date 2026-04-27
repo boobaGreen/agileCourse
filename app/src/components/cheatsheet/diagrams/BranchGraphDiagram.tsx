@@ -14,22 +14,22 @@ export function BranchGraphDiagram({ highlight }: Props) {
 
   // Common commit positions on main branch
   const mainY = 55;
-  const featureY = 115;
+  const featureY = 125; // Increased spacing
   const commits = [
     { cx: 60, cy: mainY, label: 'C1' },
-    { cx: 140, cy: mainY, label: 'C2' },
-    { cx: 220, cy: mainY, label: 'C3' },
+    { cx: 150, cy: mainY, label: 'C2' }, // Increased horizontal spacing
+    { cx: 240, cy: mainY, label: 'C3' },
   ];
   const featureCommits = [
-    { cx: 220, cy: featureY, label: 'C4' },
-    { cx: 300, cy: featureY, label: 'C5' },
+    { cx: 240, cy: featureY, label: 'C4' },
+    { cx: 330, cy: featureY, label: 'C5' },
   ];
 
   return (
-    <svg viewBox="0 0 460 160" width="100%" style={{ maxHeight: 180 }}>
+    <svg viewBox="0 0 520 180" width="100%" style={{ maxHeight: 200 }}>
       {/* Main branch line */}
       <motion.line
-        x1={60} y1={mainY} x2={isMerge ? 380 : 220} y2={mainY}
+        x1={60} y1={mainY} x2={isMerge ? 420 : 240} y2={mainY}
         stroke={isList || isMerge ? COLORS.git : '#ffffff20'}
         strokeWidth={2}
         {...fadeIn(0)}
@@ -48,10 +48,10 @@ export function BranchGraphDiagram({ highlight }: Props) {
       {/* Merge commit on main */}
       {isMerge && (
         <>
-          <CommitNode cx={380} cy={mainY} label="M" color={COLORS.repo} active delay={0.4} size={12} />
+          <CommitNode cx={420} cy={mainY} label="M" color={COLORS.repo} active delay={0.4} size={12} />
           {/* Feature → merge line */}
           <motion.path
-            d={`M 300 ${featureY} Q 340 ${featureY} 380 ${mainY}`}
+            d={`M 330 ${featureY} Q 380 ${featureY} 420 ${mainY}`}
             fill="none" stroke={COLORS.repo} strokeWidth={2}
             strokeDasharray="6 3"
             {...fadeIn(0.3)}
@@ -62,7 +62,7 @@ export function BranchGraphDiagram({ highlight }: Props) {
       {/* Feature branch line */}
       {(isCreate || isCheckout || isMerge || isCherryPick || isRebase) && (
         <motion.path
-          d={`M 140 ${mainY} Q 160 ${(mainY + featureY) / 2} 220 ${featureY}`}
+          d={`M 150 ${mainY} Q 180 ${(mainY + featureY) / 2} 240 ${featureY}`}
           fill="none"
           stroke={isCheckout || isCreate ? COLORS.git : COLORS.staging}
           strokeWidth={2}
@@ -73,7 +73,7 @@ export function BranchGraphDiagram({ highlight }: Props) {
       {/* Feature branch horizontal line */}
       {(isCheckout || isMerge || isCherryPick || isRebase) && (
         <motion.line
-          x1={220} y1={featureY} x2={300} y2={featureY}
+          x1={240} y1={featureY} x2={330} y2={featureY}
           stroke={isCheckout ? COLORS.git : COLORS.staging}
           strokeWidth={2}
           {...fadeIn(0.2)}
@@ -90,10 +90,10 @@ export function BranchGraphDiagram({ highlight }: Props) {
         />
       ))}
 
-      {/* Branch labels */}
+      {/* Branch labels - Moved up further */}
       <BranchLabel
         x={commits[commits.length - 1].cx}
-        y={mainY - 25}
+        y={mainY - 35}
         name="main"
         color={COLORS.wd}
         active={isList || !isCheckout}
@@ -103,8 +103,8 @@ export function BranchGraphDiagram({ highlight }: Props) {
 
       {(isCreate || isCheckout || isMerge || isCherryPick || isRebase) && (
         <BranchLabel
-          x={isCheckout || isMerge ? 300 : 220}
-          y={featureY + 28}
+          x={isCheckout || isMerge ? 330 : 240}
+          y={featureY + 35}
           name="feature"
           color={isCheckout || isCreate ? COLORS.git : COLORS.staging}
           active={isCheckout || isCreate}
@@ -117,12 +117,12 @@ export function BranchGraphDiagram({ highlight }: Props) {
       {isRebase && (
         <>
           <motion.line
-            x1={220} y1={mainY} x2={380} y2={mainY}
+            x1={240} y1={mainY} x2={420} y2={mainY}
             stroke={COLORS.git} strokeWidth={2} strokeDasharray="6 3"
             {...fadeIn(0.35)}
           />
-          <CommitNode cx={300} cy={mainY} label="C4'" color={COLORS.git} active delay={0.4} />
-          <CommitNode cx={380} cy={mainY} label="C5'" color={COLORS.git} active delay={0.45} />
+          <CommitNode cx={330} cy={mainY} label="C4'" color={COLORS.git} active delay={0.4} />
+          <CommitNode cx={420} cy={mainY} label="C5'" color={COLORS.git} active delay={0.45} />
           {/* Strikethrough on old feature commits */}
           {featureCommits.map((c, i) => (
             <motion.line
@@ -139,13 +139,13 @@ export function BranchGraphDiagram({ highlight }: Props) {
       {isCherryPick && (
         <>
           <motion.path
-            d={`M 300 ${featureY} Q 340 ${(mainY + featureY) / 2} 300 ${mainY}`}
+            d={`M 330 ${featureY} Q 380 ${(mainY + featureY) / 2} 330 ${mainY}`}
             fill="none" stroke={COLORS.git} strokeWidth={2} strokeDasharray="6 3"
             {...fadeIn(0.3)}
           />
-          <CommitNode cx={300} cy={mainY} label="C5'" color={COLORS.git} active delay={0.4} />
+          <CommitNode cx={330} cy={mainY} label="C5'" color={COLORS.git} active delay={0.4} />
           <motion.line
-            x1={220} y1={mainY} x2={300} y2={mainY}
+            x1={240} y1={mainY} x2={330} y2={mainY}
             stroke={COLORS.git} strokeWidth={2}
             {...fadeIn(0.35)}
           />
