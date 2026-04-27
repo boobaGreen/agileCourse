@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
 import { GIT_CHEATSHEET, type CheatsheetCommand } from '../data/git/cheatsheet';
 import { CommandVisual } from '../components/cheatsheet/CommandVisual';
-import { Copy, Check, Search, Filter, Eye, X } from 'lucide-react';
+import { Copy, Check, Search, Filter, Eye, X, Terminal } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -198,16 +198,52 @@ export default function CheatsheetPage() {
                   </button>
                 </div>
 
-                {/* Diagram - large and prominent */}
-                <div className="p-6 md:p-10">
+                  {/* Diagram - large and prominent */}
+                <div className="p-6 md:p-10 border-b border-white/5">
                   <CommandVisual
                     type={selectedCommand.visualType}
                     highlight={selectedCommand.visualHighlight}
                   />
                 </div>
 
+                {/* Example and Output section */}
+                {(selectedCommand.example || selectedCommand.output) && (
+                  <div className="p-6 bg-black/30 flex flex-col gap-4">
+                    <div className="flex items-center gap-2 text-git/80">
+                      <Terminal size={16} />
+                      <span className="text-xs font-bold uppercase tracking-widest">{resolveString({ en: 'Usage Example', it: 'Esempio di Utilizzo' })}</span>
+                    </div>
+                    
+                    <div className="flex flex-col gap-3">
+                      {selectedCommand.example && (
+                        <div className="flex flex-col gap-1.5">
+                          <span className="text-[10px] text-muted/50 uppercase font-medium ml-1">{resolveString({ en: 'Command', it: 'Comando' })}</span>
+                          <div className="bg-surface2/50 rounded-lg p-3 border border-white/5 font-mono text-sm text-white flex justify-between items-center group/code">
+                            <code>$ {selectedCommand.example}</code>
+                            <button 
+                              onClick={(e) => copyToClipboard(selectedCommand.example!, e)}
+                              className="text-muted/30 hover:text-white transition-colors p-1"
+                            >
+                              {copiedCommand === selectedCommand.example ? <Check size={14} className="text-[#06d6a0]" /> : <Copy size={14} />}
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {selectedCommand.output && (
+                        <div className="flex flex-col gap-1.5">
+                          <span className="text-[10px] text-muted/50 uppercase font-medium ml-1">{resolveString({ en: 'Expected Output', it: 'Output Atteso' })}</span>
+                          <div className="bg-[#0c0c0c] rounded-lg p-3 border border-white/5 font-mono text-xs text-[#a0a0a0] leading-relaxed whitespace-pre-wrap">
+                            {selectedCommand.output}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 {/* Footer hint */}
-                <div className="px-6 pb-5 flex justify-center">
+                <div className="px-6 py-4 flex justify-center bg-black/20">
                   <span className="text-[10px] text-muted/40 uppercase tracking-widest font-medium">
                     {resolveString({ en: 'Press ESC or click outside to close', it: 'Premi ESC o clicca fuori per chiudere' })}
                   </span>
