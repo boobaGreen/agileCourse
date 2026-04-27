@@ -22,8 +22,8 @@ export function GitGraphSim({ data, onComplete }: Props) {
     const newlyCompleted = new Set(currentCompleted);
     let changed = false;
 
-    data.tasks.forEach(task => {
-      if (newlyCompleted.has(task.id)) return;
+    for (const task of data.tasks) {
+      if (newlyCompleted.has(task.id)) continue;
 
       let isDone = false;
       const [type, arg1, arg2] = task.condition.split(':');
@@ -57,8 +57,11 @@ export function GitGraphSim({ data, onComplete }: Props) {
       if (isDone) {
         newlyCompleted.add(task.id);
         changed = true;
+      } else {
+        // Se un task non è soddisfatto, non controlliamo i successivi per mantenere l'ordine sequenziale
+        break;
       }
-    });
+    }
 
     return { newlyCompleted, changed };
   }, [data.tasks]);

@@ -17,20 +17,12 @@ export function K8sSimulator({ data, onComplete }: Props) {
   const [state, setState] = useState<K8sState>(data.startState);
   const [history, setHistory] = useState<{type: 'cmd'|'out', text: string}[]>([]);
   const [input, setInput] = useState('');
-  const [completedTasks, setCompletedTasks] = useState<Set<string>>(new Set());
-  
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-  }, [history]);
-
   const checkTasksSatisfied = React.useCallback((currentState: K8sState, currentCompleted: Set<string>) => {
     const newlyCompleted = new Set(currentCompleted);
     let changed = false;
 
-    data.tasks.forEach(task => {
-      if (newlyCompleted.has(task.id)) return;
+    for (const task of data.tasks) {
+      if (newlyCompleted.has(task.id)) continue;
 
       let isDone = false;
       const [type, arg1, arg2] = task.condition.split(':');
@@ -50,11 +42,24 @@ export function K8sSimulator({ data, onComplete }: Props) {
       if (isDone) {
         newlyCompleted.add(task.id);
         changed = true;
+      } else {
+        break;
       }
-    });
+    }
 
     return { newlyCompleted, changed };
   }, [data.tasks]);
+
+  const [completedTasks, setCompletedTasks] = useState<Set<string>>(() => {
+    const results = checkTasksSatisfied(data.startState, new Set());
+    return results.newlyCompleted;
+  });
+  
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  }, [history]);
 
   const handleCommand = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && input.trim()) {
