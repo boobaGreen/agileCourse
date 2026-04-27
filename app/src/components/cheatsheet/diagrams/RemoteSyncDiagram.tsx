@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { AreaBox, FlowArrow, CommitNode, COLORS, fadeIn } from './shared';
+import { AreaBox, FlowArrow, CommitNode } from './shared';
+import { COLORS, fadeIn } from './theme';
 
 interface Props { highlight: string; }
 

@@ -1,4 +1,5 @@
-import { AreaBox, FlowArrow, COLORS } from './shared';
+import { AreaBox, FlowArrow } from './shared';
+import { COLORS } from './theme';
 
 interface Props { highlight: string; }
 

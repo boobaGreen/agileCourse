@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { CommitNode, BranchLabel, COLORS, fadeIn } from './shared';
+import { CommitNode, BranchLabel } from './shared';
+import { COLORS, fadeIn } from './theme';
 
 interface Props { highlight: string; }
 
