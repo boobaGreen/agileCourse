@@ -92,7 +92,7 @@ export function ForcePushLab() {
                  
                  {step >= 3 && (
                     <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
-                       <circle 
+                       <motion.circle 
                          cx="200" cy="150" r="22" fill="rgba(239, 68, 68, 0.15)" 
                          stroke="rgba(239, 68, 68, 0.3)" strokeWidth="1"
                          initial={{ scale: 0 }} animate={{ scale: 1.5 }}
