@@ -71,16 +71,17 @@ export class GitEngine {
   }
 
   public checkout(target: string): { success: boolean, msg: string } {
+    const normalizedTarget = target.match(/^c\d+$/i) ? target.toUpperCase() : target;
     // 1. Is it a branch?
-    if (this.state.branches[target]) {
-      this.state.head = { type: 'branch', target };
-      return { success: true, msg: `Switched to branch '${target}'` };
+    if (this.state.branches[normalizedTarget]) {
+      this.state.head = { type: 'branch', target: normalizedTarget };
+      return { success: true, msg: `Switched to branch '${normalizedTarget}'` };
     }
 
     // 2. Is it a commit hash?
-    if (this.state.commits[target]) {
-      this.state.head = { type: 'commit', target };
-      return { success: true, msg: `Note: switching to '${target}'.\n\nYou are in 'detached HEAD' state.` };
+    if (this.state.commits[normalizedTarget]) {
+      this.state.head = { type: 'commit', target: normalizedTarget };
+      return { success: true, msg: `Note: switching to '${normalizedTarget}'.\n\nYou are in 'detached HEAD' state.` };
     }
 
     return { success: false, msg: `error: pathspec '${target}' did not match any file(s) known to git` };
@@ -130,7 +131,7 @@ export class GitEngine {
     // Actually Git keeps them as orphans. They will still render unless we clean them, which is fine!
     
     // Check if target is 'HEAD~1' etc. Very simple resolver:
-    let resolvedTarget = target;
+    let resolvedTarget = target.match(/^c\d+$/i) ? target.toUpperCase() : target;
     if (target.startsWith('HEAD~')) {
       const steps = parseInt(target.replace('HEAD~', '')) || 1;
       let curr = this.getCurrentCommitId();
@@ -151,8 +152,7 @@ export class GitEngine {
 
   public revert(target: string): { success: boolean, msg: string } {
     // Resolve target (HEAD or commit hash)
-    let resolvedTarget = target;
-    if (target === 'HEAD') resolvedTarget = this.getCurrentCommitId();
+    let resolvedTarget = target.toUpperCase() === 'HEAD' ? this.getCurrentCommitId() : (target.match(/^c\d+$/i) ? target.toUpperCase() : target);
     
     const targetCommit = this.state.commits[resolvedTarget];
     if (!targetCommit) {
@@ -178,7 +178,8 @@ export class GitEngine {
   }
 
   public cherryPick(target: string): { success: boolean, msg: string } {
-    const targetCommit = this.state.commits[target];
+    const resolvedTarget = target.match(/^c\d+$/i) ? target.toUpperCase() : target;
+    const targetCommit = this.state.commits[resolvedTarget];
     if (!targetCommit) {
       return { success: false, msg: `fatal: bad revision '${target}'` };
     }

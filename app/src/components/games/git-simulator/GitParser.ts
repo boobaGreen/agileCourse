@@ -140,6 +140,34 @@ export class GitParser {
           };
       }
 
+      case 'help':
+      case '--help':
+      case '-h': {
+        return {
+          success: true,
+          out: {
+            en: "Available commands in this simulator:\n" +
+                "  git commit -m \"message\"    Create a new commit\n" +
+                "  git branch <name>          Create a new branch\n" +
+                "  git checkout <target>      Switch branches or detach HEAD\n" +
+                "  git merge <branch>         Merge a branch into current branch\n" +
+                "  git reset --hard <target>  Reset current branch to a target\n" +
+                "  git revert <commit>        Revert a specific commit\n" +
+                "  git cherry-pick <commit>   Cherry-pick a commit\n" +
+                "  git status                 Show working tree status",
+            it: "Comandi disponibili in questo simulatore:\n" +
+                "  git commit -m \"messaggio\"  Crea un nuovo commit\n" +
+                "  git branch <nome>          Crea un nuovo branch\n" +
+                "  git checkout <target>      Cambia branch o scollega l'HEAD\n" +
+                "  git merge <branch>         Unisci un branch nel branch attuale\n" +
+                "  git reset --hard <target>  Ripristina il branch attuale a un target\n" +
+                "  git revert <commit>        Annulla un commit specifico\n" +
+                "  git cherry-pick <commit>   Cherry-pick di un commit\n" +
+                "  git status                 Mostra lo stato del working tree"
+          }
+        };
+      }
+
       default:
         if (action && KNOWN_GIT_COMMANDS.includes(action)) {
           return { 

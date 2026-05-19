@@ -214,7 +214,15 @@ export function GitGraphSim({ data, onComplete }: Props) {
                   <TerminalSquare size={14} /> <span className="text-[10px] uppercase font-black tracking-widest text-primary">Git Bash Simulator</span>
                 </div>
                 <p className="text-[10px] text-muted leading-relaxed">
-                  💡 Type <span className="text-git font-bold">git commands</span> to reach your mission objectives.
+                  💡 {resolveString({
+                    en: 'Type Git commands to reach your mission objectives. Type ',
+                    it: 'Digita i comandi Git per raggiungere gli obiettivi della missione. Digita '
+                  })}
+                  <span className="text-git font-bold">git help</span>
+                  {resolveString({
+                    en: ' to see available commands.',
+                    it: ' per vedere i comandi disponibili.'
+                  })}
                 </p>
               </div>
 
@@ -233,7 +241,6 @@ export function GitGraphSim({ data, onComplete }: Props) {
                       onChange={e => setInput(e.target.value)}
                       onKeyDown={handleCommand}
                       spellCheck={false}
-                      autoFocus
                       placeholder={resolveString({ en: 'Type git command...', it: 'Scrivi comando git...' })}
                       className="flex-1 bg-transparent outline-none border-none text-[#06d6a0] placeholder:text-white/20 font-mono text-sm min-w-0"
                     />

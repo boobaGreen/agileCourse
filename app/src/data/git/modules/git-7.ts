@@ -61,28 +61,6 @@ git status                  # What's happening?`,
       }
     },
     {
-      type: 'game',
-      title: { en: 'Lab: Detached HEAD', it: 'Lab: HEAD Distaccata' },
-      content: { en: 'Detach your HEAD from the current branch to travel back in time and inspect past commits without altering the main history.', it: 'Scollega la tua HEAD dal branch attuale per viaggiare nel tempo e ispezionare i commit passati senza alterare la storia principale.' },
-      gameType: 'git-graph-sim',
-      gameData: {
-        startState: {
-          commits: { 
-            'C1': { id: 'C1', parents: [], message: 'Initial commit' },
-            'C2': { id: 'C2', parents: ['C1'], message: 'Feature A works' },
-            'C3': { id: 'C3', parents: ['C2'], message: 'Feature B buggy' },
-            'C4': { id: 'C4', parents: ['C3'], message: 'Feature C added' }
-          },
-          branches: { 'main': 'C4' },
-          head: { type: 'branch', target: 'main' }
-        },
-        tasks: [
-          { id: '1', instruction: { en: 'Detach from the current branch by checking out directly to hash C2', it: 'Scollegati dal branch attuale facendo il checkout direttamente sull\'hash C2' }, condition: 'DETACHED_HEAD:C2' },
-          { id: '2', instruction: { en: 'Return to the present by re-attaching HEAD to the main branch', it: 'Torna al presente ricollegando l\'HEAD al branch main' }, condition: 'CURRENT_BRANCH:main' }
-        ]
-      }
-    },
-    {
       type: 'tip',
       title: { en: '🎮 Practice This Module', it: '🎮 Esercitati con questo modulo' },
       content: { en: '**Learn Git Branching**: Revisit *Introduction Sequence — Level 1* (Introduction to Git Commits)\n\n**Oh My Git!**: Play the *Files* and *Index* chapters\n\n**Git Kata**: `basic-commits`, `basic-staging`, `basic-cleaning`\n\n🚀 [Launch Learn Git Branching](https://learngitbranching.js.org/) · 📥 [Oh My Git!](https://ohmygit.org/) · 📂 [Git Katas](https://github.com/eficode-academy/git-katas)', it: '**Learn Git Branching**: Rivisita *Introduction Sequence — Livello 1* (Introduction to Git Commits)\n\n**Oh My Git!**: Gioca i capitoli *Files* e *Index*\n\n**Git Kata**: `basic-commits`, `basic-staging`, `basic-cleaning`\n\n🚀 [Lancia Learn Git Branching](https://learngitbranching.js.org/) · 📥 [Oh My Git!](https://ohmygit.org/) · 📂 [Git Katas](https://github.com/eficode-academy/git-katas)' }

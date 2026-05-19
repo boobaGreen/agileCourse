@@ -50,7 +50,7 @@ export function SectionCard({ section, onCompleteGame }: { section: Section, onC
           <div key={i} className={`mb-2 last:mb-0 ${isDesktopOnly ? 'hidden sm:block' : ''}`}>
              {cleanLine.includes(' · ') && cleanLine.includes('[') ? (
                 <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-3 mt-4">
-                   {line.split(' · ').map((part: string, pi: number) => {
+                   {cleanLine.split(' · ').map((part: string, pi: number) => {
                       const match = part.match(/\[([^\]]+)\]\(([^)]+)\)/);
                       const emoji = part.match(/^([\u2600-\u27BF]|[\uD83C-\uD83E][\uDC00-\uDFFF])/);
                       if (match) {
@@ -69,7 +69,7 @@ export function SectionCard({ section, onCompleteGame }: { section: Section, onC
                       return <span key={pi}>{part}</span>;
                    })}
                 </div>
-             ) : line.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\)|https?:\/\/[^\s)]+)/g).map((part: string, pi: number) => {
+             ) : cleanLine.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\)|https?:\/\/[^\s)]+)/g).map((part: string, pi: number) => {
                  const boldMatch = part.match(/^\*\*(.*?)\*\*$/)
                  if (boldMatch) return <strong key={`${pi}-${i}`} className="text-white fw-black">{boldMatch[1]}</strong>
                  

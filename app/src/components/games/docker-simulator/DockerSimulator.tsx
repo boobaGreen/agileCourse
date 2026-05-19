@@ -173,7 +173,6 @@ export function DockerSimulator({ data, onComplete }: Props) {
                       onChange={e => setInput(e.target.value)}
                       onKeyDown={handleCommand}
                       spellCheck={false}
-                      autoFocus
                       placeholder={resolveString({ en: 'Type docker command...', it: 'Scrivi comando docker...' })}
                       className="flex-1 bg-transparent outline-none border-none text-[#06d6a0] placeholder:text-white/20 font-mono text-sm min-w-0"
                     />

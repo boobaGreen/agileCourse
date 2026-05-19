@@ -177,7 +177,6 @@ export function K8sSimulator({ data, onComplete }: Props) {
                       onChange={e => setInput(e.target.value)}
                       onKeyDown={handleCommand}
                       spellCheck={false}
-                      autoFocus
                       placeholder={resolveString({ en: 'Type kubectl command...', it: 'Scrivi comando kubectl...' })}
                       className="flex-1 bg-transparent outline-none border-none text-secondary placeholder:text-white/20 font-mono text-sm min-w-0"
                     />
