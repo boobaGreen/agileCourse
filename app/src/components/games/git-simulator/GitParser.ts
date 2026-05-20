@@ -61,6 +61,17 @@ export class GitParser {
     const args = tokens; // tokens already contains everything after 'git '
 
     switch (action) {
+      case 'command':
+      case 'command...': {
+        return {
+          success: false,
+          out: {
+            en: "git: 'command' is not a git command.\n\n💡 In the placeholder, 'git command' means you should type a real git command (like 'git status', 'git commit', etc.), not the literal word 'command'.",
+            it: "git: 'command' non è un comando git.\n\n💡 Nel segnaposto (placeholder), 'git command' significa che devi scrivere un vero comando git (come 'git status', 'git commit', ecc.), non la parola letterale 'command'."
+          }
+        };
+      }
+
       case 'commit': {
         const msgIndex = args.indexOf('-m');
         let msg = 'New commit';

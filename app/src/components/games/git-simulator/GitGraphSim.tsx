@@ -241,7 +241,7 @@ export function GitGraphSim({ data, onComplete }: Props) {
                       onChange={e => setInput(e.target.value)}
                       onKeyDown={handleCommand}
                       spellCheck={false}
-                      placeholder={resolveString({ en: 'Type git command...', it: 'Scrivi comando git...' })}
+                      placeholder={resolveString({ en: 'Type a Git command (e.g., git status)...', it: 'Scrivi un comando Git (es. git status)...' })}
                       className="flex-1 bg-transparent outline-none border-none text-[#06d6a0] placeholder:text-white/20 font-mono text-sm min-w-0"
                     />
                     <div className="text-[10px] text-white/30 font-sans px-2 hidden sm:block text-right">ENTER</div>

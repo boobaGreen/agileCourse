@@ -42,6 +42,14 @@ export class K8sParser {
     }
 
     switch (subCommand) {
+      case 'command':
+      case 'command...': {
+        return {
+          success: false,
+          out: "kubectl: 'command' is not a valid command.\n\n💡 The placeholder 'kubectl command' means you should type a real kubectl command (like 'kubectl get pods', 'kubectl apply', etc.), not the literal word 'command'."
+        };
+      }
+
       case 'get': {
         const state = engine.getState();
         if (type === 'pods' || type === 'pod' || type === 'po') {
@@ -180,6 +188,20 @@ export class K8sParser {
               }
           });
           return { success: res.success, out: res.msg };
+      }
+
+      case 'help':
+      case '--help': {
+        return {
+          success: true,
+          out: "Available commands in this Kubernetes simulator:\n" +
+               "  kubectl get nodes                       List cluster nodes\n" +
+               "  kubectl get pods/deployments/pvc/cm     List resources\n" +
+               "  kubectl apply -f <filename.yaml>         Apply a manifest file\n" +
+               "  kubectl scale deployment <name> --replicas=<n>   Scale replicas\n" +
+               "  kubectl expose deployment <name> ...     Expose deployment as Service\n" +
+               "  kubectl delete pod <name>               Delete a specific pod"
+        };
       }
 
       default:

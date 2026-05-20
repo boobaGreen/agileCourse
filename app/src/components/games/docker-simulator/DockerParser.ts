@@ -30,6 +30,14 @@ export class DockerParser {
     }
 
     switch (subCommand) {
+      case 'command':
+      case 'command...': {
+        return {
+          success: false,
+          out: "docker: 'command' is not a docker command.\n\n💡 The placeholder 'docker command' means you should type a real docker command (like 'docker run', 'docker ps', etc.), not the literal word 'command'."
+        };
+      }
+
       case 'ps': {
         const containers = engine.getState().containers;
         if (containers.length === 0) return { success: true, out: 'CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES' };
@@ -128,6 +136,25 @@ export class DockerParser {
         if (args.length === 0) return { success: false, out: '"docker push" requires an image name.' };
         const res = engine.push(args[0]);
         return { success: res.success, out: res.msg };
+      }
+
+      case 'help':
+      case '--help': {
+        return {
+          success: true,
+          out: "Available commands in this Docker simulator:\n" +
+               "  docker ps                  List running containers\n" +
+               "  docker images              List local images\n" +
+               "  docker build -t <name> .   Build an image from a Dockerfile\n" +
+               "  docker run <args> <img >   Run a container (e.g. docker run -d -p 80:80 nginx)\n" +
+               "  docker stop <container>    Stop a running container\n" +
+               "  docker rm <container>      Remove a stopped container\n" +
+               "  docker pull <image>        Pull an image from a registry\n" +
+               "  docker volume create <n>   Create a docker volume\n" +
+               "  docker network create <n>  Create a docker network\n" +
+               "  docker tag <img> <target>  Tag an image\n" +
+               "  docker push <img>          Push an image to a registry"
+        };
       }
 
       default:
