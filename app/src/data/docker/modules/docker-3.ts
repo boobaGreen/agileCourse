@@ -42,8 +42,8 @@ export const docker3: Module = {
         it: '🛠️ Riferimento delle Istruzioni Principali'
       },
       content: {
-        en: 'Memorize these five. They cover 90% of your Dockerfile needs:',
-        it: 'Memorizza queste cinque istruzioni. Coprono il 90% delle tue esigenze con i Dockerfile:'
+        en: 'Memorize these core instructions. They cover 95% of your Dockerfile needs:',
+        it: 'Memorizza queste istruzioni fondamentali. Coprono il 95% delle tue esigenze con i Dockerfile:'
       },
       tableData: {
         headers: [
@@ -65,6 +65,11 @@ export const docker3: Module = {
           [
             { en: '**COPY**', it: '**COPY**' },
             { en: 'Copies files from your laptop into the image', it: 'Copia i file dal tuo computer all\'interno dell\'immagine' },
+            { en: 'Build Phase', it: 'Fase di Build' }
+          ],
+          [
+            { en: '**ADD**', it: '**ADD**' },
+            { en: 'Copies files (like COPY), but can also download from URLs and extract archives (.tar, .zip)', it: 'Copia i file (come COPY), ma può anche scaricare da URL ed estrarre archivi compressi (.tar, .zip)' },
             { en: 'Build Phase', it: 'Fase di Build' }
           ],
           [
