@@ -102,16 +102,15 @@ export const docker3: Module = {
        }
     },
     {
-      type: 'animation',
+      type: 'concept',
       title: {
-        en: '⚡ Interactive Build Cache Simulation',
-        it: '⚡ Simulazione Interattiva Cache di Build'
+        en: '⚡ Understanding the Build Cache (The Grocery Analogy)',
+        it: '⚡ Capire la Cache di Build (L\'Analogia della Spesa)'
       },
       content: {
-        en: 'How does the build cache work? Try these steps to see it in action:\n\n1. Click **✏️ Edit index.html** to simulate a change in your source code.\n2. Select **❌ The Bad Way** and click **⚡ Run Build**. Notice how Docker is forced to rebuild the heavy `RUN npm install` step (45s) because the cache cascade was broken!\n3. Now select **✅ The Good Way** and click **⚡ Run Build**. Notice how Docker uses the cache for `RUN npm install` (0s) and builds instantly!',
-        it: 'Come funziona la cache di build? Segui questi passaggi per vederla in azione:\n\n1. Clicca su **✏️ Modifica index.html** per simulare una modifica al codice.\n2. Seleziona **❌ Via Sbagliata** e clicca su **⚡ Esegui Build**. Nota come Docker sia costretto a rifare da zero il passaggio pesante `RUN npm install` (45s) perché la cascata della cache si è rotta!\n3. Ora seleziona **✅ Via Corretta** e clicca su **⚡ Esegui Build**. Nota come Docker riutilizzi la cache per `RUN npm install` (0s) completando la build all\'istante!'
-      },
-      animationType: 'docker-cache'
+        en: 'Docker builds images sequentially. To save time, it **caches** each layer. If you change a file, Docker cannot reuse the cache for that step and must rebuild it **AND all steps after it** (the cascade effect).\n\n🍕 **The Pizza Analogy:**\nImagine a recipe with two stages:\n1. 🛒 Go to the grocery store to buy cheese and flour (takes **45 minutes**).\n2. 🔪 Chop a fresh basil leaf (takes **10 seconds**).\n\n* **❌ The Unoptimized Way:** If you mix the steps and do the chopping *before* checking the fridge, you are forced to go grocery shopping for cheese and flour from scratch *every time* you want to chop basil!\n* **✅ The Optimized Way:** You buy the cheese and flour first and keep them in the fridge (cached!). When you want a pizza, you only spend 10 seconds chopping the fresh basil!\n\n---\n\n💻 **How this translates to Dockerfiles:**\n\n❌ **Slow Build (Copies everything at once):**\n```dockerfile\nCOPY . .          # Copies everything. If you change 1 line of code, cache is broken!\nRUN npm install   # ❌ Docker is forced to download 500MB of libraries again!\n```\n\n✅ **Fast Build (Optimized Caching):**\n```dockerfile\nCOPY package.json ./   # Copies only the library list (this changes very rarely)\nRUN npm install        # ✅ Cached! Docker skips this heavy download instantly\nCOPY . .               # Copies code (takes less than a second to compile)\n```',
+        it: 'Docker compila le immagini in sequenza. Per risparmiare tempo, salva ogni layer in **cache**. Se modifichi un file, Docker non può riutilizzare la cache per quel passaggio ed è costretto a ricostruire da zero quel passaggio **E tutti quelli successivi** (effetto a cascata).\n\n🍕 **L\'Analogia della Pizza:**\nImmagina una ricetta divisa in due fasi:\n1. 🛒 Andare al supermercato a comprare farina e mozzarella (richiede **45 minuti**).\n2. 🔪 Tagliare una foglia di basilico fresco (richiede **10 secondi**).\n\n* **❌ La via non ottimizzata:** Se mescoli le cose e tagli il basilico *prima* di riutilizzare la mozzarella che hai già, sarai costretto a rifare la spesa di 45 minuti *ogni singola volta* che vorrai tagliare il basilico!\n* **✅ La via ottimizzata:** Compri farina e mozzarella prima e le tieni in frigo (in cache!). Quando vuoi una pizza, ti basta impiegare solo 10 secondi a tagliare il basilico fresco!\n\n---\n\n💻 **Come si traduce nei Dockerfile:**\n\n❌ **Build Lenta (Copia tutto insieme):**\n```dockerfile\nCOPY . .          # Copia tutto. Se modifichi 1 riga di codice, la cache si rompe!\nRUN npm install   # ❌ Docker riscarica da zero 500MB di librerie!\n```\n\n✅ **Build Veloce (Cache Ottimizzata):**\n```dockerfile\nCOPY package.json ./   # Copia solo la lista delle librerie (cambia raramente)\nRUN npm install        # ✅ Cache usata! Docker salta questo download all\'istante\nCOPY . .               # Copia il codice (impiega meno di un secondo)\n```'
+      }
     },
     {
       type: 'concept',
