@@ -67,22 +67,63 @@ export const docker4: Module = {
   quiz: [
     {
       id: 'docker-4-q1',
-      question: 'Why is using the `:latest` tag in a production deployment considered dangerous?',
+      question: {
+        en: 'Why is using the `:latest` tag in a production deployment considered dangerous?',
+        it: 'Perché l\'uso del tag `:latest` in un deployment di produzione è considerato pericoloso?'
+      },
       options: [
-        'It costs more money to use the latest tag',
-        'It is a mutable tag; it can point to a completely different, breaking version tomorrow',
-        'The latest tag disables Docker\'s security sandbox',
-        'The latest tag bypasses cache and takes hours to pull'
+        {
+          en: 'It costs more money to use the latest tag',
+          it: 'Costa più denaro utilizzare il tag latest'
+        },
+        {
+          en: 'It is a mutable tag; it can point to a completely different, breaking version tomorrow',
+          it: 'È un tag mutabile; domani potrebbe puntare a una versione completamente diversa e distruttiva'
+        },
+        {
+          en: 'The latest tag disables Docker\'s security sandbox',
+          it: 'Il tag latest disabilita la sandbox di sicurezza di Docker'
+        },
+        {
+          en: 'The latest tag bypasses cache and takes hours to pull',
+          it: 'Il tag latest ignora la cache e richiede ore per il caricamento'
+        }
       ],
       correct: 1,
-      explanation: '`:latest` simply points to whatever image was most recently uploaded. An update could introduce a breaking change overnight. Pinning exact versions (like `:1.14.2`) makes your deployments predictable.'
+      explanation: {
+        en: '`:latest` simply points to whatever image was most recently uploaded. An update could introduce a breaking change overnight. Pinning exact versions (like `:1.14.2`) makes your deployments predictable.',
+        it: '`:latest` punta semplicemente a qualsiasi immagine sia stata caricata più di recente. Un aggiornamento potrebbe introdurre una breaking change da un giorno all\'altro. Fissare versioni esatte (come `:1.14.2`) rende i deployment prevedibili.'
+      }
     },
     {
       id: 'docker-4-q2',
-      question: 'What command prepares a local image to be pushed to a specific remote organization or user account?',
-      options: ['docker push', 'docker rename', 'docker tag', 'docker commit'],
+      question: {
+        en: 'What command prepares a local image to be pushed to a specific remote organization or user account?',
+        it: 'Quale comando prepara un\'immagine locale per essere caricata su uno specifico account utente o organizzazione remota?'
+      },
+      options: [
+        {
+          en: 'docker push',
+          it: 'docker push'
+        },
+        {
+          en: 'docker rename',
+          it: 'docker rename'
+        },
+        {
+          en: 'docker tag',
+          it: 'docker tag'
+        },
+        {
+          en: 'docker commit',
+          it: 'docker commit'
+        }
+      ],
       correct: 2,
-      explanation: 'You use `docker tag local_image user_name/repo_name:tag` to correctly label the image so the Docker Engine knows exactly where to route the upload.'
+      explanation: {
+        en: 'You use `docker tag local_image user_name/repo_name:tag` to correctly label the image so the Docker Engine knows exactly where to route the upload.',
+        it: 'Si usa `docker tag immagine_locale nome_utente/nome_repo:tag` per etichettare correttamente l\'immagine in modo che il Docker Engine sappia esattamente dove indirizzare il caricamento.'
+      }
     }
   ]
 }

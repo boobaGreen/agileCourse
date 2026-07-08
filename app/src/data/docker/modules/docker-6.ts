@@ -60,22 +60,51 @@ export const docker6: Module = {
   quiz: [
     {
       id: 'docker-6-q1',
-      question: 'If you execute `docker run -p 5000:3000 app`, into which browser URL would you type to view the app?',
-      options: ['localhost:3000', 'localhost:5000', 'app:3000', 'docker:5000:3000'],
+      question: {
+        en: 'If you execute `docker run -p 5000:3000 app`, into which browser URL would you type to view the app?',
+        it: 'Se esegui `docker run -p 5000:3000 app`, quale URL dovresti digitare nel browser per vedere l\'app?'
+      },
+      options: [
+        'localhost:3000',
+        'localhost:5000',
+        'app:3000',
+        'docker:5000:3000'
+      ],
       correct: 1,
-      explanation: 'The mapping syntax is `host_port:container_port`. Since the host port is 5000, that is the entry door available to your browser.'
+      explanation: {
+        en: 'The mapping syntax is `host_port:container_port`. Since the host port is 5000, that is the entry door available to your browser.',
+        it: 'La sintassi di mappatura è `porta_host:porta_container`. Poiché la porta sull\'host è 5000, questa è la porta d\'accesso disponibile per il browser.'
+      }
     },
     {
       id: 'docker-6-q2',
-      question: 'How do two containers on the same custom Docker network communicate with each other?',
+      question: {
+        en: 'How do two containers on the same custom Docker network communicate with each other?',
+        it: 'In che modo due container sulla stessa rete Docker personalizzata comunicano tra loro?'
+      },
       options: [
-        'Using the host\'s IP address',
-        'Using port mapping on localhost',
-        'Using their container names as DNS hostnames',
-        'They cannot communicate directly for security reasons'
+        {
+          en: 'Using the host\'s IP address',
+          it: 'Utilizzando l\'indirizzo IP dell\'host'
+        },
+        {
+          en: 'Using port mapping on localhost',
+          it: 'Utilizzando la mappatura delle porte su localhost'
+        },
+        {
+          en: 'Using their container names as DNS hostnames',
+          it: 'Utilizzando i loro nomi di container come hostname DNS'
+        },
+        {
+          en: 'They cannot communicate directly for security reasons',
+          it: 'Non possono comunicare direttamente per motivi di sicurezza'
+        }
       ],
       correct: 2,
-      explanation: 'Docker provides built-in DNS resolution for custom bridge networks. If a container is named "redis", another container on the same network can reach it simply by pinging "redis".'
+      explanation: {
+        en: 'Docker provides built-in DNS resolution for custom bridge networks. If a container is named "redis", another container on the same network can reach it simply by pinging "redis".',
+        it: 'Docker fornisce una risoluzione DNS integrata per le reti bridge personalizzate. Se un container si chiama "redis", un altro container sulla stessa rete può raggiungerlo semplicemente contattando "redis".'
+      }
     }
   ]
 }

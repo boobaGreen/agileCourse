@@ -66,39 +66,93 @@ export const docker1: Module = {
   quiz: [
     {
       id: 'docker-1-q1',
-      question: 'What is the primary architectural difference between a Container and a VM?',
+      question: {
+        en: 'What is the primary architectural difference between a Container and a VM?',
+        it: 'Qual è la principale differenza architetturale tra un Container e una VM?'
+      },
       options: [
-        'Containers provide a higher level of security than VMs at a physical hardware level',
-        'Containers share the host OS kernel, while VMs include a full Guest OS',
-        'Virtual Machines are significantly faster to start and shut down than containers',
-        'Docker containers can only ever be executed on servers running a Linux kernel'
+        {
+          en: 'Containers provide a higher level of security than VMs at a physical hardware level',
+          it: 'I container offrono un livello di sicurezza maggiore rispetto alle VM a livello di hardware fisico'
+        },
+        {
+          en: 'Containers share the host OS kernel, while VMs include a full Guest OS',
+          it: 'I container condividono il kernel dell\'OS host, mentre le VM includono un Guest OS completo'
+        },
+        {
+          en: 'Virtual Machines are significantly faster to start and shut down than containers',
+          it: 'Le macchine virtuali sono significativamente più veloci da avviare e arrestare rispetto ai container'
+        },
+        {
+          en: 'Docker containers can only ever be executed on servers running a Linux kernel',
+          it: 'I container Docker possono essere eseguiti solo su server con kernel Linux'
+        }
       ],
       correct: 1,
-      explanation: 'Containers are lightweight because they share the host operating system kernel directly via the Docker Engine. VMs are "heavyweight" because each one boots an entirely separate OS on virtualized hardware.'
+      explanation: {
+        en: 'Containers are lightweight because they share the host operating system kernel directly via the Docker Engine. VMs are "heavyweight" because each one boots an entirely separate OS on virtualized hardware.',
+        it: 'I container sono leggeri perché condividono direttamente il kernel del sistema operativo host tramite il Docker Engine. Le VM sono "pesanti" perché ciascuna avvia un sistema operativo completamente separato su hardware virtualizzato.'
+      }
     },
     {
       id: 'docker-1-q2',
-      question: 'What massive industry problem did Docker solve?',
+      question: {
+        en: 'What massive industry problem did Docker solve?',
+        it: 'Quale enorme problema del settore tecnologico ha risolto Docker?'
+      },
       options: [
-        'The lack of modern high-performance programming languages for backend development',
-        'The "works on my machine" problem by ensuring perfect environment consistency',
-        'The excessively high cost of storing large amounts of data in cloud storage solutions',
-        'The inherent inability of web developers to write functional and responsive UI code'
+        {
+          en: 'The lack of modern high-performance programming languages for backend development',
+          it: 'La mancanza di linguaggi di programmazione moderni ad alte prestazioni per lo sviluppo backend'
+        },
+        {
+          en: 'The "works on my machine" problem by ensuring perfect environment consistency',
+          it: 'Il problema del "funziona sulla mia macchina", garantendo una perfetta coerenza dell\'ambiente'
+        },
+        {
+          en: 'The excessively high cost of storing large amounts of data in cloud storage solutions',
+          it: 'Il costo eccessivamente elevato dell\'archiviazione di grandi quantità di dati in soluzioni cloud'
+        },
+        {
+          en: 'The inherent inability of web developers to write functional and responsive UI code',
+          it: 'L\'incapacità intrinseca degli sviluppatori web di scrivere codice UI funzionale e reattivo'
+        }
       ],
       correct: 1,
-      explanation: 'By packaging an app together with its exact environment (libraries, config, runtime), Docker ensures it runs the exact same way on a laptop, in a testing lab, and in production.'
+      explanation: {
+        en: 'By packaging an app together with its exact environment (libraries, config, runtime), Docker ensures it runs the exact same way on a laptop, in a testing lab, and in production.',
+        it: 'Impacchettando un\'app insieme al suo ambiente esatto (librerie, configurazioni, runtime), Docker garantisce che funzioni allo stesso identico modo su un laptop, in un laboratorio di test e in produzione.'
+      }
     },
     {
       id: 'docker-1-q3',
-      question: 'Why are containers generally considered "lighter" than VMs?',
+      question: {
+        en: 'Why are containers generally considered "lighter" than VMs?',
+        it: 'Perché i container sono generalmente considerati più "leggeri" delle VM?'
+      },
       options: [
-        'Containers do not require their own unique IP addresses for network communication',
-        'Containers do not include the heavy resource overhead of a full Guest OS',
-        'They are specifically designed to only run compiled languages such as C++ or Rust',
-        'They completely bypass the system CPU and only utilize available system RAM'
+        {
+          en: 'Containers do not require their own unique IP addresses for network communication',
+          it: 'I container non richiedono indirizzi IP univoci per la comunicazione di rete'
+        },
+        {
+          en: 'Containers do not include the heavy resource overhead of a full Guest OS',
+          it: 'I container non includono il pesante sovraccarico di risorse di un intero Guest OS'
+        },
+        {
+          en: 'They are specifically designed to only run compiled languages such as C++ or Rust',
+          it: 'Sono specificamente progettati per eseguire solo linguaggi compilati come C++ o Rust'
+        },
+        {
+          en: 'They completely bypass the system CPU and only utilize available system RAM',
+          it: 'Escludono completamente la CPU del sistema e utilizzano solo la RAM di sistema disponibile'
+        }
       ],
       correct: 1,
-      explanation: 'Because containers leverage the Host OS kernel directly, they skip the GigaBytes of bloat required to boot a separate Windows or Linux installation.'
+      explanation: {
+        en: 'Because containers leverage the Host OS kernel directly, they skip the GigaBytes of bloat required to boot a separate Windows or Linux installation.',
+        it: 'Poiché i container sfruttano direttamente il kernel del sistema operativo host, evitano i gigabyte di bloatware necessari per avviare un\'installazione separata di Windows o Linux.'
+      }
     }
   ]
 }

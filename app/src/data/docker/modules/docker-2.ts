@@ -26,19 +26,16 @@ export const docker2: Module = {
       content: 'A container is a **runnable instance** of an image. When you "run" an image, it becomes a container. You can have 100 isolated containers independently running from the same 1 image. Think of the container as the actual pizza baked using the recipe. Deleting a container does not affect the read-only image it was built from.'
     },
     {
-      type: 'flowchart',
-      content: '**One Image, Multiple Independent Containers**',
-      diagramSteps: [
-        { label: 'Image\n(Read-Only)', icon: '🖼️', color: '#118ab2' },
-        { label: 'Container A\n(Port 80)', icon: '📦', color: '#06d6a0' },
-        { label: 'Container B\n(Port 81)', icon: '📦', color: '#06d6a0' }
-      ]
-    },
-    {
-      type: 'video',
-      title: '📺 Images vs Containers Visualized',
-      content: 'Check out this clear explanation of how the read/write layers actually stack on top of each other.',
-      videoUrl: 'https://www.youtube.com/watch?v=YFl2mCHdv24'
+      type: 'animation',
+      title: {
+        en: '🍕 Docker Pizza & Container Simulator',
+        it: '🍕 Simulatore Docker Pizza & Container'
+      },
+      animationType: 'docker-pizza',
+      content: {
+        en: 'Bake multiple pizzas (containers) from a single recipe (image). Customize toppings (read-write layer) independently, and witness container isolation!',
+        it: 'Inforna più pizze (container) da una singola ricetta (immagine). Personalizza i condimenti (layer di lettura/scrittura) in modo indipendente e sperimenta l\'isolamento dei container!'
+      }
     },
     {
       type: 'concept',
@@ -46,32 +43,104 @@ export const docker2: Module = {
       content: 'Docker images are made of **layers**. Every command in a build process creates a new small layer. If you change your code but not your libraries, Docker only updates the code layer. This makes images incredibly fast to build and share over the network!'
     },
     {
-      type: 'flowchart',
-      content: '**Image Architecture (Layers)**',
-      diagramSteps: [
-        { label: 'Base OS\n(Ubuntu 50MB)', icon: '🐧', color: '#ff4b4b' },
-        { label: 'Dependencies\n(Node.js 20MB)', icon: '📚', color: '#ffd166' },
-        { label: 'Your App\n(index.js 2KB)', icon: '💻', color: '#06d6a0' },
-        { label: 'R/W Layer\n(Container)', icon: '✏️', color: '#118ab2' }
-      ]
+      type: 'animation',
+      title: {
+        en: '🍰 Layer Cake Architecture Visualizer',
+        it: '🍰 Visualizzatore dell\'Architettura a Layer'
+      },
+      animationType: 'docker-layers',
+      content: {
+        en: 'Observe how the read-write container layer stacks dynamically on top of the read-only blueprint layers.',
+        it: 'Osserva come il layer scrivibile del container si sovrappone in modo dinamico ai layer in sola lettura dell\'immagine.'
+      }
     },
     {
       type: 'game',
-      title: 'Challenge: Identify the Layer',
-      content: 'Correctly identify where each element belongs in a Docker system.',
+      title: {
+        en: 'Challenge: Identify the Layer',
+        it: 'Sfida: Identifica il Layer'
+      },
+      content: {
+        en: 'Correctly identify where each architectural component belongs in a Docker system.',
+        it: 'Identifica correttamente dove si posiziona ciascun componente nell\'architettura di Docker.'
+      },
       gameType: 'drag-classify',
       gameData: {
         categories: [
-          { id: 'readonly', label: 'Read-Only (The Image)' },
-          { id: 'writeable', label: 'Writeable (The Container)' }
+          { 
+            id: 'readonly', 
+            label: {
+              en: 'Read-Only (The Image)',
+              it: 'Sola Lettura (L\'Immagine)'
+            }
+          },
+          { 
+            id: 'writeable', 
+            label: {
+              en: 'Writeable (The Container)',
+              it: 'Scrivibile (Il Container)'
+            }
+          }
         ],
         items: [
-          { id: 'os', label: 'Ubuntu OS', categoryId: 'readonly' },
-          { id: 'node', label: 'Node.js Runtime', categoryId: 'readonly' },
-          { id: 'code', label: 'Compiled React App', categoryId: 'readonly' },
-          { id: 'logs', label: 'Runtime Server Logs', categoryId: 'writeable' },
-          { id: 'temp', label: 'Temporary Cached Files', categoryId: 'writeable' }
+          { 
+            id: 'os', 
+            label: {
+              en: 'Base Operating System (Ubuntu)',
+              it: 'Sistema Operativo Base (Ubuntu)'
+            }, 
+            categoryId: 'readonly' 
+          },
+          { 
+            id: 'node', 
+            label: {
+              en: 'Node.js Runtime / Interpreters',
+              it: 'Runtime Node.js / Interpreti'
+            }, 
+            categoryId: 'readonly' 
+          },
+          { 
+            id: 'code', 
+            label: {
+              en: 'Compiled React App Code',
+              it: 'Codice Compilato dell\'App React'
+            }, 
+            categoryId: 'readonly' 
+          },
+          { 
+            id: 'logs', 
+            label: {
+              en: 'Runtime Application Logs',
+              it: 'Log dell\'Applicazione a Runtime'
+            }, 
+            categoryId: 'writeable' 
+          },
+          { 
+            id: 'temp', 
+            label: {
+              en: 'Temporary Cached Files (Uploads/Temp)',
+              it: 'File Temporanei di Cache (Upload/Temp)'
+            }, 
+            categoryId: 'writeable' 
+          }
         ]
+      }
+    },
+    {
+      type: 'concept',
+      title: {
+        en: '🐳 Bridging Analogy to Commands: CLI Basics',
+        it: '🐳 Dall\'Analogia ai Comandi: Le Basi della CLI'
+      },
+      content: {
+        en: 'Now let\'s translate our recipe and pizza analogy into real-world Docker terminal commands:\n\n' +
+            '* **`docker pull <image>`**: Downloads the read-only image (the recipe) from Docker Hub (the public cookbook) to your machine.\n' +
+            '* **`docker run -d <image>`**: Creates and runs a new container (bakes a pizza) from the image. The **`-d`** flag runs it in **detached mode** (in the background), freeing up your terminal.\n' +
+            '* **`docker stop <container-id>`**: Gracefully shuts down the running container (stops the live instance) without deleting it.',
+        it: 'Ora traduciamo l\'analogia della ricetta e della pizza nei veri comandi del terminale Docker:\n\n' +
+            '* **`docker pull <immagine>`**: Scarica l\'immagine in sola lettura (la ricetta) da Docker Hub (il ricettario pubblico) sul tuo computer.\n' +
+            '* **`docker run -d <immagine>`**: Crea e avvia un nuovo container (inforna la pizza) a partire dall\'immagine. Il flag **`-d`** lo esegue in **detached mode** (in background), lasciando libero il tuo terminale.\n' +
+            '* **`docker stop <id-container>`**: Arresta in modo sicuro il container in esecuzione (ferma l\'istanza attiva) senza eliminarlo.'
       }
     },
     {
@@ -95,39 +164,93 @@ export const docker2: Module = {
   quiz: [
     {
       id: 'docker-2-q1',
-      question: 'An Image is to a Container as a...',
+      question: {
+        en: 'An Image is to a Container as a...',
+        it: 'Un\'Immagine sta a un Container come...'
+      },
       options: [
-        'Physical computer is to a peripheral mouse',
-        'Recipe is to a baked and ready-to-eat Pizza',
-        'Single file is to a nested project folder',
-        'Logged-in user is to a encrypted password'
+        {
+          en: 'Physical computer is to a peripheral mouse',
+          it: 'Un computer fisico sta a un mouse periferico'
+        },
+        {
+          en: 'Recipe is to a baked and ready-to-eat Pizza',
+          it: 'Una ricetta sta a una pizza sfornata e pronta da mangiare'
+        },
+        {
+          en: 'Single file is to a nested project folder',
+          it: 'Un singolo file sta a una cartella di progetto nidificata'
+        },
+        {
+          en: 'Logged-in user is to an encrypted password',
+          it: 'Un utente connesso sta a una password crittografata'
+        }
       ],
       correct: 1,
-      explanation: 'An image is a static template (recipe). A container is a live, running instance of that template (pizza).'
+      explanation: {
+        en: 'An image is a static template (recipe). A container is a live, running instance of that template (pizza).',
+        it: 'Un\'immagine è un template statico (ricetta). Un container è un\'istanza attiva e funzionante di quel template (pizza).'
+      }
     },
     {
       id: 'docker-2-q2',
-      question: 'What happens to the underlying Image when a Container is deleted?',
+      question: {
+        en: 'What happens to the underlying Image when a Container is deleted?',
+        it: 'Cosa succede all\'Immagine sottostante quando un Container viene eliminato?'
+      },
       options: [
-        'The image and all its layers are also deleted',
-        'The image remains completely and safely unchanged',
-        'The image loses its most recent read-only layer',
-        'The image file size gets larger on the local disk'
+        {
+          en: 'The image and all its layers are also deleted',
+          it: 'Anche l\'immagine e tutti i suoi layer vengono eliminati'
+        },
+        {
+          en: 'The image remains completely and safely unchanged',
+          it: 'L\'immagine rimane completamente e in sicurezza inalterata'
+        },
+        {
+          en: 'The image loses its most recent read-only layer',
+          it: 'L\'immagine perde il suo layer in sola lettura più recente'
+        },
+        {
+          en: 'The image file size gets larger on the local disk',
+          it: 'La dimensione del file dell\'immagine aumenta sul disco locale'
+        }
       ],
       correct: 1,
-      explanation: 'Images are immutable (read-only). Containers are temporary. Deleting a container safely discards its read-write layer, leaving the template image untouched.'
+      explanation: {
+        en: 'Images are immutable (read-only). Containers are temporary. Deleting a container safely discards its read-write layer, leaving the template image untouched.',
+        it: 'Le immagini sono immutabili (sola lettura). I container sono temporanei. Eliminando un container si rimuove in modo sicuro il suo layer di lettura/scrittura, lasciando inalterata l\'immagine.'
+      }
     },
     {
       id: 'docker-2-q3',
-      question: 'If you run `docker ps` and see nothing, but `docker ps -a` shows listed containers, what does this mean?',
+      question: {
+        en: 'Why can you run multiple independent containers from a single image without duplicating disk space?',
+        it: 'Perché puoi avviare più container indipendenti a partire da una singola immagine senza duplicare lo spazio su disco?'
+      },
       options: [
-        'The Docker daemon has crashed and needs a restart',
-        'Your current user lacks the necessary permissions',
-        'The containers have stopped or finished executing',
-        'The images are still downloading in the background'
+        {
+          en: 'Each container shares the read-only image layers and only creates its own thin, temporary writeable layer',
+          it: 'Ogni container condivide i layer in sola lettura dell\'immagine e crea solo un proprio sottile layer temporaneo scrivibile'
+        },
+        {
+          en: 'Docker automatically compresses the host operating system kernel for each instance',
+          it: 'Docker comprime automaticamente il kernel del sistema operativo host per ciascuna istanza'
+        },
+        {
+          en: 'Stopped containers immediately delete all their files from the disk to save space',
+          it: 'I container arrestati eliminano immediatamente tutti i loro file dal disco per risparmiare spazio'
+        },
+        {
+          en: 'Docker stores all new files and logs on a remote cloud server instead of the local machine',
+          it: 'Docker memorizza tutti i nuovi file e i log su un server cloud remoto invece che sulla macchina locale'
+        }
       ],
-      correct: 2,
-      explanation: '`docker ps` only shows running containers. `docker ps -a` (all) includes containers that have finished their run (exited), which is common if the container only ran a single command and finished.'
+      correct: 0,
+      explanation: {
+        en: 'Docker images are immutable and shared. When you run a container, Docker only adds a thin writeable layer on top for that specific instance. All base image layers are shared in-memory and on-disk across all running containers.',
+        it: 'Le immagini Docker sono immutabili e condivise. Quando avvii un container, Docker aggiunge solo un sottile layer scrivibile in cima per quella specifica istanza. Tutti i layer dell\'immagine di base sono condivisi in memoria e su disco tra tutti i container in esecuzione.'
+      }
     }
   ]
 }

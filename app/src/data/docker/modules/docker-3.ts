@@ -83,34 +83,93 @@ export const docker3: Module = {
   quiz: [
     {
       id: 'docker-3-q1',
-      question: 'What is the critical difference between the RUN and CMD instructions?',
+      question: {
+        en: 'What is the critical difference between the RUN and CMD instructions?',
+        it: 'Qual è la differenza fondamentale tra le istruzioni RUN e CMD?'
+      },
       options: [
-        'There is no functional or technical difference between these two instructions',
-        'RUN executes during image creation, CMD defines the default runtime executable',
-        'RUN is used for downloading base images, CMD is used for pushing them to registry',
-        'RUN is specifically for Windows containers, CMD is for Linux based containers'
+        {
+          en: 'There is no functional or technical difference between these two instructions',
+          it: 'Non c\'è alcuna differenza funzionale o tecnica tra queste due istruzioni'
+        },
+        {
+          en: 'RUN executes during image creation, CMD defines the default runtime executable',
+          it: 'RUN viene eseguita durante la creazione dell\'immagine, CMD definisce l\'eseguibile di runtime predefinito'
+        },
+        {
+          en: 'RUN is used for downloading base images, CMD is used for pushing them to registry',
+          it: 'RUN si usa per scaricare le immagini di base, CMD per caricarle nel registro'
+        },
+        {
+          en: 'RUN is specifically for Windows containers, CMD is for Linux based containers',
+          it: 'RUN è specifica per i container Windows, CMD per i container basati su Linux'
+        }
       ],
       correct: 1,
-      explanation: '`RUN` runs during the `docker build` phase and bakes files into the image layers. `CMD` runs nothing during build; it simply tells the container what command to launch when someone calls `docker run`.'
+      explanation: {
+        en: '`RUN` runs during the `docker build` phase and bakes files into the image layers. `CMD` runs nothing during build; it simply tells the container what command to launch when someone calls `docker run`.',
+        it: '`RUN` viene eseguito durante la fase di `docker build` e scrive i file nei layer dell\'immagine. `CMD` non esegue nulla durante la compilazione; indica semplicemente al container quale comando lanciare all\'avvio.'
+      }
     },
     {
       id: 'docker-3-q2',
-      question: 'Why do sophisticated Dockerfiles separate `COPY package.json` from `COPY .` (the rest of the code)?',
+      question: {
+        en: 'Why do sophisticated Dockerfiles separate `COPY package.json` from `COPY .` (the rest of the code)?',
+        it: 'Perché i Dockerfile avanzati separano `COPY package.json` da `COPY .` (il resto del codice)?'
+      },
       options: [
-        'Because the Docker engine cannot handle copying large folders in a single step',
-        'To optimize the layer cache so dependencies aren\'t re-installed every time code changes',
-        'To ensure that potentially malicious or hidden files aren\'t copied into the layer',
-        'Because the package.json file must be explicitly executed as a build script'
+        {
+          en: 'Because the Docker engine cannot handle copying large folders in a single step',
+          it: 'Perché il motore Docker non può gestire la copia di cartelle di grandi dimensioni in un unico passaggio'
+        },
+        {
+          en: 'To optimize the layer cache so dependencies aren\'t re-installed every time code changes',
+          it: 'Per ottimizzare la cache dei layer in modo che le dipendenze non vengano reinstallate a ogni modifica del codice'
+        },
+        {
+          en: 'To ensure that potentially malicious or hidden files aren\'t copied into the layer',
+          it: 'Per garantire che file potenzialmente dannosi o nascosti non vengano copiati nel layer'
+        },
+        {
+          en: 'Because the package.json file must be explicitly executed as a build script',
+          it: 'Perché il file package.json deve essere eseguito esplicitamente come script di compilazione'
+        }
       ],
       correct: 1,
-      explanation: 'If `COPY . .` happens before `RUN npm install`, then ANY tiny code change invalidates the cache for the heavy install step, making builds incredibly slow. By copying package.json first, Docker caches the heavy install unless the dependencies actually change.'
+      explanation: {
+        en: 'If `COPY . .` happens before `RUN npm install`, then ANY tiny code change invalidates the cache for the heavy install step, making builds incredibly slow. By copying package.json first, Docker caches the heavy install unless the dependencies actually change.',
+        it: 'Se `COPY . .` avviene prima di `RUN npm install`, QUALSIASI piccola modifica al codice annulla la cache per il pesante passaggio di installazione, rendendo le build incredibilmente lente. Copiando prima package.json, Docker memorizza nella cache l\'installazione pesante a meno che le dipendenze non cambino effettivamente.'
+      }
     },
     {
       id: 'docker-3-q3',
-      question: 'Which flag is used in `docker build` to assign a human-readable name to an image?',
-      options: ['-n (name)', '-name (full)', '--tag (label)', '-t (tag)'],
+      question: {
+        en: 'Which flag is used in `docker build` to assign a human-readable name to an image?',
+        it: 'Quale flag viene utilizzato in `docker build` per assegnare un nome leggibile a un\'immagine?'
+      },
+      options: [
+        {
+          en: '-n (name)',
+          it: '-n (nome)'
+        },
+        {
+          en: '-name (full)',
+          it: '-name (completo)'
+        },
+        {
+          en: '--tag (label)',
+          it: '--tag (etichetta)'
+        },
+        {
+          en: '-t (tag)',
+          it: '-t (tag)'
+        }
+      ],
       correct: 3,
-      explanation: 'The `-t` (or `--tag`) flag assigns a repository name and an optional tag (e.g. `docker build -t my-app:latest`).'
+      explanation: {
+        en: 'The `-t` (or `--tag`) flag assigns a repository name and an optional tag (e.g. `docker build -t my-app:latest`).',
+        it: 'Il flag `-t` (o `--tag`) assegna un nome al repository e un tag opzionale (ad esempio, `docker build -t my-app:latest`).'
+      }
     }
   ]
 }

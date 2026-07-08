@@ -75,27 +75,63 @@ export const docker5: Module = {
   quiz: [
     {
       id: 'docker-5-q1',
-      question: 'What occurs to data saved inside a container\'s writable layer when the container is executing `docker rm`?',
+      question: {
+        en: 'What occurs to data saved inside a container\'s writable layer when the container is executing `docker rm`?',
+        it: 'Cosa succede ai dati salvati all\'interno del layer scrivibile di un container quando viene eseguito `docker rm`?'
+      },
       options: [
-        'It is backed up to Docker Hub',
-        'It is permanently deleted',
-        'It is automatically converted to a Named Volume',
-        'Nothing, it remains on the hard drive'
+        {
+          en: 'It is backed up to Docker Hub',
+          it: 'Vengono salvati come backup su Docker Hub'
+        },
+        {
+          en: 'It is permanently deleted',
+          it: 'Vengono eliminati in modo permanente'
+        },
+        {
+          en: 'It is automatically converted to a Named Volume',
+          it: 'Vengono convertiti automaticamente in un Named Volume'
+        },
+        {
+          en: 'Nothing, it remains on the hard drive',
+          it: 'Nulla, rimangono memorizzati sul disco rigido'
+        }
       ],
       correct: 1,
-      explanation: 'The writable layer is deeply tied to the lifecycle of the container instance. When the container goes, the layer (and all its data) vanishes.'
+      explanation: {
+        en: 'The writable layer is deeply tied to the lifecycle of the container instance. When the container goes, the layer (and all its data) vanishes.',
+        it: 'Il layer scrivibile è strettamente legato al ciclo di vita del container. Quando il container viene rimosso, il layer (e tutti i suoi dati) svanisce.'
+      }
     },
     {
       id: 'docker-5-q2',
-      question: 'For a production MySQL database running in Docker, which storage method is strongly recommended?',
+      question: {
+        en: 'For a production MySQL database running in Docker, which storage method is strongly recommended?',
+        it: 'Per un database MySQL in produzione in esecuzione su Docker, quale metodo di archiviazione è caldamente consigliato?'
+      },
       options: [
-        'Bind Mounts',
-        'The default Writable Layer',
-        'Named Volumes',
-        'In-memory RAM allocation'
+        {
+          en: 'Bind Mounts',
+          it: 'Bind Mounts'
+        },
+        {
+          en: 'The default Writable Layer',
+          it: 'Il Writable Layer predefinito'
+        },
+        {
+          en: 'Named Volumes',
+          it: 'Named Volumes'
+        },
+        {
+          en: 'In-memory RAM allocation',
+          it: 'Allocazione in RAM (In-memory)'
+        }
       ],
       correct: 2,
-      explanation: 'Named Volumes are managed entirely by Docker, circumventing host OS file permission issues and providing the safest, most performant way to store persistent database information.'
+      explanation: {
+        en: 'Named Volumes are managed entirely by Docker, circumventing host OS file permission issues and providing the safest, most performant way to store persistent database information.',
+        it: 'I Named Volume sono gestiti interamente da Docker, evitando problemi di autorizzazione dei file del sistema operativo host e offrendo il modo più sicuro e performante per memorizzare informazioni persistenti del database.'
+      }
     }
   ]
 }

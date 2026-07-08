@@ -92,27 +92,63 @@ volumes:
   quiz: [
     {
       id: 'docker-7-q1',
-      question: 'What is the primary advantage of using Docker Compose over standard Docker CLI commands?',
+      question: {
+        en: 'What is the primary advantage of using Docker Compose over standard Docker CLI commands?',
+        it: 'Qual è il vantaggio principale dell\'utilizzo di Docker Compose rispetto ai comandi standard della CLI di Docker?'
+      },
       options: [
-        'It runs containers 5x faster',
-        'It allows you to declaratively define and manage multi-container applications in a single file',
-        'It replaces the need for a Docker Hub account',
-        'It allows Docker to run natively without virtualization'
+        {
+          en: 'It runs containers 5x faster',
+          it: 'Esegue i container 5 volte più velocemente'
+        },
+        {
+          en: 'It allows you to declaratively define and manage multi-container applications in a single file',
+          it: 'Consente di definire e gestire in modo dichiarativo applicazioni multi-container in un unico file'
+        },
+        {
+          en: 'It replaces the need for a Docker Hub account',
+          it: 'Sostituisce la necessità di un account Docker Hub'
+        },
+        {
+          en: 'It allows Docker to run natively without virtualization',
+          it: 'Consente a Docker di funzionare in modo nativo senza virtualizzazione'
+        }
       ],
       correct: 1,
-      explanation: 'Compose translates dozens of complex CLI flags into a clean, repeatable YAML configuration file, perfect for spinning up complex dev environments instantly.'
+      explanation: {
+        en: 'Compose translates dozens of complex CLI flags into a clean, repeatable YAML configuration file, perfect for spinning up complex dev environments instantly.',
+        it: 'Compose traduce dozzine di flag CLI complessi in un file di configurazione YAML pulito e ripetibile, perfetto per avviare istantaneamente ambienti di sviluppo complessi.'
+      }
     },
     {
       id: 'docker-7-q2',
-      question: 'If you run `docker-compose down`, what happens to your Named Volumes?',
+      question: {
+        en: 'If you run `docker-compose down`, what happens to your Named Volumes?',
+        it: 'Se esegui `docker-compose down`, cosa succede ai tuoi Named Volumes?'
+      },
       options: [
-        'They are deleted along with the containers',
-        'They are uploaded to Docker Hub',
-        'They are preserved safely by default',
-        'They are compressed into a tarball'
+        {
+          en: 'They are deleted along with the containers',
+          it: 'Vengono eliminati insieme ai container'
+        },
+        {
+          en: 'They are uploaded to Docker Hub',
+          it: 'Vengono caricati su Docker Hub'
+        },
+        {
+          en: 'They are preserved safely by default',
+          it: 'Vengono conservati in sicurezza per impostazione predefinita'
+        },
+        {
+          en: 'They are compressed into a tarball',
+          it: 'Vengono compressi in un file tarball'
+        }
       ],
       correct: 2,
-      explanation: 'By default, `docker-compose down` removes containers and networks, but PRESERVES volumes to prevent accidental data loss. You must append `-v` to explicitly delete volumes.'
+      explanation: {
+        en: 'By default, `docker-compose down` removes containers and networks, but PRESERVES volumes to prevent accidental data loss. You must append `-v` to explicitly delete volumes.',
+        it: 'Per impostazione predefinita, `docker-compose down` rimuove i container e le reti, ma PRESERVA i volumi per evitare la perdita accidentale di dati. È necessario aggiungere `-v` per eliminare esplicitamente i volumi.'
+      }
     }
   ]
 }

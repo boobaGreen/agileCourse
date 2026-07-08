@@ -101,69 +101,147 @@ export function DragOrderGame({ items, onComplete }: { items: GameDataItem[], on
   )
 }
 
+const gameDict = {
+  en: {
+    classifyTitle: 'Challenge: Categorize Components',
+    classifySubtitle: 'Drag and drop the cards below into the correct category box, or click the buttons on each card to place them.',
+    validated: 'Architecture Validated! (+15 XP)'
+  },
+  it: {
+    classifyTitle: 'Sfida: Categorizza i Componenti',
+    classifySubtitle: 'Trascina le schede in basso nel riquadro della categoria corretta, oppure clicca sui pulsanti di ciascuna scheda per posizionarle.',
+    validated: 'Architettura Validata! (+15 XP)'
+  }
+}
+
 export function DragClassifyGame({ categories, items, onComplete }: { categories: GameDataClassify['categories'], items: GameDataClassify['items'], onComplete?: () => void }) {
-  const { resolveString } = useLanguage()
+  const { resolveString, language } = useLanguage()
   const [solved, setSolved] = useState(false)
   const [selections, setSelections] = useState<Record<string, string>>({}) // itemId -> categoryId
   const [currentItems] = useState(() => [...items].sort(() => Math.random() - 0.5))
+  const [errorItem, setErrorItem] = useState<string | null>(null)
+  const [draggedOver, setDraggedOver] = useState<string | null>(null)
 
   const classify = (itemId: string, catId: string) => {
-    const newSels = { ...selections, [itemId]: catId }
-    setSelections(newSels)
-    
-    const allDone = items.length === Object.keys(newSels).length
-    const allCorrect = items.every(item => newSels[item.id] === item.categoryId)
-    if (allDone && allCorrect) {
-        setSolved(true)
-        if (onComplete) onComplete()
+    const item = items.find(i => i.id === itemId)
+    if (!item) return
+
+    if (catId === item.categoryId) {
+      // Correct placement
+      setSelections(prev => {
+        const next = { ...prev, [itemId]: catId }
+        const allDone = items.length === Object.keys(next).length
+        if (allDone) {
+          setSolved(true)
+          if (onComplete) onComplete()
+          confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 } })
+        }
+        return next
+      })
+    } else {
+      // Incorrect placement: shake the card
+      setErrorItem(itemId)
+      setTimeout(() => {
+        setErrorItem(null)
+      }, 500)
     }
   }
 
+  const isIt = language === 'it'
+  const dict = gameDict[isIt ? 'it' : 'en']
+
   return (
-    <div className="card p-6 border-blue-500/20 bg-blue-500/5">
+    <div className="card p-6 border-blue-500/20 bg-blue-500/5 text-left">
       <div className="text-center mb-6">
-        <h4 className="text-white fw-black uppercase tracking-tight mb-1">Challenge: Categorize Components</h4>
-        <p className="text-muted text-xs">Assign each item to its correct architectural layer.</p>
+        <h4 className="text-white fw-black uppercase tracking-tight mb-1">{dict.classifyTitle}</h4>
+        <p className="text-muted text-xs leading-relaxed max-w-lg mx-auto">{dict.classifySubtitle}</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-         {categories.map(cat => (
-           <div key={cat.id} className="p-4 rounded-xl border border-white/10 bg-black/20 text-center min-h-[120px] flex flex-col items-center gap-3">
-              <span className="text-[10px] sm:text-xs fw-black text-white uppercase tracking-widest">{resolveString(cat.label)}</span>
-              <div className="flex flex-wrap justify-center gap-2">
-                 {items.filter(i => selections[i.id] === cat.id).map(i => (
-                   <div key={i.id} className="px-2 py-1 rounded bg-white/10 text-[10px] sm:text-xs text-white">
-                      {resolveString(i.label)}
-                   </div>
-                 ))}
-              </div>
-           </div>
-         ))}
+         {categories.map(cat => {
+           const isOver = draggedOver === cat.id
+           return (
+             <div 
+               key={cat.id}
+               onDragOver={(e) => {
+                 e.preventDefault()
+                 if (!solved) setDraggedOver(cat.id)
+               }}
+               onDragLeave={() => setDraggedOver(null)}
+               onDrop={(e) => {
+                 e.preventDefault()
+                 setDraggedOver(null)
+                 if (solved) return
+                 const itemId = e.dataTransfer.getData('text/plain')
+                 if (itemId) classify(itemId, cat.id)
+               }}
+               className={`p-4 rounded-xl border text-center min-h-[130px] flex flex-col items-center gap-3 transition-all duration-200 relative ${
+                 isOver 
+                   ? 'border-primary bg-primary/10 scale-[1.02] shadow-lg shadow-primary/10' 
+                   : 'border-white/10 bg-black/20'
+               }`}
+             >
+                <span className="text-[10px] sm:text-xs fw-black text-white uppercase tracking-widest">{resolveString(cat.label)}</span>
+                <div className="flex flex-wrap justify-center gap-2">
+                   {items.filter(i => selections[i.id] === cat.id).map(i => (
+                     <motion.div 
+                       key={i.id}
+                       initial={{ scale: 0.8, opacity: 0 }}
+                       animate={{ scale: 1, opacity: 1 }}
+                       className="px-2.5 py-1 rounded bg-green/10 border border-green/30 text-[10px] sm:text-xs text-green flex items-center gap-1 font-bold"
+                     >
+                       ✅ {resolveString(i.label)}
+                     </motion.div>
+                   ))}
+                </div>
+             </div>
+           )
+         })}
       </div>
 
       <div className="flex flex-wrap justify-center gap-3">
          {currentItems.filter(i => !selections[i.id]).map(item => (
-           <div key={item.id} className="p-3 pr-2 rounded-xl bg-surface2 border border-white/5 flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
-              <span className="text-xs fw-bold text-white text-center sm:text-left">{resolveString(item.label)}</span>
-              <div className="flex gap-1 flex-wrap justify-center">
-                 {categories.map(cat => (
-                   <button 
-                     key={cat.id} 
-                     onClick={() => classify(item.id, cat.id)}
-                     className="px-3 py-1.5 rounded text-[10px] sm:text-xs fw-black bg-white/5 hover:bg-primary hover:text-white transition-colors uppercase"
-                   >
-                     {resolveString(cat.label)}
-                   </button>
-                 ))}
-              </div>
-           </div>
+           <motion.div 
+             key={item.id}
+             animate={errorItem === item.id ? { x: [-6, 6, -6, 6, 0] } : {}}
+             transition={{ duration: 0.4 }}
+           >
+             <div
+               draggable={!solved}
+               onDragStart={(e) => {
+                 if (solved) return
+                 e.dataTransfer.setData('text/plain', item.id)
+               }}
+               className={`p-3 pr-2 rounded-xl bg-surface2 border flex flex-col sm:flex-row items-center gap-3 sm:gap-4 transition-all duration-200 select-none ${
+                 errorItem === item.id 
+                   ? 'border-red-500/50 bg-red-500/10' 
+                   : solved 
+                     ? 'border-white/5 opacity-50 cursor-default' 
+                     : 'border-white/5 hover:border-white/20 cursor-grab active:cursor-grabbing hover:bg-surface2/80 shadow-md'
+               }`}
+             >
+                <span className="text-xs fw-bold text-white text-center sm:text-left">{resolveString(item.label)}</span>
+                <div className="flex gap-1 flex-wrap justify-center">
+                   {categories.map(cat => (
+                     <button 
+                       key={cat.id} 
+                       onClick={() => classify(item.id, cat.id)}
+                       disabled={solved}
+                       className="px-3 py-1.5 rounded text-[10px] sm:text-xs fw-black bg-white/5 hover:bg-primary hover:text-white transition-colors uppercase cursor-pointer"
+                     >
+                       {resolveString(cat.label)}
+                     </button>
+                   ))}
+                </div>
+             </div>
+           </motion.div>
          ))}
       </div>
 
       {solved && (
         <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center mt-6">
-           <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-green text-white fw-black text-sm">
-              <Trophy size={16} /> Architecture Validated! (+15 XP)
+           <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-green text-white fw-black text-sm shadow-lg shadow-green/20">
+              <Trophy size={16} /> {dict.validated}
            </div>
         </motion.div>
       )}
