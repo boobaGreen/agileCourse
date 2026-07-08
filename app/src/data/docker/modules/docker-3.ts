@@ -30,10 +30,10 @@ export const docker3: Module = {
         it: '📺 Scrivere un Dockerfile da Zero'
       },
       content: {
-        en: 'A perfect 12-minute breakdown on how to construct a Dockerfile and minimize its final size.',
-        it: 'Un\'analisi di 12 minuti per capire come costruire un Dockerfile e ridurne al minimo le dimensioni finali.'
+        en: 'A perfect 5-minute breakdown on how to write a Dockerfile and compile your first image.',
+        it: 'Un\'analisi di 5 minuti per capire come scrivere un Dockerfile e compilare la tua prima immagine.'
       },
-      videoUrl: 'https://www.youtube.com/watch?v=WmcdMiyqfZs'
+      videoUrl: 'https://www.youtube.com/watch?v=qrGcRuHR8QI'
     },
     {
       type: 'table',
