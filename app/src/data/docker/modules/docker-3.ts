@@ -33,7 +33,7 @@ export const docker3: Module = {
         en: 'A perfect 5-minute breakdown on how to write a Dockerfile and compile your first image.',
         it: 'Un\'analisi di 5 minuti per capire come scrivere un Dockerfile e compilare la tua prima immagine.'
       },
-      videoUrl: 'https://www.youtube.com/watch?v=qrGcRuHR8QI'
+      videoUrl: 'https://www.youtube.com/watch?v=DqyNssbqEaE'
     },
     {
       type: 'table',
