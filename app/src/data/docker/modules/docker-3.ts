@@ -4,26 +4,125 @@ export const docker3: Module = {
   id: 'docker-3',
   track: 'docker',
   order: 3,
-  title: 'The Dockerfile',
-  subtitle: 'Building your own custom images',
+  title: {
+    en: 'The Dockerfile',
+    it: 'Il Dockerfile'
+  },
+  subtitle: {
+    en: 'Building your own custom images',
+    it: 'Costruire le tue immagini personalizzate'
+  },
   emoji: '📝',
   duration: '25 min',
   xpReward: 150,
   sections: [
     {
       type: 'intro',
-      content: 'You won\'t always rely on predefined images. To create an environment specifically for your app, you write a **Dockerfile** — a simple, standardized text document containing all the commands a user could call on the command line to assemble an image.'
+      content: {
+        en: 'You won\'t always rely on predefined images. To create an environment specifically for your app, you write a **Dockerfile** — a simple, standardized text document containing all the commands a user could call on the command line to assemble an image.',
+        it: 'Non ti affiderai sempre a immagini predefinite. Per creare un ambiente specifico per la tua app, scrivi un **Dockerfile**: un documento di testo semplice e standardizzato contenente tutti i comandi che potresti digitare sulla riga di comando per assemblare un\'immagine.'
+      }
     },
     {
       type: 'video',
-      title: '📺 Writing a Dockerfile from Scratch',
-      content: 'A perfect 12-minute breakdown on how to construct a Dockerfile and minimize its final size.',
+      title: {
+        en: '📺 Writing a Dockerfile from Scratch',
+        it: '📺 Scrivere un Dockerfile da Zero'
+      },
+      content: {
+        en: 'A perfect 12-minute breakdown on how to construct a Dockerfile and minimize its final size.',
+        it: 'Un\'analisi di 12 minuti per capire come costruire un Dockerfile e ridurne al minimo le dimensioni finali.'
+      },
       videoUrl: 'https://www.youtube.com/watch?v=WmcdMiyqfZs'
     },
     {
+      type: 'table',
+      title: {
+        en: '🛠️ Core Instructions Reference',
+        it: '🛠️ Riferimento delle Istruzioni Principali'
+      },
+      content: {
+        en: 'Memorize these five. They cover 90% of your Dockerfile needs:',
+        it: 'Memorizza queste cinque istruzioni. Coprono il 90% delle tue esigenze con i Dockerfile:'
+      },
+      tableData: {
+        headers: [
+          { en: 'Instruction', it: 'Istruzione' },
+          { en: 'Purpose', it: 'Scopo' },
+          { en: 'When does it execute?', it: 'Quando viene eseguita?' }
+        ],
+        rows: [
+          [
+            { en: '**FROM**', it: '**FROM**' },
+            { en: 'Defines the base OS image to start from', it: 'Definisce l\'immagine del sistema operativo di base da cui partire' },
+            { en: 'Build Phase (Step 1)', it: 'Fase di Build (Passo 1)' }
+          ],
+          [
+            { en: '**WORKDIR**', it: '**WORKDIR**' },
+            { en: 'Sets the active directory inside the container', it: 'Imposta la cartella di lavoro attiva nel container' },
+            { en: 'Build Phase', it: 'Fase di Build' }
+          ],
+          [
+            { en: '**COPY**', it: '**COPY**' },
+            { en: 'Copies files from your laptop into the image', it: 'Copia i file dal tuo computer all\'interno dell\'immagine' },
+            { en: 'Build Phase', it: 'Fase di Build' }
+          ],
+          [
+            { en: '**RUN**', it: '**RUN**' },
+            { en: 'Executes shell commands (like `apt install` or `npm install`)', it: 'Esegue comandi di terminale (come `apt install` o `npm install`) per creare i layer' },
+            { en: 'Build Phase (Creates a layer)', it: 'Fase di Build (Crea un layer)' }
+          ],
+          [
+            { en: '**CMD**', it: '**CMD**' },
+            { en: 'Defines the default command that runs when the **container starts**', it: 'Definisce il comando predefinito eseguito all\'avvio del container' },
+            { en: 'Runtime Phase (Once only)', it: 'Fase di Runtime (Una sola volta all\'avvio)' }
+          ]
+        ]
+      }
+    },
+    {
+       type: 'concept',
+       title: {
+         en: '🛑 The Container Lifecycle',
+         it: '🛑 Il Ciclo di Vita del Container'
+       },
+       content: {
+         en: 'A container is designed to run a specific task. **When the process defined in CMD finishes, the container exits automatically.** For example, a container running `echo hello` will exit immediately after printing, while a web server will keep running as long as the server process is alive.',
+         it: 'Un container è progettato per eseguire un compito specifico. **Quando il processo definito in CMD termina, il container si arresta automaticamente.** Ad esempio, un container che esegue `echo hello` terminerà subito dopo la stampa, mentre un server web rimarrà attivo finché il processo del server è in esecuzione.'
+       }
+    },
+    {
+      type: 'concept',
+      title: {
+        en: '⚡ Understanding the Build Cache',
+        it: '⚡ Capire la Cache di Build'
+      },
+      content: {
+        en: 'Docker builds images sequentially. To speed things up, it **caches** each layer. If you change a line of code, Docker tries to reuse the cache. **However**, if a layer is invalidated (e.g., a file changed in `COPY`), ALL subsequent layers are completely rebuilt.\n\nThis is why we `COPY package.json` and `RUN npm install` **BEFORE** we `COPY . .` (the rest of the code). We don\'t want to reinstall 500MB of Node modules just because we changed a typo in `index.html`!',
+        it: 'Docker compila le immagini in sequenza. Per velocizzare il processo, memorizza in **cache** ogni layer. Se modifichi una riga di codice, Docker tenta di riutilizzare la cache. **Tuttavia**, se un layer viene invalidato (es. un file modificato in `COPY`), TUTTI i layer successivi vengono ricostruiti da zero.\n\nQuesto è il motivo per cui eseguiamo `COPY package.json` e `RUN npm install` **PRIMA** di `COPY . .` (il resto del codice). Non vogliamo reinstallare 500MB di moduli Node solo perché abbiamo corretto un refuso in `index.html`!'
+      }
+    },
+    {
+      type: 'concept',
+      title: {
+        en: '⚡ Layers & Caching',
+        it: '⚡ Layer e Caching'
+      },
+      content: {
+        en: 'Docker caches each step. If you change a file, Docker rebuilds from that layer down. If you need a completely fresh build without using old cached layers, use the **`--no-cache`** flag:\n\n`docker build --no-cache -t my-app .`\n\n💡 **Did you notice the dot `.` at the end of the build command?** In Docker, that dot specifies the **build context** (usually the current directory). It tells Docker where to look for the `Dockerfile` and the files you want to copy. Leaving it out will result in an error!',
+        it: 'Docker memorizza nella cache ogni passaggio. Se modifichi un file, Docker ricostruisce da quel layer in poi. Se hai bisogno di una build completamente nuova senza usare i vecchi layer in cache, usa il flag **`--no-cache`**:\n\n`docker build --no-cache -t my-app .`\n\n💡 **Hai notato il punto `.` alla fine del comando di build?** In Docker, quel punto specifica il **contesto di build** (solitamente la cartella corrente). Indica a Docker dove cercare il `Dockerfile` e i file da copiare. Dimenticarlo causerà un errore!'
+      }
+    },
+    {
       type: 'game',
-      title: 'Challenge: The Dockerfile Builder',
-      content: 'Order the instructions logically to create a functional Node.js backend Dockerfile (from absolute base to final execution).',
+      title: {
+        en: 'Challenge: The Dockerfile Builder',
+        it: 'Sfida: Il Costruttore di Dockerfile'
+      },
+      content: {
+        en: 'Order the instructions logically to create a functional Node.js backend Dockerfile (from absolute base to final execution).',
+        it: 'Ordina le istruzioni in modo logico per creare un Dockerfile di backend Node.js funzionante (dall\'immagine di base all\'esecuzione finale).'
+      },
       gameType: 'drag-order',
       gameData: [
         { id: '1', label: 'FROM node:18-alpine' },
@@ -35,39 +134,15 @@ export const docker3: Module = {
       ]
     },
     {
-      type: 'table',
-      title: '🛠️ Core Instructions Reference',
-      content: 'Memorize these five. They cover 90% of your Dockerfile needs:',
-      tableData: {
-        headers: ['Instruction', 'Purpose', 'When does it execute?'],
-        rows: [
-          ['**FROM**', 'Defines the base OS image to start from', 'Build Phase (Step 1)'],
-          ['**WORKDIR**', 'Sets the active directory inside the container', 'Build Phase'],
-          ['**COPY**', 'Copies files from your laptop into the image', 'Build Phase'],
-          ['**RUN**', 'Executes shell commands (like `apt install` or `npm install`)', 'Build Phase (Creates a layer)'],
-          ['**CMD**', 'Defines the default command that runs when the **container starts**', 'Runtime Phase (Once only)']
-        ]
-      }
-    },
-    {
-      type: 'concept',
-      title: '⚡ Layers & Caching',
-      content: 'Docker caches each step. If you change a file, Docker rebuilds from that layer down. If you need a completely fresh build without using old cached layers, use the **`--no-cache`** flag:\n\n`docker build --no-cache -t my-app .`'
-    },
-    {
-       type: 'concept',
-       title: '🛑 The Container Lifecycle',
-       content: 'A container is designed to run a specific task. **When the process defined in CMD finishes, the container exits automatically.** For example, a container running `echo hello` will exit immediately after printing, while a web server will keep running as long as the server process is alive.'
-    },
-    {
-      type: 'concept',
-      title: '⚡ Understanding the Build Cache',
-      content: 'Docker builds images sequentially. To speed things up, it **caches** each layer. If you change a line of code, Docker tries to reuse the cache. **However**, if a layer is invalidated (e.g., a file changed in `COPY`), ALL subsequent layers are completely rebuilt.\n\nThis is why we `COPY package.json` and `RUN npm install` **BEFORE** we `COPY . .` (the rest of the code). We don\'t want to reinstall 500MB of Node modules just because we changed a typo in `index.html`!'
-    },
-    {
       type: 'game',
-      title: 'Lab: Build Your Custom Image',
-      content: 'In this simulator, you will actually build a custom image from a Dockerfile. Watch the "Image Registry" update as you tag your work.',
+      title: {
+        en: 'Lab: Build Your Custom Image',
+        it: 'Lab: Crea la tua Immagine Personalizzata'
+      },
+      content: {
+        en: 'In this simulator, you will actually build a custom image from a Dockerfile. Watch the "Image Registry" update as you tag your work.',
+        it: 'In questo simulatore caricherai e compilerai un\'immagine personalizzata da un Dockerfile. Osserva l\'aggiornamento del registro delle immagini mentre assegni i tag al tuo lavoro.'
+      },
       gameType: 'docker-sim',
       gameData: {
         startState: {
@@ -75,7 +150,14 @@ export const docker3: Module = {
           containers: []
         },
         tasks: [
-          { id: '1', instruction: 'Build the current directory and tag it as "myapp:v1" (use `docker build -t myapp:v1 .`)', condition: 'PULLED:myapp' }
+          {
+            id: '1',
+            instruction: {
+              en: 'Build the current directory and tag it as "myapp:v1" (use `docker build -t myapp:v1 .`)',
+              it: 'Compila la cartella corrente e assegna il tag "myapp:v1" (usa `docker build -t myapp:v1 .`)'
+            },
+            condition: 'PULLED:myapp'
+          }
         ]
       }
     }
