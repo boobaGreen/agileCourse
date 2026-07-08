@@ -77,6 +77,37 @@ const layersDict: Record<'en' | 'it', Record<string, string>> = {
   }
 }
 
+const cacheDict: Record<'en' | 'it', Record<string, string>> = {
+  en: {
+    cacheTitle: 'Interactive Build Cache Visualizer',
+    badBtn: '❌ The Bad Way',
+    goodBtn: '✅ The Good Way',
+    editCodeBtn: '✏️ Edit index.html (Simulate Code Change)',
+    cachedText: 'Using Cache (0.0s) ⚡',
+    rebuildText: 'Rebuilding Layer (45.0s) ⏳',
+    rebuildFastText: 'Rebuilding Layer (0.1s) ⚡',
+    statusTitle: 'Build Results:',
+    badStatusDesc: '❌ Re-downloaded 500MB of dependencies because COPY invalidation broke the cache cascade!',
+    goodStatusDesc: '✅ Reused cache for npm install! Built in 0.1 seconds by copying package.json first.',
+    badCodeDesc: 'Everything is copied at once. Changing one line of code rebuilds the install step.',
+    goodCodeDesc: 'package.json is copied first. npm install is cached unless dependencies change.'
+  },
+  it: {
+    cacheTitle: 'Visualizzatore Interattivo della Cache di Build',
+    badBtn: '❌ Via Sbagliata',
+    goodBtn: '✅ Via Corretta (Ottimizzata)',
+    editCodeBtn: '✏️ Modifica index.html (Simula Cambio Codice)',
+    cachedText: 'Usa Cache (0.0s) ⚡',
+    rebuildText: 'Ricostruzione Layer (45.0s) ⏳',
+    rebuildFastText: 'Ricostruzione Layer (0.1s) ⚡',
+    statusTitle: 'Risultati della Build:',
+    badStatusDesc: '❌ Riscaricati 500MB di librerie perché la modifica del codice ha rotto la cascata della cache!',
+    goodStatusDesc: '✅ Riutilizzata la cache per npm install! Compilato in 0.1 secondi separando package.json.',
+    badCodeDesc: 'Tutto viene copiato insieme. Modificare una riga di codice ricostruisce l\'installazione.',
+    goodCodeDesc: 'Copia prima package.json. npm install rimane in cache finché non cambiano le dipendenze.'
+  }
+}
+
 const layerDetailsDict = {
   en: {
     osTitle: 'Base OS Layer',
@@ -110,6 +141,34 @@ export function EducationAnimation({ type }: { type: string }) {
   const [selectedLayer, setSelectedLayer] = useState<string | null>(null)
   const [isContainerMode, setIsContainerMode] = useState(false)
   const { language } = useLanguage()
+
+  const [isOptimized, setIsOptimized] = useState(false)
+  const [buildStatus, setBuildStatus] = useState<'idle' | 'building' | 'done'>('idle')
+  const [codeChanged, setCodeChanged] = useState(false)
+  const [activeStep, setActiveStep] = useState<number>(-1)
+
+  const runBuildSimulation = () => {
+    setBuildStatus('building')
+    setActiveStep(0)
+    
+    const delay = isOptimized ? 600 : 1200
+    
+    setTimeout(() => {
+      setActiveStep(1)
+      setTimeout(() => {
+        if (isOptimized) {
+          setActiveStep(2)
+          setTimeout(() => {
+            setBuildStatus('done')
+            setActiveStep(-1)
+          }, 500)
+        } else {
+          setBuildStatus('done')
+          setActiveStep(-1)
+        }
+      }, delay)
+    }, 600)
+  }
 
   const hash = useMemo(() => {
     // Simple but deterministic hash for educational visual demo
@@ -792,6 +851,309 @@ export function EducationAnimation({ type }: { type: string }) {
               </p>
             </div>
 
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (type.toLowerCase().includes('cache')) {
+    const isIt = language === 'it'
+    const dict = cacheDict[isIt ? 'it' : 'en']
+
+    return (
+      <div className="w-full flex flex-col gap-6">
+        {/* Toggle Switch */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-white/5 pb-4">
+          <div className="text-left">
+            <h4 className="text-sm font-black text-white">{dict.cacheTitle}</h4>
+            <p className="text-[10px] text-muted">
+              {isIt ? 'Simula il comportamento della cache modificando il codice sorgente' : 'Simulate cache behavior by modifying the source code'}
+            </p>
+          </div>
+          
+          <div className="flex bg-black/40 border border-white/10 rounded-xl p-1 shrink-0">
+            <button
+              onClick={() => {
+                setIsOptimized(false)
+                setBuildStatus('idle')
+                setCodeChanged(false)
+                setActiveStep(-1)
+              }}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                !isOptimized 
+                  ? 'bg-danger/20 border border-danger/30 text-white' 
+                  : 'text-muted hover:text-sub'
+              }`}
+            >
+              {dict.badBtn}
+            </button>
+            <button
+              onClick={() => {
+                setIsOptimized(true)
+                setBuildStatus('idle')
+                setCodeChanged(false)
+                setActiveStep(-1)
+              }}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                isOptimized 
+                  ? 'bg-emerald-500/20 border border-emerald-400/30 text-white' 
+                  : 'text-muted hover:text-sub'
+              }`}
+            >
+              {dict.goodBtn}
+            </button>
+          </div>
+        </div>
+
+        {/* Content Box */}
+        <div className="flex flex-col md:flex-row gap-6">
+          {/* Left Panel: Build Controller */}
+          <div className="md:w-7/12 flex flex-col gap-4 bg-black/20 border border-white/5 rounded-2xl p-5 shadow-inner">
+            
+            {/* Simulation status */}
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[10px] text-muted font-black uppercase tracking-wider">
+                {isIt ? 'Stato Codice Sorgente:' : 'Source Code Status:'}
+              </span>
+              <span className={`px-2 py-0.5 rounded text-[9px] font-bold ${codeChanged ? 'bg-yellow-400/20 border border-yellow-400/30 text-yellow-300' : 'bg-white/5 text-muted'}`}>
+                {codeChanged 
+                  ? (isIt ? 'Modificato (index.html cambiato)' : 'Modified (index.html changed)') 
+                  : (isIt ? 'Nessuna modifica (Pulito)' : 'Unmodified (Clean)')
+                }
+              </span>
+            </div>
+
+            {/* Code edit simulation button */}
+            <button
+              onClick={() => {
+                setCodeChanged(true)
+                setBuildStatus('idle')
+              }}
+              className="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-bold border border-white/10 transition-all flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>✏️</span> {dict.editCodeBtn}
+            </button>
+
+            {/* Build action button */}
+            <button
+              disabled={buildStatus === 'building'}
+              onClick={runBuildSimulation}
+              className={`w-full py-3 px-4 rounded-xl text-white text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 border cursor-pointer ${
+                buildStatus === 'building'
+                  ? 'bg-white/5 border-white/10 text-muted cursor-not-allowed'
+                  : isOptimized 
+                    ? 'bg-emerald-500 hover:bg-emerald-600 border-emerald-400/25 shadow-emerald-500/10'
+                    : 'bg-danger hover:bg-danger/80 border-danger/25 shadow-danger/10'
+              }`}
+            >
+              <span>⚡</span> {isIt ? 'Esegui Build (docker build)' : 'Run Build (docker build)'}
+            </button>
+
+            {/* Dockerfile Preview */}
+            <div className="flex flex-col gap-2 mt-2">
+              <span className="text-[9px] text-muted/60 font-black uppercase tracking-widest text-left select-none">
+                Dockerfile ({isOptimized ? 'Optimized' : 'Unoptimized'})
+              </span>
+              <div className="bg-black/40 border border-white/5 rounded-xl p-4 mono text-[10px] sm:text-xs leading-relaxed text-sub shadow-inner text-left">
+                <div className="text-muted mb-1"># Dockerfile</div>
+                <div><span className="text-blue-400 font-bold">FROM</span> <span className="text-orange-300">node:18-alpine</span></div>
+                
+                {!isOptimized ? (
+                  <>
+                    <div className={codeChanged ? 'bg-yellow-400/10 border-l-2 border-yellow-400 pl-1 my-0.5' : ''}>
+                      <span className="text-blue-400 font-bold">COPY</span> <span className="text-emerald-300">. .</span>
+                    </div>
+                    <div className={codeChanged ? 'bg-red-500/10 border-l-2 border-red-500 pl-1 my-0.5' : ''}>
+                      <span className="text-blue-400 font-bold">RUN</span> <span className="text-purple-300">npm install</span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="my-0.5 pl-1">
+                      <span className="text-blue-400 font-bold">COPY</span> <span className="text-emerald-300">package.json ./</span>
+                    </div>
+                    <div className="my-0.5 pl-1">
+                      <span className="text-blue-400 font-bold">RUN</span> <span className="text-purple-300">npm install</span>
+                    </div>
+                    <div className={codeChanged ? 'bg-yellow-400/10 border-l-2 border-yellow-400 pl-1 my-0.5' : ''}>
+                      <span className="text-blue-400 font-bold">COPY</span> <span className="text-emerald-300">. .</span>
+                    </div>
+                  </>
+                )}
+                
+                <div><span className="text-blue-400 font-bold">CMD</span> <span className="text-emerald-400">["node", "server.js"]</span></div>
+              </div>
+              <p className="text-[10px] text-muted italic text-left">
+                {isOptimized ? dict.goodCodeDesc : dict.badCodeDesc}
+              </p>
+            </div>
+
+          </div>
+
+          {/* Right Panel: Cache status stack */}
+          <div className="md:w-5/12 flex flex-col bg-surface border border-white/10 rounded-2xl p-5 shadow-xl justify-between text-left">
+            <div className="flex flex-col gap-4">
+              <span className="px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest border border-white/10 bg-white/5 text-muted self-start">
+                {isIt ? 'Layer Stack & Cache' : 'Layer Stack & Cache'}
+              </span>
+
+              {/* Stack Visual Representation */}
+              <div className="flex flex-col gap-2 w-full my-2">
+                
+                {/* CMD Layer */}
+                <div className="w-full py-2 px-3 rounded-lg border border-white/5 bg-white/5 text-muted flex items-center justify-between text-xs font-mono">
+                  <span>CMD ["node", "server.js"]</span>
+                  <span className="text-[9px] opacity-60">{isIt ? 'Metadati' : 'Metadata'}</span>
+                </div>
+
+                {!isOptimized ? (
+                  // Unoptimized Stack
+                  <>
+                    {/* RUN npm install */}
+                    <motion.div 
+                      animate={buildStatus === 'building' && activeStep === 1 ? { scale: [1, 1.02, 1] } : {}}
+                      transition={{ repeat: Infinity, duration: 0.8 }}
+                      className={`w-full py-3 px-4 rounded-lg border transition-all flex items-center justify-between text-xs font-mono ${
+                        buildStatus === 'idle'
+                          ? 'border-white/10 bg-white/5 text-sub'
+                          : buildStatus === 'building' && activeStep === 0
+                            ? 'border-white/10 bg-white/5 text-sub'
+                            : buildStatus === 'building' && activeStep === 1
+                              ? 'border-red-400/40 bg-red-500/10 text-red-300'
+                              : buildStatus === 'done' && codeChanged
+                                ? 'border-red-400 bg-red-500/20 text-white'
+                                : 'border-emerald-400 bg-emerald-500/20 text-white'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span>⚡ RUN npm install</span>
+                      </div>
+                      <span className="text-[9px] font-bold">
+                        {buildStatus === 'done' && codeChanged ? dict.rebuildText : (buildStatus === 'done' ? dict.cachedText : '...')}
+                      </span>
+                    </motion.div>
+
+                    {/* COPY . . */}
+                    <motion.div 
+                      animate={buildStatus === 'building' && activeStep === 0 ? { scale: [1, 1.02, 1] } : {}}
+                      transition={{ repeat: Infinity, duration: 0.8 }}
+                      className={`w-full py-3 px-4 rounded-lg border transition-all flex items-center justify-between text-xs font-mono ${
+                        buildStatus === 'idle'
+                          ? 'border-white/10 bg-white/5 text-sub'
+                          : buildStatus === 'building' && activeStep === 0
+                            ? 'border-yellow-400/40 bg-yellow-500/10 text-yellow-300'
+                            : buildStatus === 'done' && codeChanged
+                              ? 'border-yellow-400 bg-yellow-500/20 text-white'
+                              : 'border-emerald-400 bg-emerald-500/20 text-white'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span>📂 COPY . .</span>
+                      </div>
+                      <span className="text-[9px] font-bold">
+                        {buildStatus === 'done' && codeChanged ? dict.rebuildFastText : (buildStatus === 'done' ? dict.cachedText : '...')}
+                      </span>
+                    </motion.div>
+                  </>
+                ) : (
+                  // Optimized Stack
+                  <>
+                    {/* COPY . . */}
+                    <motion.div 
+                      animate={buildStatus === 'building' && activeStep === 2 ? { scale: [1, 1.02, 1] } : {}}
+                      transition={{ repeat: Infinity, duration: 0.8 }}
+                      className={`w-full py-3 px-4 rounded-lg border transition-all flex items-center justify-between text-xs font-mono ${
+                        buildStatus === 'idle'
+                          ? 'border-white/10 bg-white/5 text-sub'
+                          : buildStatus === 'building' && activeStep < 2
+                            ? 'border-white/10 bg-white/5 text-sub'
+                            : buildStatus === 'building' && activeStep === 2
+                              ? 'border-yellow-400/40 bg-yellow-500/10 text-yellow-300'
+                              : buildStatus === 'done' && codeChanged
+                                ? 'border-yellow-400 bg-yellow-500/20 text-white'
+                                : 'border-emerald-400 bg-emerald-500/20 text-white'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span>📂 COPY . .</span>
+                      </div>
+                      <span className="text-[9px] font-bold">
+                        {buildStatus === 'done' && codeChanged ? dict.rebuildFastText : (buildStatus === 'done' ? dict.cachedText : '...')}
+                      </span>
+                    </motion.div>
+
+                    {/* RUN npm install */}
+                    <motion.div 
+                      animate={buildStatus === 'building' && activeStep === 1 ? { scale: [1, 1.02, 1] } : {}}
+                      transition={{ repeat: Infinity, duration: 0.8 }}
+                      className={`w-full py-3 px-4 rounded-lg border transition-all flex items-center justify-between text-xs font-mono ${
+                        buildStatus === 'idle'
+                          ? 'border-white/10 bg-white/5 text-sub'
+                          : buildStatus === 'building' && activeStep === 0
+                            ? 'border-white/10 bg-white/5 text-sub'
+                            : buildStatus === 'building' && activeStep === 1
+                              ? 'border-emerald-400/40 bg-emerald-500/10 text-emerald-300'
+                              : 'border-emerald-400 bg-emerald-500/20 text-white'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span>⚡ RUN npm install</span>
+                      </div>
+                      <span className="text-[9px] font-bold">
+                        {buildStatus === 'done' ? dict.cachedText : '...'}
+                      </span>
+                    </motion.div>
+
+                    {/* COPY package.json */}
+                    <motion.div 
+                      animate={buildStatus === 'building' && activeStep === 0 ? { scale: [1, 1.02, 1] } : {}}
+                      transition={{ repeat: Infinity, duration: 0.8 }}
+                      className={`w-full py-3 px-4 rounded-lg border transition-all flex items-center justify-between text-xs font-mono ${
+                        buildStatus === 'idle'
+                          ? 'border-white/10 bg-white/5 text-sub'
+                          : buildStatus === 'building' && activeStep === 0
+                            ? 'border-emerald-400/40 bg-emerald-500/10 text-emerald-300'
+                            : 'border-emerald-400 bg-emerald-500/20 text-white'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span>📂 COPY package.json ./</span>
+                      </div>
+                      <span className="text-[9px] font-bold">
+                        {buildStatus === 'done' ? dict.cachedText : '...'}
+                      </span>
+                    </motion.div>
+                  </>
+                )}
+
+                {/* FROM Layer */}
+                <div className="w-full py-2 px-3 rounded-lg border border-emerald-500/20 bg-emerald-500/10 text-emerald-300 flex items-center justify-between text-xs font-mono">
+                  <span>FROM node:18-alpine</span>
+                  <span className="text-[9px] font-bold">{dict.cachedText}</span>
+                </div>
+
+              </div>
+
+              {/* Simulation Result feedback message */}
+              {buildStatus === 'done' && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`rounded-xl p-3.5 border text-xs text-left leading-normal font-medium ${
+                    isOptimized && codeChanged
+                      ? 'bg-emerald-500/10 border-emerald-500/25 text-emerald-300'
+                      : !isOptimized && codeChanged
+                        ? 'bg-danger/10 border-danger/25 text-red-300'
+                        : 'bg-white/5 border-white/10 text-muted'
+                  }`}
+                >
+                  <div className="font-bold mb-1">{dict.statusTitle}</div>
+                  <div>{codeChanged ? (isOptimized ? dict.goodStatusDesc : dict.badStatusDesc) : (isIt ? 'Build completata usando la cache per tutti i passaggi.' : 'Build completed using cache for all steps.')}</div>
+                </motion.div>
+              )}
+
+            </div>
           </div>
         </div>
       </div>

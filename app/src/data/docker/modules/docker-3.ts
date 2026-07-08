@@ -102,25 +102,26 @@ export const docker3: Module = {
        }
     },
     {
-      type: 'concept',
+      type: 'animation',
       title: {
-        en: '⚡ Understanding the Build Cache',
-        it: '⚡ Capire la Cache di Build'
+        en: '⚡ Interactive Build Cache Simulation',
+        it: '⚡ Simulazione Interattiva Cache di Build'
       },
       content: {
-        en: 'Docker builds images step-by-step, caching each layer. If a step changes, Docker cannot reuse the cache for it (the cache is "invalidated"), and it is forced to rebuild that step **AND all steps after it**.\n\n❌ **The Bad Way (Slow Build):**\n1. `COPY . .` (Copies everything. If you change even one line of code, this cache is destroyed!)\n2. `RUN npm install` (Docker is forced to download 500MB of libraries again!)\n\n✅ **The Good Way (Fast Build - Optimized):**\n1. `COPY package.json ./` (Copies only the list of libraries. This rarely changes!)\n2. `RUN npm install` (Docker reuses the cache and skips this heavy step!)\n3. `COPY . .` (Copies your code, which changes often but takes less than a second!)',
-        it: 'Docker compila le immagini passo dopo passo, salvando ogni passaggio in cache. Se un passaggio cambia, Docker non può riutilizzare la cache per esso (la cache viene "invalidata"), ed è costretto a rifare da zero quel passaggio **E tutti quelli successivi**.\n\n❌ **La via sbagliata (Build lenta):**\n1. `COPY . .` (Copia tutto. Se modifichi anche una sola riga di codice, questa cache viene distrutta!)\n2. `RUN npm install` (Docker è costretto a riscaricare 500MB di librerie da zero!)\n\n✅ **La via corretta (Build veloce - Ottimizzata):**\n1. `COPY package.json ./` (Copia solo la lista delle librerie. Questa cambia raramente!)\n2. `RUN npm install` (Docker riutilizza la cache e salta questo passaggio pesante!)\n3. `COPY . .` (Copia il tuo codice, che cambia spesso ma impiega meno di un secondo!)'
-      }
+        en: 'See the difference between an optimized and unoptimized Dockerfile build cache in real-time. Try changing the code and executing the build to see how Docker reuses or invalidates the cached layers.',
+        it: 'Guarda in tempo reale la differenza di caching tra un Dockerfile ottimizzato e uno non ottimizzato. Prova a modificare il codice ed eseguire la build per osservare come Docker riutilizza o invalida i layer.'
+      },
+      animationType: 'docker-cache'
     },
     {
       type: 'concept',
       title: {
-        en: '⚡ Layers & Caching',
-        it: '⚡ Layer e Caching'
+        en: '⚡ The --no-cache Flag & Build Context',
+        it: '⚡ Il Flag --no-cache e il Contesto di Build'
       },
       content: {
-        en: 'Docker caches each step. If you change a file, Docker rebuilds from that layer down. If you need a completely fresh build without using old cached layers, use the **`--no-cache`** flag:\n\n`docker build --no-cache -t my-app .`\n\n💡 **Did you notice the dot `.` at the end of the build command?** In Docker, that dot specifies the **build context** (usually the current directory). It tells Docker where to look for the `Dockerfile` and the files you want to copy. Leaving it out will result in an error!',
-        it: 'Docker memorizza nella cache ogni passaggio. Se modifichi un file, Docker ricostruisce da quel layer in poi. Se hai bisogno di una build completamente nuova senza usare i vecchi layer in cache, usa il flag **`--no-cache`**:\n\n`docker build --no-cache -t my-app .`\n\n💡 **Hai notato il punto `.` alla fine del comando di build?** In Docker, quel punto specifica il **contesto di build** (solitamente la cartella corrente). Indica a Docker dove cercare il `Dockerfile` e i file da copiare. Dimenticarlo causerà un errore!'
+        en: 'If you need a completely fresh build without using any cached layers, use the **`--no-cache`** flag:\n\n`docker build --no-cache -t my-app .`\n\n💡 **The Dot `.` represents the Build Context:** That final dot is mandatory. It tells Docker to look in the **current directory** for the `Dockerfile` and the files to copy. Omitting the dot is a common mistake that will crash the build!',
+        it: 'Se hai bisogno di una build pulita senza usare i layer in cache, aggiungi il flag **`--no-cache`**:\n\n`docker build --no-cache -t my-app .`\n\n💡 **Il punto `.` rappresenta il Contesto di Build:** Quel punto finale è obbligatorio. Indica a Docker di cercare nella **cartella corrente** il `Dockerfile` e i file da copiare. Dimenticarlo è un errore tipico che bloccherà la build!'
       }
     },
     {
