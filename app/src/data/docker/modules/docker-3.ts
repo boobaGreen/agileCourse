@@ -108,8 +108,8 @@ export const docker3: Module = {
         it: '⚡ Simulazione Interattiva Cache di Build'
       },
       content: {
-        en: 'See the difference between an optimized and unoptimized Dockerfile build cache in real-time. Try changing the code and executing the build to see how Docker reuses or invalidates the cached layers.',
-        it: 'Guarda in tempo reale la differenza di caching tra un Dockerfile ottimizzato e uno non ottimizzato. Prova a modificare il codice ed eseguire la build per osservare come Docker riutilizza o invalida i layer.'
+        en: 'How does the build cache work? Try these steps to see it in action:\n\n1. Click **✏️ Edit index.html** to simulate a change in your source code.\n2. Select **❌ The Bad Way** and click **⚡ Run Build**. Notice how Docker is forced to rebuild the heavy `RUN npm install` step (45s) because the cache cascade was broken!\n3. Now select **✅ The Good Way** and click **⚡ Run Build**. Notice how Docker uses the cache for `RUN npm install` (0s) and builds instantly!',
+        it: 'Come funziona la cache di build? Segui questi passaggi per vederla in azione:\n\n1. Clicca su **✏️ Modifica index.html** per simulare una modifica al codice.\n2. Seleziona **❌ Via Sbagliata** e clicca su **⚡ Esegui Build**. Nota come Docker sia costretto a rifare da zero il passaggio pesante `RUN npm install` (45s) perché la cascata della cache si è rotta!\n3. Ora seleziona **✅ Via Corretta** e clicca su **⚡ Esegui Build**. Nota come Docker riutilizzi la cache per `RUN npm install` (0s) completando la build all\'istante!'
       },
       animationType: 'docker-cache'
     },
