@@ -78,6 +78,11 @@ export const docker3: Module = {
             { en: 'Build Phase (Creates a layer)', it: 'Fase di Build (Crea un layer)' }
           ],
           [
+            { en: '**EXPOSE**', it: '**EXPOSE**' },
+            { en: 'Informs Docker that the container listens on the specified network port at runtime (primarily for documentation)', it: 'Informa Docker che il container rimarrà in ascolto sulla porta di rete specificata a runtime (principalmente a scopo documentativo)' },
+            { en: 'Build Phase (Metadata)', it: 'Fase di Build (Metadati)' }
+          ],
+          [
             { en: '**CMD**', it: '**CMD**' },
             { en: 'Defines the default command that runs when the **container starts**', it: 'Definisce il comando predefinito eseguito all\'avvio del container' },
             { en: 'Runtime Phase (Once only)', it: 'Fase di Runtime (Una sola volta all\'avvio)' }
