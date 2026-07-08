@@ -102,26 +102,60 @@ export const docker3: Module = {
        }
     },
     {
-      type: 'infographic',
+      type: 'concept',
       title: {
-        en: '🖼️ Infographic: Docker Build Cache Explained',
-        it: '🖼️ Infografica: Come funziona la Cache di Build'
+        en: '⚡ Understanding the Build Cache (The LEGO Analogy)',
+        it: '⚡ Capire la Cache di Build (L\'Analogia dei LEGO)'
       },
       content: {
-        en: 'This infographic compares the unoptimized way vs the optimized way of structuring your Dockerfile. Notice how changing the code invalidates everything above it in the stack.',
-        it: 'Questa infografica confronta il metodo non ottimizzato con quello ottimizzato per strutturare il tuo Dockerfile. Nota come la modifica del codice invalida tutto ciò che si trova sopra nello stack.'
-      },
-      imageUrl: '/docker_cache_infographic.png'
+        en: 'Docker builds images sequentially. To save time, it **caches** each layer. If you change a file, Docker cannot reuse the cache for that step and must rebuild it **AND all steps after it** (the cascade effect).\n\n🧱 **The LEGO Tower Analogy:**\nImagine building a LEGO tower. Each line in your `Dockerfile` is a brick. If you need to swap a brick in the *middle* of the tower, you have to take off and rebuild every single brick *above it*.\n\nTo make builds fast, we place bricks that change often (like source code) at the **very top** of the tower, and bricks that change rarely (like library installation) at the **bottom**.',
+        it: 'Docker compila le immagini in sequenza. Per risparmiare tempo, salva ogni layer in **cache**. Se modifichi un file, Docker non può riutilizzare la cache per quel passaggio ed è costretto a ricostruire da zero quel passaggio **E tutti quelli successivi** (effetto a cascata).\n\n🧱 **L\'Analogia della Torre LEGO:**\nImmagina di costruire una torre LEGO. Ogni istruzione nel tuo `Dockerfile` è un mattoncino. Se devi sostituire un mattoncino nel *mezzo* della torre, devi rimuovere e ricostruire ogni singolo mattoncino posizionato *sopra di esso*.\n\nPer velocizzare la build, posizioniamo i mattoncini che cambiano spesso (come il codice sorgente) in **cima** alla torre, e i mattoncini che cambiano raramente (come l\'installazione delle librerie) in **basso**.'
+      }
     },
     {
       type: 'concept',
       title: {
-        en: '⚡ Understanding the Build Cache (The LEGO Analogy)',
-        it: '⚡ Capire la Cache di Build (L\'Analogia dei Mattoncini LEGO)'
+        en: '💻 Dockerfile Caching: Bad vs Good Structure',
+        it: '💻 Caching nel Dockerfile: Struttura Errata vs Corretta'
       },
       content: {
-        en: 'Think of the Docker build cache like building a tower with LEGO bricks. Each instruction in your `Dockerfile` (like `FROM`, `COPY`, or `RUN`) is a brick in that tower.\n\n* **Docker caches each brick:** If you haven\'t changed anything, Docker simply reuses the existing brick (skipping the step instantly).\n* **The Cascade Effect:** If you modify a brick in the middle of the tower, every single layer built *on top of it* must also be completely rebuilt.\n\n---\n\n💻 **Why copying package.json separately matters:**\n\n1. **❌ The Unoptimized Way (Slow Build):**\n   If you copy your whole project folder (`COPY . .`) *before* running `npm install`, then any single character edit in your code (like `index.html`) invalidates the copy brick. Docker is forced to re-run the slow `npm install` and download 500MB of libraries again!\n\n2. **✅ The Optimized Way (Fast Build):**\n   If you copy only `package.json` first, run `npm install`, and *then* copy the rest of your files, the heavy library installation brick stays cached and skipped, because `package.json` hasn\'t changed! Only the tiny final code copy brick is rebuilt in a fraction of a second.',
-        it: 'Pensa alla cache di build di Docker come alla costruzione di una torre con i mattoncini LEGO. Ogni istruzione nel tuo `Dockerfile` (come `FROM`, `COPY` o `RUN`) rappresenta un mattoncino in quella torre.\n\n* **Docker salva in cache ogni mattoncino:** Se non hai modificato nulla, Docker riutilizza semplicemente il mattoncino esistente (saltando istantaneamente il passaggio).\n* **L\'Effetto a Cascata:** Se modifichi un mattoncino nel mezzo della torre, anche tutti i mattoncini posizionati *sopra di esso* dovranno essere completamente ricostruiti.\n\n---\n\n💻 **Perché copiare package.json separatamente fa la differenza:**\n\n1. **❌ La via non ottimizzata (Build lenta):**\n   Se copi l\'intera cartella del progetto (`COPY . .`) *prima* di eseguire `npm install`, qualsiasi singola modifica al codice (es. correggere un testo in `index.html`) invaliderà quel mattoncino. Docker sarà costretto a rieseguire il lento `npm install` riscaricando 500MB di librerie da zero!\n\n2. **✅ La via ottimizzata (Build veloce):**\n   Se copi prima solo il file `package.json`, esegui `npm install`, e *dopo* copi il resto dei file, il passaggio pesante dell\'installazione rimarrà in cache e verrà saltato, perché il file `package.json` non è cambiato! Solo l\'ultimo piccolo mattoncino del codice verrà ricostruito in una frazione di secondo.'
+        en: 'Here is how structuring your Dockerfile changes how Docker caches your layers:\n\n❌ **The Unoptimized Way (Slow Build):**\n```dockerfile\nFROM node:18-alpine\nWORKDIR /app\nCOPY . .          # Copies everything. If you change even 1 line of code, this cache is destroyed!\nRUN npm install   # ❌ Cache cascade broken! Docker must download and reinstall 500MB of packages!\nCMD ["node", "server.js"]\n```\n\n✅ **The Optimized Way (Fast Build):**\n```dockerfile\nFROM node:18-alpine\nWORKDIR /app\nCOPY package.json ./   # Copies only the library list (this changes very rarely)\nRUN npm install        # ✅ Cache used! Docker skips the heavy download instantly!\nCOPY . .               # Copies the rest of the code (takes less than a second to compile)\nCMD ["node", "server.js"]\n```',
+        it: 'Ecco come la struttura del tuo Dockerfile influisce sul caching dei layer:\n\n❌ **La Via Non Ottimizzata (Build lenta):**\n```dockerfile\nFROM node:18-alpine\nWORKDIR /app\nCOPY . .          # Copia tutto. Se modifichi anche una sola riga di codice, la cache si rompe!\nRUN npm install   # ❌ Cascata della cache rotta! Docker deve riscaricare e reinstallare 500MB di pacchetti!\nCMD ["node", "server.js"]\n```\n\n✅ **La Via Ottimizzata (Build veloce):**\n```dockerfile\nFROM node:18-alpine\nWORKDIR /app\nCOPY package.json ./   # Copia solo la lista delle librerie (cambia raramente)\nRUN npm install        # ✅ Cache utilizzata! Docker salta il download pesante all\'istante!\nCOPY . .               # Copia il resto del codice (impiega meno di un secondo)\nCMD ["node", "server.js"]\n```'
+      }
+    },
+    {
+      type: 'table',
+      title: {
+        en: '📊 Cache Performance Comparison',
+        it: '📊 Confronto Prestazioni Cache'
+      },
+      content: {
+        en: 'This table shows the build time comparison under different scenarios:',
+        it: 'Questa tabella mostra il confronto del tempo di build in diversi scenari:'
+      },
+      tableData: {
+        headers: [
+          { en: 'Scenario', it: 'Scenario' },
+          { en: '❌ Unoptimized Dockerfile', it: '❌ Dockerfile Non Ottimizzato' },
+          { en: '✅ Optimized Dockerfile', it: '✅ Dockerfile Ottimizzato' }
+        ],
+        rows: [
+          [
+            { en: 'First build (fresh)', it: 'Prima build (da zero)' },
+            { en: 'Takes ~2 minutes', it: 'Richiede ~2 minuti' },
+            { en: 'Takes ~2 minutes', it: 'Richiede ~2 minuti' }
+          ],
+          [
+            { en: 'Code modification (e.g. index.html)', it: 'Modifica al codice (es. index.html)' },
+            { en: 'Takes ~2 minutes (re-runs install)', it: 'Richiede ~2 minuti (riesegue install)' },
+            { en: 'Takes <1 second (uses cache ⚡)', it: 'Richiede <1 secondo (usa la cache ⚡)' }
+          ],
+          [
+            { en: 'Dependency change (added package)', it: 'Modifica alle dipendenze (nuovo pacchetto)' },
+            { en: 'Takes ~2 minutes', it: 'Richiede ~2 minuti' },
+            { en: 'Takes ~2 minutes (clean install)', it: 'Richiede ~2 minuti (installazione pulita)' }
+          ]
+        ]
       }
     },
     {
