@@ -30,8 +30,8 @@ export const docker3: Module = {
         it: '📺 Scrivere un Dockerfile da Zero'
       },
       content: {
-        en: 'A perfect 5-minute breakdown on how to write a Dockerfile and compile your first image.',
-        it: 'Un\'analisi di 5 minuti per capire come scrivere un Dockerfile e compilare la tua prima immagine.'
+        en: 'A perfect 5-minute breakdown on how to write a Dockerfile and compile your first image. Repository referenced in the video: [FoodTrucks](https://github.com/prakhar1989/FoodTrucks).',
+        it: 'Un\'analisi di 5 minuti per capire come scrivere un Dockerfile e compilare la tua prima immagine. Repository di riferimento del video: [FoodTrucks](https://github.com/prakhar1989/FoodTrucks).'
       },
       videoUrl: 'https://www.youtube.com/watch?v=DqyNssbqEaE'
     },
@@ -80,6 +80,11 @@ export const docker3: Module = {
           [
             { en: '**EXPOSE**', it: '**EXPOSE**' },
             { en: 'Informs Docker that the container listens on the specified network port at runtime (primarily for documentation)', it: 'Informa Docker che il container rimarrà in ascolto sulla porta di rete specificata a runtime (principalmente a scopo documentativo)' },
+            { en: 'Build Phase (Metadata)', it: 'Fase di Build (Metadati)' }
+          ],
+          [
+            { en: '**LABEL**', it: '**LABEL**' },
+            { en: 'Adds metadata to the image (e.g., version, description, author)', it: 'Aggiunge metadati all\'immagine (es. versione, descrizione, autore)' },
             { en: 'Build Phase (Metadata)', it: 'Fase di Build (Metadati)' }
           ],
           [
