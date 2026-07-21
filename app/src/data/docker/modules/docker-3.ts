@@ -36,6 +36,19 @@ export const docker3: Module = {
       videoUrl: 'https://www.youtube.com/watch?v=DqyNssbqEaE'
     },
     {
+      type: 'code',
+      title: {
+        en: '📄 Example: The Video\'s Dockerfile',
+        it: '📄 Esempio: Il Dockerfile del Video'
+      },
+      content: {
+        en: 'Here is the full Dockerfile used in the video to containerize the Python/Node.js FoodTrucks application:',
+        it: 'Ecco il Dockerfile completo utilizzato nel video per containerizzare l\'applicazione FoodTrucks in Python/Node.js:'
+      },
+      code: `# start from base\nFROM ubuntu:18.04\n\nLABEL maintainer="Prakhar Srivastav <prakhar@prakhar.me>"\n\n# install system-wide deps for python and node\nRUN apt-get -yqq update\nRUN apt-get -yqq install python3-pip python3-dev curl gnupg\nRUN curl -sL https://deb.nodesource.com/setup_10.x | bash\nRUN apt-get install -yq nodejs\n\n# copy our application code\nADD flask-app /opt/flask-app\nWORKDIR /opt/flask-app\n\n# fetch app specific deps\nRUN npm install\nRUN npm run build\nRUN pip3 install -r requirements.txt\n\n# expose port\nEXPOSE 5000\n\n# start app\nCMD [ "python3", "./app.py" ]`,
+      language: 'dockerfile'
+    },
+    {
       type: 'table',
       title: {
         en: '🛠️ Core Instructions Reference',
