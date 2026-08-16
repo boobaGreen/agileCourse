@@ -227,10 +227,24 @@ export const docker3: Module = {
           {
             id: '1',
             instruction: {
-              en: 'Build the current directory (where Dockerfile is saved) and tag it as "myapp:v1" (use `docker build -t myapp:v1 .`)',
-              it: 'Compila la cartella corrente (dove è salvato il Dockerfile) e assegna il tag "myapp:v1" (usa `docker build -t myapp:v1 .`)'
+              en: 'Build the current directory (where Dockerfile is saved) and tag it as "myapp:v1"',
+              it: 'Compila la cartella corrente (dove è salvato il Dockerfile) e assegna il tag "myapp:v1"'
             },
-            condition: 'PULLED:myapp'
+            condition: 'PULLED:myapp',
+            hints: [
+              {
+                en: '💡 Hint 1/3 (Conceptual): Use the `docker build` command to build an image from a Dockerfile.',
+                it: '💡 Aiuto 1/3 (Concettuale): Per compilare un\'immagine a partire da un Dockerfile si usa il comando `docker build`.'
+              },
+              {
+                en: '💡 Hint 2/3 (Syntax): Pass `-t myapp:v1` to set the image name and tag, and add a dot `.` at the end for the working directory.',
+                it: '💡 Aiuto 2/3 (Sintassi): Passa `-t myapp:v1` per impostare nome e tag dell\'immagine, e aggiungi un punto `.` alla fine per la cartella corrente.'
+              },
+              {
+                en: '💡 Hint 3/3 (Full Solution): Type `docker build -t myapp:v1 .` in the CLI terminal.',
+                it: '💡 Aiuto 3/3 (Soluzione Completa): Digita `docker build -t myapp:v1 .` nel terminale CLI.'
+              }
+            ]
           }
         ]
       }

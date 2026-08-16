@@ -81,7 +81,7 @@ export interface DockerState {
 
 export interface DockerGameData {
   startState: DockerState;
-  tasks: { id: string, instruction: LocalizedString, condition: string, completed?: boolean }[];
+  tasks: { id: string, instruction: LocalizedString, condition: string, hints?: LocalizedString[], completed?: boolean }[];
 }
 
 export interface K8sNode {
