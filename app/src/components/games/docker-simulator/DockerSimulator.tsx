@@ -3,7 +3,7 @@ import type { DockerGameData, DockerState } from '../../../data/types';
 import { DockerEngine } from './DockerEngine';
 import { DockerParser } from './DockerParser';
 import { DockerVisualizer } from './DockerVisualizer';
-import { CheckCircle, TerminalSquare, RotateCcw } from 'lucide-react';
+import { CheckCircle, TerminalSquare, RotateCcw, Folder, FileCode, FileText, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../../../contexts/LanguageContext';
 
@@ -17,6 +17,8 @@ export function DockerSimulator({ data, onComplete }: Props) {
   const [state, setState] = useState<DockerState>(data.startState);
   const [history, setHistory] = useState<{type: 'cmd'|'out', text: string}[]>([]);
   const [input, setInput] = useState('');
+  const [inspectFile, setInspectFile] = useState<string | null>(null);
+
   const checkTasksSatisfied = React.useCallback((currentState: DockerState, currentCompleted: Set<string>) => {
     const newlyCompleted = new Set(currentCompleted);
     let changed = false;
@@ -138,6 +140,75 @@ export function DockerSimulator({ data, onComplete }: Props) {
             <DockerVisualizer state={state} />
          </div>
 
+         {/* Working Directory Context Bar */}
+         <div className="bg-black/40 border border-white/10 rounded-xl p-3 flex flex-col gap-3 text-xs">
+           <div className="flex flex-wrap items-center justify-between gap-3">
+             <div className="flex items-center gap-2 text-muted">
+               <Folder size={14} className="text-primary" />
+               <span className="font-mono text-white/80 font-bold">{resolveString({ en: 'Context (Working Dir ./):', it: 'Contesto (Cartella ./):' })}</span>
+             </div>
+             <div className="flex items-center gap-2 font-mono">
+               <button
+                 onClick={() => setInspectFile(prev => prev === 'Dockerfile' ? null : 'Dockerfile')}
+                 className={`px-2.5 py-1 border rounded flex items-center gap-1.5 transition-all text-xs font-bold ${
+                   inspectFile === 'Dockerfile'
+                     ? 'bg-primary/30 text-primary border-primary'
+                     : 'bg-primary/20 hover:bg-primary/30 border-primary/40 text-primary'
+                 }`}
+                 title="Click to view/hide Dockerfile"
+               >
+                 <FileCode size={13} /> Dockerfile {inspectFile === 'Dockerfile' ? '▲' : '▼'}
+               </button>
+               <button
+                 onClick={() => setInspectFile(prev => prev === 'package.json' ? null : 'package.json')}
+                 className={`px-2.5 py-1 border rounded flex items-center gap-1.5 transition-all text-xs ${
+                   inspectFile === 'package.json'
+                     ? 'bg-white/20 text-white border-white/40 font-bold'
+                     : 'bg-white/5 hover:bg-white/10 border-white/10 text-white/70'
+                 }`}
+                 title="Click to view/hide package.json"
+               >
+                 <FileText size={13} /> package.json {inspectFile === 'package.json' ? '▲' : '▼'}
+               </button>
+               <button
+                 onClick={() => setInspectFile(prev => prev === 'server.js' ? null : 'server.js')}
+                 className={`px-2.5 py-1 border rounded flex items-center gap-1.5 transition-all text-xs ${
+                   inspectFile === 'server.js'
+                     ? 'bg-white/20 text-white border-white/40 font-bold'
+                     : 'bg-white/5 hover:bg-white/10 border-white/10 text-white/70'
+                 }`}
+                 title="Click to view/hide server.js"
+               >
+                 <FileText size={13} /> server.js {inspectFile === 'server.js' ? '▲' : '▼'}
+               </button>
+             </div>
+           </div>
+
+           {/* Inline File Preview Panel */}
+           {inspectFile && (
+             <motion.div 
+               initial={{ opacity: 0, height: 0 }} 
+               animate={{ opacity: 1, height: 'auto' }} 
+               exit={{ opacity: 0, height: 0 }}
+               className="bg-black/90 border border-white/10 rounded-xl p-4 flex flex-col gap-2 font-mono text-xs mt-1"
+             >
+               <div className="flex justify-between items-center border-b border-white/10 pb-2 mb-1">
+                 <span className="text-primary font-bold flex items-center gap-1.5">
+                   <FileCode size={14} /> {inspectFile}
+                 </span>
+                 <button onClick={() => setInspectFile(null)} className="text-white/50 hover:text-white text-xs">
+                   <X size={14} />
+                 </button>
+               </div>
+               <pre className="text-[#06d6a0] overflow-x-auto leading-relaxed">
+                 {inspectFile === 'Dockerfile' && `FROM node:18-alpine\nWORKDIR /app\nCOPY package.json ./\nRUN npm install\nCOPY . .\nCMD ["node", "server.js"]`}
+                 {inspectFile === 'package.json' && `{\n  "name": "backend-app",\n  "version": "1.0.0",\n  "scripts": { "start": "node server.js" },\n  "dependencies": { "express": "^4.18.2" }\n}`}
+                 {inspectFile === 'server.js' && `const express = require('express');\nconst app = express();\n\napp.get('/', (req, res) => res.send('Hello from Container!'));\napp.listen(3000);`}
+               </pre>
+             </motion.div>
+           )}
+         </div>
+
          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-black/40 border border-white/10 rounded-xl p-5 flex flex-col gap-3 h-full">
               <span className="text-[10px] text-muted font-black uppercase tracking-widest border-b border-white/5 pb-2">{resolveString({ en: 'Mission Objectives', it: 'Obiettivi Missione' })}</span>
@@ -153,8 +224,11 @@ export function DockerSimulator({ data, onComplete }: Props) {
 
             <div className="bg-black/95 rounded-xl border border-white/10 p-5 font-mono text-xs flex flex-col min-h-[250px] shadow-2xl relative overflow-hidden">
               <div className="flex flex-col gap-2 mb-4 border-b border-white/5 pb-3">
-                <div className="flex items-center gap-2 text-primary/80">
-                  <TerminalSquare size={14} /> <span className="text-[10px] uppercase font-black tracking-widest text-primary">Docker CLI</span>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-primary/80">
+                    <TerminalSquare size={14} /> <span className="text-[10px] uppercase font-black tracking-widest text-primary">Docker CLI</span>
+                  </div>
+                  <span className="text-[10px] text-white/30 font-mono">Try: ls | cat Dockerfile</span>
                 </div>
               </div>
 
@@ -173,7 +247,7 @@ export function DockerSimulator({ data, onComplete }: Props) {
                       onChange={e => setInput(e.target.value)}
                       onKeyDown={handleCommand}
                       spellCheck={false}
-                      placeholder={resolveString({ en: 'Type a Docker command (e.g., docker run)...', it: 'Scrivi un comando Docker (es. docker run)...' })}
+                      placeholder={resolveString({ en: 'Type a Docker command (e.g., docker build -t myapp:v1 .)...', it: 'Scrivi un comando Docker (es. docker build -t myapp:v1 .)...' })}
                       className="flex-1 bg-transparent outline-none border-none text-[#06d6a0] placeholder:text-white/20 font-mono text-sm min-w-0"
                     />
                   </div>

@@ -214,8 +214,8 @@ export const docker3: Module = {
         it: 'Lab: Crea la tua Immagine Personalizzata'
       },
       content: {
-        en: 'In this simulator, you will actually build a custom image from a Dockerfile. Watch the "Image Registry" update as you tag your work.',
-        it: 'In questo simulatore caricherai e compilerai un\'immagine personalizzata da un Dockerfile. Osserva l\'aggiornamento del registro delle immagini mentre assegni i tag al tuo lavoro.'
+        en: 'In this simulator, the `Dockerfile` you ordered above is saved in the current directory (`.`). You can inspect it with `cat Dockerfile` or click the file badge, then build and tag your image.',
+        it: 'In questo simulatore, il `Dockerfile` appena composto è salvato nella cartella corrente (`.`). Puoi ispezionarlo con `cat Dockerfile` o cliccando sul file badge, quindi compila e assegna il tag alla tua immagine.'
       },
       gameType: 'docker-sim',
       gameData: {
@@ -227,8 +227,8 @@ export const docker3: Module = {
           {
             id: '1',
             instruction: {
-              en: 'Build the current directory and tag it as "myapp:v1" (use `docker build -t myapp:v1 .`)',
-              it: 'Compila la cartella corrente e assegna il tag "myapp:v1" (usa `docker build -t myapp:v1 .`)'
+              en: 'Build the current directory (where Dockerfile is saved) and tag it as "myapp:v1" (use `docker build -t myapp:v1 .`)',
+              it: 'Compila la cartella corrente (dove è salvato il Dockerfile) e assegna il tag "myapp:v1" (usa `docker build -t myapp:v1 .`)'
             },
             condition: 'PULLED:myapp'
           }

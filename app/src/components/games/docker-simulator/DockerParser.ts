@@ -4,6 +4,37 @@ export class DockerParser {
   public static execute(engine: DockerEngine, command: string): { success: boolean, out: string } {
     const parts = command.trim().split(/\s+/);
     const isCompose = parts[0] === 'docker-compose';
+    const first = parts[0]?.toLowerCase();
+
+    if (first === 'ls' || first === 'dir') {
+      return {
+        success: true,
+        out: 'Dockerfile  package.json  server.js'
+      };
+    }
+
+    if (first === 'cat') {
+      const fileName = parts[1]?.replace(/^\.\//, '');
+      if (!fileName || fileName === 'Dockerfile') {
+        return {
+          success: true,
+          out: `FROM node:18-alpine\nWORKDIR /app\nCOPY package.json ./\nRUN npm install\nCOPY . .\nCMD ["node", "server.js"]`
+        };
+      }
+      if (fileName === 'package.json') {
+        return {
+          success: true,
+          out: `{\n  "name": "backend-app",\n  "version": "1.0.0",\n  "scripts": { "start": "node server.js" },\n  "dependencies": { "express": "^4.18.2" }\n}`
+        };
+      }
+      if (fileName === 'server.js') {
+        return {
+          success: true,
+          out: `const express = require('express');\nconst app = express();\n\napp.get('/', (req, res) => res.send('Hello from Container!'));\napp.listen(3000);`
+        };
+      }
+      return { success: false, out: `cat: ${parts[1]}: No such file or directory` };
+    }
 
     if (parts[0] !== 'docker' && !isCompose) {
       return { success: false, out: `command not found: ${parts[0]}` };
