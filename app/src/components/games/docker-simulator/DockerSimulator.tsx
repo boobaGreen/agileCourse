@@ -247,7 +247,7 @@ export function DockerSimulator({ data, onComplete }: Props) {
                       onChange={e => setInput(e.target.value)}
                       onKeyDown={handleCommand}
                       spellCheck={false}
-                      placeholder={resolveString({ en: 'Type a Docker command (e.g., docker build -t myapp:v1 .)...', it: 'Scrivi un comando Docker (es. docker build -t myapp:v1 .)...' })}
+                      placeholder={resolveString({ en: 'Type a Docker command (e.g., docker ps, docker run)...', it: 'Scrivi un comando Docker (es. docker ps, docker run)...' })}
                       className="flex-1 bg-transparent outline-none border-none text-[#06d6a0] placeholder:text-white/20 font-mono text-sm min-w-0"
                     />
                   </div>
