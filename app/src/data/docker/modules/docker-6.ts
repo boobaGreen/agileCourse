@@ -194,6 +194,27 @@ export const docker6: Module = {
       }
     },
     {
+      type: 'tip',
+      title: {
+        en: '💡 Combining Multiple Flags in `docker run`',
+        it: '💡 Combinare Più Flag in un Singolo `docker run`'
+      },
+      content: {
+        en: 'In real-world projects, you will often combine `--name`, `-p`, and `--network` in one single command:\n\n' +
+            '`docker run --name web -p 8080:80 --network frontend-net nginx`\n\n' +
+            '* `--name web`: Sets the container hostname/name to "web"\n' +
+            '* `-p 8080:80`: Maps host port 8080 to container port 80\n' +
+            '* `--network frontend-net`: Connects it to "frontend-net"\n' +
+            '* `nginx`: The image blueprint (always at the very end!)',
+        it: 'Nei progetti reali, combinerai spesso `--name`, `-p` e `--network` in un\'unica riga di comando:\n\n' +
+            '`docker run --name web -p 8080:80 --network frontend-net nginx`\n\n' +
+            '* `--name web`: Assegna il nome "web" al container\n' +
+            '* `-p 8080:80`: Mappa la porta host 8080 sulla porta container 80\n' +
+            '* `--network frontend-net`: Collega il container alla rete "frontend-net"\n' +
+            '* `nginx`: Il nome dell\'immagine (SEMPRE alla fine!)'
+      }
+    },
+    {
       type: 'game',
       title: {
         en: 'Lab: The Bridge Network',
