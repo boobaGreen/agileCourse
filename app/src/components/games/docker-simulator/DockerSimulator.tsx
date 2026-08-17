@@ -34,14 +34,22 @@ export function DockerSimulator({ data, onComplete }: Props) {
         isDone = !!currentState.images.find(img => img.name === arg1);
       } else if (type === 'PUSHED') {
         isDone = !!currentState.pushedImages?.includes(arg1);
-      } else if (type === 'RUNNING') {
-        isDone = !!currentState.containers.find(c => c.image === arg1 && c.status === 'running');
+      } else if (type === 'RUNNING' || type === 'CONTAINER_RUNNING') {
+        if (arg1 === '0') {
+          isDone = currentState.containers.length === 0 || currentState.containers.every(c => c.status === 'exited');
+        } else {
+          isDone = !!currentState.containers.find(c => (c.image === arg1 || c.name === arg1) && c.status === 'running');
+        }
       } else if (type === 'PORT_MAPPED') {
-        const c = currentState.containers.find(c => c.image === arg1 && c.status === 'running');
+        const c = currentState.containers.find(c => (c.image === arg1 || c.name === arg1) && c.status === 'running');
         isDone = !!c && c.ports.includes(arg2);
       } else if (type === 'STOPPED') {
-        const c = currentState.containers.find(c => c.image === arg1);
+        const c = currentState.containers.find(c => c.image === arg1 || c.name === arg1);
         isDone = !!c && c.status === 'exited';
+      } else if (type === 'VOLUME_EXISTS') {
+        isDone = !!currentState.volumes?.find(v => v.name === arg1);
+      } else if (type === 'NETWORK_EXISTS') {
+        isDone = !!currentState.networks?.find(n => n.name === arg1);
       }
 
       if (isDone) {
