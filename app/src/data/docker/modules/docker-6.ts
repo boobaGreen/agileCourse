@@ -96,8 +96,12 @@ export const docker6: Module = {
         it: '⚠️ Perché "localhost" Fallisce tra Container'
       },
       content: {
-        en: 'A common beginner mistake is writing `http://localhost:5432` inside a Web app to connect to a Database container. Inside a container, `localhost` refers **only to itself**! To connect two containers, create a network with `docker network create` and use the target container\'s name (e.g. `http://db:5432`).',
-        it: 'Un errore comune dei principianti è scrivere `http://localhost:5432` dentro un\'app Web per collegarsi a un Database. Dentro un container, `localhost` si riferisce **solo a se stesso**! Per collegare due container, crea una rete con `docker network create` e usa il nome del container target (es. `http://db:5432`).'
+        en: 'A common beginner mistake is writing `http://localhost:5432` inside a Web app code to connect to a Database container. Inside a container, `localhost` refers **only to itself**!\n\n' +
+            '* **Why port 5432?** `5432` is the standard default internal port used by PostgreSQL databases.\n' +
+            '* **The Solution:** Connect containers on a custom network (`docker network create my-net`) and use the container name: `http://db:5432`.',
+        it: 'Un errore comune dei principianti è scrivere `http://localhost:5432` nel codice dell\'app per collegarsi a un Database. Dentro un container, `localhost` si riferisce **solo a se stesso**!\n\n' +
+            '* **Perché la porta 5432?** `5432` è la porta interna standard utilizzata dal servizio database PostgreSQL.\n' +
+            '* **La Soluzione:** Collega i container su una rete personalizzata (`docker network create mia-rete`) e usa il nome del container: `http://db:5432`.'
       }
     },
     {
