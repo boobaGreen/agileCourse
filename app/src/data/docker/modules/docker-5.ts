@@ -118,7 +118,7 @@ export const docker5: Module = {
           [
             { en: '**docker volume create**', it: '**docker volume create**' },
             { en: 'Creates a new managed Named Volume on the host disk', it: 'Crea un nuovo Named Volume gestito sul disco dell\'host' },
-            { en: '`docker volume create dbstore`', it: '`docker volume create dbstore`' }
+            { en: '`docker volume create my-data`', it: '`docker volume create my-data`' }
           ],
           [
             { en: '**docker volume ls**', it: '**docker volume ls**' },
@@ -128,7 +128,7 @@ export const docker5: Module = {
           [
             { en: '**docker run -v**', it: '**docker run -v**' },
             { en: 'Mounts the created Named Volume into a container path', it: 'Monta il Named Volume creato all\'interno di un container' },
-            { en: '`docker run -v dbstore:/var/lib/postgresql/data postgres`', it: '`docker run -v dbstore:/var/lib/postgresql/data postgres`' }
+            { en: '`docker run -v my-data:/var/lib/postgresql/data postgres`', it: '`docker run -v my-data:/var/lib/postgresql/data postgres`' }
           ]
         ]
       }
@@ -140,8 +140,8 @@ export const docker5: Module = {
         it: '💡 Creazione Esplicita vs Automatica dei Volumi'
       },
       content: {
-        en: 'Did you know? If you execute `docker run -v myvol:/path postgres` with a volume name that does not exist yet, Docker will **automatically create it** in the background! However, running `docker volume create` explicitly beforehand is the recommended professional practice for clear infrastructure planning.',
-        it: 'Lo sapevi? Se esegui `docker run -v mio-vol:/path postgres` con un nome di volume che non esiste ancora, Docker lo **creerà automaticamente in sottofondo**! Tuttavia, eseguire prima `docker volume create` in modo esplicito è la best practice professionale raccomandata per una chiara gestione dell\'infrastruttura.'
+        en: 'Did you know? If you execute `docker run -v my-data:/path postgres` with a volume name that does not exist yet, Docker will **automatically create it** in the background! However, running `docker volume create` explicitly beforehand is the recommended professional practice for clear infrastructure planning.',
+        it: 'Lo sapevi? Se esegui `docker run -v my-data:/path postgres` con un nome di volume che non esiste ancora, Docker lo **creerà automaticamente in sottofondo**! Tuttavia, eseguire prima `docker volume create` in modo esplicito è la best practice professionale raccomandata per una chiara gestione dell\'infrastruttura.'
       }
     },
     {
@@ -151,8 +151,8 @@ export const docker5: Module = {
         it: 'Lab: Il Volume Immortale'
       },
       content: {
-        en: 'In this simulator, you will practice explicit volume creation. First, create a named volume explicitly using `docker volume create dbstore`, then attach it to a PostgreSQL container.',
-        it: 'In questo simulatore metterai in pratica la creazione esplicita dei volumi. Per prima cosa, crea esplicitamente un volume usando `docker volume create dbstore`, poi collegalo a un container PostgreSQL.'
+        en: 'In this simulator, you will practice explicit volume creation. First, create a named volume called "dbstore", then attach it to a PostgreSQL database container.',
+        it: 'In questo simulatore metterai in pratica la creazione esplicita dei volumi. Per prima cosa, crea un volume con nome chiamato "dbstore", poi collegalo a un container PostgreSQL.'
       },
       gameType: 'docker-sim',
       gameData: {
@@ -165,8 +165,8 @@ export const docker5: Module = {
           {
             id: '1',
             instruction: {
-              en: 'Explicitly create a named volume called "dbstore": `docker volume create dbstore`',
-              it: 'Crea esplicitamente un volume con nome chiamato "dbstore": `docker volume create dbstore`'
+              en: 'Explicitly create a named volume called "dbstore"',
+              it: 'Crea esplicitamente un volume con nome chiamato "dbstore"'
             },
             condition: 'VOLUME_EXISTS:dbstore',
             hints: [
@@ -187,8 +187,8 @@ export const docker5: Module = {
           {
             id: '2',
             instruction: {
-              en: 'Run a postgres container using that named volume: `-v dbstore:/var/lib/postgresql/data`',
-              it: 'Esegui un container postgres usando quel volume con nome: `-v dbstore:/var/lib/postgresql/data`'
+              en: 'Run a postgres container mounting "dbstore" to "/var/lib/postgresql/data"',
+              it: 'Esegui un container postgres montando "dbstore" sulla cartella "/var/lib/postgresql/data"'
             },
             condition: 'CONTAINER_RUNNING:postgres',
             hints: [
