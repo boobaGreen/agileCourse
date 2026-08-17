@@ -2,7 +2,9 @@ import { DockerEngine } from './DockerEngine';
 
 export class DockerParser {
   public static execute(engine: DockerEngine, command: string): { success: boolean, out: string } {
-    const parts = command.trim().split(/\s+/);
+    // Sanitize input to remove accidental surrounding or trailing backticks/quotes
+    const sanitizedCommand = command.trim().replace(/^[`'"]+|[`'"]+$/g, '');
+    const parts = sanitizedCommand.split(/\s+/).map(p => p.replace(/^[`'"]+|[`'"]+$/g, ''));
     const isCompose = parts[0] === 'docker-compose';
     const first = parts[0]?.toLowerCase();
 

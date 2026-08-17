@@ -113,10 +113,13 @@ export class DockerEngine {
   }
 
   public tag(source: string, target: string): { success: boolean, msg: string } {
-    const sourceImage = this.state.images.find(img => img.name === source || `${img.name}:${img.tag}` === source);
-    if (!sourceImage) return { success: false, msg: `Error: No such image: ${source}` };
+    const cleanSource = source.replace(/^[`'"]+|[`'"]+$/g, '').trim();
+    const cleanTarget = target.replace(/^[`'"]+|[`'"]+$/g, '').trim();
 
-    const targetParts = target.split(':');
+    const sourceImage = this.state.images.find(img => img.name === cleanSource || `${img.name}:${img.tag}` === cleanSource);
+    if (!sourceImage) return { success: false, msg: `Error: No such image: ${cleanSource}` };
+
+    const targetParts = cleanTarget.split(':');
     const newImage = {
       ...sourceImage,
       id: `img-${this.generateId()}`,
@@ -125,16 +128,21 @@ export class DockerEngine {
     };
 
     this.state.images.push(newImage);
-    return { success: true, msg: `Successfully tagged ${source} as ${target}` };
+    return { success: true, msg: `Successfully tagged ${cleanSource} as ${cleanTarget}` };
   }
 
   public push(imageName: string): { success: boolean, msg: string } {
-    const image = this.state.images.find(img => img.name === imageName || `${img.name}:${img.tag}` === imageName);
-    if (!image) return { success: false, msg: `Error: No such image: ${imageName}` };
+    const cleanName = imageName.replace(/^[`'"]+|[`'"]+$/g, '').trim();
+    const image = this.state.images.find(img => 
+      img.name === cleanName || 
+      `${img.name}:${img.tag}` === cleanName ||
+      cleanName.startsWith(img.name)
+    );
+    if (!image) return { success: false, msg: `Error: No such image: ${cleanName}` };
 
     if (!this.state.pushedImages) this.state.pushedImages = [];
-    if (!this.state.pushedImages.includes(imageName)) {
-      this.state.pushedImages.push(imageName);
+    if (!this.state.pushedImages.includes(cleanName)) {
+      this.state.pushedImages.push(cleanName);
     }
     if (!this.state.pushedImages.includes(image.name)) {
       this.state.pushedImages.push(image.name);
@@ -142,7 +150,7 @@ export class DockerEngine {
 
     return { 
       success: true, 
-      msg: `The push refers to repository [docker.io/${imageName}]\n${image.id.replace('img-', '')}: Pushed\nlatest: digest: sha256:77bc... size: ${image.size}` 
+      msg: `The push refers to repository [docker.io/${cleanName}]\n${image.id.replace('img-', '')}: Pushed\nlatest: digest: sha256:77bc... size: ${image.size}` 
     };
   }
 
