@@ -24,18 +24,6 @@ export const docker6: Module = {
       }
     },
     {
-      type: 'video',
-      title: {
-        en: '📺 Docker Networking & Port Mapping (6 min)',
-        it: '📺 Mappatura Porte e Reti Docker in 6 Minuti'
-      },
-      content: {
-        en: 'A concise visual guide showing how host port forwarding and custom container networks work.',
-        it: 'Una guida visiva sintetica che mostra come funzionano il port forwarding e le reti Docker personalizzate.'
-      },
-      videoUrl: 'https://www.youtube.com/watch?v=A_iR-eP3T2I'
-    },
-    {
       type: 'concept',
       title: {
         en: '🚪 Port Mapping (`-p`)',
@@ -48,9 +36,13 @@ export const docker6: Module = {
     },
     {
       type: 'flowchart',
+      title: {
+        en: '🚪 How Port Mapping Works (`-p 8080:80`)',
+        it: '🚪 Come Funziona la Mappatura Porte (`-p 8080:80`)'
+      },
       content: {
-        en: '**How Port Mapping Works (`-p 8080:80`)**',
-        it: '**Come Funziona la Mappatura Porte (`-p 8080:80`)**'
+        en: 'Traffic sent to your computer\'s port 8080 is forwarded straight into port 80 of the container.',
+        it: 'Il traffico inviato alla porta 8080 del computer viene inoltrato direttamente alla porta 80 del container.'
       },
       diagramSteps: [
         { label: { en: 'Browser User\n(localhost:8080)', it: 'Utente Browser\n(localhost:8080)' }, icon: '🌍', color: '#118ab2' },
@@ -61,13 +53,29 @@ export const docker6: Module = {
     {
       type: 'concept',
       title: {
-        en: '🌐 Docker User-Defined Networks',
-        it: '🌐 Reti Docker Personalizzate'
+        en: '🌐 Docker User-Defined Networks & Container DNS',
+        it: '🌐 Reti Docker Personalizzate e DNS dei Container'
       },
       content: {
-        en: 'What if a Web Container needs to talk to a Database Container? They shouldn\'t go over the public internet!\n\nDocker allows creating virtual internal networks. When containers join the same network, they can securely talk to each other **using their container names** as hostnames (e.g., `http://web-db:5432`). This is built-in automatic DNS!',
-        it: 'Cosa succede se un container Web deve comunicare con un container Database? Non dovrebbero passare per internet pubblico!\n\nDocker permette di creare reti virtuali interne. Quando i container si uniscono alla stessa rete, possono comunicare in modo sicuro **usando i propri nomi di container** come hostname (es. `http://web-db:5432`). È un DNS automatico integrato!'
+        en: 'What if a Web Container needs to talk to a Database Container? They shouldn\'t go over the public internet!\n\nDocker allows creating virtual internal networks. When containers join the same network, they can securely talk to each other **using their container names** as hostnames (e.g., `http://db:5432`). This is built-in automatic DNS!',
+        it: 'Cosa succede se un container Web deve comunicare con un container Database? Non dovrebbero passare per internet pubblico!\n\nDocker permette di creare reti virtuali interne. Quando i container si uniscono alla stessa rete, possono comunicare in modo sicuro **usando i propri nomi di container** come hostname (es. `http://db:5432`). È un DNS automatico integrato!'
       }
+    },
+    {
+      type: 'flowchart',
+      title: {
+        en: '🌐 Container-to-Container DNS Communication',
+        it: '🌐 Comunicazione DNS tra Container sulla Stessa Rete'
+      },
+      content: {
+        en: 'Containers on the same user network resolve each other by container name.',
+        it: 'I container sulla stessa rete personalizzata si contattano direttamente tramite il loro nome.'
+      },
+      diagramSteps: [
+        { label: { en: 'Web Container\n(name: "web")', it: 'Container Web\n(name: "web")' }, icon: '💻', color: '#118ab2' },
+        { label: { en: 'Docker Internal DNS\n("db" ➔ 172.18.0.3)', it: 'DNS Interno Docker\n("db" ➔ 172.18.0.3)' }, icon: '⚡', color: '#ffb703' },
+        { label: { en: 'PostgreSQL Container\n(name: "db")', it: 'Container PostgreSQL\n(name: "db")' }, icon: '🐘', color: '#06d6a0' }
+      ]
     },
     {
       type: 'table',
