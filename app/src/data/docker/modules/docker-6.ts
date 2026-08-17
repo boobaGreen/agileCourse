@@ -76,17 +76,17 @@ export const docker6: Module = {
     {
       type: 'flowchart',
       title: {
-        en: '🌐 Container-to-Container DNS Communication',
-        it: '🌐 Comunicazione DNS tra Container sulla Stessa Rete'
+        en: '📊 Visual Diagram: How Docker DNS Resolves "db" ➔ IP',
+        it: '📊 Schema Visivo: Come il DNS Docker converte "db" ➔ IP'
       },
       content: {
-        en: 'Containers on the same user network resolve each other by container name.',
-        it: 'I container sulla stessa rete personalizzata si contattano direttamente tramite il loro nome.'
+        en: 'Here is the step-by-step visual flow when container "web" sends a request to container "db":',
+        it: 'Ecco il flusso visivo passo-passo quando il container "web" invia una richiesta al container "db":'
       },
       diagramSteps: [
-        { label: { en: 'Web Container\n(name: "web")', it: 'Container Web\n(name: "web")' }, icon: '💻', color: '#118ab2' },
-        { label: { en: 'Docker Internal DNS\n("db" ➔ 172.18.0.3)', it: 'DNS Interno Docker\n("db" ➔ 172.18.0.3)' }, icon: '⚡', color: '#ffb703' },
-        { label: { en: 'PostgreSQL Container\n(name: "db")', it: 'Container PostgreSQL\n(name: "db")' }, icon: '🐘', color: '#06d6a0' }
+        { label: { en: '1. Web Container\nCalls "http://db:5432"', it: '1. Container Web\nChiama "http://db:5432"' }, icon: '💻', color: '#118ab2' },
+        { label: { en: '2. Docker Internal DNS\nConverts "db" ➔ 172.18.0.3', it: '2. DNS Interno Docker\nConverte "db" ➔ 172.18.0.3' }, icon: '⚡', color: '#ffb703' },
+        { label: { en: '3. PostgreSQL Container\nReceives query at 172.18.0.3', it: '3. Container PostgreSQL\nRiceve la query a 172.18.0.3' }, icon: '🐘', color: '#06d6a0' }
       ]
     },
     {
