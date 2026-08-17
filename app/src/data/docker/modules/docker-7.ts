@@ -47,6 +47,22 @@ export const docker7: Module = {
       }
     },
     {
+      type: 'flowchart',
+      title: {
+        en: '🐙 How Docker Compose Orchestrates the Stack',
+        it: '🐙 Come Docker Compose Orchestra lo Stack'
+      },
+      content: {
+        en: 'A single command (`docker compose up`) builds networks, mounts volumes, and starts all containers in order:',
+        it: 'Un singolo comando (`docker compose up`) crea le reti, monta i volumi e avvia tutti i container nell\'ordine corretto:'
+      },
+      diagramSteps: [
+        { label: { en: '1. Single File\ndocker-compose.yml', it: '1. File Unico\ndocker-compose.yml' }, icon: '📄', color: '#118ab2' },
+        { label: { en: '2. Compose Engine\nAutomates Network & Volumes', it: '2. Motore Compose\nAutomatizza Reti e Volumi' }, icon: '⚙️', color: '#ffb703' },
+        { label: { en: '3. Multi-Container Stack\n(API + DB + Frontend)', it: '3. Stack Multi-Container\n(API + DB + Frontend)' }, icon: '🐙', color: '#06d6a0' }
+      ]
+    },
+    {
       type: 'table',
       title: {
         en: '📝 The docker-compose.yml Syntax Mapping',
@@ -169,6 +185,17 @@ volumes:
             { en: '⚠️ Networks removed, Volumes kept', it: '⚠️ Reti rimosse, Volumi salvati' }
           ]
         ]
+      }
+    },
+    {
+      type: 'tip',
+      title: {
+        en: '⚠️ Data Safety: `down` vs `down -v`',
+        it: '⚠️ Sicurezza Dati: `down` vs `down -v`'
+      },
+      content: {
+        en: 'Executing `docker compose down` removes containers and networks, but **PRESERVES your Named Volumes** so your database data isn\'t lost.\n\nOnly append the `-v` flag (`docker compose down -v`) if you explicitly want to **wipe out all database volumes** and start fresh from scratch!',
+        it: 'Eseguire `docker compose down` rimuove i container e le reti, ma **CONSERVA i tuoi Named Volume** evitando la perdita accidentale dei dati del database.\n\nAggiungi il flag `-v` (`docker compose down -v`) solo se vuoi **eliminare esplicitamente tutti i dati del database** e ripartire totalmente da zero!'
       }
     },
     {
