@@ -72,26 +72,26 @@ export const docker5: Module = {
       tableData: {
         headers: [
           { en: 'Storage Mode', it: 'Modalità Storage' },
-          { en: 'CLI Syntax Example', it: 'Esempio Sintassi CLI' },
-          { en: 'Parameter Meaning', it: 'Significato Parametri' },
+          { en: 'Full CLI Command Example', it: 'Esempio Comando CLI Completo' },
+          { en: 'Parameter Structure (-v)', it: 'Struttura Parametro (-v)' },
           { en: 'Best Use Case', it: 'Caso d\'Uso Ideale' }
         ],
         rows: [
           [
             { en: '**1. Bind Mount** 📂', it: '**1. Bind Mount** 📂' },
-            { en: '`-v /host/path:/container/path`', it: '`-v /path/host:/path/container`' },
+            { en: '`docker run -d -v /host/path:/container/path nginx`', it: '`docker run -d -v /path/host:/path/container nginx`' },
             { en: 'Host Path : Container Path', it: 'Path Host : Path Container' },
             { en: '⚡ Sharing source code for live-reloading in dev', it: '⚡ Live-reload del codice sorgente in sviluppo' }
           ],
           [
             { en: '**2. Anonymous Volume** ❓', it: '**2. Anonymous Volume** ❓' },
-            { en: '`-v /container/path`', it: '`-v /path/container`' },
+            { en: '`docker run -d -v /var/lib/postgresql/data postgres`', it: '`docker run -d -v /var/lib/postgresql/data postgres`' },
             { en: 'Container Path Only (Random Hash ID)', it: 'Solo Path Container (ID Hash casuale)' },
             { en: '⚠️ Isolated temporary data (risks orphaned dangling files)', it: '⚠️ Dati temporanei (rischia di lasciare volumi orfani)' }
           ],
           [
             { en: '**3. Named Volume** 🗃️', it: '**3. Named Volume** 🗃️' },
-            { en: '`-v dbstore:/container/path`', it: '`-v dbstore:/path/container`' },
+            { en: '`docker run -d -v dbstore:/var/lib/postgresql/data postgres`', it: '`docker run -d -v dbstore:/var/lib/postgresql/data postgres`' },
             { en: 'Volume Name : Container Path', it: 'Nome Volume : Path Container' },
             { en: '🔒 Persistent Database storage in production', it: '🔒 Persistenza Database sicura in produzione' }
           ]
