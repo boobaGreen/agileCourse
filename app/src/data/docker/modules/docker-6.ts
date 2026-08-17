@@ -78,6 +78,52 @@ export const docker6: Module = {
       ]
     },
     {
+      type: 'tip',
+      title: {
+        en: '⚠️ Why "localhost" Fails Between Containers',
+        it: '⚠️ Perché "localhost" Fallisce tra Container'
+      },
+      content: {
+        en: 'A common beginner mistake is writing `http://localhost:5432` inside a Web app to connect to a Database container. Inside a container, `localhost` refers **only to itself**! To connect two containers, create a network with `docker network create` and use the target container\'s name (e.g. `http://db:5432`).',
+        it: 'Un errore comune dei principianti è scrivere `http://localhost:5432` dentro un\'app Web per collegarsi a un Database. Dentro un container, `localhost` si riferisce **solo a se stesso**! Per collegare due container, crea una rete con `docker network create` e usa il nome del container target (es. `http://db:5432`).'
+      }
+    },
+    {
+      type: 'table',
+      title: {
+        en: '🔌 Built-in Docker Network Drivers',
+        it: '🔌 I 3 Driver di Rete Predefiniti in Docker'
+      },
+      content: {
+        en: 'Docker provides 3 built-in network drivers for different isolation levels:',
+        it: 'Docker offre 3 driver di rete predefiniti per diversi livelli di isolamento:'
+      },
+      tableData: {
+        headers: [
+          { en: 'Network Driver', it: 'Driver di Rete' },
+          { en: 'Isolation Level', it: 'Livello di Isolamento' },
+          { en: 'Best Use Case', it: 'Caso d\'Uso Ideale' }
+        ],
+        rows: [
+          [
+            { en: '**bridge** (Default)', it: '**bridge** (Predefinito)' },
+            { en: 'Private isolated network per host', it: 'Rete privata isolata per host' },
+            { en: '🟢 Standard apps & multi-container setups', it: '🟢 App standard e ambienti multi-container' }
+          ],
+          [
+            { en: '**host**', it: '**host**' },
+            { en: 'Removes network isolation (shares host IP)', it: 'Rimuove l\'isolamento (condivide l\'IP dell\'host)' },
+            { en: '⚡ Maximum network performance (no port mapping needed)', it: '⚡ Massime prestazioni di rete (nessun port mapping)' }
+          ],
+          [
+            { en: '**none**', it: '**none**' },
+            { en: 'Completely disables network interfaces', it: 'Disabilita completamente le interfacce di rete' },
+            { en: '🔒 High-security offline batch jobs & computations', it: '🔒 Elaborazioni batch offline ad alta sicurezza' }
+          ]
+        ]
+      }
+    },
+    {
       type: 'table',
       title: {
         en: '🛠️ Command Reference: Networking & Ports',
