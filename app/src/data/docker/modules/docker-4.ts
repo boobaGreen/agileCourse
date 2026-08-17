@@ -67,17 +67,17 @@ export const docker4: Module = {
           [
             { en: '**docker tag**', it: '**docker tag**' },
             { en: 'Labels a local image with a username/repository name before pushing', it: 'Etichetta un\'immagine locale con il nome utente/repository prima del caricamento' },
-            { en: '`docker tag myapp:v1 devguru/myapp:v1`', it: '`docker tag myapp:v1 devguru/myapp:v1`' }
+            { en: '`docker tag webapp:latest alexdev/webapp:v1.0`', it: '`docker tag webapp:latest alexdev/webapp:v1.0`' }
           ],
           [
             { en: '**docker push**', it: '**docker push**' },
             { en: 'Uploads the tagged image to Docker Hub or remote registry', it: 'Carica l\'immagine etichettata su Docker Hub o registry remoto' },
-            { en: '`docker push devguru/myapp:v1`', it: '`docker push devguru/myapp:v1`' }
+            { en: '`docker push alexdev/webapp:v1.0`', it: '`docker push alexdev/webapp:v1.0`' }
           ],
           [
             { en: '**docker pull**', it: '**docker pull**' },
             { en: 'Downloads an image from Docker Hub to your laptop', it: 'Scarica un\'immagine da Docker Hub sulla tua macchina locale' },
-            { en: '`docker pull ubuntu:20.04`', it: '`docker pull ubuntu:20.04`' }
+            { en: '`docker pull alexdev/webapp:v1.0`', it: '`docker pull alexdev/webapp:v1.0`' }
           ]
         ]
       }
