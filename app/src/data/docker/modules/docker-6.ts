@@ -201,16 +201,16 @@ export const docker6: Module = {
       },
       content: {
         en: 'In real-world projects, you will often combine `--name`, `-p`, and `--network` in one single command:\n\n' +
-            '`docker run --name web -p 8080:80 --network frontend-net nginx`\n\n' +
-            '* `--name web`: Sets the container hostname/name to "web"\n' +
-            '* `-p 8080:80`: Maps host port 8080 to container port 80\n' +
-            '* `--network frontend-net`: Connects it to "frontend-net"\n' +
+            '`docker run --name app-server -p 5000:80 --network backend-net nginx`\n\n' +
+            '* `--name app-server`: Sets the container name to "app-server"\n' +
+            '* `-p 5000:80`: Maps host port 5000 to container port 80\n' +
+            '* `--network backend-net`: Connects it to the custom network "backend-net"\n' +
             '* `nginx`: The image blueprint (always at the very end!)',
         it: 'Nei progetti reali, combinerai spesso `--name`, `-p` e `--network` in un\'unica riga di comando:\n\n' +
-            '`docker run --name web -p 8080:80 --network frontend-net nginx`\n\n' +
-            '* `--name web`: Assegna il nome "web" al container\n' +
-            '* `-p 8080:80`: Mappa la porta host 8080 sulla porta container 80\n' +
-            '* `--network frontend-net`: Collega il container alla rete "frontend-net"\n' +
+            '`docker run --name app-server -p 5000:80 --network backend-net nginx`\n\n' +
+            '* `--name app-server`: Assegna il nome "app-server" al container\n' +
+            '* `-p 5000:80`: Mappa la porta host 5000 sulla porta container 80\n' +
+            '* `--network backend-net`: Collega il container alla rete personalizzata "backend-net"\n' +
             '* `nginx`: Il nome dell\'immagine (SEMPRE alla fine!)'
       }
     },
