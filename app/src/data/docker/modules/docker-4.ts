@@ -117,17 +117,17 @@ export const docker4: Module = {
           [
             { en: '**docker tag**', it: '**docker tag**' },
             { en: 'Labels a local image with a username/repository name before pushing', it: 'Etichetta un\'immagine locale con il nome utente/repository prima del caricamento' },
-            { en: '`docker tag webapp:latest alexdev/webapp:v1.0`', it: '`docker tag webapp:latest alexdev/webapp:v1.0`' }
+            { en: '`docker tag webapp:latest alexdev/webapp:1.0.0`', it: '`docker tag webapp:latest alexdev/webapp:1.0.0`' }
           ],
           [
             { en: '**docker push**', it: '**docker push**' },
             { en: 'Uploads the tagged image to Docker Hub or remote registry', it: 'Carica l\'immagine etichettata su Docker Hub o registry remoto' },
-            { en: '`docker push alexdev/webapp:v1.0`', it: '`docker push alexdev/webapp:v1.0`' }
+            { en: '`docker push alexdev/webapp:1.0.0`', it: '`docker push alexdev/webapp:1.0.0`' }
           ],
           [
             { en: '**docker pull**', it: '**docker pull**' },
             { en: 'Downloads an image from Docker Hub to your laptop', it: 'Scarica un\'immagine da Docker Hub sulla tua macchina locale' },
-            { en: '`docker pull alexdev/webapp:v1.0`', it: '`docker pull alexdev/webapp:v1.0`' }
+            { en: '`docker pull alexdev/webapp:1.0.0`', it: '`docker pull alexdev/webapp:1.0.0`' }
           ]
         ]
       }
@@ -139,21 +139,21 @@ export const docker4: Module = {
         it: 'Lab: Pubblica nel Mondo'
       },
       content: {
-        en: 'In this simulator, you will prepare an image for the cloud. Tag your local image and "push" it to simulate a registry upload.',
-        it: 'In questo simulatore preparerai un\'immagine per il cloud. Etichetta la tua immagine locale ed eseguine il "push" per simulare il caricamento sul registry.'
+        en: 'In this simulator, you will prepare an image for the cloud. Tag your local image with semantic version 1.0.0 and "push" it to simulate a registry upload.',
+        it: 'In questo simulatore preparerai un\'immagine per il cloud. Etichetta la tua immagine locale con la versione semantica 1.0.0 ed eseguine il "push" per simulare il caricamento sul registry.'
       },
       gameType: 'docker-sim',
       gameData: {
         startState: {
-          images: [{ id: 'img-app', name: 'myapp', tag: 'v1', size: '180MB' }],
+          images: [{ id: 'img-app', name: 'myapp', tag: '1.0.0', size: '180MB' }],
           containers: []
         },
         tasks: [
           {
             id: '1',
             instruction: {
-              en: 'Tag "myapp:v1" as "devguru/myapp:v1"',
-              it: 'Etichetta "myapp:v1" come "devguru/myapp:v1"'
+              en: 'Tag "myapp:1.0.0" as "devguru/myapp:1.0.0"',
+              it: 'Etichetta "myapp:1.0.0" come "devguru/myapp:1.0.0"'
             },
             condition: 'PULLED:devguru/myapp',
             hints: [
@@ -166,8 +166,8 @@ export const docker4: Module = {
                 it: '💡 Aiuto 2/3 (Sintassi): Specifica prima l\'immagine sorgente e poi il tag dell\'immagine target.'
               },
               {
-                en: '💡 Hint 3/3 (Full Solution): Type `docker tag myapp:v1 devguru/myapp:v1` in the CLI terminal.',
-                it: '💡 Aiuto 3/3 (Soluzione Completa): Digita `docker tag myapp:v1 devguru/myapp:v1` nel terminale CLI.'
+                en: '💡 Hint 3/3 (Full Solution): Type `docker tag myapp:1.0.0 devguru/myapp:1.0.0` in the CLI terminal.',
+                it: '💡 Aiuto 3/3 (Soluzione Completa): Digita `docker tag myapp:1.0.0 devguru/myapp:1.0.0` nel terminale CLI.'
               }
             ]
           },
@@ -184,12 +184,12 @@ export const docker4: Module = {
                 it: '💡 Aiuto 1/3 (Concettuale): Usa `docker push` per caricare un\'immagine su Docker Hub.'
               },
               {
-                en: '💡 Hint 2/3 (Syntax): Pass the newly tagged image name `devguru/myapp:v1`.',
-                it: '💡 Aiuto 2/3 (Sintassi): Passa il nome della nuova immagine appena etichettata `devguru/myapp:v1`.'
+                en: '💡 Hint 2/3 (Syntax): Pass the newly tagged image name `devguru/myapp:1.0.0`.',
+                it: '💡 Aiuto 2/3 (Sintassi): Passa il nome della nuova immagine appena etichettata `devguru/myapp:1.0.0`.'
               },
               {
-                en: '💡 Hint 3/3 (Full Solution): Type `docker push devguru/myapp:v1` in the CLI terminal.',
-                it: '💡 Aiuto 3/3 (Soluzione Completa): Digita `docker push devguru/myapp:v1` nel terminale CLI.'
+                en: '💡 Hint 3/3 (Full Solution): Type `docker push devguru/myapp:1.0.0` in the CLI terminal.',
+                it: '💡 Aiuto 3/3 (Soluzione Completa): Digita `docker push devguru/myapp:1.0.0` nel terminale CLI.'
               }
             ]
           }
