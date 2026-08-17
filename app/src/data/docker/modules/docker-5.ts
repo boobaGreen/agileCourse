@@ -99,6 +99,41 @@ export const docker5: Module = {
       }
     },
     {
+      type: 'table',
+      title: {
+        en: '🛠️ Command Reference: Managing Named Volumes',
+        it: '🛠️ Riferimento Comandi: Gestione dei Volumi con Nome'
+      },
+      content: {
+        en: 'Before mounting a Named Volume, you can create and manage it explicitly using these core Docker CLI commands:',
+        it: 'Prima di montare un Named Volume, puoi crearlo e gestirlo esplicitamente usando questi comandi fondamentali della CLI Docker:'
+      },
+      tableData: {
+        headers: [
+          { en: 'Command', it: 'Comando' },
+          { en: 'Purpose', it: 'Scopo' },
+          { en: 'Example', it: 'Esempio' }
+        ],
+        rows: [
+          [
+            { en: '**docker volume create**', it: '**docker volume create**' },
+            { en: 'Creates a new managed Named Volume on the host disk', it: 'Crea un nuovo Named Volume gestito sul disco dell\'host' },
+            { en: '`docker volume create dbstore`', it: '`docker volume create dbstore`' }
+          ],
+          [
+            { en: '**docker volume ls**', it: '**docker volume ls**' },
+            { en: 'Lists all existing volumes managed by Docker', it: 'Elenca tutti i volumi esistenti gestiti da Docker' },
+            { en: '`docker volume ls`', it: '`docker volume ls`' }
+          ],
+          [
+            { en: '**docker run -v**', it: '**docker run -v**' },
+            { en: 'Mounts the created Named Volume into a container path', it: 'Monta il Named Volume creato all\'interno di un container' },
+            { en: '`docker run -v dbstore:/var/lib/postgresql/data postgres`', it: '`docker run -v dbstore:/var/lib/postgresql/data postgres`' }
+          ]
+        ]
+      }
+    },
+    {
       type: 'game',
       title: {
         en: 'Lab: The Immortal Volume',
