@@ -33,7 +33,7 @@ export const docker6: Module = {
         en: 'A concise visual guide showing how host port forwarding and custom container networks work.',
         it: 'Una guida visiva sintetica che mostra come funzionano il port forwarding e le reti Docker personalizzate.'
       },
-      videoUrl: 'https://www.youtube.com/watch?v=c530s9z04Qk'
+      videoUrl: 'https://www.youtube.com/watch?v=0h2bPTcTZ54'
     },
     {
       type: 'concept',
