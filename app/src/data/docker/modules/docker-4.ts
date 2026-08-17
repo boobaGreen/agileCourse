@@ -4,47 +4,97 @@ export const docker4: Module = {
   id: 'docker-4',
   track: 'docker',
   order: 4,
-  title: 'Docker Hub & Registries',
-  subtitle: 'The App Store for Containers',
+  title: {
+    en: 'Docker Hub & Registries',
+    it: 'Docker Hub e Registri'
+  },
+  subtitle: {
+    en: 'The App Store for Containers',
+    it: 'L\'App Store dei Container'
+  },
   emoji: '🗄️',
   duration: '15 min',
   xpReward: 80,
   sections: [
     {
       type: 'intro',
-      content: 'You don\'t have to build everything yourself. **Docker Hub** is the central public registry where millions of pre-built images live. From basic Linux distributions to giant databases, it\'s the App Store for developers.'
+      content: {
+        en: 'You don\'t have to build everything yourself. **Docker Hub** is the central public registry where millions of pre-built images live. From basic Linux distributions to giant databases, it\'s the App Store for developers.',
+        it: 'Non devi costruire tutto da solo. **Docker Hub** è il registro pubblico centrale in cui risiedono milioni di immagini pre-compilate. Dalle distribuzioni Linux di base ai grandi database, è l\'App Store per gli sviluppatori.'
+      }
     },
     {
       type: 'concept',
-      title: '🏠 Public vs Private Registries',
-      content: 'Docker Hub is the default, public registry. But companies usually use **Private Registries** (like AWS ECR, Google GCR, or GitHub Container Registry) to keep their proprietary app images safe and secret.'
+      title: {
+        en: '🏠 Public vs Private Registries',
+        it: '🏠 Registri Pubblici vs Privati'
+      },
+      content: {
+        en: 'Docker Hub is the default, public registry. But companies usually use **Private Registries** (like AWS ECR, Google GCR, or GitHub Container Registry) to keep their proprietary app images safe and secret.',
+        it: 'Docker Hub è il registro pubblico predefinito. Le aziende usano solitamente **Registri Privati** (come AWS ECR, Google GCR o GitHub Container Registry) per mantenere riservate le proprie immagini applicative.'
+      }
     },
     {
       type: 'video',
-      title: '📺 Sharing Docker Images',
-      content: 'Learn how to pull, tag, and push images to registries like a professional.',
+      title: {
+        en: '📺 Sharing Docker Images',
+        it: '📺 Condividere Immagini Docker'
+      },
+      content: {
+        en: 'Learn how to pull, tag, and push images to registries like a professional.',
+        it: 'Impara a scaricare, etichettare e caricare immagini sui registry come un professionista.'
+      },
       videoUrl: 'https://www.youtube.com/watch?v=mAzHELZWE-Y'
     },
     {
       type: 'table',
-      title: '🏷️ Image Tags & Best Practices',
-      content: 'Versioning your images is absolutely crucial for stability. The suffix after the colon `:` is the tag.',
+      title: {
+        en: '🏷️ Image Tags & Best Practices',
+        it: '🏷️ Tag delle Immagini e Best Practice'
+      },
+      content: {
+        en: 'Versioning your images is absolutely crucial for stability. The suffix after the colon `:` is the tag.',
+        it: 'Gestire le versioni delle immagini è fondamentale per la stabilità. Il suffisso dopo i due punti `:` è il tag.'
+      },
       tableData: {
-        headers: ['Tag Strategy', 'Example', 'When to use', 'Risk Level'],
+        headers: [
+          { en: 'Tag Strategy', it: 'Strategia di Tag' },
+          { en: 'Example', it: 'Esempio' },
+          { en: 'When to use', it: 'Quando usarlo' },
+          { en: 'Risk Level', it: 'Livello di Rischio' }
+        ],
         rows: [
-          ['**Exact Semantic**', '`node:18.17.0`', 'Production environments & CI/CD', '🟢 Lowest'],
-          ['**Minor Version**', '`node:18`', 'Development, accepting small updates', '🟡 Medium'],
-          ['**Latest**', '`node:latest`', 'Trying things quickly locally', '🔴 High (Never in Prod)']
+          [
+            { en: '**Exact Semantic**', it: '**Semantico Esatto**' },
+            { en: '`node:18.17.0`', it: '`node:18.17.0`' },
+            { en: 'Production environments & CI/CD', it: 'Ambienti di produzione e CI/CD' },
+            { en: '🟢 Lowest', it: '🟢 Minimo' }
+          ],
+          [
+            { en: '**Minor Version**', it: '**Versione Minor**' },
+            { en: '`node:18`', it: '`node:18`' },
+            { en: 'Development, accepting small updates', it: 'Sviluppo locale, accetta piccoli update' },
+            { en: '🟡 Medium', it: '🟡 Medio' }
+          ],
+          [
+            { en: '**Latest**', it: '**Latest**' },
+            { en: '`node:latest`', it: '`node:latest`' },
+            { en: 'Trying things quickly locally', it: 'Test veloci in locale' },
+            { en: '🔴 High (Never in Prod)', it: '🔴 Alto (Mai in Produzione)' }
+          ]
         ]
       }
     },
     {
       type: 'flowchart',
-      content: '**The Push & Pull Cycle**',
+      content: {
+        en: '**The Push & Pull Cycle**',
+        it: '**Il Ciclo di Push e Pull**'
+      },
       diagramSteps: [
-        { label: 'Developer Laptop\n(docker push)', icon: '💻', color: '#ffb703' },
-        { label: 'Docker Hub\n(The Cloud Registry)', icon: '☁️', color: '#118ab2' },
-        { label: 'Prod Server\n(docker pull)', icon: '🖥️', color: '#06d6a0' }
+        { label: { en: 'Developer Laptop\n(docker push)', it: 'Computer Sviluppatore\n(docker push)' }, icon: '💻', color: '#ffb703' },
+        { label: { en: 'Docker Hub\n(The Cloud Registry)', it: 'Docker Hub\n(Il Registry Cloud)' }, icon: '☁️', color: '#118ab2' },
+        { label: { en: 'Prod Server\n(docker pull)', it: 'Server di Produzione\n(docker pull)' }, icon: '🖥️', color: '#06d6a0' }
       ]
     },
     {
@@ -206,6 +256,36 @@ export const docker4: Module = {
       explanation: {
         en: 'You use `docker tag local_image user_name/repo_name:tag` to correctly label the image so the Docker Engine knows exactly where to route the upload.',
         it: 'Si usa `docker tag immagine_locale nome_utente/nome_repo:tag` per etichettare correttamente l\'immagine in modo che il Docker Engine sappia esattamente dove indirizzare il caricamento.'
+      }
+    },
+    {
+      id: 'docker-4-q3',
+      question: {
+        en: 'What happens if you run `docker pull ubuntu` without specifying a tag after the colon?',
+        it: 'Cosa succede se esegui `docker pull ubuntu` senza specificare un tag dopo i due punti?'
+      },
+      options: [
+        {
+          en: 'Docker throws a syntax error and aborts',
+          it: 'Docker restituisce un errore di sintassi e interrompe il comando'
+        },
+        {
+          en: 'Docker automatically appends and pulls the default `:latest` tag',
+          it: 'Docker applica e scarica automaticamente il tag predefinito `:latest`'
+        },
+        {
+          en: 'Docker downloads all available historical versions of Ubuntu',
+          it: 'Docker scarica tutte le versioni storiche disponibili di Ubuntu'
+        },
+        {
+          en: 'Docker prompts you to select a version interactively',
+          it: 'Docker ti chiede di selezionare una versione in modo interattivo'
+        }
+      ],
+      correct: 1,
+      explanation: {
+        en: 'When no tag is explicitly provided in a pull command, Docker automatically defaults to downloading the `:latest` tag.',
+        it: 'Quando non si specifica esplicitamente alcun tag in un comando pull, Docker assegna ed esegue di default il tag `:latest`.'
       }
     }
   ]
