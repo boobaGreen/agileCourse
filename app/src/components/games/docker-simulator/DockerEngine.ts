@@ -8,6 +8,7 @@ export class DockerEngine {
       this.state = JSON.parse(JSON.stringify(initialState));
       if (!this.state.volumes) this.state.volumes = [];
       if (!this.state.networks) this.state.networks = [];
+      if (!this.state.pushedImages) this.state.pushedImages = [];
     } else {
       this.state = {
         images: [
@@ -17,7 +18,8 @@ export class DockerEngine {
         volumes: [],
         networks: [
           { id: 'net-1', name: 'bridge', driver: 'bridge' }
-        ]
+        ],
+        pushedImages: []
       };
     }
   }
@@ -129,6 +131,14 @@ export class DockerEngine {
   public push(imageName: string): { success: boolean, msg: string } {
     const image = this.state.images.find(img => img.name === imageName || `${img.name}:${img.tag}` === imageName);
     if (!image) return { success: false, msg: `Error: No such image: ${imageName}` };
+
+    if (!this.state.pushedImages) this.state.pushedImages = [];
+    if (!this.state.pushedImages.includes(imageName)) {
+      this.state.pushedImages.push(imageName);
+    }
+    if (!this.state.pushedImages.includes(image.name)) {
+      this.state.pushedImages.push(image.name);
+    }
 
     return { 
       success: true, 

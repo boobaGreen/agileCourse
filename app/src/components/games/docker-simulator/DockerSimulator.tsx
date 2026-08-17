@@ -32,6 +32,8 @@ export function DockerSimulator({ data, onComplete }: Props) {
 
       if (type === 'PULLED') {
         isDone = !!currentState.images.find(img => img.name === arg1);
+      } else if (type === 'PUSHED') {
+        isDone = !!currentState.pushedImages?.includes(arg1);
       } else if (type === 'RUNNING') {
         isDone = !!currentState.containers.find(c => c.image === arg1 && c.status === 'running');
       } else if (type === 'PORT_MAPPED') {

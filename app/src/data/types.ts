@@ -77,6 +77,7 @@ export interface DockerState {
   containers: DockerContainer[];
   volumes?: DockerVolume[];
   networks?: DockerNetwork[];
+  pushedImages?: string[];
 }
 
 export interface DockerGameData {

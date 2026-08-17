@@ -127,7 +127,7 @@ export const docker4: Module = {
               en: 'Push the new tagged image to Docker Hub',
               it: 'Carica (push) la nuova immagine etichettata su Docker Hub'
             },
-            condition: 'PULLED:devguru/myapp',
+            condition: 'PUSHED:devguru/myapp',
             hints: [
               {
                 en: '💡 Hint 1/3 (Conceptual): Use `docker push` to upload an image to Docker Hub.',
