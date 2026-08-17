@@ -136,6 +136,17 @@ export const docker5: Module = {
     {
       type: 'tip',
       title: {
+        en: '💡 Anatomy of a docker run Command',
+        it: '💡 Anatomia del Comando docker run'
+      },
+      content: {
+        en: 'Always remember the rule: `docker run [flags] <image_name>`. Flags like `-v` specify volume mounts, but the **image name (e.g. postgres, nginx) MUST always be placed at the end** of the command!',
+        it: 'Ricorda sempre la regola: `docker run [opzioni] <nome_immagine>`. I flag come `-v` specificano i volumi, ma il **nome dell\'immagine (es. postgres, nginx) deve SEMPRE trovarsi alla fine** del comando!'
+      }
+    },
+    {
+      type: 'tip',
+      title: {
         en: '💡 Explicit vs Automatic Volume Creation',
         it: '💡 Creazione Esplicita vs Automatica dei Volumi'
       },
