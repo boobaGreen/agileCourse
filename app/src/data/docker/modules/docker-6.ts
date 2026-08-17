@@ -117,26 +117,45 @@ export const docker6: Module = {
       tableData: {
         headers: [
           { en: 'Network Driver', it: 'Driver di Rete' },
-          { en: 'Isolation Level', it: 'Livello di Isolamento' },
-          { en: 'Best Use Case', it: 'Caso d\'Uso Ideale' }
+          { en: 'CLI Flag', it: 'Flag CLI' },
+          { en: 'Network Isolation', it: 'Isolamento Rete' },
+          { en: 'Real-World Example', it: 'Esempio Reale' }
         ],
         rows: [
           [
             { en: '**bridge** (Default)', it: '**bridge** (Predefinito)' },
-            { en: 'Private isolated network per host', it: 'Rete privata isolata per host' },
-            { en: '🟢 Standard apps & multi-container setups', it: '🟢 App standard e ambienti multi-container' }
+            { en: '`--network bridge`', it: '`--network bridge`' },
+            { en: '🔒 High (Private virtual network)', it: '🔒 Alto (Rete privata virtuale)' },
+            { en: '🟢 Web App + Database stack (Standard production setup)', it: '🟢 Stack App Web + Database (Standard in produzione)' }
           ],
           [
             { en: '**host**', it: '**host**' },
-            { en: 'Removes network isolation (shares host IP)', it: 'Rimuove l\'isolamento (condivide l\'IP dell\'host)' },
-            { en: '⚡ Maximum network performance (no port mapping needed)', it: '⚡ Massime prestazioni di rete (nessun port mapping)' }
+            { en: '`--network host`', it: '`--network host`' },
+            { en: '🔓 None (Shares host network stack directly)', it: '🔓 Nessuno (Condivide la rete dell\'host)' },
+            { en: '⚡ High-frequency trading or WebRTC video streaming', it: '⚡ Video streaming WebRTC o trading ad alta frequenza' }
           ],
           [
             { en: '**none**', it: '**none**' },
-            { en: 'Completely disables network interfaces', it: 'Disabilita completamente le interfacce di rete' },
-            { en: '🔒 High-security offline batch jobs & computations', it: '🔒 Elaborazioni batch offline ad alta sicurezza' }
+            { en: '`--network none`', it: '`--network none`' },
+            { en: '🛡️ Total (Air-gapped offline container)', it: '🛡️ Totale (Container totalmente offline)' },
+            { en: '🔒 Generating secret crypto keys or sensitive PDF generation', it: '🔒 Generazione chiavi crittografiche o PDF riservati' }
           ]
         ]
+      }
+    },
+    {
+      type: 'concept',
+      title: {
+        en: '💡 Deep Dive: When to use bridge, host, or none?',
+        it: '💡 Approfondimento: Quando usare bridge, host o none?'
+      },
+      content: {
+        en: '1. **`bridge` (Default)**: Always use this unless you have a specific hardware or performance reason. It protects your container network behind a virtual firewall.\n\n' +
+            '2. **`host`**: Bypasses Docker\'s network virtualization. If your container opens port `8080`, it is IMMEDIATELY available on your computer\'s `localhost:8080` without using `-p 8080:8080`. Perfect for ultra-low latency apps.\n\n' +
+            '3. **`none`**: Disables all network cards inside the container (`lo` loopback only). Ideal for high-security batch jobs that must NEVER leak data to internet.',
+        it: '1. **`bridge` (Predefinito)**: Usa sempre questo a meno che tu non abbia un motivo specifico di prestazioni. Protegge i tuoi container dietro un firewall virtuale.\n\n' +
+            '2. **`host`**: Scavalca la virtualizzazione di rete di Docker. Se il container apre la porta `8080`, sarà SUBITO accessibile su `localhost:8080` del tuo PC senza usare `-p 8080:8080`. Perfetto per app ad altissima velocità.\n\n' +
+            '3. **`none`**: Disattiva qualsiasi scheda di rete dentro il container. Ideale per task di massima sicurezza che NON devono MAI inviare dati all\'esterno.'
       }
     },
     {
