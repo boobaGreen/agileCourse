@@ -33,7 +33,7 @@ export const docker7: Module = {
         en: 'See exactly how to transition from tedious CLI commands to an elegant, declarative YAML configuration file.',
         it: 'Scopri esattamente come passare da comandi CLI sparsi a un unico file di configurazione YAML dichiarativo ed elegante.'
       },
-      videoUrl: 'https://www.youtube.com/watch?v=3pyzLqr-01s'
+      videoUrl: 'https://www.youtube.com/watch?v=DM65_JyGxCo'
     },
     {
       type: 'concept',
