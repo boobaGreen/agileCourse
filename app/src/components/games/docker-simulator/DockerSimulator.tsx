@@ -247,32 +247,37 @@ export function DockerSimulator({ data, onComplete }: Props) {
                 <div className="mt-2 flex flex-col gap-2.5 pt-3 border-t border-white/5">
                   {hintLevel > 0 && (
                     <div className="flex flex-col gap-2">
-                      {currentUncompletedTask.hints.slice(0, hintLevel).map((h, idx) => (
-                        <motion.div
-                          key={idx}
-                          initial={{ opacity: 0, y: 5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className={`p-3 rounded-lg border text-xs leading-relaxed font-mono ${
-                            idx === 0
-                              ? 'bg-yellow-500/10 border-yellow-500/30 text-yellow-200'
-                              : idx === 1
-                              ? 'bg-orange-500/10 border-orange-500/30 text-orange-200'
-                              : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-200'
-                          }`}
-                        >
-                          <div className="flex items-start justify-between gap-2">
-                            <span>{resolveString(h)}</span>
-                            {idx === 2 && (
-                              <button
-                                onClick={() => setInput('docker build -t myapp:v1 .')}
-                                className="px-2 py-0.5 bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-300 border border-emerald-400/40 rounded text-[10px] font-bold shrink-0 transition-colors"
-                              >
-                                {resolveString({ en: '⚡ Insert', it: '⚡ Inserisci' })}
-                              </button>
-                            )}
-                          </div>
-                        </motion.div>
-                      ))}
+                      {currentUncompletedTask.hints.slice(0, hintLevel).map((h, idx) => {
+                        const hintText = resolveString(h);
+                        const codeMatch = hintText.match(/`([^`]+)`/);
+                        const cmdToInsert = codeMatch ? codeMatch[1] : '';
+                        return (
+                          <motion.div
+                            key={idx}
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className={`p-3 rounded-lg border text-xs leading-relaxed font-mono ${
+                              idx === 0
+                                ? 'bg-yellow-500/10 border-yellow-500/30 text-yellow-200'
+                                : idx === 1
+                                ? 'bg-orange-500/10 border-orange-500/30 text-orange-200'
+                                : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-200'
+                            }`}
+                          >
+                            <div className="flex items-start justify-between gap-2">
+                              <span>{hintText}</span>
+                              {idx === 2 && cmdToInsert && (
+                                <button
+                                  onClick={() => setInput(cmdToInsert)}
+                                  className="px-2 py-0.5 bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-300 border border-emerald-400/40 rounded text-[10px] font-bold shrink-0 transition-colors"
+                                >
+                                  {resolveString({ en: '⚡ Insert', it: '⚡ Inserisci' })}
+                                </button>
+                              )}
+                            </div>
+                          </motion.div>
+                        );
+                      })}
                     </div>
                   )}
 

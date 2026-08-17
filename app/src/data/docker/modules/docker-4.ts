@@ -48,9 +48,50 @@ export const docker4: Module = {
       ]
     },
     {
+      type: 'table',
+      title: {
+        en: '🛠️ Command Reference: Registries & Publishing',
+        it: '🛠️ Riferimento Comandi: Registry e Pubblicazione'
+      },
+      content: {
+        en: 'Memorize these 3 core commands used to manage remote image repositories:',
+        it: 'Memorizza questi 3 comandi fondamentali usati per gestire i repository di immagini remoti:'
+      },
+      tableData: {
+        headers: [
+          { en: 'Command', it: 'Comando' },
+          { en: 'Purpose', it: 'Scopo' },
+          { en: 'Example', it: 'Esempio' }
+        ],
+        rows: [
+          [
+            { en: '**docker tag**', it: '**docker tag**' },
+            { en: 'Labels a local image with a username/repository name before pushing', it: 'Etichetta un\'immagine locale con il nome utente/repository prima del caricamento' },
+            { en: '`docker tag myapp:v1 devguru/myapp:v1`', it: '`docker tag myapp:v1 devguru/myapp:v1`' }
+          ],
+          [
+            { en: '**docker push**', it: '**docker push**' },
+            { en: 'Uploads the tagged image to Docker Hub or remote registry', it: 'Carica l\'immagine etichettata su Docker Hub o registry remoto' },
+            { en: '`docker push devguru/myapp:v1`', it: '`docker push devguru/myapp:v1`' }
+          ],
+          [
+            { en: '**docker pull**', it: '**docker pull**' },
+            { en: 'Downloads an image from Docker Hub to your laptop', it: 'Scarica un\'immagine da Docker Hub sulla tua macchina locale' },
+            { en: '`docker pull ubuntu:20.04`', it: '`docker pull ubuntu:20.04`' }
+          ]
+        ]
+      }
+    },
+    {
       type: 'game',
-      title: 'Lab: Publish to the World',
-      content: 'In this simulator, you will prepare an image for the cloud. Tag your local image and "push" it to simulate a registry upload.',
+      title: {
+        en: 'Lab: Publish to the World',
+        it: 'Lab: Pubblica nel Mondo'
+      },
+      content: {
+        en: 'In this simulator, you will prepare an image for the cloud. Tag your local image and "push" it to simulate a registry upload.',
+        it: 'In questo simulatore preparerai un\'immagine per il cloud. Etichetta la tua immagine locale ed eseguine il "push" per simulare il caricamento sul registry.'
+      },
       gameType: 'docker-sim',
       gameData: {
         startState: {
@@ -58,8 +99,50 @@ export const docker4: Module = {
           containers: []
         },
         tasks: [
-          { id: '1', instruction: 'Tag "myapp:v1" as "devguru/myapp:v1" (use `docker tag myapp:v1 devguru/myapp:v1`)', condition: 'PULLED:devguru/myapp' },
-          { id: '2', instruction: 'Push the new tagged image to Docker Hub (use `docker push devguru/myapp:v1`)', condition: 'PULLED:devguru/myapp' }
+          {
+            id: '1',
+            instruction: {
+              en: 'Tag "myapp:v1" as "devguru/myapp:v1"',
+              it: 'Etichetta "myapp:v1" come "devguru/myapp:v1"'
+            },
+            condition: 'PULLED:devguru/myapp',
+            hints: [
+              {
+                en: '💡 Hint 1/3 (Conceptual): Use `docker tag` to assign a user repository name to your local image.',
+                it: '💡 Aiuto 1/3 (Concettuale): Usa `docker tag` per assegnare il nome del repository utente alla tua immagine locale.'
+              },
+              {
+                en: '💡 Hint 2/3 (Syntax): Specify the source image first, then the target image tag.',
+                it: '💡 Aiuto 2/3 (Sintassi): Specifica prima l\'immagine sorgente e poi il tag dell\'immagine target.'
+              },
+              {
+                en: '💡 Hint 3/3 (Full Solution): Type `docker tag myapp:v1 devguru/myapp:v1` in the CLI terminal.',
+                it: '💡 Aiuto 3/3 (Soluzione Completa): Digita `docker tag myapp:v1 devguru/myapp:v1` nel terminale CLI.'
+              }
+            ]
+          },
+          {
+            id: '2',
+            instruction: {
+              en: 'Push the new tagged image to Docker Hub',
+              it: 'Carica (push) la nuova immagine etichettata su Docker Hub'
+            },
+            condition: 'PULLED:devguru/myapp',
+            hints: [
+              {
+                en: '💡 Hint 1/3 (Conceptual): Use `docker push` to upload an image to Docker Hub.',
+                it: '💡 Aiuto 1/3 (Concettuale): Usa `docker push` per caricare un\'immagine su Docker Hub.'
+              },
+              {
+                en: '💡 Hint 2/3 (Syntax): Pass the newly tagged image name `devguru/myapp:v1`.',
+                it: '💡 Aiuto 2/3 (Sintassi): Passa il nome della nuova immagine appena etichettata `devguru/myapp:v1`.'
+              },
+              {
+                en: '💡 Hint 3/3 (Full Solution): Type `docker push devguru/myapp:v1` in the CLI terminal.',
+                it: '💡 Aiuto 3/3 (Soluzione Completa): Digita `docker push devguru/myapp:v1` nel terminale CLI.'
+              }
+            ]
+          }
         ]
       }
     }
