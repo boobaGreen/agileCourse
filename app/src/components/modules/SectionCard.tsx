@@ -182,9 +182,13 @@ export function SectionCard({ section, onCompleteGame }: { section: Section, onC
         <div className="mt-4 aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl">
           <iframe
             className="w-full h-full"
-            src={section.videoUrl.includes('playlist?list=')
-              ? section.videoUrl.replace('youtube.com/playlist?list=', 'youtube.com/embed/videoseries?list=')
-              : section.videoUrl.replace('watch?v=', 'embed/')}
+            src={(() => {
+              if (section.videoUrl.includes('playlist?list=')) {
+                return section.videoUrl.replace('youtube.com/playlist?list=', 'youtube.com/embed/videoseries?list=');
+              }
+              const match = section.videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+              return match ? `https://www.youtube.com/embed/${match[1]}` : section.videoUrl;
+            })()}
             title={resolveString(section.title) || 'Educational Video'}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
