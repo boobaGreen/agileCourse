@@ -89,7 +89,7 @@ export class DockerEngine {
       }
     }
 
-    if (!imageName) return { success: false, msg: '"docker run" requires at least 1 argument.' };
+    if (!imageName) return { success: false, msg: 'docker: "docker run" requires an image name at the end (e.g. docker run [flags] <image>)' };
 
     const image = this.state.images.find(img => img.name === imageName || `${img.name}:${img.tag}` === imageName);
     if (!image) {

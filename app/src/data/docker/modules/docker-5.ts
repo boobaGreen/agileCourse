@@ -193,16 +193,16 @@ export const docker5: Module = {
             condition: 'CONTAINER_RUNNING:postgres',
             hints: [
               {
-                en: '💡 Hint 1/3 (Conceptual): Use `docker run -d` with `-v volume_name:container_path`.',
-                it: '💡 Aiuto 1/3 (Concettuale): Usa `docker run -d` col flag `-v nome_volume:path_container`.'
+                en: '💡 Hint 1/3 (Conceptual): Use `docker run` with the `-v volume_name:container_path` flag followed by the image name.',
+                it: '💡 Aiuto 1/3 (Concettuale): Usa `docker run` con il flag `-v nome_volume:path_container` seguito dal nome dell\'immagine.'
               },
               {
-                en: '💡 Hint 2/3 (Syntax): Mount `dbstore` to `/var/lib/postgresql/data` using image `postgres`.',
-                it: '💡 Aiuto 2/3 (Sintassi): Monta `dbstore` su `/var/lib/postgresql/data` usando l\'immagine `postgres`.'
+                en: '💡 Hint 2/3 (Syntax): Remember that `docker run` always requires the image name `postgres` at the end of the command!',
+                it: '💡 Aiuto 2/3 (Sintassi): Ricorda che `docker run` richiede sempre il nome dell\'immagine (`postgres`) alla fine del comando!'
               },
               {
-                en: '💡 Hint 3/3 (Full Solution): Type `docker run -d -v dbstore:/var/lib/postgresql/data postgres` in the CLI.',
-                it: '💡 Aiuto 3/3 (Soluzione Completa): Digita `docker run -d -v dbstore:/var/lib/postgresql/data postgres` nel terminale CLI.'
+                en: '💡 Hint 3/3 (Full Solution): Type `docker run -v dbstore:/var/lib/postgresql/data postgres` in the CLI terminal.',
+                it: '💡 Aiuto 3/3 (Soluzione Completa): Digita `docker run -v dbstore:/var/lib/postgresql/data postgres` nel terminale CLI.'
               }
             ]
           }
