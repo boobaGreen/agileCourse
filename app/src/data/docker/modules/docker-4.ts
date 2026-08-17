@@ -86,6 +86,17 @@ export const docker4: Module = {
       }
     },
     {
+      type: 'tip',
+      title: {
+        en: '💡 Default Tag Behavior: Omitting the Tag',
+        it: '💡 Comportamento del Tag Predefinito: Omettere il Tag'
+      },
+      content: {
+        en: 'What happens if you run a command like `docker pull ubuntu` without specifying a tag after the colon `:`? Docker will **automatically append and pull the default `:latest` tag** (i.e. `ubuntu:latest`). Always specify exact version tags in production to avoid breaking changes!',
+        it: 'Cosa succede se esegui un comando come `docker pull ubuntu` senza specificare un tag dopo i due punti `:`? Docker **applicherà e scaricherà automaticamente il tag predefinito `:latest`** (ovvero `ubuntu:latest`). In produzione, specifica sempre la versione esatta per evitare modifiche inaspettate!'
+      }
+    },
+    {
       type: 'flowchart',
       content: {
         en: '**The Push & Pull Cycle**',
