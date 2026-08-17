@@ -72,27 +72,27 @@ export const docker5: Module = {
       tableData: {
         headers: [
           { en: 'Storage Mode', it: 'Modalità Storage' },
-          { en: 'Syntax & Parameters', it: 'Sintassi e Parametri' },
-          { en: 'Host Storage Location', it: 'Posizione nell\'Host' },
+          { en: 'CLI Syntax Example', it: 'Esempio Sintassi CLI' },
+          { en: 'Parameter Meaning', it: 'Significato Parametri' },
           { en: 'Best Use Case', it: 'Caso d\'Uso Ideale' }
         ],
         rows: [
           [
             { en: '**1. Bind Mount** 📂', it: '**1. Bind Mount** 📂' },
-            { en: '`-v /host/path:/container/path`\n*(Host Path : Container Path)*', it: '`-v /path/host:/path/container`\n*(Path Host : Path Container)*' },
-            { en: 'Specific host directory (e.g. `$(pwd)/src`)', it: 'Cartella specifica dell\'host (es. `$(pwd)/src`)' },
+            { en: '`-v /host/path:/container/path`', it: '`-v /path/host:/path/container`' },
+            { en: 'Host Path : Container Path', it: 'Path Host : Path Container' },
             { en: '⚡ Sharing source code for live-reloading in dev', it: '⚡ Live-reload del codice sorgente in sviluppo' }
           ],
           [
-            { en: '**2. Anonymous Volume** ❓', it: '**2. Anonymous Volume** ❓', },
-            { en: '`-v /container/path`\n*(Container Path Only)*', it: '`-v /path/container`\n*(Solo Path Container)*' },
-            { en: 'Hidden folder with random Hash ID', it: 'Cartella nascosta con ID Hash casuale' },
+            { en: '**2. Anonymous Volume** ❓', it: '**2. Anonymous Volume** ❓' },
+            { en: '`-v /container/path`', it: '`-v /path/container`' },
+            { en: 'Container Path Only (Random Hash ID)', it: 'Solo Path Container (ID Hash casuale)' },
             { en: '⚠️ Isolated temporary data (risks orphaned dangling files)', it: '⚠️ Dati temporanei (rischia di lasciare volumi orfani)' }
           ],
           [
             { en: '**3. Named Volume** 🗃️', it: '**3. Named Volume** 🗃️' },
-            { en: '`-v volume-name:/container/path`\n*(Volume Name : Container Path)*', it: '`-v nome-volume:/path/container`\n*(Nome Volume : Path Container)*' },
-            { en: 'Managed area (`/var/lib/docker/volumes/`)', it: 'Area gestita (`/var/lib/docker/volumes/`)' },
+            { en: '`-v dbstore:/container/path`', it: '`-v dbstore:/path/container`' },
+            { en: 'Volume Name : Container Path', it: 'Nome Volume : Path Container' },
             { en: '🔒 Persistent Database storage in production', it: '🔒 Persistenza Database sicura in produzione' }
           ]
         ]
