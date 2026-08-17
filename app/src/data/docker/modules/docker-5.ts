@@ -60,69 +60,40 @@ export const docker5: Module = {
       videoUrl: 'https://www.youtube.com/watch?v=p2PH_YPCsis'
     },
     {
-      type: 'concept',
+      type: 'table',
       title: {
         en: '📦 The 3 Volume & Mount Types in Docker',
         it: '📦 Le 3 Modalità di Storage in Docker'
       },
       content: {
-        en: 'Docker provides 3 distinct ways to mount storage into a container:\n\n' +
-            '1. **Bind Mounts** (Host Path : Container Path ➔ `-v /host/path:/container/path`):\n' +
-            '   * You specify **both** the exact host folder path and the container path.\n' +
-            '   * **Best for:** Sharing source code between laptop and container during development (live-reloading).\n\n' +
-            '2. **Anonymous Volumes** (Container Path Only ➔ `-v /container/path`):\n' +
-            '   * You specify **only** the container path. Docker creates a hidden folder with a random hash ID.\n' +
-            '   * **Drawback:** Hard to track; becomes orphaned ("dangling") when the container is deleted.\n\n' +
-            '3. **Named Volumes** (Volume Name : Container Path ➔ `-v volume-name:/container/path`):\n' +
-            '   * You assign an explicit **volume name** and container path. Docker manages the host directory securely under `/var/lib/docker/volumes/`.\n' +
-            '   * **Best for:** Database data in production. Data persists even if the container is destroyed!',
-        it: 'Docker offre 3 modalità ben distinte per montare lo storage in un container:\n\n' +
-            '1. **Bind Mounts** (Path Host : Path Container ➔ `-v /path/host:/path/container`):\n' +
-            '   * Specifichi **sia il percorso preciso dell\'Host che del Container**.\n' +
-            '   * **Uso ideale:** Condividere il codice sorgente per il live-reloading durante lo sviluppo.\n\n' +
-            '2. **Anonymous Volumes** (Solo Path Container ➔ `-v /path/container`):\n' +
-            '   * Specifichi **solo la cartella del container**. Docker crea una cartella nell\'host contrassegnata da un ID alfanumerico casuale.\n' +
-            '   * **Svantaggio:** Difficile da tracciare; rischia di rimanere orfano ("dangling") quando si rimuove il container.\n\n' +
-            '3. **Named Volumes** (Nome Volume : Path Container ➔ `-v mio-volume:/path/container`):\n' +
-            '   * Assegni un **nome identificativo al volume**. Docker gestisce la cartella fisica in un\'area sicura del sistema (`/var/lib/docker/volumes/`).\n' +
-            '   * **Uso ideale:** Database in produzione. I dati sopravvivono anche se il container viene eliminato!'
-      }
-    },
-    {
-      type: 'table',
-      title: {
-        en: '⚖️ Comparing the 3 Storage Modes',
-        it: '⚖️ Confronto tra le 3 Modalità di Storage'
-      },
-      content: {
-        en: 'Understanding when to use each type of storage:',
-        it: 'Comprendere quando utilizzare ciascun tipo di archiviazione:'
+        en: 'Docker provides 3 distinct ways to mount storage into a container depending on what parameters you pass to the `-v` flag:',
+        it: 'Docker offre 3 modalità distinte per montare lo storage in un container in base ai parametri passati al flag `-v`:'
       },
       tableData: {
         headers: [
           { en: 'Storage Mode', it: 'Modalità Storage' },
-          { en: 'Syntax Example', it: 'Esempio Sintassi' },
-          { en: 'Managed By', it: 'Gestito Da' },
+          { en: 'Syntax & Parameters', it: 'Sintassi e Parametri' },
+          { en: 'Host Storage Location', it: 'Posizione nell\'Host' },
           { en: 'Best Use Case', it: 'Caso d\'Uso Ideale' }
         ],
         rows: [
           [
             { en: '**1. Bind Mount** 📂', it: '**1. Bind Mount** 📂' },
-            { en: '`-v $(pwd)/src:/app/src`', it: '`-v $(pwd)/src:/app/src`' },
-            { en: 'Developer (Host path)', it: 'Sviluppatore (Path host)' },
-            { en: 'Live-reloading source code in dev', it: 'Live-reload del codice sorgente in sviluppo' }
+            { en: '`-v /host/path:/container/path`\n*(Host Path : Container Path)*', it: '`-v /path/host:/path/container`\n*(Path Host : Path Container)*' },
+            { en: 'Specific host directory (e.g. `$(pwd)/src`)', it: 'Cartella specifica dell\'host (es. `$(pwd)/src`)' },
+            { en: '⚡ Sharing source code for live-reloading in dev', it: '⚡ Live-reload del codice sorgente in sviluppo' }
           ],
           [
-            { en: '**2. Anonymous Volume** ❓', it: '**2. Anonymous Volume** ❓' },
-            { en: '`-v /var/lib/postgresql/data`', it: '`-v /var/lib/postgresql/data`' },
-            { en: 'Docker (Random Hash ID)', it: 'Docker (ID Hash casuale)' },
-            { en: 'Temporary container data isolation', it: 'Isolamento temporaneo dati container' }
+            { en: '**2. Anonymous Volume** ❓', it: '**2. Anonymous Volume** ❓', },
+            { en: '`-v /container/path`\n*(Container Path Only)*', it: '`-v /path/container`\n*(Solo Path Container)*' },
+            { en: 'Hidden folder with random Hash ID', it: 'Cartella nascosta con ID Hash casuale' },
+            { en: '⚠️ Isolated temporary data (risks orphaned dangling files)', it: '⚠️ Dati temporanei (rischia di lasciare volumi orfani)' }
           ],
           [
             { en: '**3. Named Volume** 🗃️', it: '**3. Named Volume** 🗃️' },
-            { en: '`-v dbstore:/var/lib/postgresql/data`', it: '`-v dbstore:/var/lib/postgresql/data`' },
-            { en: 'Docker (Explicit Name)', it: 'Docker (Nome esplicito)' },
-            { en: 'Persistent Database storage in production', it: 'Persistenza Database in produzione' }
+            { en: '`-v volume-name:/container/path`\n*(Volume Name : Container Path)*', it: '`-v nome-volume:/path/container`\n*(Nome Volume : Path Container)*' },
+            { en: 'Managed area (`/var/lib/docker/volumes/`)', it: 'Area gestita (`/var/lib/docker/volumes/`)' },
+            { en: '🔒 Persistent Database storage in production', it: '🔒 Persistenza Database sicura in produzione' }
           ]
         ]
       }
