@@ -134,14 +134,25 @@ export const docker5: Module = {
       }
     },
     {
+      type: 'tip',
+      title: {
+        en: '💡 Explicit vs Automatic Volume Creation',
+        it: '💡 Creazione Esplicita vs Automatica dei Volumi'
+      },
+      content: {
+        en: 'Did you know? If you execute `docker run -v myvol:/path postgres` with a volume name that does not exist yet, Docker will **automatically create it** in the background! However, running `docker volume create` explicitly beforehand is the recommended professional practice for clear infrastructure planning.',
+        it: 'Lo sapevi? Se esegui `docker run -v mio-vol:/path postgres` con un nome di volume che non esiste ancora, Docker lo **creerà automaticamente in sottofondo**! Tuttavia, eseguire prima `docker volume create` in modo esplicito è la best practice professionale raccomandata per una chiara gestione dell\'infrastruttura.'
+      }
+    },
+    {
       type: 'game',
       title: {
         en: 'Lab: The Immortal Volume',
         it: 'Lab: Il Volume Immortale'
       },
       content: {
-        en: 'In this lab, you will create a named volume and connect it to a database. If the container dies, the volume remains!',
-        it: 'In questo lab creerei un volume con nome (Named Volume) e lo collegherai a un database. Se il container viene distrutto, il volume rimane intatto!'
+        en: 'In this simulator, you will practice explicit volume creation. First, create a named volume explicitly using `docker volume create dbstore`, then attach it to a PostgreSQL container.',
+        it: 'In questo simulatore metterai in pratica la creazione esplicita dei volumi. Per prima cosa, crea esplicitamente un volume usando `docker volume create dbstore`, poi collegalo a un container PostgreSQL.'
       },
       gameType: 'docker-sim',
       gameData: {
@@ -154,8 +165,8 @@ export const docker5: Module = {
           {
             id: '1',
             instruction: {
-              en: 'Create a named volume called "dbstore"',
-              it: 'Crea un volume con nome chiamato "dbstore"'
+              en: 'Explicitly create a named volume called "dbstore": `docker volume create dbstore`',
+              it: 'Crea esplicitamente un volume con nome chiamato "dbstore": `docker volume create dbstore`'
             },
             condition: 'VOLUME_EXISTS:dbstore',
             hints: [
