@@ -53,12 +53,24 @@ export const docker6: Module = {
     {
       type: 'concept',
       title: {
-        en: '🌐 Docker User-Defined Networks & Container DNS',
-        it: '🌐 Reti Docker Personalizzate e DNS dei Container'
+        en: '🌐 Docker User-Defined Networks & Automatic DNS',
+        it: '🌐 Reti Docker Personalizzate e DNS Automatico'
       },
       content: {
-        en: 'What if a Web Container needs to talk to a Database Container? They shouldn\'t go over the public internet!\n\nDocker allows creating virtual internal networks. When containers join the same network, they can securely talk to each other **using their container names** as hostnames (e.g., `http://db:5432`). This is built-in automatic DNS!',
-        it: 'Cosa succede se un container Web deve comunicare con un container Database? Non dovrebbero passare per internet pubblico!\n\nDocker permette di creare reti virtuali interne. Quando i container si uniscono alla stessa rete, possono comunicare in modo sicuro **usando i propri nomi di container** come hostname (es. `http://db:5432`). È un DNS automatico integrato!'
+        en: 'Imagine you have an App container (`web`) and a Database container (`db`). How does `web` connect to `db`?\n\n' +
+            '❌ **Without a Custom Network (Hardcoded IPs)**:\n' +
+            'Every time a container restarts, its internal IP address changes (e.g. `172.17.0.2` becomes `172.17.0.5`). Your app code breaks because the IP is wrong!\n\n' +
+            '✅ **With a Custom Network (`docker network create my-net`)**:\n' +
+            'Docker runs an **internal DNS server**. You don\'t write IP addresses in your code; you simply write the **container name** as the hostname!\n\n' +
+            '* **Database connection string in your Application Code:**\n' +
+            '  `postgres://user:password@db:5432/mydb`  *(Docker automatically resolves "db" to the correct container IP!)*',
+        it: 'Immagina di avere un container App (`web`) e un container Database (`db`). Come fa `web` a connettersi a `db`?\n\n' +
+            '❌ **Senza una Rete Personalizzata (IP variabili)**:\n' +
+            'Ogni volta che un container si riavvia, il suo IP interno cambia (es. da `172.17.0.2` a `172.17.0.5`). Se scrivi l\'IP nel codice della tua app, la connessione fallirà!\n\n' +
+            '✅ **Con una Rete Personalizzata (`docker network create mia-rete`)**:\n' +
+            'Docker attiva un **server DNS interno**. Nel codice della tua app non scrivi mai un indirizzo IP, ma usi semplicemente il **NOME del container**!\n\n' +
+            '* **Stringa di connessione al Database nel codice della tua App:**\n' +
+            '  `postgres://user:password@db:5432/mydb`  *(Docker converte in automatico "db" nell\'IP corrente del container!)*'
       }
     },
     {
