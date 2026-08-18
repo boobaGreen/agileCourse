@@ -91,8 +91,8 @@ export const docker7: Module = {
           ],
           [
             { en: '`volumes:`', it: '`volumes:`' },
-            { en: '`-v store-data:/var/lib`', it: '`-v store-data:/var/lib`' },
-            { en: '`volumes:\n  - store-data:/var/lib`', it: '`volumes:\n  - store-data:/var/lib`' }
+            { en: '`-v ./pg-data:/var/lib`', it: '`-v ./pg-data:/var/lib`' },
+            { en: '`volumes:\n  - ./pg-data:/var/lib`', it: '`volumes:\n  - ./pg-data:/var/lib`' }
           ],
           [
             { en: '`environment:`', it: '`environment:`' },
@@ -131,10 +131,7 @@ services:
   db-store:
     image: postgres:15
     volumes:
-      - pg-data:/var/lib/postgresql/data
-
-volumes:
-  pg-data:`,
+      - ./pg-data:/var/lib/postgresql/data`,
       language: 'yaml'
     },
     {
