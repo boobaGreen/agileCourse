@@ -62,15 +62,31 @@ export const docker6: Module = {
             'Every time a container restarts, its internal IP address changes (e.g. `172.17.0.2` becomes `172.17.0.5`). Your app code breaks because the IP is wrong!\n\n' +
             '✅ **With a Custom Network (`docker network create my-net`)**:\n' +
             'Docker runs an **internal DNS server**. You don\'t write IP addresses in your code; you simply write the **container name** as the hostname!\n\n' +
-            '* **Database connection string in your Application Code:**\n' +
-            '  `postgres://user:password@db:5432/mydb`  *(Docker automatically resolves "db" to the correct container IP!)*',
+            '📌 **Database Connection String in your Application Code:**\n' +
+            '`postgres://user:password@db:5432/mydb` *(Docker automatically resolves "db" to the container IP!)*\n\n' +
+            '🔍 **Anatomy of the Connection String:**\n' +
+            '• `postgres://` ➔ Database Protocol / Driver\n' +
+            '• `user:password` ➔ Access Credentials\n' +
+            '• `@db` ➔ **Container Name** (automatically resolved by Docker DNS)\n' +
+            '• `:5432` ➔ Internal Container Port (default PostgreSQL port)\n' +
+            '• `/mydb` ➔ Database Name\n\n' +
+            '💡 **Production Best Practice:**\n' +
+            'Avoid hardcoding connection strings in source code; pass it via an **Environment Variable** (e.g., `DATABASE_URL=postgres://user:password@db:5432/mydb`).',
         it: 'Immagina di avere un container App (`web`) e un container Database (`db`). Come fa `web` a connettersi a `db`?\n\n' +
             '❌ **Senza una Rete Personalizzata (IP variabili)**:\n' +
             'Ogni volta che un container si riavvia, il suo IP interno cambia (es. da `172.17.0.2` a `172.17.0.5`). Se scrivi l\'IP nel codice della tua app, la connessione fallirà!\n\n' +
             '✅ **Con una Rete Personalizzata (`docker network create mia-rete`)**:\n' +
             'Docker attiva un **server DNS interno**. Nel codice della tua app non scrivi mai un indirizzo IP, ma usi semplicemente il **NOME del container**!\n\n' +
-            '* **Stringa di connessione al Database nel codice della tua App:**\n' +
-            '  `postgres://user:password@db:5432/mydb`  *(Docker converte in automatico "db" nell\'IP corrente del container!)*'
+            '📌 **Stringa di Connessione al Database nel codice della tua App:**\n' +
+            '`postgres://user:password@db:5432/mydb` *(Docker converte in automatico "db" nell\'IP del container!)*\n\n' +
+            '🔍 **Anatomia dell\'URL di Connessione:**\n' +
+            '• `postgres://` ➔ Protocollo / Driver del Database\n' +
+            '• `user:password` ➔ Credenziali di Accesso\n' +
+            '• `@db` ➔ **Nome del Container** (risolto automaticamente dal DNS Docker)\n' +
+            '• `:5432` ➔ Porta Interna del Container (porta default PostgreSQL)\n' +
+            '• `/mydb` ➔ Nome del Database\n\n' +
+            '💡 **Buona Pratica in Produzione:**\n' +
+            'Evita di scrivere la stringa direttamente nel codice sorgente: passala tramite **Variabile d\'Ambiente** (es. `DATABASE_URL=postgres://user:password@db:5432/mydb`).'
       }
     },
     {
@@ -84,7 +100,7 @@ export const docker6: Module = {
         it: 'Ecco il flusso visivo passo-passo quando il container "web" invia una richiesta al container "db":'
       },
       diagramSteps: [
-        { label: { en: '1. Web Container\nCalls "http://db:5432"', it: '1. Container Web\nChiama "http://db:5432"' }, icon: '💻', color: '#118ab2' },
+        { label: { en: '1. Web Container\nCalls "postgres://db:5432"', it: '1. Container Web\nChiama "postgres://db:5432"' }, icon: '💻', color: '#118ab2' },
         { label: { en: '2. Docker Internal DNS\nConverts "db" ➔ 172.18.0.3', it: '2. DNS Interno Docker\nConverte "db" ➔ 172.18.0.3' }, icon: '⚡', color: '#ffb703' },
         { label: { en: '3. PostgreSQL Container\nReceives query at 172.18.0.3', it: '3. Container PostgreSQL\nRiceve la query a 172.18.0.3' }, icon: '🐘', color: '#06d6a0' }
       ]
@@ -92,53 +108,73 @@ export const docker6: Module = {
     {
       type: 'tip',
       title: {
-        en: '⚠️ Why "localhost" Fails Between Containers',
-        it: '⚠️ Perché "localhost" Fallisce tra Container'
+        en: '⚠️ Why "localhost" Fails Between Containers & The `-p` Trap',
+        it: '⚠️ Perché "localhost" Fallisce tra Container & La Trappola di `-p`'
       },
       content: {
-        en: 'A common beginner mistake is writing `http://localhost:5432` inside a Web app code to connect to a Database container. Inside a container, `localhost` refers **only to itself**!\n\n' +
-            '* **Why port 5432?** `5432` is the standard default internal port used by PostgreSQL databases.\n' +
-            '* **The Solution:** Connect containers on a custom network (`docker network create my-net`) and use the container name: `http://db:5432`.',
-        it: 'Un errore comune dei principianti è scrivere `http://localhost:5432` nel codice dell\'app per collegarsi a un Database. Dentro un container, `localhost` si riferisce **solo a se stesso**!\n\n' +
-            '* **Perché la porta 5432?** `5432` è la porta interna standard utilizzata dal servizio database PostgreSQL.\n' +
-            '* **La Soluzione:** Collega i container su una rete personalizzata (`docker network create mia-rete`) e usa il nome del container: `http://db:5432`.'
+        en: 'A frequent mistake is writing `localhost:5432` inside your web app code to connect to a Database container.\n\n' +
+            '🤔 **Why does the `-p 5432:5432` flag confuse people?**\n\n' +
+            '1️⃣ **Scenario A — Code running on your Laptop (Host):**\n' +
+            'When you run Node.js/Python code directly on your laptop OS and execute `docker run -p 5432:5432 db`, port 5432 on your laptop is forwarded to the DB container.\n' +
+            '👉 **`localhost:5432` WORKS**, because you are querying from the Laptop Host!\n\n' +
+            '2️⃣ **Scenario B — Code running INSIDE the `web` Container:**\n' +
+            'When you containerize your web app (`web`), the word `localhost` changes context! Inside container `web`, `localhost` means *"this specific `web` container"*, NOT your Laptop!\n' +
+            '👉 **`localhost:5432` FAILS (`Connection Refused`)**, because there is no Postgres listening on port 5432 inside container `web`!\n\n' +
+            '📊 **Visual Comparison:**\n' +
+            '• **From your Laptop Host:** `Laptop (localhost:5432)` ➔ `Docker Daemon` ➔ `DB Container (5432)` ✅\n' +
+            '• **From inside Web Container:** `Web Container (localhost:5432)` ➔ `Same Web Container Loopback` ➔ ❌ No DB found!\n\n' +
+            '✅ **The Solution:**\n' +
+            'Create a custom network (`docker network create my-net`), connect both containers, and use the DB container name as the hostname: `postgres://user:pass@db:5432/mydb`.',
+        it: 'Un errore frequente è scrivere `localhost:5432` nel codice dell\'app per connettersi al Database containerizzato.\n\n' +
+            '🤔 **Perché il flag `-p 5432:5432` trae in inganno?**\n\n' +
+            '1️⃣ **Scenario A — Codice in esecuzione sul tuo Laptop (Host):**\n' +
+            'Quando lanci il codice Node.js/Python direttamente sul tuo PC e fai `docker run -p 5432:5432 db`, la porta 5432 del tuo PC viene inoltrata al container DB.\n' +
+            '👉 **`localhost:5432` FUNZIONA**, perché ti trovi sul PC Laptop!\n\n' +
+            '2️⃣ **Scenario B — Codice containerizzato dentro il Container `web`:**\n' +
+            'Quando impacchetti anche la tua app dentro un container (`web`), la parola `localhost` cambia contesto! Per il container `web`, `localhost` significa *"questo specifico container `web`"*, NON il tuo PC Laptop!\n' +
+            '👉 **`localhost:5432` FALLISCE (`Connection Refused`)**, perché dentro `web` non c\'è alcun servizio Postgres in ascolto sulla 5432!\n\n' +
+            '📊 **Confronto Visivo:**\n' +
+            '• **Dal tuo Laptop Host:** `Laptop (localhost:5432)` ➔ `Docker Daemon` ➔ `Container DB (5432)` ✅\n' +
+            '• **Da dentro il Container Web:** `Container Web (localhost:5432)` ➔ `Stesso Container Web` ➔ ❌ Nessun DB trovato!\n\n' +
+            '✅ **La Soluzione Corretta:**\n' +
+            'Crea una rete Docker (`docker network create mia-rete`), collega entrambi i container e usa il nome del container DB come hostname: `postgres://user:pass@db:5432/mydb`.'
       }
     },
     {
       type: 'table',
       title: {
-        en: '🔌 Built-in Docker Network Drivers',
-        it: '🔌 I 3 Driver di Rete Predefiniti in Docker'
+        en: '🔌 Built-in Networks & Network Drivers',
+        it: '🔌 Le 3 Reti Predefinite e i Driver di Rete'
       },
       content: {
-        en: 'Docker provides 3 built-in network drivers for different isolation levels:',
-        it: 'Docker offre 3 driver di rete predefiniti per diversi livelli di isolamento:'
+        en: 'When Docker is installed, it automatically creates 3 built-in networks corresponding to these drivers:',
+        it: 'Quando installi Docker, vengono create automaticamente 3 reti predefinite corrispondenti a questi driver:'
       },
       tableData: {
         headers: [
-          { en: 'Network Driver', it: 'Driver di Rete' },
-          { en: 'CLI Flag', it: 'Flag CLI' },
-          { en: 'Network Isolation', it: 'Isolamento Rete' },
-          { en: 'Real-World Example', it: 'Esempio Reale' }
+          { en: 'Built-in Network Name', it: 'Nome Rete Predefinita' },
+          { en: 'Driver Type', it: 'Tipo Driver' },
+          { en: 'CLI Command Example', it: 'Esempio Comando CLI' },
+          { en: 'DNS Resolution by Name?', it: 'DNS per Nome Container?' }
         ],
         rows: [
           [
             { en: '**bridge** (Default)', it: '**bridge** (Predefinito)' },
-            { en: '`--network bridge`', it: '`--network bridge`' },
-            { en: '🔒 High (Private virtual network)', it: '🔒 Alto (Rete privata virtuale)' },
-            { en: '🟢 Web App + Database stack (Standard production setup)', it: '🟢 Stack App Web + Database (Standard in produzione)' }
+            { en: '`bridge`', it: '`bridge`' },
+            { en: '`docker run --network bridge -p 8080:80 nginx`', it: '`docker run --network bridge -p 8080:80 nginx`' },
+            { en: '❌ No (IP address only)', it: '❌ No (Solo tramite indirizzo IP)' }
           ],
           [
             { en: '**host**', it: '**host**' },
-            { en: '`--network host`', it: '`--network host`' },
-            { en: '🔓 None (Shares host network stack directly)', it: '🔓 Nessuno (Condivide la rete dell\'host)' },
-            { en: '⚡ High-frequency trading or WebRTC video streaming', it: '⚡ Video streaming WebRTC o trading ad alta frequenza' }
+            { en: '`host`', it: '`host`' },
+            { en: '`docker run --network host nginx`', it: '`docker run --network host nginx`' },
+            { en: '❌ No (Shares Host PC Network)', it: '❌ No (Usa direttamente la rete del PC Host)' }
           ],
           [
             { en: '**none**', it: '**none**' },
-            { en: '`--network none`', it: '`--network none`' },
-            { en: '🛡️ Total (Air-gapped offline container)', it: '🛡️ Totale (Container totalmente offline)' },
-            { en: '🔒 Generating secret crypto keys or sensitive PDF generation', it: '🔒 Generazione chiavi crittografiche o PDF riservati' }
+            { en: '`none`', it: '`none`' },
+            { en: '`docker run --network none alpine`', it: '`docker run --network none alpine`' },
+            { en: '🚫 N/A (Total Air-Gap Isolation)', it: '🚫 N/A (Isolamento totale senza rete)' }
           ]
         ]
       }
@@ -146,16 +182,26 @@ export const docker6: Module = {
     {
       type: 'concept',
       title: {
-        en: '💡 Deep Dive: When to use bridge, host, or none?',
-        it: '💡 Approfondimento: Quando usare bridge, host o none?'
+        en: '💡 Key Clarification: Built-in `bridge` vs Custom Network (`docker network create`)',
+        it: '💡 Chiarimento Chiave: Rete `bridge` Predefinita vs Rete Personalizzata (`docker network create`)'
       },
       content: {
-        en: '1. **`bridge` (Default)**: Always use this unless you have a specific hardware or performance reason. It protects your container network behind a virtual firewall.\n\n' +
-            '2. **`host`**: Bypasses Docker\'s network virtualization. If your container opens port `8080`, it is IMMEDIATELY available on your computer\'s `localhost:8080` without using `-p 8080:8080`. Perfect for ultra-low latency apps.\n\n' +
-            '3. **`none`**: Disables all network cards inside the container (`lo` loopback only). Ideal for high-security batch jobs that must NEVER leak data to internet.',
-        it: '1. **`bridge` (Predefinito)**: Usa sempre questo a meno che tu non abbia un motivo specifico di prestazioni. Protegge i tuoi container dietro un firewall virtuale.\n\n' +
-            '2. **`host`**: Scavalca la virtualizzazione di rete di Docker. Se il container apre la porta `8080`, sarà SUBITO accessibile su `localhost:8080` del tuo PC senza usare `-p 8080:8080`. Perfetto per app ad altissima velocità.\n\n' +
-            '3. **`none`**: Disattiva qualsiasi scheda di rete dentro il container. Ideale per task di massima sicurezza che NON devono MAI inviare dati all\'esterno.'
+        en: '🔑 **What is the difference between Driver, Built-in Network, and Custom Network?**\n\n' +
+            '• **Driver**: The underlying technology (`bridge`, `host`, `none`).\n' +
+            '• **Built-in `bridge` Network**: The default network named `bridge`. **WARNING:** Containers on the default `bridge` network CANNOT resolve each other by container name (no internal DNS)!\n' +
+            '• **Custom User-Defined Network (`docker network create my-net`)**: Creates a NEW network named `my-net` using the `bridge` driver. **Docker activates internal DNS here**, allowing container `web` to reach container `db` by its name (`postgres://db:5432`)!\n\n' +
+            '📌 **Summary of Commands:**\n' +
+            '1. `docker network create my-net` ➔ Creates a new custom bridge network named "my-net"\n' +
+            '2. `docker run --network my-net --name db postgres` ➔ Attaches container "db" to "my-net"\n' +
+            '3. `docker run --network my-net --name web myapp` ➔ Attaches container "web" to "my-net" (can now connect to `db:5432`!)',
+        it: '🔑 **Qual è la differenza tra Driver, Rete Predefinita e Rete Personalizzata?**\n\n' +
+            '• **Driver**: È la tecnologia di base (`bridge`, `host`, `none`).\n' +
+            '• **Rete Predefinita `bridge`**: La rete creata in automatico da Docker con nome `bridge`. **ATTENZIONE:** I container sulla rete `bridge` predefinita NON possono comunicare per nome (il DNS interno è disattivato)!\n' +
+            '• **Rete Personalizzata (`docker network create mia-rete`)**: Crea una NUOVA rete di tipo bridge chiamata `mia-rete`. **Qui Docker attiva il DNS interno**, permettendo al container `web` di contattare il container `db` usando semplicemente il nome (`postgres://db:5432`)!\n\n' +
+            '📌 **Riepilogo dei Comandi Pratici:**\n' +
+            '1. `docker network create mia-rete` ➔ Crea la nuova rete personalizzata chiamata "mia-rete"\n' +
+            '2. `docker run --network mia-rete --name db postgres` ➔ Collega il container "db" a "mia-rete"\n' +
+            '3. `docker run --network mia-rete --name web mia-app` ➔ Collega il container "web" a "mia-rete" (ora può chiamare `db:5432`!)'
       }
     },
     {
