@@ -12,7 +12,10 @@ export const docker9: Module = {
   sections: [
     {
       type: 'intro',
-      content: 'Time to prove your container mastery. 10 comprehensive questions covering builds, lifecycle, volumes, networking, and compose. Take your time. Good luck!'
+      content: {
+        en: 'Time to prove your container mastery. 13 comprehensive questions covering builds, lifecycle, volumes, networking, and Docker Compose. Take your time. Good luck!',
+        it: 'È il momento di dimostrare la tua maestria con i container. 13 domande approfondite su build, ciclo di vita, volumi, reti e Docker Compose. Prenditi il tuo tempo. Buona fortuna!'
+      }
     }
   ],
   quiz: [
@@ -53,10 +56,10 @@ export const docker9: Module = {
         it: 'Qual è l\'istruzione corretta per copiare un file locale chiamato "server.js" nella directory "/app" dell\'immagine durante la build?'
       },
       options: [
-        'ADD server.js /app',
-        'RUN cp server.js /app',
-        'COPY server.js /app',
-        'MOVE server.js /app'
+        { en: 'ADD server.js /app', it: 'ADD server.js /app' },
+        { en: 'RUN cp server.js /app', it: 'RUN cp server.js /app' },
+        { en: 'COPY server.js /app', it: 'COPY server.js /app' },
+        { en: 'MOVE server.js /app', it: 'MOVE server.js /app' }
       ],
       correct: 2,
       explanation: {
@@ -161,10 +164,10 @@ export const docker9: Module = {
         it: 'Se vuoi esporre un\'app Flask Python in esecuzione sulla porta 5000 dentro un container sulla porta 80 del tuo computer, quale flag usi?'
       },
       options: [
-        '-p 5000:80',
-        '-p 80:5000',
-        '-e PORT=80',
-        '-expose 80:5000'
+        { en: '-p 5000:80', it: '-p 5000:80' },
+        { en: '-p 80:5000', it: '-p 80:5000' },
+        { en: '-e PORT=80', it: '-e PORT=80' },
+        { en: '-expose 80:5000', it: '-expose 80:5000' }
       ],
       correct: 1,
       explanation: {
@@ -209,10 +212,10 @@ export const docker9: Module = {
         it: 'Come si forza Docker a ricompilare un\'immagine ignorando i layer memorizzati in cache?'
       },
       options: [
-        'docker build --no-cache',
-        'docker build --force',
-        'docker build --clean',
-        'docker rebuild'
+        { en: 'docker build --no-cache', it: 'docker build --no-cache' },
+        { en: 'docker build --force', it: 'docker build --force' },
+        { en: 'docker build --clean', it: 'docker build --clean' },
+        { en: 'docker rebuild', it: 'docker rebuild' }
       ],
       correct: 0,
       explanation: {
@@ -227,10 +230,10 @@ export const docker9: Module = {
         it: 'Quale comando rimuove in modo pulito tutti i container, le reti e le immagini creati da `docker-compose up` (senza toccare i volumi)?'
       },
       options: [
-        'docker-compose stop',
-        'docker-compose kill',
-        'docker-compose clean',
-        'docker-compose down'
+        { en: 'docker-compose stop', it: 'docker-compose stop' },
+        { en: 'docker-compose kill', it: 'docker-compose kill' },
+        { en: 'docker-compose clean', it: 'docker-compose clean' },
+        { en: 'docker-compose down', it: 'docker-compose down' }
       ],
       correct: 3,
       explanation: {
@@ -266,6 +269,72 @@ export const docker9: Module = {
       explanation: {
         en: 'Pinning to specific versions (like `ubuntu:22.04`) ensures immutability. `latest` is a moving target.',
         it: 'Fissare versioni specifiche (come `ubuntu:22.04`) garantisce l\'immutabilità. `latest` è un bersaglio mobile.'
+      }
+    },
+    {
+      id: 'docker-9-q11',
+      question: {
+        en: 'Which flag must be added to `docker compose up` to start all stack containers in detached background mode?',
+        it: 'Quale flag si aggiunge al comando `docker compose up` per avviare tutti i container dello stack in sottofondo (in background)?'
+      },
+      options: [
+        { en: '-d (or --detach)', it: '-d (o --detach)' },
+        { en: '-b (or --bg)', it: '-b (o --bg)' },
+        { en: '-s (or --silent)', it: '-s (o --silent)' },
+        { en: '-f (or --fast)', it: '-f (o --fast)' }
+      ],
+      correct: 0,
+      explanation: {
+        en: 'The `-d` flag runs containers in detached mode, leaving them running in the background and freeing the terminal.',
+        it: 'Il flag `-d` esegue i container in modalità detached (in sottofondo), liberando immediatamente il terminale.'
+      }
+    },
+    {
+      id: 'docker-9-q12',
+      question: {
+        en: 'In a `docker-compose.yml` file, which property instructs Compose to build an image from a Dockerfile in the current directory?',
+        it: 'In un file `docker-compose.yml`, quale proprietà indica a Compose di compilare un\'immagine a partire dal Dockerfile nella cartella corrente?'
+      },
+      options: [
+        { en: 'build: .', it: 'build: .' },
+        { en: 'image: local', it: 'image: local' },
+        { en: 'compile: Dockerfile', it: 'compile: Dockerfile' },
+        { en: 'source: ./', it: 'source: ./' }
+      ],
+      correct: 0,
+      explanation: {
+        en: 'The `build: .` key specifies the build context directory containing the Dockerfile.',
+        it: 'La chiave `build: .` specifica il percorso (contesto) della directory contenente il Dockerfile da compilare.'
+      }
+    },
+    {
+      id: 'docker-9-q13',
+      question: {
+        en: 'In a Compose stack with services named `api` and `db-store`, how does `api` communicate with `db-store` over the internal network?',
+        it: 'In uno stack Compose con i servizi `api` e `db-store`, come fa `api` a comunicare con `db-store` sulla rete interna?'
+      },
+      options: [
+        {
+          en: 'Using the service name `db-store` directly as the network hostname',
+          it: 'Utilizzando direttamente il nome del servizio `db-store` come hostname di rete'
+        },
+        {
+          en: 'By manually looking up and hardcoding the container IP address',
+          it: 'Inserendo manualmente l\'indirizzo IP dinamico del container'
+        },
+        {
+          en: 'By running `docker network link` before starting the containers',
+          it: 'Eseguendo prima il comando `docker network link`'
+        },
+        {
+          en: 'By mapping the database port to host port `5432:5432`',
+          it: 'Mappando obbligatoriamente la porta del database sull\'host con `ports:`'
+        }
+      ],
+      correct: 0,
+      explanation: {
+        en: 'Docker Compose creates an automatic DNS resolver where each service name acts as an internal network domain name.',
+        it: 'Docker Compose attiva un servizio DNS interno automatico in cui ciascun nome di servizio funziona come hostname di rete.'
       }
     }
   ]
