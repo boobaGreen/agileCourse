@@ -80,6 +80,11 @@ export const docker7: Module = {
         ],
         rows: [
           [
+            { en: '`build:`', it: '`build:`' },
+            { en: '`docker build -t app .`', it: '`docker build -t app .`' },
+            { en: '`build: .` *(Builds local Dockerfile)*', it: '`build: .` *(Compila il Dockerfile locale)*' }
+          ],
+          [
             { en: '`image:`', it: '`image:`' },
             { en: '`docker run <image>`', it: '`docker run <immagine>`' },
             { en: '`image: postgres:15`', it: '`image: postgres:15`' }
@@ -105,6 +110,17 @@ export const docker7: Module = {
             { en: '`depends_on:\n  - db-store`', it: '`depends_on:\n  - db-store`' }
           ]
         ]
+      }
+    },
+    {
+      type: 'tip',
+      title: {
+        en: '💡 `build: .` vs `image:` in Compose',
+        it: '💡 `build: .` vs `image:` in Compose'
+      },
+      content: {
+        en: 'In Docker Compose, a service can originate from two sources:\n- **`build: .`**: Docker builds an image automatically using the `Dockerfile` located in the current directory (`.`). Perfect for your custom app!\n- **`image: postgres:15`**: Docker pulls a pre-built image directly from Docker Hub. Perfect for standard databases or caches.',
+        it: 'In Docker Compose, un servizio può derivare da due fonti:\n- **`build: .`**: Docker compila automaticamente un\'immagine usando il `Dockerfile` presente nella cartella corrente (`.`). Perfetto per la tua applicazione custom!\n- **`image: postgres:15`**: Docker scarica un\'immagine già pronta direttamente da Docker Hub. Perfetto per database, Redis, Nginx, ecc.'
       }
     },
     {
