@@ -18,7 +18,7 @@ export function DockerSimulator({ data, onComplete }: Props) {
   const [history, setHistory] = useState<{type: 'cmd'|'out', text: string}[]>([]);
   const [input, setInput] = useState('');
   const [inspectFile, setInspectFile] = useState<string | null>(null);
-  const [hintLevel, setHintLevel] = useState<number>(0);
+  const [taskHintLevels, setTaskHintLevels] = useState<Record<string, number>>({});
 
   const checkTasksSatisfied = React.useCallback((currentState: DockerState, currentCompleted: Set<string>) => {
     const newlyCompleted = new Set(currentCompleted);
@@ -102,7 +102,7 @@ export function DockerSimulator({ data, onComplete }: Props) {
     setState(data.startState);
     setHistory([{ type: 'out', text: resolveString({ en: 'Docker daemon restarted. State cleared.', it: 'Daemon Docker riavviato. Stato cancellato.' }) }]);
     setCompletedTasks(new Set());
-    setHintLevel(0);
+    setTaskHintLevels({});
     setInput('');
   };
 
@@ -125,14 +125,18 @@ export function DockerSimulator({ data, onComplete }: Props) {
   }, [allCompleted, onComplete]);
 
   // Calculate XP penalty percentage
+  const maxHintLevel = Math.max(0, ...Object.values(taskHintLevels));
+
   const getXpPercent = () => {
-    if (hintLevel === 0) return 100;
-    if (hintLevel === 1) return 85;
-    if (hintLevel === 2) return 65;
+    if (maxHintLevel === 0) return 100;
+    if (maxHintLevel === 1) return 85;
+    if (maxHintLevel === 2) return 65;
     return 50;
   };
 
   const currentUncompletedTask = tasks.find(t => !t.completed);
+  const currentTaskId = currentUncompletedTask?.id;
+  const currentHintLevel = currentTaskId ? (taskHintLevels[currentTaskId] || 0) : 0;
 
   return (
     <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/10 shadow-2xl">
@@ -152,9 +156,9 @@ export function DockerSimulator({ data, onComplete }: Props) {
          {allCompleted && (
            <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="px-4 py-2 rounded-xl bg-[#06d6a0]/20 border border-[#06d6a0]/30 text-[#06d6a0] text-xs font-black uppercase flex gap-2 items-center">
               <CheckCircle size={16} /> 
-              {hintLevel === 0 
+              {maxHintLevel === 0 
                 ? resolveString({ en: `Completed! +100% XP (No hints used 🌟)`, it: `Completato! +100% XP (Zero aiuti usati 🌟)` })
-                : resolveString({ en: `Completed! +${getXpPercent()}% XP (${hintLevel} hint${hintLevel > 1 ? 's' : ''} used)`, it: `Completato! +${getXpPercent()}% XP (${hintLevel} aiut${hintLevel > 1 ? 'i' : 'o'} usat${hintLevel > 1 ? 'i' : 'o'})` })}
+                : resolveString({ en: `Completed! +${getXpPercent()}% XP (${maxHintLevel} hint${maxHintLevel > 1 ? 's' : ''} used)`, it: `Completato! +${getXpPercent()}% XP (${maxHintLevel} aiut${maxHintLevel > 1 ? 'i' : 'o'} usat${maxHintLevel > 1 ? 'i' : 'o'})` })}
            </motion.div>
          )}
       </div>
@@ -237,7 +241,7 @@ export function DockerSimulator({ data, onComplete }: Props) {
               <div className="flex flex-col gap-3">
                 <div className="flex justify-between items-center border-b border-white/5 pb-2">
                   <span className="text-[10px] text-muted font-black uppercase tracking-widest">{resolveString({ en: 'Mission Objectives', it: 'Obiettivi Missione' })}</span>
-                  {hintLevel > 0 && (
+                  {currentHintLevel > 0 && (
                     <span className="text-[10px] text-yellow-400/80 font-mono font-bold">
                       XP: {getXpPercent()}%
                     </span>
@@ -248,16 +252,16 @@ export function DockerSimulator({ data, onComplete }: Props) {
                     <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${t.completed ? 'bg-[#06d6a0] border-[#06d6a0]' : 'border-white/20 bg-black'}`}>
                       {t.completed && <CheckCircle className="text-white" size={10} />}
                     </div>
-                    <span className={`text-xs font-bold transition-colors ${t.completed ? 'text-white/50 line-through' : 'text-white'}`}>{resolveString(t.instruction)}</span>
+                    <span className={`text-xs font-bold transition-colors ${t.completed ? 'text-[#06d6a0] font-mono' : 'text-white'}`}>{resolveString(t.instruction)}</span>
                   </div>
                 ))}
               </div>
 
               {!allCompleted && currentUncompletedTask?.hints && (
                 <div className="mt-2 flex flex-col gap-2.5 pt-3 border-t border-white/5">
-                  {hintLevel > 0 && (
+                  {currentHintLevel > 0 && (
                     <div className="flex flex-col gap-2">
-                      {currentUncompletedTask.hints.slice(0, hintLevel).map((h, idx) => {
+                      {currentUncompletedTask.hints.slice(0, currentHintLevel).map((h, idx) => {
                         const hintText = resolveString(h);
                         const codeMatch = hintText.match(/`([^`]+)`/);
                         const cmdToInsert = codeMatch ? codeMatch[1] : '';
@@ -291,15 +295,22 @@ export function DockerSimulator({ data, onComplete }: Props) {
                     </div>
                   )}
 
-                  {hintLevel < 3 && (
+                  {currentHintLevel < 3 && (
                     <button
-                      onClick={() => setHintLevel(prev => Math.min(3, prev + 1))}
+                      onClick={() => {
+                        if (currentTaskId) {
+                          setTaskHintLevels(prev => ({
+                            ...prev,
+                            [currentTaskId]: Math.min(3, (prev[currentTaskId] || 0) + 1)
+                          }));
+                        }
+                      }}
                       className="w-full py-2 px-3 bg-yellow-500/10 hover:bg-yellow-500/20 border border-yellow-500/30 rounded-xl text-yellow-300 text-xs font-bold flex items-center justify-center gap-2 transition-all group"
                     >
                       <Lightbulb size={14} className="group-hover:scale-110 transition-transform" />
-                      {hintLevel === 0 && resolveString({ en: 'Need a Hint? (-15% XP)', it: 'Serve un aiuto? (-15% XP)' })}
-                      {hintLevel === 1 && resolveString({ en: 'More Details (-35% XP)', it: 'Altro aiuto (-35% XP)' })}
-                      {hintLevel === 2 && resolveString({ en: 'Reveal Solution (-50% XP)', it: 'Rivela soluzione (-50% XP)' })}
+                      {currentHintLevel === 0 && resolveString({ en: 'Need a Hint? (-15% XP)', it: 'Serve un aiuto? (-15% XP)' })}
+                      {currentHintLevel === 1 && resolveString({ en: 'More Details (-35% XP)', it: 'Altro aiuto (-35% XP)' })}
+                      {currentHintLevel === 2 && resolveString({ en: 'Reveal Solution (-50% XP)', it: 'Rivela soluzione (-50% XP)' })}
                     </button>
                   )}
                 </div>
