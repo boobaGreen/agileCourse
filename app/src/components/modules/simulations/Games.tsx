@@ -104,14 +104,12 @@ export function DragOrderGame({ items, onComplete }: { items: GameDataItem[], on
 const gameDict = {
   en: {
     classifyTitle: 'Challenge: Categorize Components',
-    classifySubtitle: 'Drag and drop the cards below into the correct category box, or click a destination button on any card.',
-    moveTo: 'Move to:',
+    classifySubtitle: 'Drag and drop the cards below into the correct category box.',
     validated: 'Architecture Validated! (+15 XP)'
   },
   it: {
     classifyTitle: 'Sfida: Categorizza i Componenti',
-    classifySubtitle: 'Trascina le schede nel riquadro della categoria corretta, oppure clicca sul pulsante di destinazione presente su ciascuna scheda.',
-    moveTo: 'Sposta in:',
+    classifySubtitle: 'Trascina le schede in basso nel riquadro della categoria corretta.',
     validated: 'Architettura Validata! (+15 XP)'
   }
 }
@@ -214,30 +212,15 @@ export function DragClassifyGame({ categories, items, onComplete }: { categories
                  if (solved) return
                  e.dataTransfer.setData('text/plain', item.id)
                }}
-               className={`p-3 pr-2 rounded-xl bg-surface2 border flex flex-col sm:flex-row items-center gap-3 sm:gap-4 transition-all duration-200 select-none ${
+               className={`px-4 py-3 rounded-xl bg-surface2 border flex items-center justify-center transition-all duration-200 select-none ${
                  errorItem === item.id 
                    ? 'border-red-500/50 bg-red-500/10' 
                    : solved 
                      ? 'border-white/5 opacity-50 cursor-default' 
-                     : 'border-white/5 hover:border-white/20 cursor-grab active:cursor-grabbing hover:bg-surface2/80 shadow-md'
+                     : 'border-white/5 hover:border-white/20 cursor-grab active:cursor-grabbing hover:bg-surface2/80 hover:scale-105 shadow-md'
                }`}
              >
-                <span className="text-xs fw-bold text-white text-center sm:text-left flex-1">{resolveString(item.label)}</span>
-                <div className="flex items-center gap-1.5 flex-wrap justify-center shrink-0 border-t sm:border-t-0 border-white/5 pt-2 sm:pt-0">
-                   <span className="text-[9px] text-muted font-mono uppercase tracking-wider mr-0.5">{dict.moveTo}</span>
-                   {categories.map(cat => (
-                     <button 
-                       key={cat.id} 
-                       onClick={() => classify(item.id, cat.id)}
-                       disabled={solved}
-                       className="px-2.5 py-1 rounded text-[10px] sm:text-xs fw-black bg-white/10 hover:bg-primary border border-white/10 hover:border-primary text-white transition-all uppercase cursor-pointer flex items-center gap-1 active:scale-95 shadow-sm"
-                       title={`${dict.moveTo} ${resolveString(cat.label)}`}
-                     >
-                       <span>➡️</span>
-                       {resolveString(cat.label)}
-                     </button>
-                   ))}
-                </div>
+                <span className="text-xs fw-bold text-white text-center">{resolveString(item.label)}</span>
              </div>
            </motion.div>
          ))}
