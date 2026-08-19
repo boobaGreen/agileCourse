@@ -145,8 +145,14 @@ export const docker2: Module = {
     },
     {
       type: 'game',
-      title: 'Lab: Your First Container',
-      content: 'Let\'s pull an image and run it. In this simulator, commands actually update the visual state of your "Docker Host".',
+      title: {
+        en: 'Lab: Your First Container',
+        it: 'Lab: Il Tuo Primo Container'
+      },
+      content: {
+        en: 'Let\'s pull an image and run it. In this simulator, commands actually update the visual state of your "Docker Host".',
+        it: 'Scarichiamo un\'immagine ed avviamola. In questo simulatore, i comandi aggiornano in tempo reale lo stato visivo del tuo "Docker Host".'
+      },
       gameType: 'docker-sim',
       gameData: {
         startState: {
@@ -154,9 +160,72 @@ export const docker2: Module = {
           containers: []
         },
         tasks: [
-          { id: '1', instruction: 'Pull the official "nginx" image', condition: 'PULLED:nginx' },
-          { id: '2', instruction: 'Run a detached container from the nginx image', condition: 'RUNNING:nginx' },
-          { id: '3', instruction: 'Try to stop the container (docker stop [id/name])', condition: 'STOPPED:nginx' }
+          {
+            id: '1',
+            instruction: {
+              en: 'Pull the official "nginx" image',
+              it: 'Scarica l\'immagine ufficiale "nginx"'
+            },
+            condition: 'PULLED:nginx',
+            hints: [
+              {
+                en: '💡 Hint 1/3 (Conceptual): Use `docker pull <image>` to download a read-only image blueprint from Docker Hub.',
+                it: '💡 Aiuto 1/3 (Concettuale): Usa `docker pull <immagine>` per scaricare una ricetta/immagine in sola lettura da Docker Hub.'
+              },
+              {
+                en: '💡 Hint 2/3 (Syntax): Specify "nginx" as the image name.',
+                it: '💡 Aiuto 2/3 (Sintassi): Specifica "nginx" come nome dell\'immagine.'
+              },
+              {
+                en: '💡 Hint 3/3 (Full Solution): Type `docker pull nginx` in the terminal.',
+                it: '💡 Aiuto 3/3 (Soluzione Completa): Digita `docker pull nginx` nel terminale.'
+              }
+            ]
+          },
+          {
+            id: '2',
+            instruction: {
+              en: 'Run a detached container from the nginx image',
+              it: 'Avvia un container in background (detached mode) dall\'immagine nginx'
+            },
+            condition: 'RUNNING:nginx',
+            hints: [
+              {
+                en: '💡 Hint 1/3 (Conceptual): Use `docker run` to bake/launch a live container from an image. Add `-d` to run it in detached mode.',
+                it: '💡 Aiuto 1/3 (Concettuale): Usa `docker run` per sfornare/avviare un container attivo da un\'immagine. Aggiungi `-d` per la modalità detached (in background).'
+              },
+              {
+                en: '💡 Hint 2/3 (Syntax): Combine `docker run -d` with the image name `nginx`.',
+                it: '💡 Aiuto 2/3 (Sintassi): Combina `docker run -d` con il nome dell\'immagine `nginx`.'
+              },
+              {
+                en: '💡 Hint 3/3 (Full Solution): Type `docker run -d nginx` in the terminal.',
+                it: '💡 Aiuto 3/3 (Soluzione Completa): Digita `docker run -d nginx` nel terminale.'
+              }
+            ]
+          },
+          {
+            id: '3',
+            instruction: {
+              en: 'Stop the running container (docker stop [id/name])',
+              it: 'Arresta il container in esecuzione (docker stop [id/nome])'
+            },
+            condition: 'STOPPED:nginx',
+            hints: [
+              {
+                en: '💡 Hint 1/3 (Conceptual): Use `docker stop` followed by the container ID or name (you can see it in the Docker Host panel or with `docker ps`).',
+                it: '💡 Aiuto 1/3 (Concettuale): Usa `docker stop` seguito dall\'ID o dal nome del container (puoi leggerlo nel pannello Docker Host in alto o con `docker ps`).'
+              },
+              {
+                en: '💡 Hint 2/3 (Syntax): You can use `docker stop nginx` or use the container\'s ID shown in the active list.',
+                it: '💡 Aiuto 2/3 (Sintassi): Puoi usare `docker stop nginx` oppure l\'ID del container mostrato nella lista dei container attivi.'
+              },
+              {
+                en: '💡 Hint 3/3 (Full Solution): Type `docker stop nginx` or `docker stop <container-id>`.',
+                it: '💡 Aiuto 3/3 (Soluzione Completa): Digita `docker stop nginx` oppure `docker stop <id-container>`.'
+              }
+            ]
+          }
         ]
       }
     }
