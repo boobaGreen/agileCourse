@@ -24,6 +24,7 @@ const pizzaDict: Record<'en' | 'it', Record<string, string>> = {
     pineapple: 'Pineapple (Contaminant!)',
     eatButton: 'Eat Pizza (docker rm)',
     alertPineapple: '⚠️ Warning: You customized this container with Pineapple! (Still running independently, did not affect the image recipe.)',
+    alertGenericTopping: 'ℹ️ Customization written ONLY to this container\'s R/W layer. Image recipe and other pizzas remain untouched!',
     successBaked: 'Baked new container instance!',
     readOnlyTip: 'Notice: The Recipe (Image) stays read-only and untouched. Any toppings are written only to that specific Pizza (Container\'s Read-Write Layer).',
   },
@@ -47,6 +48,7 @@ const pizzaDict: Record<'en' | 'it', Record<string, string>> = {
     pineapple: 'Ananas (Contaminante!)',
     eatButton: 'Mangia Pizza (docker rm)',
     alertPineapple: '⚠️ Attenzione: Hai personalizzato questo container con Ananas! (Gira in isolamento, la ricetta dell\'immagine non è stata alterata.)',
+    alertGenericTopping: 'ℹ️ Modifica salvata SOLO nel Layer R/W di questo container. La ricetta dell\'immagine e le altre pizze rimangono inalterate!',
     successBaked: 'Nuovo container avviato con successo!',
     readOnlyTip: 'Nota: La Ricetta (Immagine) rimane immutabile. Ogni ingrediente extra viene scritto solo su quella specifica Pizza (Layer R/W del Container).',
   }
@@ -604,11 +606,16 @@ export function EducationAnimation({ type }: { type: string }) {
                               </div>
                             </div>
 
-                            {/* Warning message if pineapple */}
-                            {pizza.toppings.includes('pineapple') && (
+                            {/* Warning message if toppings selected */}
+                            {pizza.toppings.includes('pineapple') ? (
                               <div className="text-[9px] bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-lg p-2 flex items-start gap-1.5 mt-1 leading-normal font-medium text-left">
                                 <AlertCircle size={12} className="shrink-0 text-amber-400 mt-0.5" />
                                 <span>{dict.alertPineapple}</span>
+                              </div>
+                            ) : pizza.toppings.length > 0 && (
+                              <div className="text-[9px] bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg p-2 flex items-start gap-1.5 mt-1 leading-normal font-medium text-left">
+                                <CheckCircle size={12} className="shrink-0 text-blue-400 mt-0.5" />
+                                <span>{dict.alertGenericTopping}</span>
                               </div>
                             )}
 
