@@ -155,7 +155,7 @@ export class DockerEngine {
   }
 
   public stop(nameOrId: string): { success: boolean, msg: string } {
-    const container = this.state.containers.find(c => c.id === nameOrId || c.name === nameOrId || c.image === nameOrId);
+    const container = this.state.containers.find(c => c.id === nameOrId || c.name === nameOrId);
     if (!container) return { success: false, msg: `Error: No such container: ${nameOrId}` };
     
     container.status = 'exited';
@@ -163,7 +163,7 @@ export class DockerEngine {
   }
 
   public remove(nameOrId: string): { success: boolean, msg: string } {
-    const index = this.state.containers.findIndex(c => c.id === nameOrId || c.name === nameOrId || c.image === nameOrId);
+    const index = this.state.containers.findIndex(c => c.id === nameOrId || c.name === nameOrId);
     if (index === -1) return { success: false, msg: `Error: No such container: ${nameOrId}` };
     
     if (this.state.containers[index].status === 'running') {

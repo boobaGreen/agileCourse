@@ -207,22 +207,22 @@ export const docker2: Module = {
           {
             id: '3',
             instruction: {
-              en: 'Stop the running container (docker stop [id/name])',
-              it: 'Arresta il container in esecuzione (docker stop [id/nome])'
+              en: 'Stop the running container (docker stop [container-id/name])',
+              it: 'Arresta il container in esecuzione (docker stop [id-container/nome])'
             },
             condition: 'STOPPED:nginx',
             hints: [
               {
-                en: '💡 Hint 1/3 (Conceptual): Use `docker stop` followed by the container ID or name (you can see it in the Docker Host panel or with `docker ps`).',
-                it: '💡 Aiuto 1/3 (Concettuale): Usa `docker stop` seguito dall\'ID o dal nome del container (puoi leggerlo nel pannello Docker Host in alto o con `docker ps`).'
+                en: '💡 Hint 1/3 (Conceptual): In Docker, `docker stop` requires a Container ID or Container Name, NOT the image name.',
+                it: '💡 Aiuto 1/3 (Concettuale): In Docker, `docker stop` richiede l\'ID del container o il nome del container, NON il nome dell\'immagine.'
               },
               {
-                en: '💡 Hint 2/3 (Syntax): You can use `docker stop nginx` or use the container\'s ID shown in the active list.',
-                it: '💡 Aiuto 2/3 (Sintassi): Puoi usare `docker stop nginx` oppure l\'ID del container mostrato nella lista dei container attivi.'
+                en: '💡 Hint 2/3 (Syntax): Run `docker ps` or inspect the Docker Host panel to find your container ID or container name (e.g. nostalgic_a1b2c3).',
+                it: '💡 Aiuto 2/3 (Sintassi): Esegui `docker ps` o controlla il pannello Docker Host in alto per trovare l\'ID o il nome del container (es. nostalgic_a1b2c3).'
               },
               {
-                en: '💡 Hint 3/3 (Full Solution): Type `docker stop nginx` or `docker stop <container-id>`.',
-                it: '💡 Aiuto 3/3 (Soluzione Completa): Digita `docker stop nginx` oppure `docker stop <id-container>`.'
+                en: '💡 Hint 3/3 (Full Solution): Type `docker stop <container-id>` (e.g. `docker stop a1b2c3`) or `docker stop <container-name>`.',
+                it: '💡 Aiuto 3/3 (Soluzione Completa): Digita `docker stop <id-container>` (es. `docker stop a1b2c3`) oppure `docker stop <nome-container>`.'
               }
             ]
           }
