@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Sparkles, CheckCircle, Trash2, Lock, Edit2, Activity, AlertCircle } from 'lucide-react'
+import { Sparkles, CheckCircle, Trash2, Lock, Edit2, Activity, AlertCircle, Plus, Check, MousePointerClick } from 'lucide-react'
 import { useLanguage } from '../../contexts/LanguageContext'
 
 const pizzaDict: Record<'en' | 'it', Record<string, string>> = {
@@ -18,6 +18,7 @@ const pizzaDict: Record<'en' | 'it', Record<string, string>> = {
     tomatoSauce: 'Tomato Sauce',
     mozzarella: 'Mozzarella Cheese',
     customToppings: 'Writeable Layer (Container Customizations)',
+    clickToCustomize: 'Click to add/remove ingredient',
     pepperoni: 'Pepperoni',
     mushrooms: 'Mushrooms',
     pineapple: 'Pineapple (Contaminant!)',
@@ -39,7 +40,8 @@ const pizzaDict: Record<'en' | 'it', Record<string, string>> = {
     baseDough: 'Impasto Base',
     tomatoSauce: 'Salsa di Pomodoro',
     mozzarella: 'Mozzarella',
-    customToppings: 'Layer Scrivibile (Modifiche del Container)',
+    customToppings: 'Layer Scrivibile (Personalizza Container)',
+    clickToCustomize: 'Clicca per aggiungere/rimuovere',
     pepperoni: 'Salame Piccante',
     mushrooms: 'Funghi',
     pineapple: 'Ananas (Contaminante!)',
@@ -560,11 +562,17 @@ export function EducationAnimation({ type }: { type: string }) {
                             </div>
 
                             {/* Writeable customizations */}
-                            <div className="flex flex-col gap-1.5">
-                              <span className="text-[9px] text-muted font-bold uppercase tracking-wider flex items-center gap-1 flex-row">
-                                <Edit2 size={10} className="text-emerald-400" />
-                                {dict.customToppings}
-                              </span>
+                            <div className="flex flex-col gap-2 bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-2.5">
+                              <div className="flex items-center justify-between gap-1 flex-wrap">
+                                <span className="text-[9px] text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1">
+                                  <Edit2 size={10} className="text-emerald-400" />
+                                  {dict.customToppings}
+                                </span>
+                                <span className="text-[9px] text-emerald-300/90 font-bold flex items-center gap-1 bg-emerald-500/20 px-1.5 py-0.5 rounded border border-emerald-500/30">
+                                  <MousePointerClick size={10} className="animate-bounce text-emerald-300" />
+                                  {dict.clickToCustomize}
+                                </span>
+                              </div>
                               
                               <div className="flex flex-wrap gap-2 mt-0.5">
                                 {[
@@ -577,12 +585,17 @@ export function EducationAnimation({ type }: { type: string }) {
                                     <button
                                       key={top.id}
                                       onClick={() => toggleTopping(pizza.id, top.id)}
-                                      className={`px-2 py-1 rounded-lg text-[10px] fw-bold transition-all flex items-center gap-1 border ${
+                                      className={`px-2.5 py-1 rounded-lg text-[10px] fw-bold transition-all flex items-center gap-1.5 border cursor-pointer hover:scale-105 active:scale-95 shadow-sm ${
                                         active
-                                          ? 'bg-emerald-500/20 border-emerald-400 text-white'
-                                          : 'bg-white/5 border-white/10 text-muted hover:text-sub hover:bg-white/10'
+                                          ? 'bg-emerald-500/30 border-emerald-400 text-white shadow-emerald-500/20 ring-1 ring-emerald-400/50'
+                                          : 'bg-white/10 border-emerald-500/40 text-white/90 hover:text-white hover:bg-emerald-500/20 hover:border-emerald-400'
                                       }`}
                                     >
+                                      {active ? (
+                                        <Check size={11} className="text-emerald-400 stroke-[3]" />
+                                      ) : (
+                                        <Plus size={11} className="text-emerald-300" />
+                                      )}
                                       <span>{top.emoji}</span>
                                       {top.label}
                                     </button>
