@@ -96,7 +96,7 @@ export const k8s3: Module = {
           {
             id: '4',
             instruction: { en: 'Verify that 3 replicas are running: `kubectl get pods`', it: 'Verifica che ci siano 3 pod attivi nel cluster: `kubectl get pods`' },
-            condition: 'PODS_RUNNING:3',
+            condition: 'CMD_RAN:get pod',
             hints: [
               { en: 'Use `kubectl get` to list all running workloads in the cluster.', it: 'Usa `kubectl get` per elencare tutti i carichi di lavoro in esecuzione nel cluster.' },
               { en: 'Specify `pods` as the resource type.', it: 'Specifica `pods` come tipo di risorsa.' },

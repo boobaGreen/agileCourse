@@ -40,6 +40,8 @@ export function K8sSimulator({ data, onComplete }: Props) {
       } else if (type === 'PODS_RUNNING') {
         const count = currentState.pods.filter(p => p.status === 'Running').length;
         isDone = count >= parseInt(arg1);
+      } else if (type === 'CMD_RAN') {
+        isDone = !!currentState.executedCmds?.some(c => c.toLowerCase().includes(arg1.toLowerCase()));
       }
 
       if (isDone) {
@@ -70,6 +72,7 @@ export function K8sSimulator({ data, onComplete }: Props) {
       setHistory(prev => [...prev, { type: 'cmd', text: `$ ${cmd}` }]);
       
       const engine = new K8sEngine(state);
+      engine.recordCommand(cmd);
       const result = K8sParser.execute(engine, cmd);
       
       setHistory(prev => [...prev, { type: 'out', text: resolveString(result.out) }]);

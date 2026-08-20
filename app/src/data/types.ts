@@ -153,6 +153,7 @@ export interface K8sState {
   secrets?: K8sSecret[];
   pvc?: K8sPVC[];
   pv?: K8sPV[];
+  executedCmds?: string[];
 }
 
 export interface K8sGameData {

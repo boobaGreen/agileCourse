@@ -10,6 +10,7 @@ export class K8sEngine {
       if (!this.state.secrets) this.state.secrets = [];
       if (!this.state.pvc) this.state.pvc = [];
       if (!this.state.pv) this.state.pv = [];
+      if (!this.state.executedCmds) this.state.executedCmds = [];
     } else {
       this.state = {
         nodes: [{ id: 'node-1', name: 'minikube', status: 'Ready' }],
@@ -19,9 +20,15 @@ export class K8sEngine {
         configMaps: [],
         secrets: [],
         pvc: [],
-        pv: []
+        pv: [],
+        executedCmds: []
       };
     }
+  }
+
+  public recordCommand(cmd: string) {
+    if (!this.state.executedCmds) this.state.executedCmds = [];
+    this.state.executedCmds.push(cmd);
   }
 
   public getState(): K8sState {
