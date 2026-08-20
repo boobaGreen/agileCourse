@@ -1029,69 +1029,106 @@ export function EducationAnimation({ type }: { type: string }) {
 
     return (
       <div className="w-full flex flex-col gap-6 select-none">
-        {/* Header Controls */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-white/10 pb-4">
-          <div className="text-left">
-            <h4 className="text-sm font-black text-white flex items-center gap-2">
-              <Server size={16} className="text-purple-400" />
-              {dict.title}
-            </h4>
-            <p className="text-[10px] text-muted">{dict.subtitle}</p>
-          </div>
-
-          <div className="flex items-center gap-2 flex-wrap justify-end">
-            <div className="flex bg-black/40 border border-white/10 rounded-xl p-1 shrink-0">
-              <button
-                onClick={() => { setActiveFilter('all'); setSelectedComp('api'); }}
-                className={`px-3 py-1.5 rounded-lg text-[10px] fw-black transition-all cursor-pointer ${
-                  activeFilter === 'all' ? 'bg-primary text-white shadow' : 'text-muted hover:text-white'
-                }`}
-              >
+        {/* Prominent Mode Selection Tab Bar */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 w-full">
+          <button
+            onClick={() => { setActiveFilter('all'); setSelectedComp('api'); }}
+            className={`p-3.5 rounded-2xl border text-left flex flex-col justify-between transition-all cursor-pointer relative overflow-hidden ${
+              activeFilter === 'all'
+                ? 'bg-gradient-to-br from-blue-600/30 to-indigo-600/20 border-blue-400 text-white shadow-xl ring-2 ring-blue-400/50 scale-[1.02]'
+                : 'bg-surface2/40 border-white/10 text-muted hover:border-white/20 hover:bg-surface2/70 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center justify-between mb-2">
+              <span className="flex items-center gap-2 text-xs font-black text-white">
+                <Layers size={16} className={activeFilter === 'all' ? 'text-blue-400' : 'text-muted'} />
                 {dict.modeAll}
-              </button>
-              <button
-                onClick={() => { setActiveFilter('master'); setSelectedComp('controller'); }}
-                className={`px-3 py-1.5 rounded-lg text-[10px] fw-black transition-all cursor-pointer ${
-                  activeFilter === 'master' ? 'bg-purple-500 text-white shadow' : 'text-muted hover:text-white'
-                }`}
-              >
-                {dict.modeMaster}
-              </button>
-              <button
-                onClick={() => { setActiveFilter('worker'); setSelectedComp('kubelet'); }}
-                className={`px-3 py-1.5 rounded-lg text-[10px] fw-black transition-all cursor-pointer ${
-                  activeFilter === 'worker' ? 'bg-emerald-500 text-white shadow' : 'text-muted hover:text-white'
-                }`}
-              >
-                {dict.modeWorker}
-              </button>
+              </span>
+              {activeFilter === 'all' && (
+                <span className="text-[8px] font-mono font-bold bg-blue-500/30 text-blue-300 px-2 py-0.5 rounded-full border border-blue-400/40">
+                  ● ATTIVO
+                </span>
+              )}
             </div>
+            <p className="text-[10px] opacity-70 leading-normal">
+              {isIt ? 'Flusso globale da CLI a Pod (Master + Worker)' : 'Global end-to-end flow (Master + Worker)'}
+            </p>
+          </button>
 
-            <button
-              onClick={runSimulation}
-              disabled={isSimulating}
-              className={`px-4 py-2 rounded-xl text-xs fw-black transition-all flex items-center gap-1.5 cursor-pointer ${
-                isSimulating
-                  ? 'bg-amber-500/20 border border-amber-500/40 text-amber-300 animate-pulse'
-                  : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-lg shadow-purple-500/20 hover:scale-105 active:scale-95'
-              }`}
-            >
-              <Play size={12} className={isSimulating ? 'animate-spin' : ''} />
-              {isSimulating ? dict.simulating : dict.simButtons[activeFilter]}
-            </button>
-          </div>
+          <button
+            onClick={() => { setActiveFilter('master'); setSelectedComp('controller'); }}
+            className={`p-3.5 rounded-2xl border text-left flex flex-col justify-between transition-all cursor-pointer relative overflow-hidden ${
+              activeFilter === 'master'
+                ? 'bg-gradient-to-br from-purple-600/30 to-indigo-600/20 border-purple-400 text-white shadow-xl ring-2 ring-purple-400/50 scale-[1.02]'
+                : 'bg-surface2/40 border-white/10 text-muted hover:border-white/20 hover:bg-surface2/70 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center justify-between mb-2">
+              <span className="flex items-center gap-2 text-xs font-black text-white">
+                <Cpu size={16} className={activeFilter === 'master' ? 'text-purple-400' : 'text-muted'} />
+                {dict.modeMaster}
+              </span>
+              {activeFilter === 'master' && (
+                <span className="text-[8px] font-mono font-bold bg-purple-500/30 text-purple-300 px-2 py-0.5 rounded-full border border-purple-400/40">
+                  ● ATTIVO
+                </span>
+              )}
+            </div>
+            <p className="text-[10px] opacity-70 leading-normal">
+              {isIt ? 'Focus sui 4 componenti decisionali Master' : 'Focus on the 4 Master decision components'}
+            </p>
+          </button>
+
+          <button
+            onClick={() => { setActiveFilter('worker'); setSelectedComp('kubelet'); }}
+            className={`p-3.5 rounded-2xl border text-left flex flex-col justify-between transition-all cursor-pointer relative overflow-hidden ${
+              activeFilter === 'worker'
+                ? 'bg-gradient-to-br from-emerald-600/30 to-teal-600/20 border-emerald-400 text-white shadow-xl ring-2 ring-emerald-400/50 scale-[1.02]'
+                : 'bg-surface2/40 border-white/10 text-muted hover:border-white/20 hover:bg-surface2/70 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center justify-between mb-2">
+              <span className="flex items-center gap-2 text-xs font-black text-white">
+                <Server size={16} className={activeFilter === 'worker' ? 'text-emerald-400' : 'text-muted'} />
+                {dict.modeWorker}
+              </span>
+              {activeFilter === 'worker' && (
+                <span className="text-[8px] font-mono font-bold bg-emerald-500/30 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-400/40">
+                  ● ATTIVO
+                </span>
+              )}
+            </div>
+            <p className="text-[10px] opacity-70 leading-normal">
+              {isIt ? 'Focus sulla macchina di calcolo Worker Node' : 'Focus on Worker Node compute engine'}
+            </p>
+          </button>
         </div>
 
-        {/* Filter Explanation Banner */}
-        <div className={`p-3 rounded-xl border text-xs font-medium text-left flex items-start gap-2 transition-all ${
+        {/* Action & Explanation Banner */}
+        <div className={`p-4 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all shadow-lg ${
           activeFilter === 'master'
-            ? 'bg-purple-500/10 border-purple-500/30 text-purple-300'
+            ? 'bg-purple-950/30 border-purple-500/40 text-purple-200'
             : activeFilter === 'worker'
-            ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
-            : 'bg-blue-500/10 border-blue-500/30 text-blue-300'
+            ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-200'
+            : 'bg-blue-950/30 border-blue-500/40 text-blue-200'
         }`}>
-          <Sparkles size={14} className="shrink-0 mt-0.5" />
-          <span>{dict.banners[activeFilter]}</span>
+          <div className="flex items-start gap-2.5 text-xs font-medium leading-relaxed">
+            <Sparkles size={16} className="shrink-0 mt-0.5 text-amber-400" />
+            <span>{dict.banners[activeFilter]}</span>
+          </div>
+
+          <button
+            onClick={runSimulation}
+            disabled={isSimulating}
+            className={`w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer shadow-lg ${
+              isSimulating
+                ? 'bg-amber-500/20 border border-amber-500/40 text-amber-300 animate-pulse'
+                : 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-black shadow-orange-500/20 hover:scale-105 active:scale-95'
+            }`}
+          >
+            <Play size={14} className={isSimulating ? 'animate-spin' : ''} />
+            {isSimulating ? dict.simulating : dict.simButtons[activeFilter]}
+          </button>
         </div>
 
         {/* Interactive Diagram Area */}
