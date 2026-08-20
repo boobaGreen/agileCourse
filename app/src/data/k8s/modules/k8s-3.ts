@@ -36,23 +36,24 @@ export const k8s3: Module = {
     },
     {
       type: 'table',
-      title: { en: '🛠️ Essential kubectl Commands', it: '🛠️ Comandi kubectl essenziali' },
-      content: { en: 'Memorize these, you will use them thousands of times.', it: 'Memorizzali, li userai migliaia di volte.' },
+      title: { en: '🛠️ Essential kubectl Commands & Real Examples', it: '🛠️ Comandi kubectl essenziali ed Esempi Pratici' },
+      content: { en: 'Memorize these core syntax patterns and real-world usage examples. You will use them thousands of times.', it: 'Memorizza questi pattern di sintassi ed esempi pratici di utilizzo reale. Li userai migliaia di volte.' },
       tableData: {
-        headers: [{ en: 'Command', it: 'Comando' }, { en: 'Purpose', it: 'Scopo' }],
+        headers: [{ en: 'Syntax Pattern', it: 'Sintassi Base' }, { en: 'Real Example', it: 'Esempio Pratico Reale' }, { en: 'Purpose', it: 'Scopo' }],
         rows: [
-          ['`kubectl get pods`', { en: 'List all pods in the current namespace', it: 'Elenca tutti i pod nel namespace corrente' }],
-          ['`kubectl describe pod [name]`', { en: 'Show incredibly detailed info and events (vital for debugging)', it: 'Mostra informazioni e eventi incredibilmente dettagliati (vitale per il debugging)' }],
-          ['`kubectl logs [name]`', { en: 'View the internal console logs of the containers in the pod', it: 'Visualizza i log della console interna dei container nel pod' }],
-          ['`kubectl apply -f [file.yml]`', { en: 'Create or update resources from a YAML definition file', it: 'Crea o aggiorna risorse da un file di definizione YAML' }],
-          ['`kubectl delete pod [name]`', { en: 'Destroy a pod (It will likely be immediately recreated!)', it: 'Distruggi un pod (probabilmente verrà ricreato immediatamente!)' }]
+          ['`kubectl get pods`', '`kubectl get pods`', { en: 'List all active pods in the current namespace with status and IP', it: 'Elenca tutti i pod attivi nel namespace corrente con stato e IP' }],
+          ['`kubectl describe pod [name]`', '`kubectl describe pod auth-service-7f9`', { en: 'Show detailed specs, IP, container images, and lifecycle events (vital for debugging)', it: 'Mostra specifiche dettagliate, immagini container ed eventi di ciclo di vita (vitale per il debugging)' }],
+          ['`kubectl logs [name]`', '`kubectl logs auth-service-7f9`', { en: 'View internal console stdout/stderr logs of the pod containers', it: 'Visualizza i log di console stdout/stderr generati dai container nel pod' }],
+          ['`kubectl apply -f [file.yaml]`', '`kubectl apply -f payment-api-deployment.yaml`', { en: 'Create or update resources specified inside a YAML manifest file', it: 'Crea o aggiorna le risorse definite all\'interno di un manifesto YAML' }],
+          ['`kubectl scale deployment/[name] --replicas=[N]`', '`kubectl scale deployment/payment-api --replicas=3`', { en: 'Dynamically scale the number of running pod instances for a deployment', it: 'Scala dinamicamente il numero di istanze pod in esecuzione per un deployment' }],
+          ['`kubectl delete pod [name]`', '`kubectl delete pod payment-api-89fbc`', { en: 'Destroy a pod (If managed by a Deployment, it is automatically recreated!)', it: 'Elimina un pod (se gestito da un Deployment, verrà ricreato automaticamente!)' }]
         ]
       }
     },
     {
       type: 'game',
-      title: { en: 'Lab: Orchestrating an App', it: 'Lab: Orchestrazione di un\'app' },
-      content: { en: 'Let\'s deploy a real structure. In this lab, your `kubectl` commands will live-update the cluster topology above.', it: 'Distribuiamo una struttura reale. In questo lab, i tuoi comandi `kubectl` aggiorneranno dal vivo la topologia del cluster qui sopra.' },
+      title: { en: 'Lab: Orchestrating the Payment Microservice', it: 'Lab: Orchestrazione del Microservizio Payment-API' },
+      content: { en: 'Apply the command patterns from the examples above to orchestrate the production `payment-api` microservice in real time.', it: 'Applica i pattern dei comandi mostrati negli esempi per orchestrare il microservizio `payment-api` in tempo reale.' },
       gameType: 'k8s-sim',
       gameData: {
         startState: {
@@ -62,10 +63,10 @@ export const k8s3: Module = {
           deployments: []
         },
         tasks: [
-          { id: '1', instruction: { en: 'Apply the deployment manifest: `kubectl apply -f nginx-deployment.yaml`', it: 'Applica il manifest di deployment: `kubectl apply -f nginx-deployment.yaml`' }, condition: 'DEPLOYMENT_EXISTS:nginx' },
-          { id: '2', instruction: { en: 'Expose the deployment with a service: `kubectl apply -f nginx-service.yaml`', it: 'Esponi il deployment con un servizio: `kubectl apply -f nginx-service.yaml`' }, condition: 'SERVICE_EXISTS:nginx-svc' },
-          { id: '3', instruction: { en: 'Scale the deployment to 3 replicas: `kubectl scale deployment/nginx --replicas=3`', it: 'Scala il deployment a 3 repliche: `kubectl scale deployment/nginx --replicas=3`' }, condition: 'REPLICAS:nginx:3' },
-          { id: '4', instruction: { en: 'Verify you have at least 3 pods running: `kubectl get pods`', it: 'Verifica di avere almeno 3 pod in esecuzione: `kubectl get pods`' }, condition: 'PODS_RUNNING:3' }
+          { id: '1', instruction: { en: 'Deploy the payment microservice manifest: `kubectl apply -f payment-api-deployment.yaml`', it: 'Distribuisci il manifest del microservizio payment: `kubectl apply -f payment-api-deployment.yaml`' }, condition: 'DEPLOYMENT_EXISTS:payment-api' },
+          { id: '2', instruction: { en: 'Expose the payment service to the network: `kubectl apply -f payment-api-service.yaml`', it: 'Esponi il servizio payment in rete: `kubectl apply -f payment-api-service.yaml`' }, condition: 'SERVICE_EXISTS:payment-api-svc' },
+          { id: '3', instruction: { en: 'Scale the deployment to handle load: `kubectl scale deployment/payment-api --replicas=3`', it: 'Scala il deployment per gestire il carico: `kubectl scale deployment/payment-api --replicas=3`' }, condition: 'REPLICAS:payment-api:3' },
+          { id: '4', instruction: { en: 'Verify that 3 replicas are running: `kubectl get pods`', it: 'Verifica che ci siano 3 pod attivi nel cluster: `kubectl get pods`' }, condition: 'PODS_RUNNING:3' }
         ]
       }
     },

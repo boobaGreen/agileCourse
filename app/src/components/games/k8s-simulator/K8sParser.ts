@@ -96,7 +96,24 @@ export class K8sParser {
       }
 
       case 'apply': {
-        // Mock manifest application for common exercises
+        const fileArg = parts.find(p => p.endsWith('.yaml') || p.endsWith('.yml')) || parts[parts.length - 1];
+
+        if (command.includes('payment-api-deployment.yaml')) {
+          const res = engine.apply({
+            kind: 'Deployment',
+            metadata: { name: 'payment-api' },
+            spec: { replicas: 1, selector: { matchLabels: { app: 'payment-api' } } }
+          });
+          return { success: res.success, out: res.msg };
+        }
+        if (command.includes('payment-api-service.yaml')) {
+          const res = engine.apply({
+            kind: 'Service',
+            metadata: { name: 'payment-api-svc' },
+            spec: { selector: { app: 'payment-api' }, type: 'LoadBalancer' }
+          });
+          return { success: res.success, out: res.msg };
+        }
         if (command.includes('nginx-deployment.yaml')) {
           const res = engine.apply({
             kind: 'Deployment',
@@ -138,7 +155,28 @@ export class K8sParser {
           });
           return { success: res.success, out: res.msg };
         }
-        return { success: false, out: 'error: file not found. Try "nginx-deployment.yaml" or "web.yml"' };
+
+        // Generic fallback for any [name]-deployment.yaml or [name]-service.yaml
+        if (fileArg && fileArg.includes('-deployment')) {
+          const baseName = fileArg.split('-deployment')[0].replace(/.*\//, '');
+          const res = engine.apply({
+            kind: 'Deployment',
+            metadata: { name: baseName },
+            spec: { replicas: 1, selector: { matchLabels: { app: baseName } } }
+          });
+          return { success: res.success, out: res.msg };
+        }
+        if (fileArg && fileArg.includes('-service')) {
+          const baseName = fileArg.split('-service')[0].replace(/.*\//, '');
+          const res = engine.apply({
+            kind: 'Service',
+            metadata: { name: `${baseName}-svc` },
+            spec: { selector: { app: baseName }, type: 'ClusterIP' }
+          });
+          return { success: res.success, out: res.msg };
+        }
+
+        return { success: false, out: `error: file "${fileArg}" not found. Try "payment-api-deployment.yaml" or "payment-api-service.yaml"` };
       }
 
       case 'scale': {
