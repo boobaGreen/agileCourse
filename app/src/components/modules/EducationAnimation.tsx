@@ -1384,6 +1384,222 @@ export function EducationAnimation({ type }: { type: string }) {
     )
   }
 
+  if (type.toLowerCase().includes('infographic') || type.toLowerCase().includes('schema') || type.toLowerCase().includes('blueprint')) {
+    const isIt = language === 'it'
+
+    return (
+      <div className="w-full flex flex-col gap-6 select-none text-left">
+        {/* Infographic Main Canvas Container */}
+        <div className="w-full bg-surface border border-white/10 rounded-2xl p-6 shadow-2xl relative overflow-hidden flex flex-col gap-6">
+          {/* Subtle glowing ambient backdrop */}
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-emerald-500" />
+          
+          {/* Infographic Header */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded text-[9px] fw-black uppercase tracking-widest bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                  SCHEMATIC MAP
+                </span>
+                <h3 className="text-base font-black text-white">
+                  {isIt ? 'Mappa Architetturale Completa di Kubernetes' : 'Complete Kubernetes Architecture Map'}
+                </h3>
+              </div>
+              <p className="text-xs text-muted mt-1">
+                {isIt ? 'Panoramica statica ad alta definizione dei componenti Master, Worker e delle porte di comunicazione.' : 'High-definition static overview of Master, Worker components and communication ports.'}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 text-xs font-bold text-muted bg-black/40 px-3 py-1.5 rounded-xl border border-white/5">
+              <span className="flex items-center gap-1 text-purple-300"><span className="w-2 h-2 rounded-full bg-purple-400" /> Control Plane</span>
+              <span className="flex items-center gap-1 text-emerald-300"><span className="w-2 h-2 rounded-full bg-emerald-400" /> Worker Node</span>
+            </div>
+          </div>
+
+          {/* Top Level: Workstation CLI */}
+          <div className="w-full flex flex-col items-center">
+            <div className="bg-surface2/90 border border-blue-500/40 rounded-xl px-5 py-3 flex items-center justify-between gap-4 w-full max-w-xl shadow-lg shadow-blue-500/5">
+              <div className="flex items-center gap-3">
+                <Terminal size={18} className="text-blue-400 shrink-0" />
+                <div>
+                  <div className="text-xs font-black text-white">{isIt ? 'Postazione Sviluppatore / Client' : 'Developer Workstation / Client'}</div>
+                  <div className="text-[10px] text-muted mono">kubectl apply -f app.yaml</div>
+                </div>
+              </div>
+              <span className="text-[9px] bg-blue-500/20 text-blue-300 font-mono px-2 py-1 rounded border border-blue-500/30">
+                HTTPS / REST (6443)
+              </span>
+            </div>
+            
+            {/* Connecting Vector Line Down */}
+            <div className="w-0.5 h-6 bg-gradient-to-b from-blue-500/80 to-purple-500/80 my-1" />
+          </div>
+
+          {/* Split Architecture Grid: Master vs Worker */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+            
+            {/* MASTER NODE BLOCK */}
+            <div className="bg-purple-950/20 border border-purple-500/30 rounded-2xl p-5 flex flex-col gap-4 shadow-xl relative">
+              <div className="flex items-center justify-between border-b border-purple-500/20 pb-3">
+                <div className="flex items-center gap-2">
+                  <Cpu size={16} className="text-purple-400" />
+                  <span className="text-xs font-black text-purple-200">CONTROL PLANE (MASTER NODE)</span>
+                </div>
+                <span className="text-[9px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full font-mono fw-bold">🧠 The Brain</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* API Server */}
+                <div className="bg-purple-900/30 border border-purple-400/40 rounded-xl p-3.5 flex flex-col gap-1 shadow-md relative group">
+                  <div className="flex items-center justify-between">
+                    <Zap size={14} className="text-amber-400" />
+                    <span className="text-[9px] font-mono text-purple-300 bg-purple-500/20 px-1.5 py-0.5 rounded">6443/TCP</span>
+                  </div>
+                  <div className="text-xs font-black text-white">kube-apiserver</div>
+                  <p className="text-[10px] text-purple-200/80 leading-relaxed mt-1">
+                    {isIt ? 'Porta d\'ingresso REST API. Autentica e valida ogni comando del cluster.' : 'REST API gateway. Authenticates & validates all cluster commands.'}
+                  </p>
+                </div>
+
+                {/* etcd */}
+                <div className="bg-purple-900/30 border border-purple-400/40 rounded-xl p-3.5 flex flex-col gap-1 shadow-md relative group">
+                  <div className="flex items-center justify-between">
+                    <Database size={14} className="text-cyan-400" />
+                    <span className="text-[9px] font-mono text-purple-300 bg-purple-500/20 px-1.5 py-0.5 rounded">2379/TCP</span>
+                  </div>
+                  <div className="text-xs font-black text-white">etcd Database</div>
+                  <p className="text-[10px] text-purple-200/80 leading-relaxed mt-1">
+                    {isIt ? 'Database Key-Value. Memorizza l\'unico stato ufficiale di verità del cluster.' : 'Key-Value database. Holds the single source of state truth.'}
+                  </p>
+                </div>
+
+                {/* Scheduler */}
+                <div className="bg-purple-900/30 border border-purple-400/40 rounded-xl p-3.5 flex flex-col gap-1 shadow-md relative group">
+                  <div className="flex items-center justify-between">
+                    <RefreshCw size={14} className="text-purple-300" />
+                    <span className="text-[9px] font-mono text-purple-300 bg-purple-500/20 px-1.5 py-0.5 rounded">10259/TCP</span>
+                  </div>
+                  <div className="text-xs font-black text-white">kube-scheduler</div>
+                  <p className="text-[10px] text-purple-200/80 leading-relaxed mt-1">
+                    {isIt ? 'Valuta RAM e CPU dei nodi ed assegna i Pod non ancora collocati.' : 'Evaluates RAM/CPU capacity and places pending Pods on workers.'}
+                  </p>
+                </div>
+
+                {/* Controller Manager */}
+                <div className="bg-purple-900/30 border border-purple-400/40 rounded-xl p-3.5 flex flex-col gap-1 shadow-md relative group">
+                  <div className="flex items-center justify-between">
+                    <Activity size={14} className="text-emerald-400" />
+                    <span className="text-[9px] font-mono text-purple-300 bg-purple-500/20 px-1.5 py-0.5 rounded">10257/TCP</span>
+                  </div>
+                  <div className="text-xs font-black text-white">kube-controller-manager</div>
+                  <p className="text-[10px] text-purple-200/80 leading-relaxed mt-1">
+                    {isIt ? 'Esegue cicli di controllo per garantire il numero desiderato di repliche.' : 'Runs control loops ensuring target replica count is maintained.'}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* WORKER NODE BLOCK */}
+            <div className="bg-emerald-950/20 border border-emerald-500/30 rounded-2xl p-5 flex flex-col gap-4 shadow-xl relative">
+              <div className="flex items-center justify-between border-b border-emerald-500/20 pb-3">
+                <div className="flex items-center gap-2">
+                  <Server size={16} className="text-emerald-400" />
+                  <span className="text-xs font-black text-emerald-200">WORKER NODE (COMPUTE MACHINE)</span>
+                </div>
+                <span className="text-[9px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-mono fw-bold">💪 The Muscle</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* Kubelet */}
+                <div className="bg-emerald-900/30 border border-emerald-400/40 rounded-xl p-3.5 flex flex-col gap-1 shadow-md">
+                  <div className="flex items-center justify-between">
+                    <Shield size={14} className="text-emerald-300" />
+                    <span className="text-[9px] font-mono text-emerald-300 bg-emerald-500/20 px-1.5 py-0.5 rounded">10250/TCP</span>
+                  </div>
+                  <div className="text-xs font-black text-white">Kubelet Agent</div>
+                  <p className="text-[10px] text-emerald-200/80 leading-relaxed mt-1">
+                    {isIt ? 'Agente locale che riceve le PodSpec dall\'API Server e avvia i container.' : 'Node agent listening to PodSpecs and commanding container execution.'}
+                  </p>
+                </div>
+
+                {/* Kube-Proxy */}
+                <div className="bg-emerald-900/30 border border-emerald-400/40 rounded-xl p-3.5 flex flex-col gap-1 shadow-md">
+                  <div className="flex items-center justify-between">
+                    <Network size={14} className="text-blue-400" />
+                    <span className="text-[9px] font-mono text-emerald-300 bg-emerald-500/20 px-1.5 py-0.5 rounded">10256/TCP</span>
+                  </div>
+                  <div className="text-xs font-black text-white">Kube-Proxy</div>
+                  <p className="text-[10px] text-emerald-200/80 leading-relaxed mt-1">
+                    {isIt ? 'Gestisce le regole IP di rete (iptables) e bilancia il traffico tra pod.' : 'Manages IP routing rules (iptables) and balances pod traffic.'}
+                  </p>
+                </div>
+
+                {/* Container Runtime */}
+                <div className="bg-emerald-900/30 border border-emerald-400/40 rounded-xl p-3.5 flex flex-col gap-1 shadow-md sm:col-span-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Layers size={14} className="text-cyan-400" />
+                      <span className="text-xs font-black text-white">Container Runtime (containerd / CRI-O)</span>
+                    </div>
+                    <span className="text-[9px] font-mono text-emerald-300 bg-emerald-500/20 px-1.5 py-0.5 rounded">CRI Socket</span>
+                  </div>
+                  <p className="text-[10px] text-emerald-200/80 leading-relaxed mt-1">
+                    {isIt ? 'Motore di basso livello che scarica le immagini ed esegue i container nei Pod isolati.' : 'Low-level engine pulling container images & executing isolated Pod containers.'}
+                  </p>
+                  
+                  {/* Embedded Pod Box */}
+                  <div className="mt-2 p-2 bg-black/40 border border-emerald-500/30 rounded-lg flex items-center justify-between text-[9px] font-mono text-emerald-300">
+                    <span className="flex items-center gap-1.5">
+                      <Box size={12} className="text-emerald-400" />
+                      <strong>Pod #1</strong> (App Container + Sidecar)
+                    </span>
+                    <span className="text-muted">IP: 10.244.1.45</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Bottom Ports Cheat-Sheet Matrix */}
+          <div className="bg-black/30 border border-white/10 rounded-xl p-4 flex flex-col gap-3">
+            <div className="text-xs font-black text-white flex items-center gap-2">
+              <Lock size={14} className="text-amber-400" />
+              {isIt ? 'Tabella Riassuntiva delle Porte & Comunicazione' : 'Ports & Communication Cheat-Sheet Table'}
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px] font-mono">
+              <div className="p-2 rounded bg-surface2/60 border border-white/5 flex flex-col gap-0.5">
+                <span className="text-purple-400 font-bold">API Server</span>
+                <span className="text-white font-bold">6443 / TCP</span>
+                <span className="text-muted text-[8px]">{isIt ? 'Entrata REST Inbound' : 'Inbound REST'}</span>
+              </div>
+
+              <div className="p-2 rounded bg-surface2/60 border border-white/5 flex flex-col gap-0.5">
+                <span className="text-purple-400 font-bold">etcd Database</span>
+                <span className="text-white font-bold">2379-2380 / TCP</span>
+                <span className="text-muted text-[8px]">{isIt ? 'Solo Control Plane' : 'Control Plane Only'}</span>
+              </div>
+
+              <div className="p-2 rounded bg-surface2/60 border border-white/5 flex flex-col gap-0.5">
+                <span className="text-emerald-400 font-bold">Kubelet Agent</span>
+                <span className="text-white font-bold">10250 / TCP</span>
+                <span className="text-muted text-[8px]">{isIt ? 'Master -> Worker' : 'Master -> Worker'}</span>
+              </div>
+
+              <div className="p-2 rounded bg-surface2/60 border border-white/5 flex flex-col gap-0.5">
+                <span className="text-emerald-400 font-bold">Kube-Proxy</span>
+                <span className="text-white font-bold">10256 / TCP</span>
+                <span className="text-muted text-[8px]">{isIt ? 'Health Check & Net' : 'Health & Net Proxy'}</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    )
+  }
+
   // Fallback
   return null
 }

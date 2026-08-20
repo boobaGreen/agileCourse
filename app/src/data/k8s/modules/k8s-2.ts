@@ -37,6 +37,12 @@ export const k8s2: Module = {
       animationType: 'k8s-cluster'
     },
     {
+      type: 'animation',
+      title: { en: '📐 Complete Static Architecture Map & Ports Spec', it: '📐 Mappa Architetturale Statica Completa & Tabelle Porte' },
+      content: { en: 'k8s-infographic', it: 'k8s-infographic' },
+      animationType: 'k8s-infographic'
+    },
+    {
       type: 'concept',
       title: { en: '🔄 Step-by-Step Architecture Breakdown', it: '🔄 Analisi Passo-Passo dell\'Architettura' },
       content: {
