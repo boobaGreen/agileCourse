@@ -70,8 +70,26 @@ export const k8s5: Module = {
           ]
         },
         tasks: [
-          { id: '1', instruction: { en: 'Expose the web deployment as a LoadBalancer service: `kubectl expose deployment web-deployment --type=LoadBalancer --port=80`', it: 'Esponi il deployment web come servizio LoadBalancer: `kubectl expose deployment web-deployment --type=LoadBalancer --port=80`' }, condition: 'SERVICE_EXISTS:web-deployment' },
-          { id: '2', instruction: { en: 'Check the assigned IP for your new service: `kubectl get service`', it: 'Controlla l\'IP assegnato per il tuo nuovo servizio: `kubectl get service`' }, condition: 'PODS_RUNNING:2' }
+          {
+            id: '1',
+            instruction: { en: 'Expose the web deployment as a LoadBalancer service: `kubectl expose deployment web-deployment --type=LoadBalancer --port=80`', it: 'Esponi il deployment web come servizio LoadBalancer: `kubectl expose deployment web-deployment --type=LoadBalancer --port=80`' },
+            condition: 'SERVICE_EXISTS:web-deployment',
+            hints: [
+              { en: 'Use `kubectl expose deployment` specifying the deployment name `web-deployment`.', it: 'Usa `kubectl expose deployment` specificando il nome del deployment `web-deployment`.' },
+              { en: 'Add the flags `--type=LoadBalancer` and `--port=80`.', it: 'Aggiungi i flag `--type=LoadBalancer` e `--port=80`.' },
+              { en: 'Run: `kubectl expose deployment web-deployment --type=LoadBalancer --port=80`', it: 'Esegui: `kubectl expose deployment web-deployment --type=LoadBalancer --port=80`' }
+            ]
+          },
+          {
+            id: '2',
+            instruction: { en: 'Check the assigned IP for your new service: `kubectl get service`', it: 'Controlla l\'IP assegnato per il tuo nuovo servizio: `kubectl get service`' },
+            condition: 'CMD_RAN:get service',
+            hints: [
+              { en: 'Use `kubectl get` to list active cluster network endpoints.', it: 'Usa `kubectl get` per elencare gli endpoint di rete del cluster attivi.' },
+              { en: 'Specify `service` or `svc` as the resource type.', it: 'Specifica `service` o `svc` come tipo di risorsa.' },
+              { en: 'Run: `kubectl get service`', it: 'Esegui: `kubectl get service`' }
+            ]
+          }
         ]
       }
     }

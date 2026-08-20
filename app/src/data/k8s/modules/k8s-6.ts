@@ -73,8 +73,26 @@ spec:
           secrets: []
         },
         tasks: [
-          { id: '1', instruction: { en: 'Apply the application configuration: `kubectl apply -f app-config.yaml`', it: 'Applica la configurazione dell\'applicazione: `kubectl apply -f app-config.yaml`' }, condition: 'CONFIGMAP_EXISTS:app-config' },
-          { id: '2', instruction: { en: 'Verify the ConfigMap exists in the cluster: `kubectl get cm`', it: 'Verifica che la ConfigMap esista nel cluster: `kubectl get cm`' }, condition: 'CONFIGMAP_EXISTS:app-config' }
+          {
+            id: '1',
+            instruction: { en: 'Apply the application configuration: `kubectl apply -f app-config.yaml`', it: 'Applica la configurazione dell\'applicazione: `kubectl apply -f app-config.yaml`' },
+            condition: 'CONFIGMAP_EXISTS:app-config',
+            hints: [
+              { en: 'Use `kubectl apply -f` to create cluster resources from manifest files.', it: 'Usa `kubectl apply -f` per creare risorse nel cluster da file manifesto.' },
+              { en: 'The configuration manifest file is `app-config.yaml`.', it: 'Il file manifesto di configurazione è `app-config.yaml`.' },
+              { en: 'Run: `kubectl apply -f app-config.yaml`', it: 'Esegui: `kubectl apply -f app-config.yaml`' }
+            ]
+          },
+          {
+            id: '2',
+            instruction: { en: 'Verify the ConfigMap exists in the cluster: `kubectl get cm`', it: 'Verifica che la ConfigMap esista nel cluster: `kubectl get cm`' },
+            condition: 'CMD_RAN:get cm',
+            hints: [
+              { en: 'Use `kubectl get` to list configuration resources.', it: 'Usa `kubectl get` per elencare le risorse di configurazione.' },
+              { en: 'The shortcut alias for ConfigMap is `cm` or `configmaps`.', it: 'L\'alias abbreviato per ConfigMap è `cm` o `configmaps`.' },
+              { en: 'Run: `kubectl get cm`', it: 'Esegui: `kubectl get cm`' }
+            ]
+          }
         ]
       }
     }

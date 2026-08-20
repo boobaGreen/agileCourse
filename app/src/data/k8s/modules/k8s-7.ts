@@ -55,8 +55,26 @@ export const k8s7: Module = {
           pv: []
         },
         tasks: [
-          { id: '1', instruction: { en: 'Apply the persistent volume claim: `kubectl apply -f web-pvc.yaml`', it: 'Applica il PersistentVolumeClaim: `kubectl apply -f web-pvc.yaml`' }, condition: 'PVC_EXISTS:web-pvc' },
-          { id: '2', instruction: { en: 'Check the status of your claims: `kubectl get pvc`', it: 'Controlla lo stato delle tue richieste: `kubectl get pvc`' }, condition: 'PVC_EXISTS:web-pvc' }
+          {
+            id: '1',
+            instruction: { en: 'Apply the persistent volume claim: `kubectl apply -f web-pvc.yaml`', it: 'Applica il PersistentVolumeClaim: `kubectl apply -f web-pvc.yaml`' },
+            condition: 'PVC_EXISTS:web-pvc',
+            hints: [
+              { en: 'Use `kubectl apply -f` to create the storage claim resource.', it: 'Usa `kubectl apply -f` per creare la risorsa di richiesta storage.' },
+              { en: 'The claim manifest file in the directory is named `web-pvc.yaml`.', it: 'Il file manifesto della richiesta nella cartella si chiama `web-pvc.yaml`.' },
+              { en: 'Run: `kubectl apply -f web-pvc.yaml`', it: 'Esegui: `kubectl apply -f web-pvc.yaml`' }
+            ]
+          },
+          {
+            id: '2',
+            instruction: { en: 'Check the status of your claims: `kubectl get pvc`', it: 'Controlla lo stato delle tue richieste: `kubectl get pvc`' },
+            condition: 'CMD_RAN:get pvc',
+            hints: [
+              { en: 'Use `kubectl get` to check storage claim statuses.', it: 'Usa `kubectl get` per verificare gli stati delle richieste di storage.' },
+              { en: 'Specify `pvc` or `persistentvolumeclaims` as the resource type.', it: 'Specifica `pvc` o `persistentvolumeclaims` come tipo di risorsa.' },
+              { en: 'Run: `kubectl get pvc`', it: 'Esegui: `kubectl get pvc`' }
+            ]
+          }
         ]
       }
     }

@@ -61,8 +61,26 @@ export const k8s8: Module = {
           deployments: []
         },
         tasks: [
-          { id: '1', instruction: { en: 'Deploy the nginx application: `kubectl apply -f nginx-deployment.yaml`', it: 'Distribuisci l\'applicazione nginx: `kubectl apply -f nginx-deployment.yaml`' }, condition: 'PODS_RUNNING:2' },
-          { id: '2', instruction: { en: 'Expose it to the world: `kubectl expose deployment nginx --type=LoadBalancer --port=80`', it: 'Esponila al mondo: `kubectl expose deployment nginx --type=LoadBalancer --port=80`' }, condition: 'SERVICE_EXISTS:nginx' }
+          {
+            id: '1',
+            instruction: { en: 'Deploy the nginx application: `kubectl apply -f nginx-deployment.yaml`', it: 'Distribuisci l\'applicazione nginx: `kubectl apply -f nginx-deployment.yaml`' },
+            condition: 'PODS_RUNNING:2',
+            hints: [
+              { en: 'Use `kubectl apply -f` to create the nginx deployment resource.', it: 'Usa `kubectl apply -f` per creare la risorsa di deployment nginx.' },
+              { en: 'The deployment manifest file in the directory is named `nginx-deployment.yaml`.', it: 'Il file manifesto del deployment nella cartella si chiama `nginx-deployment.yaml`.' },
+              { en: 'Run: `kubectl apply -f nginx-deployment.yaml`', it: 'Esegui: `kubectl apply -f nginx-deployment.yaml`' }
+            ]
+          },
+          {
+            id: '2',
+            instruction: { en: 'Expose it to the world: `kubectl expose deployment nginx --type=LoadBalancer --port=80`', it: 'Esponila al mondo: `kubectl expose deployment nginx --type=LoadBalancer --port=80`' },
+            condition: 'SERVICE_EXISTS:nginx',
+            hints: [
+              { en: 'Use `kubectl expose deployment` to create a service for `nginx`.', it: 'Usa `kubectl expose deployment` per creare un servizio per `nginx`.' },
+              { en: 'Add flags `--type=LoadBalancer` and `--port=80`.', it: 'Aggiungi i flag `--type=LoadBalancer` e `--port=80`.' },
+              { en: 'Run: `kubectl expose deployment nginx --type=LoadBalancer --port=80`', it: 'Esegui: `kubectl expose deployment nginx --type=LoadBalancer --port=80`' }
+            ]
+          }
         ]
       }
     }

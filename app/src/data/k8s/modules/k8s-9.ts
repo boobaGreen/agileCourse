@@ -27,8 +27,26 @@ export const k8s9: Module = {
           deployments: []
         },
         tasks: [
-          { id: '1', instruction: { en: 'Install the chart: `helm install enterprise-stack ./my-chart`', it: 'Installa il chart: `helm install enterprise-stack ./my-chart`' }, condition: 'PODS_RUNNING:3' },
-          { id: '2', instruction: { en: 'Verify the release is running: `kubectl get pods`', it: 'Verifica che la release sia in esecuzione: `kubectl get pods`' }, condition: 'PODS_RUNNING:3' }
+          {
+            id: '1',
+            instruction: { en: 'Install the chart: `helm install enterprise-stack ./my-chart`', it: 'Installa il chart: `helm install enterprise-stack ./my-chart`' },
+            condition: 'PODS_RUNNING:3',
+            hints: [
+              { en: 'Use the `helm install` command to deploy a packaged Helm chart.', it: 'Usa il comando `helm install` per distribuire un Helm chart impacchettato.' },
+              { en: 'Specify the release name `enterprise-stack` and chart folder `./my-chart`.', it: 'Specifica il nome della release `enterprise-stack` e la cartella del chart `./my-chart`.' },
+              { en: 'Run: `helm install enterprise-stack ./my-chart`', it: 'Esegui: `helm install enterprise-stack ./my-chart`' }
+            ]
+          },
+          {
+            id: '2',
+            instruction: { en: 'Verify the release is running: `kubectl get pods`', it: 'Verifica che la release sia in esecuzione: `kubectl get pods`' },
+            condition: 'CMD_RAN:get pod',
+            hints: [
+              { en: 'Use `kubectl get` to check if all pods deployed by Helm are active.', it: 'Usa `kubectl get` per verificare se tutti i pod distribuiti da Helm sono attivi.' },
+              { en: 'Specify `pods` as the target resource type.', it: 'Specifica `pods` come tipo di risorsa target.' },
+              { en: 'Run: `kubectl get pods`', it: 'Esegui: `kubectl get pods`' }
+            ]
+          }
         ]
       }
     }
