@@ -100,6 +100,18 @@ export const k8s5: Module = {
       ],
       correct: 3,
       explanation: { en: '`ClusterIP` completely blocks external internet traffic. Only other pods INSIDE the cluster can reach the database. This is the gold standard for backend resource security.', it: '`ClusterIP` blocca completamente il traffico internet esterno. Solo gli altri pod ALL\'INTERNO del cluster possono raggiungere il database. Questo è lo standard di riferimento per la sicurezza delle risorse backend.' }
+    },
+    {
+      id: 'k8s-5-q3',
+      question: { en: 'What is the default Service type in Kubernetes if you do not specify a "type" field in your YAML manifest?', it: 'Qual è il tipo di Service predefinito in Kubernetes se non specifichi il campo "type" nel tuo manifesto YAML?' },
+      options: [
+        { en: 'ClusterIP (Internal cluster IP only)', it: 'ClusterIP (Solo IP interno al cluster)' },
+        { en: 'LoadBalancer (Exposed with public IP)', it: 'LoadBalancer (Esposto con IP pubblico)' },
+        { en: 'NodePort (Exposed on node port 30000-32767)', it: 'NodePort (Esposto sulla porta del nodo 30000-32767)' },
+        { en: 'ExternalName (Redirects to external DNS)', it: 'ExternalName (Reindirizza a DNS esterno)' }
+      ],
+      correct: 0,
+      explanation: { en: 'If `type` is omitted in a Service YAML file, Kubernetes defaults to `ClusterIP` for secure internal-only communication.', it: 'Se il campo `type` viene omesso in un file YAML di un Service, Kubernetes imposta di default `ClusterIP` per garantire la comunicazione interna sicura.' }
     }
   ]
 }

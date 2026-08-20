@@ -140,6 +140,18 @@ export const k8s3: Module = {
       options: ['docker-compose', 'kubelet', 'kubectl', 'k8s-admin'],
       correct: 2,
       explanation: { en: '`kubectl` translates human commands like `get pods` into secure REST API HTTP requests aimed at the cluster\'s Control Plane.', it: '`kubectl` traduce i comandi umani come `get pods` in richieste HTTP REST API sicure rivolte al Control Plane del cluster.' }
+    },
+    {
+      id: 'k8s-3-q3',
+      question: { en: 'What happens if a Pod that is managed by a Deployment with 3 replicas fails or is manually deleted?', it: 'Cosa succede se un Pod gestito da un Deployment con 3 repliche fallisce o viene eliminato manualmente?' },
+      options: [
+        { en: 'The entire deployment is immediately destroyed to avoid data corruption', it: 'L\'intero deployment viene immediatamente distrutto per evitare corruzioni di dati' },
+        { en: 'The cluster stays at 2 replicas until a developer manually runs a deploy command', it: 'Il cluster rimane a 2 repliche finché uno sviluppatore non esegue manualmente un comando di deploy' },
+        { en: 'The Control Plane detects the gap from the Desired State and automatically creates a replacement Pod (Self-healing)', it: 'Il Control Plane rileva la discrepanza dallo Stato Desiderato e crea automaticamente un Pod sostitutivo (Auto-riparazione)' },
+        { en: 'The developer CLI workstation is locked in read-only mode', it: 'La postazione CLI dello sviluppatore viene bloccata in modalità sola lettura' }
+      ],
+      correct: 2,
+      explanation: { en: 'In Kubernetes, Deployments enforce a Desired State. If a pod dies, the Controller Manager detects the mismatch and immediately launches a new pod to maintain the target count of 3.', it: 'In Kubernetes, i Deployment impongono uno Stato Desiderato. Se un pod muore, il Controller Manager rileva la discrepanza e avvia immediatamente un nuovo pod per mantenere la quota di 3.' }
     }
   ]
 }

@@ -103,6 +103,18 @@ spec:
       ],
       correct: 1,
       explanation: { en: 'Base64 is an encoding format, NOT encryption. Anyone who runs `echo "cGFzc3dvcmQ=" | base64 --decode` gets the plain text password instantly.', it: 'Base64 è un formato di codifica, NON una crittografia. Chiunque esegua `echo "cGFzc3dvcmQ=" | base64 --decode` ottiene istantaneamente la password in chiaro.' }
+    },
+    {
+      id: 'k8s-6-q3',
+      question: { en: 'How are ConfigMaps and Secrets typically made accessible inside an application container in Kubernetes?', it: 'Come vengono resi normalmente accessibili i dati di ConfigMap e Secret all\'interno di un container applicativo in Kubernetes?' },
+      options: [
+        { en: 'Injected as Environment Variables (ENV) or mounted as files in a volume directory', it: 'Iniettati come Variabili d\'Ambiente (ENV) o montati come file in una cartella di volume' },
+        { en: 'Accessible only by making HTTP REST API requests to the Control Plane at port 6443', it: 'Accessibili solo facendo richieste HTTP REST API al Control Plane sulla porta 6443' },
+        { en: 'Compiled into the Docker image binary during the build phase', it: 'Compilati nel binario dell\'immagine Docker durante la fase di build' },
+        { en: 'Read exclusively by root administrators via the minikube console', it: 'Letti esclusivamente dagli amministratori root tramite la console minikube' }
+      ],
+      correct: 0,
+      explanation: { en: 'Kubernetes allows injecting ConfigMap and Secret key-value pairs directly as environment variables (env) or mounting them as text files inside a mounted volume directory.', it: 'Kubernetes permette di iniettare le coppie chiave-valore di ConfigMap e Secret direttamente come variabili d\'ambiente (env) oppure montandole come file di testo all\'interno di un volume.' }
     }
   ]
 }

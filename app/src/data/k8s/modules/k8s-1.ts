@@ -93,6 +93,18 @@ export const k8s1: Module = {
       ],
       correct: 2,
       explanation: { en: 'This is the "Self-healing" mechanism. The Control Plane notices the worker is dead and immediately asks other workers to spin up replacement containers.', it: 'Questo è il meccanismo di "Self-healing" (auto-riparazione). Il Control Plane si accorge che il worker è morto e chiede immediatamente agli altri worker di avviare container sostitutivi.' }
+    },
+    {
+      id: 'k8s-1-q3',
+      question: { en: 'Where does the name "Kubernetes" originate from, and why does its logo feature a helm with 7 spokes?', it: 'Da dove deriva il nome "Kubernetes" e perché il suo logo raffigura un timone con 7 razze?' },
+      options: [
+        { en: 'It comes from Greek "kybernitis" (helmsman); the 7 spokes recall Google\'s original codename "Project Seven of Nine" (from Star Trek Borg)', it: 'Deriva dal greco "kybernitis" (timoniere); le 7 razze ricordano il nome in codice originale di Google "Project Seven of Nine" (da Star Trek Borg)' },
+        { en: 'It comes from Latin "Cuber" (cube); the 7 spokes represent the 7 default network ports', it: 'Deriva dal latino "Cuber" (cubo); le 7 razze rappresentano le 7 porte di rete predefinite' },
+        { en: 'It comes from German "Kube"; the 7 spokes represent 7 interconnected nodes', it: 'Deriva dal tedesco "Kube"; le 7 razze rappresentano 7 nodi interconnessi' },
+        { en: 'It comes from Ancient Persian; representing 7 cloud wonders', it: 'Deriva dall\'antico persiano; rappresenta 7 meraviglie del cloud' }
+      ],
+      correct: 0,
+      explanation: { en: 'As explained in the Fun Fact section, Kubernetes (κυβερνήτης) is Greek for "helmsman". Internally at Google, the precursor project was codenamed "Seven of Nine" after the Star Trek Borg character.', it: 'Come spiegato nella sezione Fun Fact, Kubernetes (κυβερνήτης) è il greco per "timoniere". Internamente in Google, il progetto era codificato "Seven of Nine" dal personaggio Borg di Star Trek.' }
     }
   ]
 }

@@ -85,6 +85,18 @@ export const k8s7: Module = {
       ],
       correct: 2,
       explanation: { en: 'A claim must bind to a volume. If you ask for a 50GB fast SSD, and the cluster only has 10GB slow HDDs available, the claim stays Pending forever until an Admin provisions the right hardware.', it: 'Un claim deve collegarsi a un volume. Se richiedi un SSD veloce da 50GB e il cluster ha solo HDD lenti da 10GB disponibili, il claim rimarrà in Pending per sempre finché un amministratore non configurerà l\'hardware corretto.' }
+    },
+    {
+      id: 'k8s-7-q3',
+      question: { en: 'Which Kubernetes resource is written by an application developer to request storage space without knowing underlying cloud disk hardware details?', it: 'Quale risorsa Kubernetes viene scritta dallo sviluppatore dell\'applicazione per richiedere spazio di storage senza conoscere i dettagli dell\'hardware del disco cloud?' },
+      options: [
+        'PersistentVolumeClaim (PVC)',
+        'PersistentVolume (PV)',
+        'StorageClass',
+        'VolumeAttachment'
+      ],
+      correct: 0,
+      explanation: { en: 'The PersistentVolumeClaim (PVC) is the abstract request ticket submitted by the developer. The PersistentVolume (PV) is the actual storage volume provided by cluster administrators.', it: 'Il PersistentVolumeClaim (PVC) è il ticket di richiesta astratto inviato dallo sviluppatore. Il PersistentVolume (PV) è il volume di storage reale fornito dagli amministratori del cluster.' }
     }
   ]
 }

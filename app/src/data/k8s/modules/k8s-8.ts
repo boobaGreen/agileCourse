@@ -66,5 +66,43 @@ export const k8s8: Module = {
         ]
       }
     }
+  ],
+  quiz: [
+    {
+      id: 'k8s-8-q1',
+      question: { en: 'If `kubectl get pods` shows a Pod status of `ImagePullBackOff`, what is the primary root cause of this failure?', it: 'Se il comando `kubectl get pods` mostra lo stato `ImagePullBackOff` per un Pod, qual è la causa principale del problema?' },
+      options: [
+        { en: 'Kubernetes cannot download the container image (typo in image name or missing private registry credentials)', it: 'Kubernetes non riesce a scaricare l\'immagine del container (errore nel nome o credenziali del registro privato mancanti)' },
+        { en: 'The container process crashed because it exceeded its allocated memory RAM limit', it: 'Il processo del container è crashato perché ha superato il limite di RAM allocata' },
+        { en: 'The application code crashed immediately after starting up', it: 'Il codice dell\'applicazione è andato in crash immediatamente dopo l\'avvio' },
+        { en: 'The cluster has run out of available CPU resources', it: 'Il cluster ha esaurito le risorse di CPU disponibili' }
+      ],
+      correct: 0,
+      explanation: { en: '`ImagePullBackOff` indicates that Kubelet failed to pull the container image from the registry (e.g. wrong image name, invalid tag, or missing secret credentials).', it: '`ImagePullBackOff` indica che il Kubelet ha fallito il download dell\'immagine container dal registro (es. nome errato, tag non valido o credenziali mancanti).' }
+    },
+    {
+      id: 'k8s-8-q2',
+      question: { en: 'What does a Pod status of `CrashLoopBackOff` mean, and which command is the first diagnostic step?', it: 'Cosa significa lo stato `CrashLoopBackOff` per un Pod e qual è il primo comando da eseguire per diagnosticare l\'errore?' },
+      options: [
+        { en: 'The app starts but crashes repeatedly; run `kubectl logs <pod-name>` to read the code stack trace', it: 'L\'app si avvia ma va continuamente in crash; esegui `kubectl logs <pod-name>` per leggere lo stack trace del codice' },
+        { en: 'The network proxy failed; run `kubectl get nodes` to restart worker nodes', it: 'Il proxy di rete ha fallito; esegui `kubectl get nodes` per riavviare i nodi worker' },
+        { en: 'The pod is waiting for storage; run `kubectl scale` to allocate space', it: 'Il pod è in attesa di storage; esegui `kubectl scale` per allocare spazio' },
+        { en: 'Port 80 is blocked; run `kubectl delete service` to clear rules', it: 'La porta 80 è bloccata; esegui `kubectl delete service` per pulire le regole' }
+      ],
+      correct: 0,
+      explanation: { en: '`CrashLoopBackOff` means the application process starts and immediately exits with an error code. `kubectl logs` lets you inspect stdout/stderr to fix the code bug.', it: '`CrashLoopBackOff` significa che il processo dell\'applicazione si avvia e termina subito con un codice di errore. `kubectl logs` ti permette di ispezionare lo stdout/stderr per correggere il bug.' }
+    },
+    {
+      id: 'k8s-8-q3',
+      question: { en: 'Which diagnostic command provides the most comprehensive details, including recent system events and Kubelet error messages for a Pod?', it: 'Quale comando di diagnostica fornisce i dettagli più approfonditi, inclusi gli ultimi eventi di sistema e i messaggi di errore del Kubelet per un Pod?' },
+      options: [
+        'kubectl describe pod <pod-name>',
+        'kubectl get pods',
+        'kubectl logs <pod-name>',
+        'kubectl top pod <pod-name>'
+      ],
+      correct: 0,
+      explanation: { en: '`kubectl describe pod <name>` outputs complete lifecycle events, health probe failures, and Kubelet warnings for that specific resource.', it: '`kubectl describe pod <nome>` mostra l\'elenco completo degli eventi di ciclo di vita, i fallimenti di health probe e gli avvisi del Kubelet per quella specifica risorsa.' }
+    }
   ]
 }

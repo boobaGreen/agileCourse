@@ -108,6 +108,18 @@ spec:
       ],
       correct: 2,
       explanation: { en: 'A key feature of Deployments is that they verify "readiness" of new pods. If the new pod crashes (e.g. `CrashLoopBackOff`), the rollout stops, preventing a catastrophic 100% outage.', it: 'Una caratteristica chiave dei Deployment è che verificano la "readiness" (prontezza) dei nuovi pod. Se il nuovo pod crasha (es. `CrashLoopBackOff`), il rollout si ferma, prevenendo un disservizio totale catastrofico.' }
+    },
+    {
+      id: 'k8s-4-q3',
+      question: { en: 'Which kubectl command allows you to quickly scale a Deployment named "payment-api" to 5 replicas without editing YAML manually?', it: 'Quale comando kubectl ti permette di scalare rapidamente un Deployment chiamato "payment-api" a 5 repliche senza modificare a mano il file YAML?' },
+      options: [
+        'kubectl scale deployment/payment-api --replicas=5',
+        'kubectl set replicas payment-api 5',
+        'kubectl resize deployment payment-api --count=5',
+        'kubectl run payment-api --count=5'
+      ],
+      correct: 0,
+      explanation: { en: 'The command `kubectl scale deployment/[name] --replicas=[N]` directly updates the Deployment replica count in etcd.', it: 'Il comando `kubectl scale deployment/[nome] --replicas=[N]` aggiorna direttamente il numero di repliche del Deployment in etcd.' }
     }
   ]
 }
