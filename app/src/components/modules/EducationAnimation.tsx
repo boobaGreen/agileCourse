@@ -971,7 +971,7 @@ export function EducationAnimation({ type }: { type: string }) {
 
 
 
-  if (type.toLowerCase().includes('k8s') || type.toLowerCase().includes('cluster')) {
+  if ((type.toLowerCase().includes('k8s') || type.toLowerCase().includes('cluster')) && !type.toLowerCase().includes('infographic')) {
     const isIt = language === 'it'
     const [selectedComp, setSelectedComp] = useState<string | null>('api')
     const [activeFilter, setActiveFilter] = useState<'all' | 'master' | 'worker'>('all')
