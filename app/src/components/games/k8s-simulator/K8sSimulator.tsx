@@ -154,12 +154,6 @@ export function K8sSimulator({ data, onComplete }: Props) {
       </div>
 
       <div className="flex flex-col gap-6">
-         {/* Visual Cluster Topology Container */}
-         <div className="w-full h-[360px] bg-black/40 rounded-2xl border border-white/5 overflow-hidden relative">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(168,85,247,0.1),transparent)] pointer-events-none" />
-            <K8sVisualizer state={state} />
-         </div>
-
          {/* Context File Inspector Bar */}
          <div className="bg-black/40 border border-white/10 rounded-xl p-3 flex flex-col gap-3 text-xs">
            <div className="flex flex-wrap items-center justify-between gap-3">
@@ -216,6 +210,12 @@ export function K8sSimulator({ data, onComplete }: Props) {
                </pre>
              </motion.div>
            )}
+         </div>
+
+         {/* Visual Cluster Topology Container */}
+         <div className="w-full h-[360px] bg-black/40 rounded-2xl border border-white/5 overflow-hidden relative">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(168,85,247,0.1),transparent)] pointer-events-none" />
+            <K8sVisualizer state={state} />
          </div>
 
          {/* Tasks & Terminal Grid */}

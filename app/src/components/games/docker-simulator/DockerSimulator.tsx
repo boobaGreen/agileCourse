@@ -164,11 +164,6 @@ export function DockerSimulator({ data, onComplete }: Props) {
       </div>
 
       <div className="flex flex-col gap-6">
-         <div className="w-full h-[350px] bg-black/40 rounded-2xl border border-white/5 overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-radial from-primary/5 to-transparent pointer-events-none" />
-            <DockerVisualizer state={state} />
-         </div>
-
          <div className="bg-black/40 border border-white/10 rounded-xl p-3 flex flex-col gap-3 text-xs">
            <div className="flex flex-wrap items-center justify-between gap-3">
              <div className="flex items-center gap-2 text-muted">
@@ -234,6 +229,11 @@ export function DockerSimulator({ data, onComplete }: Props) {
                </pre>
              </motion.div>
            )}
+         </div>
+
+         <div className="w-full h-[350px] bg-black/40 rounded-2xl border border-white/5 overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-radial from-primary/5 to-transparent pointer-events-none" />
+            <DockerVisualizer state={state} />
          </div>
 
          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
