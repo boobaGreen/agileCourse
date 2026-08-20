@@ -63,10 +63,46 @@ export const k8s3: Module = {
           deployments: []
         },
         tasks: [
-          { id: '1', instruction: { en: 'Deploy the payment microservice manifest: `kubectl apply -f payment-api-deployment.yaml`', it: 'Distribuisci il manifest del microservizio payment: `kubectl apply -f payment-api-deployment.yaml`' }, condition: 'DEPLOYMENT_EXISTS:payment-api' },
-          { id: '2', instruction: { en: 'Expose the payment service to the network: `kubectl apply -f payment-api-service.yaml`', it: 'Esponi il servizio payment in rete: `kubectl apply -f payment-api-service.yaml`' }, condition: 'SERVICE_EXISTS:payment-api-svc' },
-          { id: '3', instruction: { en: 'Scale the deployment to handle load: `kubectl scale deployment/payment-api --replicas=3`', it: 'Scala il deployment per gestire il carico: `kubectl scale deployment/payment-api --replicas=3`' }, condition: 'REPLICAS:payment-api:3' },
-          { id: '4', instruction: { en: 'Verify that 3 replicas are running: `kubectl get pods`', it: 'Verifica che ci siano 3 pod attivi nel cluster: `kubectl get pods`' }, condition: 'PODS_RUNNING:3' }
+          {
+            id: '1',
+            instruction: { en: 'Deploy the payment microservice manifest: `kubectl apply -f payment-api-deployment.yaml`', it: 'Distribuisci il manifest del microservizio payment: `kubectl apply -f payment-api-deployment.yaml`' },
+            condition: 'DEPLOYMENT_EXISTS:payment-api',
+            hints: [
+              { en: 'Use the `kubectl apply -f` command specifying the deployment manifest file.', it: 'Usa il comando `kubectl apply -f` specificando il file manifesto del deployment.' },
+              { en: 'The file in the current directory is named `payment-api-deployment.yaml`.', it: 'Il file presente nella cartella corrente si chiama `payment-api-deployment.yaml`.' },
+              { en: 'Run: `kubectl apply -f payment-api-deployment.yaml`', it: 'Esegui: `kubectl apply -f payment-api-deployment.yaml`' }
+            ]
+          },
+          {
+            id: '2',
+            instruction: { en: 'Expose the payment service to the network: `kubectl apply -f payment-api-service.yaml`', it: 'Esponi il servizio payment in rete: `kubectl apply -f payment-api-service.yaml`' },
+            condition: 'SERVICE_EXISTS:payment-api-svc',
+            hints: [
+              { en: 'Apply the network service manifest using `kubectl apply -f`.', it: 'Applica il manifesto del servizio di rete usando `kubectl apply -f`.' },
+              { en: 'The service file in the directory is named `payment-api-service.yaml`.', it: 'Il file del servizio nella cartella si chiama `payment-api-service.yaml`.' },
+              { en: 'Run: `kubectl apply -f payment-api-service.yaml`', it: 'Esegui: `kubectl apply -f payment-api-service.yaml`' }
+            ]
+          },
+          {
+            id: '3',
+            instruction: { en: 'Scale the deployment to handle load: `kubectl scale deployment/payment-api --replicas=3`', it: 'Scala il deployment per gestire il carico: `kubectl scale deployment/payment-api --replicas=3`' },
+            condition: 'REPLICAS:payment-api:3',
+            hints: [
+              { en: 'Use the `kubectl scale` command to change replica counts dynamically.', it: 'Usa il comando `kubectl scale` per modificare dinamicamente il numero di repliche.' },
+              { en: 'Specify `deployment/payment-api` with the `--replicas=3` flag.', it: 'Specifica `deployment/payment-api` con il flag `--replicas=3`.' },
+              { en: 'Run: `kubectl scale deployment/payment-api --replicas=3`', it: 'Esegui: `kubectl scale deployment/payment-api --replicas=3`' }
+            ]
+          },
+          {
+            id: '4',
+            instruction: { en: 'Verify that 3 replicas are running: `kubectl get pods`', it: 'Verifica che ci siano 3 pod attivi nel cluster: `kubectl get pods`' },
+            condition: 'PODS_RUNNING:3',
+            hints: [
+              { en: 'Use `kubectl get` to list all running workloads in the cluster.', it: 'Usa `kubectl get` per elencare tutti i carichi di lavoro in esecuzione nel cluster.' },
+              { en: 'Specify `pods` as the resource type.', it: 'Specifica `pods` come tipo di risorsa.' },
+              { en: 'Run: `kubectl get pods`', it: 'Esegui: `kubectl get pods`' }
+            ]
+          }
         ]
       }
     },

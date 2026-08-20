@@ -157,7 +157,7 @@ export interface K8sState {
 
 export interface K8sGameData {
   startState: K8sState;
-  tasks: { id: string, instruction: LocalizedString, condition: string, completed?: boolean }[];
+  tasks: { id: string, instruction: LocalizedString, condition: string, hints?: LocalizedString[], completed?: boolean }[];
 }
 
 
