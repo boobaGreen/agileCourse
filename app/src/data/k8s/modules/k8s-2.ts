@@ -31,15 +31,10 @@ export const k8s2: Module = {
       content: { en: 'Worker Nodes are the machines that actually run your application containers.\n\n- **Kubelet**: The captain of the worker node. It listens to the API Server and makes sure containers are running healthy.\n- **Kube-Proxy**: Maintains network rules, allowing communication to and from containers.\n- **Container Runtime**: The actual engine pulling images and running them (like containerd or Docker).', it: 'I Worker Node sono le macchine che eseguono effettivamente i container della tua applicazione.\n\n- **Kubelet**: Il capitano del nodo worker. Ascolta l\'API Server e si assicura che i container funzionino correttamente.\n- **Kube-Proxy**: Gestisce le regole di rete, permettendo la comunicazione da e verso i container.\n- **Container Runtime**: Il motore reale che scarica le immagini e le esegue (come containerd o Docker).' }
     },
     {
-      type: 'flowchart',
-      content: { en: '⚡ **How a Pod is Born: Request Lifecycle**', it: '⚡ **Come nasce un Pod: Ciclo di vita della richiesta**' },
-      diagramSteps: [
-        { label: { en: '1. Developer\n(kubectl apply)', it: '1. Sviluppatore\n(kubectl apply)' }, icon: '👨‍💻', color: '#118ab2' },
-        { label: { en: '2. API Server\n(Validates & Stores in etcd)', it: '2. API Server\n(Valida e Salva in etcd)' }, icon: '🧠', color: '#ffb703' },
-        { label: { en: '3. Scheduler\n(Assigns Best Worker)', it: '3. Scheduler\n(Assegna Nodo Migliore)' }, icon: '⚙️', color: '#a78bfa' },
-        { label: { en: '4. Kubelet\n(Receives Order)', it: '4. Kubelet\n(Riceve Ordine)' }, icon: '💪', color: '#06d6a0' },
-        { label: { en: '5. Container Runtime\n(Pod is Live! 🚀)', it: '5. Container Runtime\n(Pod Attivo! 🚀)' }, icon: '🐳', color: '#06d6a0' }
-      ]
+      type: 'animation',
+      title: { en: '☸️ Interactive Kubernetes Architecture Blueprint', it: '☸️ Blueprint Interattivo dell\'Architettura Kubernetes' },
+      content: { en: 'k8s-cluster', it: 'k8s-cluster' },
+      animationType: 'k8s-cluster'
     },
     {
       type: 'concept',

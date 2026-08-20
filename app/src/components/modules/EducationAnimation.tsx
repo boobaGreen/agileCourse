@@ -1,7 +1,139 @@
 import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Sparkles, CheckCircle, Trash2, Lock, Edit2, Activity, AlertCircle, Plus, Check, MousePointerClick } from 'lucide-react'
+import { 
+  Sparkles, CheckCircle, Trash2, Lock, Edit2, Activity, AlertCircle, Plus, Check, MousePointerClick,
+  Server, Cpu, Database, Network, Play, RefreshCw, Zap, Shield, Layers, Terminal, Box, Radio
+} from 'lucide-react'
 import { useLanguage } from '../../contexts/LanguageContext'
+
+const k8sArchDict = {
+  en: {
+    title: 'Interactive Kubernetes Cluster Architecture',
+    subtitle: 'Click any component to inspect its role, ports, and internal mechanics.',
+    simBtn: '🚀 Simulate kubectl apply',
+    simulating: 'Simulating Request Flow...',
+    modeAll: 'Full Cluster',
+    modeMaster: 'Control Plane (Brain)',
+    modeWorker: 'Worker Node (Muscle)',
+    controlPlaneTitle: 'Control Plane (Master Node)',
+    workerNodeTitle: 'Worker Node (Compute Node)',
+    cliTitle: 'Developer Workstation',
+    clickPrompt: 'Click on any component above to view its specs',
+    components: {
+      api: {
+        name: 'API Server (kube-apiserver)',
+        role: 'The Front Door & Communication Hub',
+        port: '6443 / TCP',
+        desc: 'The REST API gateway for all cluster management. Every tool (kubectl, dashboard, worker nodes) talks exclusively to the API Server. It authenticates, validates, and stores data in etcd.'
+      },
+      etcd: {
+        name: 'etcd Key-Value Store',
+        role: 'Cluster Memory & Truth Database',
+        port: '2379 / TCP',
+        desc: 'Consistent, highly-available key-value store holding the complete state of the cluster (configs, secrets, pod states). If etcd data is lost, the cluster loses all state.'
+      },
+      scheduler: {
+        name: 'Scheduler (kube-scheduler)',
+        role: 'Workload Placement Engine',
+        port: '10259 / TCP',
+        desc: 'Watches for newly created Pods with no assigned node. It measures CPU, memory, taints, and affinity to assign the Pod to the healthiest available Worker Node.'
+      },
+      controller: {
+        name: 'Controller Manager (kube-controller-manager)',
+        role: 'Continuous Self-Healing Loops',
+        port: '10257 / TCP',
+        desc: 'Runs continuous control loops (NodeController, ReplicaSetController). It compares actual state to desired state, automatically spinning up new pods if nodes fail.'
+      },
+      kubelet: {
+        name: 'Kubelet',
+        role: 'Node Captain & Worker Agent',
+        port: '10250 / TCP',
+        desc: 'Primary node agent running on every Worker Node. It listens to PodSpecs from the API Server and instructs the Container Runtime to create, start, or stop containers.'
+      },
+      proxy: {
+        name: 'Kube-Proxy',
+        role: 'Network Proxy & Load Balancer',
+        port: '10256 / TCP',
+        desc: 'Maintains network IP routing rules on each node (via iptables/IPVS). Enables Pod-to-Pod communication and balances external traffic across replicas.'
+      },
+      runtime: {
+        name: 'Container Runtime (containerd / CRI-O)',
+        role: 'Low-Level Engine',
+        port: 'Local Socket',
+        desc: 'The underlying container execution engine responsible for pulling container images from registries and running isolated container processes inside Pods.'
+      },
+      pods: {
+        name: 'Pods & Containers',
+        role: 'Application Workloads',
+        port: 'Dynamic App Ports (80, 8080, etc.)',
+        desc: 'The smallest deployable unit in Kubernetes. Wraps one or more tightly coupled containers sharing network IP and storage volumes.'
+      }
+    }
+  },
+  it: {
+    title: 'Architettura Interattiva del Cluster Kubernetes',
+    subtitle: 'Clicca su un componente per ispezionarne ruolo, porte e funzionamento interno.',
+    simBtn: '🚀 Simula kubectl apply',
+    simulating: 'Simulazione Flusso in corso...',
+    modeAll: 'Cluster Completo',
+    modeMaster: 'Control Plane (Cervello)',
+    modeWorker: 'Worker Node (Muscoli)',
+    controlPlaneTitle: 'Control Plane (Nodo Master)',
+    workerNodeTitle: 'Worker Node (Nodo di Calcolo)',
+    cliTitle: 'Postazione Sviluppatore',
+    clickPrompt: 'Clicca su uno dei componenti sopra per vederne i dettagli',
+    components: {
+      api: {
+        name: 'API Server (kube-apiserver)',
+        role: 'Porta d\'Ingresso & Hub di Comunicazione',
+        port: '6443 / TCP',
+        desc: 'Gateway REST per l\'intera gestione del cluster. Qualsiasi strumento (kubectl, dashboard, nodi worker) comunica unicamente con l\'API Server. Autentica, valida e memorizza i dati in etcd.'
+      },
+      etcd: {
+        name: 'etcd Key-Value Store',
+        role: 'Memoria del Cluster & Stato di Verità',
+        port: '2379 / TCP',
+        desc: 'Database chiave-valore ad altissima disponibilità che memorizza l\'intero stato del cluster (configurazioni, secret, stati dei pod). Se etcd viene perso, il cluster dimentica tutto.'
+      },
+      scheduler: {
+        name: 'Scheduler (kube-scheduler)',
+        role: 'Motore di Assegnazione Carichi',
+        port: '10259 / TCP',
+        desc: 'Monitora i nuovi Pod non ancora assegnati. Analizza RAM, CPU, tolleranze e vincoli per assegnare il Pod al nodo Worker più idoneo.'
+      },
+      controller: {
+        name: 'Controller Manager (kube-controller-manager)',
+        role: 'Cicli di Auto-Riparazione Continua',
+        port: '10257 / TCP',
+        desc: 'Esegue i cicli di controllo (NodeController, ReplicaSetController). Confronta costantemente lo stato reale con lo stato desiderato, riavviando pod se i nodi falliscono.'
+      },
+      kubelet: {
+        name: 'Kubelet',
+        role: 'Capitano del Nodo & Agente Worker',
+        port: '10250 / TCP',
+        desc: 'Agente principale in esecuzione su ogni nodo Worker. Ascolta le specifiche del Pod dall\'API Server e comanda al Container Runtime di avviare o arrestare i container.'
+      },
+      proxy: {
+        name: 'Kube-Proxy',
+        role: 'Proxy di Rete & Bilanciatore',
+        port: '10256 / TCP',
+        desc: 'Gestisce le regole di rete IP su ciascun nodo (tramite iptables/IPVS). Permette la comunicazione tra Pod e bilancia il traffico di rete tra le repliche.'
+      },
+      runtime: {
+        name: 'Container Runtime (containerd / CRI-O)',
+        role: 'Motore Esecutivo di Basso Livello',
+        port: 'Socket Locale',
+        desc: 'Il motore di esecuzione dei container responsabile di scaricare le immagini dai registri e avviare i processi isolati all\'interno dei Pod.'
+      },
+      pods: {
+        name: 'Pod & Container',
+        role: 'Carico di Lavoro Applicativo',
+        port: 'Porte App Dinamiche (80, 8080, ecc.)',
+        desc: 'L\'unità minima distribuibile in Kubernetes. Avvolge uno o più container strettamente collegati che condividono indirizzo IP e volumi di storage.'
+      }
+    }
+  }
+}
 
 const pizzaDict: Record<'en' | 'it', Record<string, string>> = {
   en: {
@@ -820,6 +952,371 @@ export function EducationAnimation({ type }: { type: string }) {
   }
 
 
+
+  if (type.toLowerCase().includes('k8s') || type.toLowerCase().includes('cluster')) {
+    const isIt = language === 'it'
+    const [selectedComp, setSelectedComp] = useState<string | null>('api')
+    const [activeFilter, setActiveFilter] = useState<'all' | 'master' | 'worker'>('all')
+    const [isSimulating, setIsSimulating] = useState(false)
+    const [simStep, setSimStep] = useState<number>(0)
+
+    const dict = k8sArchDict[isIt ? 'it' : 'en']
+
+    const runSimulation = () => {
+      if (isSimulating) return
+      setIsSimulating(true)
+      setSimStep(1)
+      setSelectedComp('api')
+
+      const sequence = [
+        { step: 1, comp: 'api', delay: 800 },
+        { step: 2, comp: 'etcd', delay: 1800 },
+        { step: 3, comp: 'scheduler', delay: 2800 },
+        { step: 4, comp: 'kubelet', delay: 3800 },
+        { step: 5, comp: 'runtime', delay: 4800 },
+        { step: 6, comp: 'pods', delay: 5800 }
+      ]
+
+      sequence.forEach(({ step, comp, delay }) => {
+        setTimeout(() => {
+          setSimStep(step)
+          setSelectedComp(comp)
+          if (step === 6) {
+            setTimeout(() => {
+              setIsSimulating(false)
+              setSimStep(0)
+            }, 2000)
+          }
+        }, delay)
+      })
+    }
+
+    const currentDetails = selectedComp ? dict.components[selectedComp as keyof typeof dict.components] : null
+
+    return (
+      <div className="w-full flex flex-col gap-6 select-none">
+        {/* Header Controls */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-white/10 pb-4">
+          <div className="text-left">
+            <h4 className="text-sm font-black text-white flex items-center gap-2">
+              <Server size={16} className="text-purple-400" />
+              {dict.title}
+            </h4>
+            <p className="text-[10px] text-muted">{dict.subtitle}</p>
+          </div>
+
+          <div className="flex items-center gap-2 flex-wrap justify-end">
+            <div className="flex bg-black/40 border border-white/10 rounded-xl p-1 shrink-0">
+              <button
+                onClick={() => setActiveFilter('all')}
+                className={`px-3 py-1.5 rounded-lg text-[10px] fw-black transition-all cursor-pointer ${
+                  activeFilter === 'all' ? 'bg-primary text-white shadow' : 'text-muted hover:text-white'
+                }`}
+              >
+                {dict.modeAll}
+              </button>
+              <button
+                onClick={() => setActiveFilter('master')}
+                className={`px-3 py-1.5 rounded-lg text-[10px] fw-black transition-all cursor-pointer ${
+                  activeFilter === 'master' ? 'bg-purple-500 text-white shadow' : 'text-muted hover:text-white'
+                }`}
+              >
+                {dict.modeMaster}
+              </button>
+              <button
+                onClick={() => setActiveFilter('worker')}
+                className={`px-3 py-1.5 rounded-lg text-[10px] fw-black transition-all cursor-pointer ${
+                  activeFilter === 'worker' ? 'bg-emerald-500 text-white shadow' : 'text-muted hover:text-white'
+                }`}
+              >
+                {dict.modeWorker}
+              </button>
+            </div>
+
+            <button
+              onClick={runSimulation}
+              disabled={isSimulating}
+              className={`px-4 py-2 rounded-xl text-xs fw-black transition-all flex items-center gap-1.5 cursor-pointer ${
+                isSimulating
+                  ? 'bg-amber-500/20 border border-amber-500/40 text-amber-300 animate-pulse'
+                  : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-lg shadow-purple-500/20 hover:scale-105 active:scale-95'
+              }`}
+            >
+              <Play size={12} className={isSimulating ? 'animate-spin' : ''} />
+              {isSimulating ? dict.simulating : dict.simBtn}
+            </button>
+          </div>
+        </div>
+
+        {/* Interactive Diagram Area */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          
+          {/* Main Visual Topology (8 Cols) */}
+          <div className="lg:col-span-8 flex flex-col gap-4">
+            
+            {/* Top Bar: Developer / CLI */}
+            <motion.div
+              onClick={() => setSelectedComp('api')}
+              animate={simStep === 1 ? { scale: [1, 1.02, 1] } : {}}
+              className={`bg-surface2/60 border rounded-xl p-3 flex items-center justify-between cursor-pointer transition-all ${
+                simStep === 1 ? 'border-blue-400 bg-blue-500/10 shadow-[0_0_15px_rgba(59,130,246,0.3)]' : 'border-white/10 hover:border-white/20'
+              }`}
+            >
+              <div className="flex items-center gap-2 text-left">
+                <Terminal size={16} className="text-blue-400" />
+                <div>
+                  <div className="text-xs fw-black text-white">{dict.cliTitle}</div>
+                  <div className="text-[9px] text-muted mono">kubectl apply -f deployment.yaml</div>
+                </div>
+              </div>
+              {simStep === 1 && (
+                <span className="text-[9px] px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-mono animate-pulse">
+                  1. Sending HTTP REST Request →
+                </span>
+              )}
+            </motion.div>
+
+            {/* Architecture Grid: Control Plane vs Worker */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              
+              {/* CONTROL PLANE (Master Node) */}
+              <div className={`border rounded-2xl p-4 flex flex-col gap-3 relative transition-all ${
+                activeFilter === 'worker' ? 'opacity-40 grayscale-[50%]' : ''
+              } bg-purple-950/10 border-purple-500/30 shadow-[0_0_20px_rgba(168,85,247,0.05)]`}>
+                <div className="flex items-center justify-between border-b border-purple-500/20 pb-2">
+                  <div className="flex items-center gap-1.5 text-purple-300 fw-black text-xs">
+                    <Cpu size={14} />
+                    {dict.controlPlaneTitle}
+                  </div>
+                  <span className="text-[8px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full font-mono">The Brain 🧠</span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  {/* API Server */}
+                  <motion.button
+                    onClick={() => setSelectedComp('api')}
+                    animate={simStep === 1 || simStep === 2 ? { scale: [1, 1.05, 1] } : {}}
+                    className={`p-3 rounded-xl border text-left flex flex-col gap-1 transition-all cursor-pointer ${
+                      selectedComp === 'api'
+                        ? 'bg-purple-500/30 border-purple-400 text-white shadow-lg shadow-purple-500/20 ring-1 ring-purple-400'
+                        : simStep === 1 || simStep === 2
+                        ? 'bg-amber-500/30 border-amber-400 text-white animate-pulse'
+                        : 'bg-purple-900/20 border-purple-500/30 text-purple-200 hover:bg-purple-500/20'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <Zap size={14} className="text-amber-400" />
+                      <span className="text-[8px] opacity-60 mono">6443</span>
+                    </div>
+                    <div className="text-xs fw-bold">API Server</div>
+                    <div className="text-[8px] opacity-70">kube-apiserver</div>
+                  </motion.button>
+
+                  {/* etcd */}
+                  <motion.button
+                    onClick={() => setSelectedComp('etcd')}
+                    animate={simStep === 2 ? { scale: [1, 1.05, 1] } : {}}
+                    className={`p-3 rounded-xl border text-left flex flex-col gap-1 transition-all cursor-pointer ${
+                      selectedComp === 'etcd'
+                        ? 'bg-purple-500/30 border-purple-400 text-white shadow-lg shadow-purple-500/20 ring-1 ring-purple-400'
+                        : simStep === 2
+                        ? 'bg-amber-500/30 border-amber-400 text-white animate-pulse'
+                        : 'bg-purple-900/20 border-purple-500/30 text-purple-200 hover:bg-purple-500/20'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <Database size={14} className="text-cyan-400" />
+                      <span className="text-[8px] opacity-60 mono">2379</span>
+                    </div>
+                    <div className="text-xs fw-bold">etcd Store</div>
+                    <div className="text-[8px] opacity-70">Key-Value DB</div>
+                  </motion.button>
+
+                  {/* Scheduler */}
+                  <motion.button
+                    onClick={() => setSelectedComp('scheduler')}
+                    animate={simStep === 3 ? { scale: [1, 1.05, 1] } : {}}
+                    className={`p-3 rounded-xl border text-left flex flex-col gap-1 transition-all cursor-pointer ${
+                      selectedComp === 'scheduler'
+                        ? 'bg-purple-500/30 border-purple-400 text-white shadow-lg shadow-purple-500/20 ring-1 ring-purple-400'
+                        : simStep === 3
+                        ? 'bg-amber-500/30 border-amber-400 text-white animate-pulse'
+                        : 'bg-purple-900/20 border-purple-500/30 text-purple-200 hover:bg-purple-500/20'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <RefreshCw size={14} className="text-purple-400" />
+                      <span className="text-[8px] opacity-60 mono">10259</span>
+                    </div>
+                    <div className="text-xs fw-bold">Scheduler</div>
+                    <div className="text-[8px] opacity-70">Node Placement</div>
+                  </motion.button>
+
+                  {/* Controller Manager */}
+                  <motion.button
+                    onClick={() => setSelectedComp('controller')}
+                    className={`p-3 rounded-xl border text-left flex flex-col gap-1 transition-all cursor-pointer ${
+                      selectedComp === 'controller'
+                        ? 'bg-purple-500/30 border-purple-400 text-white shadow-lg shadow-purple-500/20 ring-1 ring-purple-400'
+                        : 'bg-purple-900/20 border-purple-500/30 text-purple-200 hover:bg-purple-500/20'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <Activity size={14} className="text-emerald-400" />
+                      <span className="text-[8px] opacity-60 mono">10257</span>
+                    </div>
+                    <div className="text-xs fw-bold">Controller Mgr</div>
+                    <div className="text-[8px] opacity-70">Self-Healing Loops</div>
+                  </motion.button>
+                </div>
+              </div>
+
+              {/* WORKER NODE (Compute Node) */}
+              <div className={`border rounded-2xl p-4 flex flex-col gap-3 relative transition-all ${
+                activeFilter === 'master' ? 'opacity-40 grayscale-[50%]' : ''
+              } bg-emerald-950/10 border-emerald-500/30 shadow-[0_0_20px_rgba(16,185,129,0.05)]`}>
+                <div className="flex items-center justify-between border-b border-emerald-500/20 pb-2">
+                  <div className="flex items-center gap-1.5 text-emerald-300 fw-black text-xs">
+                    <Server size={14} />
+                    {dict.workerNodeTitle}
+                  </div>
+                  <span className="text-[8px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-mono">The Muscle 💪</span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  {/* Kubelet */}
+                  <motion.button
+                    onClick={() => setSelectedComp('kubelet')}
+                    animate={simStep === 4 ? { scale: [1, 1.05, 1] } : {}}
+                    className={`p-3 rounded-xl border text-left flex flex-col gap-1 transition-all cursor-pointer ${
+                      selectedComp === 'kubelet'
+                        ? 'bg-emerald-500/30 border-emerald-400 text-white shadow-lg shadow-emerald-500/20 ring-1 ring-emerald-400'
+                        : simStep === 4
+                        ? 'bg-amber-500/30 border-amber-400 text-white animate-pulse'
+                        : 'bg-emerald-900/20 border-emerald-500/30 text-emerald-200 hover:bg-emerald-500/20'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <Shield size={14} className="text-emerald-400" />
+                      <span className="text-[8px] opacity-60 mono">10250</span>
+                    </div>
+                    <div className="text-xs fw-bold">Kubelet</div>
+                    <div className="text-[8px] opacity-70">Node Captain</div>
+                  </motion.button>
+
+                  {/* Kube-Proxy */}
+                  <motion.button
+                    onClick={() => setSelectedComp('proxy')}
+                    className={`p-3 rounded-xl border text-left flex flex-col gap-1 transition-all cursor-pointer ${
+                      selectedComp === 'proxy'
+                        ? 'bg-emerald-500/30 border-emerald-400 text-white shadow-lg shadow-emerald-500/20 ring-1 ring-emerald-400'
+                        : 'bg-emerald-900/20 border-emerald-500/30 text-emerald-200 hover:bg-emerald-500/20'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <Network size={14} className="text-blue-400" />
+                      <span className="text-[8px] opacity-60 mono">10256</span>
+                    </div>
+                    <div className="text-xs fw-bold">Kube-Proxy</div>
+                    <div className="text-[8px] opacity-70">Net & LoadBalancer</div>
+                  </motion.button>
+                </div>
+
+                {/* Container Runtime & Pod Container */}
+                <div className="grid grid-cols-2 gap-2 mt-1">
+                  {/* Container Runtime */}
+                  <motion.button
+                    onClick={() => setSelectedComp('runtime')}
+                    animate={simStep === 5 ? { scale: [1, 1.05, 1] } : {}}
+                    className={`p-3 rounded-xl border text-left flex flex-col gap-1 transition-all cursor-pointer ${
+                      selectedComp === 'runtime'
+                        ? 'bg-emerald-500/30 border-emerald-400 text-white shadow-lg shadow-emerald-500/20 ring-1 ring-emerald-400'
+                        : simStep === 5
+                        ? 'bg-amber-500/30 border-amber-400 text-white animate-pulse'
+                        : 'bg-emerald-900/20 border-emerald-500/30 text-emerald-200 hover:bg-emerald-500/20'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <Layers size={14} className="text-cyan-400" />
+                      <span className="text-[8px] opacity-60 mono">CRI</span>
+                    </div>
+                    <div className="text-xs fw-bold">Container Runtime</div>
+                    <div className="text-[8px] opacity-70">containerd / CRI-O</div>
+                  </motion.button>
+
+                  {/* Pod Workload */}
+                  <motion.button
+                    onClick={() => setSelectedComp('pods')}
+                    animate={simStep === 6 ? { scale: [1, 1.1, 1] } : {}}
+                    className={`p-3 rounded-xl border text-left flex flex-col gap-1 transition-all cursor-pointer ${
+                      selectedComp === 'pods'
+                        ? 'bg-emerald-500/30 border-emerald-400 text-white shadow-lg shadow-emerald-500/20 ring-1 ring-emerald-400'
+                        : simStep === 6
+                        ? 'bg-emerald-400 border-white text-black font-black animate-bounce shadow-xl'
+                        : 'bg-emerald-500/10 border-emerald-500/40 text-emerald-200 hover:bg-emerald-500/20'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <Box size={14} className="text-green-400" />
+                      <span className="text-[8px] opacity-60 mono">POD</span>
+                    </div>
+                    <div className="text-xs fw-bold">Pods & Containers</div>
+                    <div className="text-[8px] opacity-70">Active Workloads</div>
+                  </motion.button>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+          {/* Side Panel: Component Inspection (4 Cols) */}
+          <div className="lg:col-span-4 bg-surface border border-white/10 rounded-2xl p-5 shadow-xl flex flex-col justify-between text-left relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 via-indigo-500 to-emerald-500" />
+
+            {currentDetails ? (
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                  <span className="px-2 py-0.5 rounded text-[8px] fw-black uppercase tracking-widest bg-white/10 text-white border border-white/10">
+                    Component Spec
+                  </span>
+                  <span className="text-[9px] text-muted mono bg-black/40 px-2 py-0.5 rounded border border-white/5">
+                    {currentDetails.port}
+                  </span>
+                </div>
+
+                <div>
+                  <h3 className="text-base fw-black text-white leading-tight mb-1">{currentDetails.name}</h3>
+                  <div className="text-xs text-primary fw-bold mb-3">{currentDetails.role}</div>
+                  <p className="text-xs text-sub leading-relaxed">{currentDetails.desc}</p>
+                </div>
+              </div>
+            ) : (
+              <div className="flex-1 flex flex-col items-center justify-center text-center p-6 text-muted">
+                <Radio size={24} className="mb-2 opacity-30 animate-pulse" />
+                <p className="text-xs">{dict.clickPrompt}</p>
+              </div>
+            )}
+
+            {isSimulating && (
+              <div className="mt-4 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-medium flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+                <span>
+                  {simStep === 1 && 'Step 1: kubectl sends spec to API Server...'}
+                  {simStep === 2 && 'Step 2: API Server validates & persists in etcd...'}
+                  {simStep === 3 && 'Step 3: Scheduler selects optimal Worker Node...'}
+                  {simStep === 4 && 'Step 4: Kubelet receives Pod spec on Worker...'}
+                  {simStep === 5 && 'Step 5: Container Runtime pulls image...'}
+                  {simStep === 6 && 'Step 6: Pod is LIVE and serving traffic! 🚀'}
+                </span>
+              </div>
+            )}
+          </div>
+
+        </div>
+      </div>
+    )
+  }
 
   // Fallback
   return null
