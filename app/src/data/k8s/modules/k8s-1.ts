@@ -35,26 +35,36 @@ export const k8s1: Module = {
       content: { en: 'Kubernetes does not run containers itself. It manages the tools (like Docker or containerd) that do.\n\nImagine a symphony orchestra: the musicians (containers) make the actual sound, but the **Conductor** (Kubernetes) tells them when to play, how loud to play, and replaces them if they fall asleep.', it: 'Kubernetes non esegue i container direttamente. Gestisce gli strumenti (come Docker o containerd) che lo fanno.\n\nImmagina un\'orchestra sinfonica: i musicisti (container) producono il suono reale, ma il **Direttore** (Kubernetes) dice loro quando suonare, quanto forte suonare e li sostituisce se si addormentano.' }
     },
     {
-      type: 'flowchart',
-      content: { en: '**Life Without vs With Kubernetes**', it: '**Vita con e senza Kubernetes**' },
-      diagramSteps: [
-        { label: { en: 'Server Dies\n(Plain Docker)', it: 'Il server muore\n(Solo Docker)' }, icon: '🔥', color: '#ff4b4b' },
-        { label: { en: 'Site Goes Down!\n(Downtime)', it: 'Il sito va giù!\n(Downtime)' }, icon: '💀', color: '#ff4b4b' },
-        { label: { en: 'Server Dies\n(Kubernetes)', it: 'Il server muore\n(Kubernetes)' }, icon: '🔥', color: '#ffb703' },
-        { label: { en: 'Auto-Restarts\non New Server', it: 'Riavvio automatico\nsu nuovo server' }, icon: '✨', color: '#06d6a0' }
-      ]
-    },
-    {
       type: 'table',
-      title: { en: '⚖️ Core Features of K8s', it: '⚖️ Caratteristiche principali di K8s' },
-      content: { en: 'Why does every modern enterprise use it?', it: 'Perché ogni azienda moderna lo usa?' },
+      title: { en: '⚡ Life Without vs With Kubernetes', it: '⚡ Vita Senza vs Con Kubernetes' },
+      content: { en: 'Here is what changes when you introduce Kubernetes into your infrastructure:', it: 'Ecco cosa cambia concretamente quando introduci Kubernetes nella tua infrastruttura:' },
       tableData: {
-        headers: [{ en: 'Feature', it: 'Funzionalità' }, { en: 'What it means practically', it: 'Cosa significa in pratica' }],
+        headers: [
+          { en: 'Scenario', it: 'Scenario' },
+          { en: '❌ Plain Docker (Without K8s)', it: '❌ Solo Docker (Senza K8s)' },
+          { en: '✅ With Kubernetes (K8s)', it: '✅ Con Kubernetes (K8s)' }
+        ],
         rows: [
-          [{ en: '**Self-healing**', it: '**Self-healing**' }, { en: 'Restarts containers that fail, replaces containers when nodes die.', it: 'Riavvia i container che falliscono, sostituisce i container quando i nodi muoiono.' }],
-          [{ en: '**Auto-scaling**', it: '**Auto-scaling**' }, { en: 'Spins up more containers during Black Friday traffic, shuts them down at night.', it: 'Avvia più container durante il traffico del Black Friday, li spegne di notte.' }],
-          [{ en: '**Load Balancing**', it: '**Load Balancing**' }, { en: 'Distributes incoming network traffic evenly across your containers.', it: 'Distribuisce il traffico di rete in entrata equamente tra i tuoi container.' }],
-          [{ en: '**Rollouts & Rollbacks**', it: '**Rollouts & Rollbacks**' }, { en: 'Updates your app bit by bit, pausing and reverting if a bug is detected!', it: 'Aggiorna la tua app un po\' alla volta, mettendo in pausa e tornando indietro se viene rilevato un bug!' }]
+          [
+            { en: '🔥 **Server Hardware Fails**', it: '🔥 **Crollo di un Server**' },
+            { en: 'Site goes down completely! Requires emergency manual SSH intervention at 3 AM.', it: 'Il sito va giù! Richiede un intervento manuale di emergenza via SSH alle 3 di notte.' },
+            { en: 'Self-Healing: K8s detects dead server and automatically restarts containers on healthy nodes in seconds.', it: 'Self-Healing: K8s rileva il server morto e riavvia automaticamente i container su nodi sani in pochi secondi.' }
+          ],
+          [
+            { en: '📈 **Traffic Spike (Black Friday)**', it: '📈 **Picco di Traffico**' },
+            { en: 'Single server freezes or crashes from Out-Of-Memory (OOM). Users see 504 Gateway errors.', it: 'Il server si blocca per memoria esaurita (OOM). Gli utenti vedono errori 504 Gateway.' },
+            { en: 'Auto-Scaling: K8s dynamically spins up dozens of new replica containers to handle load.', it: 'Auto-Scaling: K8s avvia dinamicamente decine di nuove repliche per gestire il carico.' }
+          ],
+          [
+            { en: '🚀 **Deploying New Version**', it: '🚀 **Aggiornamento App**' },
+            { en: 'Downtime required! Must stop old containers, pull new image, and start new containers.', it: 'Downtime obbligatorio! Bisogna fermare i vecchi container, scaricare la nuova immagine e riavviarli.' },
+            { en: 'Zero-Downtime Rollout: K8s replaces containers one by one while keeping live traffic flowing.', it: 'Zero-Downtime Rollout: K8s sostituisce i container uno alla volta mantenendo attivo il traffico reale.' }
+          ],
+          [
+            { en: '⚖️ **Traffic Distribution**', it: '⚖️ **Bilanciamento Traffico**' },
+            { en: 'Requires configuring complex external load balancers and proxy configs manually.', it: 'Richiede di configurare a mano bilanciatori di carico esterni e proxy complessi.' },
+            { en: 'Built-in Load Balancing: K8s automatically routes traffic evenly across healthy pods.', it: 'Load Balancing Integrato: K8s distribuisce automaticamente il traffico tra i pod sani.' }
+          ]
         ]
       }
     }
