@@ -9,7 +9,7 @@ export const k8s1: Module = {
   emoji: '🚢',
   duration: '15 min',
   xpReward: 100,
-  funFact: { en: 'Kubernetes (K8s) comes from Greek "kybernitis" (helmsman). Google originally codenamed it "Project Seven of Nine" after the Star Trek Borg character — which is why the logo helm has 7 spokes!', it: 'Kubernetes (K8s) deriva dal greco "kybernitis" (timoniere). Inizialmente Google lo chiamò "Project Seven of Nine" in omaggio a Star Trek — ed è per questo che il timone del logo ha 7 raggi!' },
+  funFact: { en: 'Did you know Kubernetes was born inside Google under a secret sci-fi codename?', it: 'Lo sapevi che Kubernetes è nato in Google con un nome in codice segreto preso da una famosa serie di fantascienza?' },
   sections: [
     {
       type: 'intro',
