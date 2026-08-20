@@ -9,11 +9,19 @@ export const k8s1: Module = {
   emoji: '🚢',
   duration: '15 min',
   xpReward: 100,
-  funFact: { en: 'Kubernetes is often abbreviated as "K8s" because there are exactly 8 letters between the "K" and the "s" in "Kubernetes".', it: 'Kubernetes è spesso abbreviato in "K8s" perché ci sono esattamente 8 lettere tra la "K" e la "s" nella parola "Kubernetes".' },
+  funFact: { en: 'Kubernetes (K8s) comes from Greek "kybernitis" (helmsman). Google originally codenamed it "Project Seven of Nine" after the Star Trek Borg character — which is why the logo helm has 7 spokes!', it: 'Kubernetes (K8s) deriva dal greco "kybernitis" (timoniere). Inizialmente Google lo chiamò "Project Seven of Nine" in omaggio a Star Trek — ed è per questo che il timone del logo ha 7 raggi!' },
   sections: [
     {
       type: 'intro',
       content: { en: 'Docker is fantastic for running a few containers. But what happens when you have millions of users, and you need to run 5,000 containers across 50 different servers? How do they talk to each other? What if a server catches fire? You need an orchestrator.', it: 'Docker è fantastico per eseguire pochi container. Ma cosa succede quando hai milioni di utenti e devi eseguire 5.000 container su 50 server diversi? Come comunicano tra loro? E se un server prende fuoco? Hai bisogno di un orchestratore.' }
+    },
+    {
+      type: 'concept',
+      title: { en: '🖖 The Origin Story: From Star Trek to K8s', it: '🖖 L\'Origine del Nome: Da Star Trek a K8s' },
+      content: {
+        en: 'Ever wondered why Kubernetes is called **K8s** and why its logo is a helm with **7 spokes**?\n\n• **Greek Origin**: *Kubernetes* (κυβερνήτης) is Greek for **"helmsman"** or **"pilot"**—the person steering the container ship. (It is also the root for *cybernetics*!)\n• **Google & Star Trek**: Internally at Google, the precursor system was named **Borg**. When Google built the open-source version, they codenamed it **"Project Seven of Nine"** after the friendly Borg character in *Star Trek: Voyager*.\n• **The 7-Spoke Wheel**: To honor Project Seven, the original Kubernetes logo helm was designed with **7 spokes**!\n• **Why K8s?**: It\'s a numeronym—"K" followed by **8 letters** ("ubernete"), ending with "s".',
+        it: 'Ti sei mai chiesto perché Kubernetes viene abbreviato in **K8s** e perché il suo logo è un timone con **7 raggi**?\n\n• **Origine Greca**: *Kubernetes* (κυβερνήτης) significa **"timoniere"** o **"pilota di nave"** in greco antico—colui che guida la nave carica di container. (È anche la radice della parola *cibernetica*!)\n• **Google & Star Trek**: Il sistema interno originale di Google si chiamava **Borg**. Quando Google ne creò la versione open-source, il progetto ebbe il nome in codice **"Project Seven of Nine"**, in omaggio al celebre personaggio Borg "umanizzato" di *Star Trek: Voyager*.\n• **Il timone a 7 raggi**: Per rendere omaggio a Project Seven, il timone del logo di Kubernetes fu disegnato con esattamente **7 raggi**!\n• **Perché K8s?**: È un numeronimo: la lettera "K", seguita da **8 lettere** ("ubernete"), e la "s" finale.'
+      }
     },
     {
       type: 'video',
