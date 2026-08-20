@@ -108,8 +108,17 @@ export const k8s3: Module = {
     },
     {
       type: 'tip',
-      title: { en: '💡 Wait, why did it come back?', it: '💡 Aspetta, perché è tornato?' },
-      content: { en: 'Pods are mortal. When you deleted the Pod, Kubernetes immediately created a BRAND NEW one (`z9rtc`) to replace it. This is because Pods are managed by higher-level controllers (like Deployments) which enforce a desired state. Never make naked Pods!', it: 'I Pod sono mortali. Quando hai eliminato il Pod, Kubernetes ne ha creato immediatamente uno NUOVO DI ZECCA (`z9rtc`) per sostituirlo. Questo perché i Pod sono gestiti da controller di livello superiore (come i Deployment) che impongono uno stato desiderato. Mai creare Pod nudi!' }
+      title: { en: '💡 The Magic of Kubernetes: Desired State & Self-Healing', it: '💡 Il Segreto di Kubernetes: Stato Desiderato & Auto-Riparazione' },
+      content: {
+        en: 'Why do we deploy applications using Deployments instead of creating individual Pods directly?\n\n' +
+            '• **Mortal Pods**: Individual ("naked") Pods have no protection. If a server crashes or a Pod fails, it is lost forever.\n' +
+            '• **The Deployment Controller**: When you apply a Deployment (like `payment-api`) with 3 replicas, you define a **Desired State**.\n' +
+            '• **Automatic Self-Healing**: If a Pod dies (or if you manually delete one using `kubectl delete pod`), the Control Plane immediately detects the gap and creates a BRAND NEW replacement Pod automatically to guarantee your target count of 3!',
+        it: 'Perché distribuiamo le applicazioni usando i **Deployment** invece di creare singoli Pod a mano?\n\n' +
+            '• **Pod Mortali**: I singoli Pod "nudi" creati manualmente non hanno protezione. Se il server si spegne o il container va in crash, quel Pod è perso per sempre.\n' +
+            '• **Il Ruolo del Deployment**: Quando crei un Deployment (come `payment-api`) e imposti 3 repliche, dichiari uno **Stato Desiderato** (Desired State).\n' +
+            '• **Auto-Riparazione Automatica**: Se un Pod si rompe (o se provi ad eliminarne uno con `kubectl delete pod`), il Control Plane lo rileva in pochi millisecondi e **crea automaticamente un Pod nuovo di zecca** per mantenere la quota di 3!'
+      }
     }
   ],
   quiz: [
