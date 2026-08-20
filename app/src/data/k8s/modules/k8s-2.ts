@@ -54,6 +54,7 @@ export const k8s2: Module = {
           { id: 'api', label: { en: 'API Server', it: 'API Server' }, categoryId: 'master' },
           { id: 'etcd', label: { en: 'etcd Database', it: 'Database etcd' }, categoryId: 'master' },
           { id: 'scheduler', label: { en: 'Scheduler', it: 'Scheduler' }, categoryId: 'master' },
+          { id: 'controller-manager', label: { en: 'Controller Manager', it: 'Controller Manager' }, categoryId: 'master' },
           { id: 'kubelet', label: { en: 'Kubelet', it: 'Kubelet' }, categoryId: 'worker' },
           { id: 'proxy', label: { en: 'Kube-Proxy', it: 'Kube-Proxy' }, categoryId: 'worker' },
           { id: 'runtime', label: { en: 'Container Runtime', it: 'Runtime del container' }, categoryId: 'worker' }
