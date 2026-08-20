@@ -8,15 +8,24 @@ import { useLanguage } from '../../contexts/LanguageContext'
 
 const k8sArchDict = {
   en: {
-    title: 'Interactive Kubernetes Cluster Architecture',
-    subtitle: 'Click any component to inspect its role, ports, and internal mechanics.',
-    simBtn: '🚀 Simulate kubectl apply',
-    simulating: 'Simulating Request Flow...',
-    modeAll: 'Full Cluster',
+    title: 'Interactive Kubernetes Cluster Architecture Blueprint',
+    subtitle: 'Select a view mode and launch targeted simulations to understand Control Plane vs Worker Node mechanics.',
+    modeAll: 'Full Cluster Flow',
     modeMaster: 'Control Plane (Brain)',
     modeWorker: 'Worker Node (Muscle)',
+    banners: {
+      all: '🌐 Full Cluster View: Visualizes end-to-end communication from developer CLI (kubectl) down to Master & Worker nodes.',
+      master: '🧠 Control Plane Focus (Master Node): Isolates the 4 decision-making components. Simulates continuous self-healing control loops (etcd, API Server, Scheduler, Controller Manager).',
+      worker: '💪 Worker Node Focus (Compute Machine): Isolates the execution machine. Simulates Kubelet execution and Kube-Proxy network routing.'
+    },
+    simButtons: {
+      all: '🚀 Simulate End-to-End Deploy (kubectl -> Pod)',
+      master: '🧠 Simulate Control Loop (Self-Healing)',
+      worker: '💪 Simulate Worker Container & Net Routing'
+    },
+    simulating: 'Simulating Flow...',
     controlPlaneTitle: 'Control Plane (Master Node)',
-    workerNodeTitle: 'Worker Node (Compute Node)',
+    workerNodeTitle: 'Worker Node (Compute Machine)',
     cliTitle: 'Developer Workstation',
     clickPrompt: 'Click on any component above to view its specs',
     components: {
@@ -71,13 +80,22 @@ const k8sArchDict = {
     }
   },
   it: {
-    title: 'Architettura Interattiva del Cluster Kubernetes',
-    subtitle: 'Clicca su un componente per ispezionarne ruolo, porte e funzionamento interno.',
-    simBtn: '🚀 Simula kubectl apply',
-    simulating: 'Simulazione Flusso in corso...',
-    modeAll: 'Cluster Completo',
+    title: 'Blueprint Interattivo dell\'Architettura Kubernetes',
+    subtitle: 'Seleziona una modalità di vista ed esegui simulazioni mirate per capire la differenza tra Control Plane e Worker Node.',
+    modeAll: 'Flusso Cluster Completo',
     modeMaster: 'Control Plane (Cervello)',
     modeWorker: 'Worker Node (Muscoli)',
+    banners: {
+      all: '🌐 Vista Cluster Completo: Visualizza la comunicazione end-to-end dalla CLI dello sviluppatore (kubectl) fino ai nodi Master e Worker.',
+      master: '🧠 Focus Control Plane (Nodo Master): Isola i 4 componenti decisionali. Simula i cicli continui di auto-riparazione (etcd, API Server, Scheduler, Controller Manager).',
+      worker: '💪 Focus Worker Node (Macchina Esecutiva): Isola la macchina di calcolo. Simula l\'avvio di Kubelet e il routing di rete tramite Kube-Proxy.'
+    },
+    simButtons: {
+      all: '🚀 Simula Deploy End-to-End (kubectl -> Pod)',
+      master: '🧠 Simula Ciclo di Controllo (Self-Healing)',
+      worker: '💪 Simula Routing Rete & Avvio Container'
+    },
+    simulating: 'Simulazione Flusso in corso...',
     controlPlaneTitle: 'Control Plane (Nodo Master)',
     workerNodeTitle: 'Worker Node (Nodo di Calcolo)',
     cliTitle: 'Postazione Sviluppatore',
@@ -965,23 +983,39 @@ export function EducationAnimation({ type }: { type: string }) {
     const runSimulation = () => {
       if (isSimulating) return
       setIsSimulating(true)
+
+      const sequences = {
+        all: [
+          { step: 1, comp: 'api', delay: 600 },
+          { step: 2, comp: 'etcd', delay: 1600 },
+          { step: 3, comp: 'scheduler', delay: 2600 },
+          { step: 4, comp: 'kubelet', delay: 3600 },
+          { step: 5, comp: 'runtime', delay: 4600 },
+          { step: 6, comp: 'pods', delay: 5600 }
+        ],
+        master: [
+          { step: 1, comp: 'controller', delay: 600 },
+          { step: 2, comp: 'api', delay: 1600 },
+          { step: 3, comp: 'etcd', delay: 2600 },
+          { step: 4, comp: 'scheduler', delay: 3600 }
+        ],
+        worker: [
+          { step: 1, comp: 'kubelet', delay: 600 },
+          { step: 2, comp: 'runtime', delay: 1600 },
+          { step: 3, comp: 'pods', delay: 2600 },
+          { step: 4, comp: 'proxy', delay: 3600 }
+        ]
+      }
+
+      const currentSeq = sequences[activeFilter]
       setSimStep(1)
-      setSelectedComp('api')
+      setSelectedComp(currentSeq[0].comp)
 
-      const sequence = [
-        { step: 1, comp: 'api', delay: 800 },
-        { step: 2, comp: 'etcd', delay: 1800 },
-        { step: 3, comp: 'scheduler', delay: 2800 },
-        { step: 4, comp: 'kubelet', delay: 3800 },
-        { step: 5, comp: 'runtime', delay: 4800 },
-        { step: 6, comp: 'pods', delay: 5800 }
-      ]
-
-      sequence.forEach(({ step, comp, delay }) => {
+      currentSeq.forEach(({ step, comp, delay }, idx) => {
         setTimeout(() => {
           setSimStep(step)
           setSelectedComp(comp)
-          if (step === 6) {
+          if (idx === currentSeq.length - 1) {
             setTimeout(() => {
               setIsSimulating(false)
               setSimStep(0)
@@ -1008,7 +1042,7 @@ export function EducationAnimation({ type }: { type: string }) {
           <div className="flex items-center gap-2 flex-wrap justify-end">
             <div className="flex bg-black/40 border border-white/10 rounded-xl p-1 shrink-0">
               <button
-                onClick={() => setActiveFilter('all')}
+                onClick={() => { setActiveFilter('all'); setSelectedComp('api'); }}
                 className={`px-3 py-1.5 rounded-lg text-[10px] fw-black transition-all cursor-pointer ${
                   activeFilter === 'all' ? 'bg-primary text-white shadow' : 'text-muted hover:text-white'
                 }`}
@@ -1016,7 +1050,7 @@ export function EducationAnimation({ type }: { type: string }) {
                 {dict.modeAll}
               </button>
               <button
-                onClick={() => setActiveFilter('master')}
+                onClick={() => { setActiveFilter('master'); setSelectedComp('controller'); }}
                 className={`px-3 py-1.5 rounded-lg text-[10px] fw-black transition-all cursor-pointer ${
                   activeFilter === 'master' ? 'bg-purple-500 text-white shadow' : 'text-muted hover:text-white'
                 }`}
@@ -1024,7 +1058,7 @@ export function EducationAnimation({ type }: { type: string }) {
                 {dict.modeMaster}
               </button>
               <button
-                onClick={() => setActiveFilter('worker')}
+                onClick={() => { setActiveFilter('worker'); setSelectedComp('kubelet'); }}
                 className={`px-3 py-1.5 rounded-lg text-[10px] fw-black transition-all cursor-pointer ${
                   activeFilter === 'worker' ? 'bg-emerald-500 text-white shadow' : 'text-muted hover:text-white'
                 }`}
@@ -1043,9 +1077,21 @@ export function EducationAnimation({ type }: { type: string }) {
               }`}
             >
               <Play size={12} className={isSimulating ? 'animate-spin' : ''} />
-              {isSimulating ? dict.simulating : dict.simBtn}
+              {isSimulating ? dict.simulating : dict.simButtons[activeFilter]}
             </button>
           </div>
+        </div>
+
+        {/* Filter Explanation Banner */}
+        <div className={`p-3 rounded-xl border text-xs font-medium text-left flex items-start gap-2 transition-all ${
+          activeFilter === 'master'
+            ? 'bg-purple-500/10 border-purple-500/30 text-purple-300'
+            : activeFilter === 'worker'
+            ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
+            : 'bg-blue-500/10 border-blue-500/30 text-blue-300'
+        }`}>
+          <Sparkles size={14} className="shrink-0 mt-0.5" />
+          <span>{dict.banners[activeFilter]}</span>
         </div>
 
         {/* Interactive Diagram Area */}
@@ -1300,14 +1346,34 @@ export function EducationAnimation({ type }: { type: string }) {
 
             {isSimulating && (
               <div className="mt-4 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-medium flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+                <div className="w-2 h-2 rounded-full bg-amber-400 animate-ping shrink-0" />
                 <span>
-                  {simStep === 1 && 'Step 1: kubectl sends spec to API Server...'}
-                  {simStep === 2 && 'Step 2: API Server validates & persists in etcd...'}
-                  {simStep === 3 && 'Step 3: Scheduler selects optimal Worker Node...'}
-                  {simStep === 4 && 'Step 4: Kubelet receives Pod spec on Worker...'}
-                  {simStep === 5 && 'Step 5: Container Runtime pulls image...'}
-                  {simStep === 6 && 'Step 6: Pod is LIVE and serving traffic! 🚀'}
+                  {activeFilter === 'all' && (
+                    <>
+                      {simStep === 1 && (isIt ? 'Step 1: kubectl invia il manifesto YAML all\'API Server (6443)' : 'Step 1: kubectl sends YAML spec to API Server (6443)')}
+                      {simStep === 2 && (isIt ? 'Step 2: API Server valida e salva lo stato nel database etcd (2379)' : 'Step 2: API Server validates & persists state in etcd (2379)')}
+                      {simStep === 3 && (isIt ? 'Step 3: Scheduler analizza le risorse e assegna il Worker Node migliore' : 'Step 3: Scheduler inspects resources & assigns optimal Worker Node')}
+                      {simStep === 4 && (isIt ? 'Step 4: Kubelet sul nodo Worker riceve l\'ordine dal Control Plane' : 'Step 4: Kubelet on Worker receives PodSpec from Control Plane')}
+                      {simStep === 5 && (isIt ? 'Step 5: Container Runtime scarica l\'immagine dal registro' : 'Step 5: Container Runtime pulls image from container registry')}
+                      {simStep === 6 && (isIt ? 'Step 6: Pod ATTIVO e pronto a servire gli utenti! 🚀' : 'Step 6: Pod is LIVE and ready for traffic! 🚀')}
+                    </>
+                  )}
+                  {activeFilter === 'master' && (
+                    <>
+                      {simStep === 1 && (isIt ? 'Step 1: Controller Manager rileva un Pod guasto e avvia l\'auto-riparazione' : 'Step 1: Controller Manager detects dead Pod & triggers self-healing')}
+                      {simStep === 2 && (isIt ? 'Step 2: Controller Manager aggiorna lo stato desiderato con l\'API Server' : 'Step 2: Controller Manager pushes desired state update to API Server')}
+                      {simStep === 3 && (isIt ? 'Step 3: API Server aggiorna la memoria di stato immutabile in etcd' : 'Step 3: API Server updates state record inside etcd key-value store')}
+                      {simStep === 4 && (isIt ? 'Step 4: Scheduler assegna la replica sostitutiva sul nodo disponibile!' : 'Step 4: Scheduler places replacement replica on available worker node!')}
+                    </>
+                  )}
+                  {activeFilter === 'worker' && (
+                    <>
+                      {simStep === 1 && (isIt ? 'Step 1: Kubelet riceve l\'ordine di esecuzione dal Control Plane' : 'Step 1: Kubelet agent receives PodSpec order from Control Plane')}
+                      {simStep === 2 && (isIt ? 'Step 2: Kubelet comanda al Container Runtime (containerd) di avviare il container' : 'Step 2: Kubelet instructs Container Runtime (containerd) to launch container')}
+                      {simStep === 3 && (isIt ? 'Step 3: Il Pod viene avviato ed esposto con IP locale del nodo' : 'Step 3: Pod starts & receives a local node IP address')}
+                      {simStep === 4 && (isIt ? 'Step 4: Kube-Proxy aggiorna le regole IP tables per bilanciare il traffico!' : 'Step 4: Kube-Proxy updates iptables rules to balance traffic!')}
+                    </>
+                  )}
                 </span>
               </div>
             )}
