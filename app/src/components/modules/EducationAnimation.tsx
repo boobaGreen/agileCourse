@@ -1030,75 +1030,75 @@ export function EducationAnimation({ type }: { type: string }) {
     return (
       <div className="w-full flex flex-col gap-6 select-none">
         {/* Prominent Mode Selection Tab Bar */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 w-full">
           <button
             onClick={() => { setActiveFilter('all'); setSelectedComp('api'); }}
-            className={`p-3.5 rounded-2xl border text-left flex flex-col justify-between transition-all cursor-pointer relative overflow-hidden ${
+            className={`p-4 rounded-2xl border text-left flex flex-col justify-between transition-all cursor-pointer relative overflow-hidden box-border ${
               activeFilter === 'all'
                 ? 'bg-gradient-to-br from-blue-600/30 to-indigo-600/20 border-blue-400 text-white shadow-xl ring-2 ring-blue-400/50 scale-[1.02]'
                 : 'bg-surface2/40 border-white/10 text-muted hover:border-white/20 hover:bg-surface2/70 hover:text-white'
             }`}
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className="flex items-center gap-2 text-xs font-black text-white">
-                <Layers size={16} className={activeFilter === 'all' ? 'text-blue-400' : 'text-muted'} />
+            <div className="flex items-center justify-between mb-2 w-full">
+              <span className="flex items-center gap-2 text-xs sm:text-sm font-black text-white text-left">
+                <Layers size={18} className={activeFilter === 'all' ? 'text-blue-400' : 'text-muted'} />
                 {dict.modeAll}
               </span>
               {activeFilter === 'all' && (
-                <span className="text-[8px] font-mono font-bold bg-blue-500/30 text-blue-300 px-2 py-0.5 rounded-full border border-blue-400/40">
+                <span className="text-[9px] font-mono font-bold bg-blue-500/30 text-blue-300 px-2 py-0.5 rounded-full border border-blue-400/40 shrink-0">
                   ● ATTIVO
                 </span>
               )}
             </div>
-            <p className="text-[10px] opacity-70 leading-normal">
+            <p className="text-left text-[11px] opacity-80 leading-relaxed w-full pl-0.5">
               {isIt ? 'Flusso globale da CLI a Pod (Master + Worker)' : 'Global end-to-end flow (Master + Worker)'}
             </p>
           </button>
 
           <button
             onClick={() => { setActiveFilter('master'); setSelectedComp('controller'); }}
-            className={`p-3.5 rounded-2xl border text-left flex flex-col justify-between transition-all cursor-pointer relative overflow-hidden ${
+            className={`p-4 rounded-2xl border text-left flex flex-col justify-between transition-all cursor-pointer relative overflow-hidden box-border ${
               activeFilter === 'master'
                 ? 'bg-gradient-to-br from-purple-600/30 to-indigo-600/20 border-purple-400 text-white shadow-xl ring-2 ring-purple-400/50 scale-[1.02]'
                 : 'bg-surface2/40 border-white/10 text-muted hover:border-white/20 hover:bg-surface2/70 hover:text-white'
             }`}
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className="flex items-center gap-2 text-xs font-black text-white">
-                <Cpu size={16} className={activeFilter === 'master' ? 'text-purple-400' : 'text-muted'} />
+            <div className="flex items-center justify-between mb-2 w-full">
+              <span className="flex items-center gap-2 text-xs sm:text-sm font-black text-white text-left">
+                <Cpu size={18} className={activeFilter === 'master' ? 'text-purple-400' : 'text-muted'} />
                 {dict.modeMaster}
               </span>
               {activeFilter === 'master' && (
-                <span className="text-[8px] font-mono font-bold bg-purple-500/30 text-purple-300 px-2 py-0.5 rounded-full border border-purple-400/40">
+                <span className="text-[9px] font-mono font-bold bg-purple-500/30 text-purple-300 px-2 py-0.5 rounded-full border border-purple-400/40 shrink-0">
                   ● ATTIVO
                 </span>
               )}
             </div>
-            <p className="text-[10px] opacity-70 leading-normal">
+            <p className="text-left text-[11px] opacity-80 leading-relaxed w-full pl-0.5">
               {isIt ? 'Focus sui 4 componenti decisionali Master' : 'Focus on the 4 Master decision components'}
             </p>
           </button>
 
           <button
             onClick={() => { setActiveFilter('worker'); setSelectedComp('kubelet'); }}
-            className={`p-3.5 rounded-2xl border text-left flex flex-col justify-between transition-all cursor-pointer relative overflow-hidden ${
+            className={`p-4 rounded-2xl border text-left flex flex-col justify-between transition-all cursor-pointer relative overflow-hidden box-border ${
               activeFilter === 'worker'
                 ? 'bg-gradient-to-br from-emerald-600/30 to-teal-600/20 border-emerald-400 text-white shadow-xl ring-2 ring-emerald-400/50 scale-[1.02]'
                 : 'bg-surface2/40 border-white/10 text-muted hover:border-white/20 hover:bg-surface2/70 hover:text-white'
             }`}
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className="flex items-center gap-2 text-xs font-black text-white">
-                <Server size={16} className={activeFilter === 'worker' ? 'text-emerald-400' : 'text-muted'} />
+            <div className="flex items-center justify-between mb-2 w-full">
+              <span className="flex items-center gap-2 text-xs sm:text-sm font-black text-white text-left">
+                <Server size={18} className={activeFilter === 'worker' ? 'text-emerald-400' : 'text-muted'} />
                 {dict.modeWorker}
               </span>
               {activeFilter === 'worker' && (
-                <span className="text-[8px] font-mono font-bold bg-emerald-500/30 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-400/40">
+                <span className="text-[9px] font-mono font-bold bg-emerald-500/30 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-400/40 shrink-0">
                   ● ATTIVO
                 </span>
               )}
             </div>
-            <p className="text-[10px] opacity-70 leading-normal">
+            <p className="text-left text-[11px] opacity-80 leading-relaxed w-full pl-0.5">
               {isIt ? 'Focus sulla macchina di calcolo Worker Node' : 'Focus on Worker Node compute engine'}
             </p>
           </button>
