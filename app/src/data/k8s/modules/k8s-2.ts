@@ -32,13 +32,32 @@ export const k8s2: Module = {
     },
     {
       type: 'flowchart',
-      content: { en: '**The Architecture Visualized**', it: '**L\'architettura visualizzata**' },
+      content: { en: '⚡ **How a Pod is Born: Request Lifecycle**', it: '⚡ **Come nasce un Pod: Ciclo di vita della richiesta**' },
       diagramSteps: [
-        { label: { en: 'Developer\n(kubectl)', it: 'Sviluppatore\n(kubectl)' }, icon: '👨‍💻', color: '#118ab2' },
-        { label: { en: 'Control Plane\n(API Server)', it: 'Control Plane\n(API Server)' }, icon: '🧠', color: '#ffb703' },
-        { label: { en: 'Worker Node 1\n(Kubelet)', it: 'Worker Node 1\n(Kubelet)' }, icon: '💪', color: '#06d6a0' },
-        { label: { en: 'Worker Node 2\n(Kubelet)', it: 'Worker Node 2\n(Kubelet)' }, icon: '💪', color: '#06d6a0' }
+        { label: { en: '1. Developer\n(kubectl apply)', it: '1. Sviluppatore\n(kubectl apply)' }, icon: '👨‍💻', color: '#118ab2' },
+        { label: { en: '2. API Server\n(Validates & Stores in etcd)', it: '2. API Server\n(Valida e Salva in etcd)' }, icon: '🧠', color: '#ffb703' },
+        { label: { en: '3. Scheduler\n(Assigns Best Worker)', it: '3. Scheduler\n(Assegna Nodo Migliore)' }, icon: '⚙️', color: '#a78bfa' },
+        { label: { en: '4. Kubelet\n(Receives Order)', it: '4. Kubelet\n(Riceve Ordine)' }, icon: '💪', color: '#06d6a0' },
+        { label: { en: '5. Container Runtime\n(Pod is Live! 🚀)', it: '5. Container Runtime\n(Pod Attivo! 🚀)' }, icon: '🐳', color: '#06d6a0' }
       ]
+    },
+    {
+      type: 'concept',
+      title: { en: '🔄 Step-by-Step Architecture Breakdown', it: '🔄 Analisi Passo-Passo dell\'Architettura' },
+      content: {
+        en: 'Here is exactly what happens behind the scenes when you deploy an application:\n\n' +
+            '1. **👨‍💻 User Request**: You type `kubectl apply -f app.yaml` to request a new pod.\n' +
+            '2. **🧠 Control Plane Authentication**: The **API Server** receives the HTTP request, authenticates you, and saves the target state in **etcd**.\n' +
+            '3. **⚙️ Intelligent Placement**: The **Scheduler** notices the unassigned pod, inspects available memory/CPU across all workers, and picks the best node.\n' +
+            '4. **💪 Worker Execution**: The **Kubelet** agent running on that worker node picks up the task from the API Server.\n' +
+            '5. **🐳 Container Creation**: The Kubelet instructs the **Container Runtime** (containerd/Docker) to pull the image and launch the container!',
+        it: 'Ecco cosa succede esattamente dietro le quinte quando distribuisci un\'applicazione:\n\n' +
+            '1. **👨‍💻 Richiesta Utente**: Digiti `kubectl apply -f app.yaml` per richiedere un nuovo pod.\n' +
+            '2. **🧠 Autenticazione Control Plane**: L\'**API Server** riceve la richiesta HTTP, ti autentica e salva lo stato desiderato in **etcd**.\n' +
+            '3. **⚙️ Assegnazione Intelligente**: Lo **Scheduler** individua il pod non assegnato, analizza RAM e CPU disponibili tra i worker e sceglie il nodo migliore.\n' +
+            '4. **💪 Esecuzione Worker**: L\'agente **Kubelet** in esecuzione su quel nodo worker riceve l\'ordine dall\'API Server.\n' +
+            '5. **🐳 Creazione Container**: Il Kubelet ordina al **Container Runtime** (containerd/Docker) di scaricare l\'immagine e avviare il container!'
+      }
     },
     {
       type: 'game',
