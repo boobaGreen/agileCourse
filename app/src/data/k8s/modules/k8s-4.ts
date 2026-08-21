@@ -111,16 +111,40 @@ spec:
       language: 'yaml'
     },
     {
+      type: 'concept',
+      title: { en: '🚀 How Rolling Updates Work (Zero-Downtime)', it: '🚀 Come Funzionano i Rolling Update (Zero Downtime)' },
+      content: {
+        en: 'In traditional server deployments, updating an app required shutting down the server, replacing the code, and restarting it. This caused minutes of downtime and angry users.\n\n' +
+            'Kubernetes solves this with **Rolling Updates**:\n\n' +
+            '1. **Gradual Pod Swap**: Suppose you have 3 Pods running version `v1` (e.g. `nginx:1.24`). When you update the Deployment to `v2` (`nginx:1.25`), Kubernetes does NOT kill the old pods all at once.\n' +
+            '2. **Health Check First**: K8s spins up **one new `v2` Pod** alongside the old ones and waits until its health check (`readinessProbe`) succeeds.\n' +
+            '3. **Traffic Shift & Old Pod Removal**: Only when the new `v2` Pod is 100% ready to accept traffic, K8s terminates **one old `v1` Pod**.\n' +
+            '4. **Repeat 1-by-1**: K8s repeats this process one Pod at a time until all replicas are safely updated to `v2` without a single dropped user request!\n\n' +
+            '🛡️ **Emergency Rollback (`kubectl rollout undo`)**:\n' +
+            'If your new `v2` code has a critical bug and crashes on boot, K8s immediately halts the rollout! The remaining `v1` Pods stay alive and continue serving traffic. You can instantly revert to `v1` with a single command:\n' +
+            '`kubectl rollout undo deployment/web-deployment`',
+        it: 'Nei deployment tradizionali sui server fisici, aggiornare un\'app richiedeva di spegnere il server, caricare il nuovo codice e riavviarlo. Questo causava minuti di disservizio (downtime) ed errori per gli utenti.\n\n' +
+            'Kubernetes risolve questo problema con i **Rolling Update** (aggiornamenti progressivi a caldo):\n\n' +
+            '1. **Sostituzione Graduale**: Supponiamo di avere 3 Pod in esecuzione con versione `v1` (es. `nginx:1.24`). Quando aggiorni il Deployment a `v2` (`nginx:1.25`), K8s NON spegne i vecchi pod tutti insieme.\n' +
+            '2. **Verifica dello Stato di Salute**: K8s avvia **un nuovo Pod `v2`** affiancandolo ai vecchi ed attende che superi l\'health check (`readinessProbe`).\n' +
+            '3. **Instradamento Traffico e Spegnimento**: Solo quando il nuovo Pod `v2` è pronto al 100% a ricevere traffico, K8s spegne **un vecchio Pod `v1`**.\n' +
+            '4. **Ripetizione 1 a 1**: K8s ripete questo processo un Pod alla volta finché tutte le repliche sono aggiornate a `v2`, senza che gli utenti si accorgano di nulla!\n\n' +
+            '🛡️ **Rollback di Emergenza (`kubectl rollout undo`)**:\n' +
+            'Se la nuova versione `v2` contiene un bug critico e va in crash all\'avvio, K8s blocca immediatamente il rollout! I vecchi Pod `v1` rimangono attivi per servire il traffico. Puoi annullare il rilascio all\'istante con un singolo comando:\n' +
+            '`kubectl rollout undo deployment/web-deployment` '
+      }
+    },
+    {
       type: 'table',
-      title: { en: '🚀 Rollouts (Zero-Downtime Updates)', it: '🚀 Rollout (Aggiornamenti senza downtime)' },
-      content: { en: 'Deployments allow you to update your application without anyone noticing.', it: 'I Deployment ti permettono di aggiornare la tua applicazione senza che nessuno se ne accorga.' },
+      title: { en: '📊 Rolling Update Step-by-Step Flow', it: '📊 Flusso Passo-Passo del Rolling Update' },
+      content: { en: 'Here is what Kubernetes does automatically under the hood during a rollout:', it: 'Ecco cosa fa Kubernetes automaticamente sotto il cofano durante un rollout:' },
       tableData: {
-        headers: [{ en: 'Action', it: 'Azione' }, { en: 'What K8s does automatically under the hood', it: 'Cosa fa K8s automaticamente "sotto il cofano"' }, { en: 'Result', it: 'Risultato' }],
+        headers: [{ en: 'Step / Action', it: 'Passaggio / Azione' }, { en: 'What K8s does under the hood', it: 'Cosa fa K8s sotto il cofano' }, { en: 'User Experience Impact', it: 'Impatto sugli Utenti' }],
         rows: [
-          [{ en: 'Update image to v2', it: 'Aggiornamento immagine a v2' }, { en: 'Spins up a new v2 pod. Waits for it to be healthy.', it: 'Avvia un nuovo pod v2. Aspetta che sia sano.' }, { en: 'No downtime', it: 'Nessun downtime' }],
-          [{ en: 'v2 pod is Ready', it: 'Il pod v2 è Pronto' }, { en: 'Shuts down one of the old v1 pods.', it: 'Spegne uno dei vecchi pod v1.' }, { en: 'Traffic smoothly shifts', it: 'Il traffico si sposta dolcemente' }],
-          [{ en: 'Repeat', it: 'Ripeti' }, { en: 'Continues rolling out 1 by 1 until all are v2.', it: 'Continua il rollout 1 a 1 finché tutti sono v2.' }, { en: '100% updated safely', it: 'Aggiornato al 100% in sicurezza' }],
-          [{ en: 'Wait, v2 crashes!', it: 'Aspetta, v2 crasha!' }, { en: 'Deployment halts! Old v1 pods are kept alive.', it: 'Il deployment si ferma! I vecchi pod v1 vengono mantenuti vivi.' }, { en: 'Vast majority of users unaffected', it: 'La stragrande maggioranza degli utenti non è influenzata' }]
+          [{ en: '1. Update image to v2', it: '1. Aggiornamento immagine a v2' }, { en: 'Spins up 1 new v2 pod alongside active v1 pods. Waits for readiness probe.', it: 'Avvia 1 nuovo pod v2 affiancandolo ai pod v1 attivi. Attende il controllo di salute.' }, { en: '✅ Zero downtime (v1 pods keep serving)', it: '✅ Zero downtime (i pod v1 continuano a servire)' }],
+          [{ en: '2. v2 Pod is Ready', it: '2. Il Pod v2 è Pronto' }, { en: 'Routes live traffic to new v2 pod and terminates 1 old v1 pod.', it: 'Instrada il traffico reale al nuovo pod v2 e spegne 1 vecchio pod v1.' }, { en: '✅ Smooth traffic transition', it: '✅ Transizione fluida del traffico' }],
+          [{ en: '3. Repeat process', it: '3. Ripetizione processo' }, { en: 'Replaces remaining v1 pods one-by-one until 100% are running v2.', it: 'Sostituisce i restanti pod v1 uno alla volta finché il 100% esegue v2.' }, { en: '✅ 100% updated safely', it: '✅ Aggiornamento completato in sicurezza' }],
+          [{ en: '⚠️ What if v2 crashes?', it: '⚠️ E se la v2 va in crash?' }, { en: 'Deployment halts rollout automatically! Old stable v1 pods stay alive.', it: 'Il Deployment blocca il rollout in automatico! I vecchi pod v1 stabili restano attivi.' }, { en: '🛡️ Revert with `kubectl rollout undo`', it: '🛡️ Annulla con `kubectl rollout undo`' }]
         ]
       }
     },
