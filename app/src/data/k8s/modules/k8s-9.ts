@@ -29,7 +29,7 @@ export const k8s9: Module = {
         tasks: [
           {
             id: '1',
-            instruction: { en: 'Install the chart: `helm install enterprise-stack ./my-chart`', it: 'Installa il chart: `helm install enterprise-stack ./my-chart`' },
+            instruction: { en: 'Install the chart `./my-chart` with release name `enterprise-stack`', it: 'Installa il chart `./my-chart` con il nome release `enterprise-stack`' },
             condition: 'PODS_RUNNING:3',
             hints: [
               { en: 'Use the `helm install` command to deploy a packaged Helm chart.', it: 'Usa il comando `helm install` per distribuire un Helm chart impacchettato.' },
@@ -39,7 +39,7 @@ export const k8s9: Module = {
           },
           {
             id: '2',
-            instruction: { en: 'Verify the release is running: `kubectl get pods`', it: 'Verifica che la release sia in esecuzione: `kubectl get pods`' },
+            instruction: { en: 'Verify that the release pods are running', it: 'Verifica che i pod della release siano in esecuzione' },
             condition: 'CMD_RAN:get pod',
             hints: [
               { en: 'Use `kubectl get` to check if all pods deployed by Helm are active.', it: 'Usa `kubectl get` per verificare se tutti i pod distribuiti da Helm sono attivi.' },

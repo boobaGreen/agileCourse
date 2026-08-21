@@ -79,7 +79,7 @@ spec:
         tasks: [
           {
             id: '1',
-            instruction: { en: 'Apply the web deployment manifest: `kubectl apply -f web.yml`', it: 'Applica il manifest di deployment web: `kubectl apply -f web.yml`' },
+            instruction: { en: 'Apply the web deployment manifest using `web.yml`', it: 'Applica il manifest di deployment web usando `web.yml`' },
             condition: 'DEPLOYMENT_EXISTS:web-deployment',
             hints: [
               { en: 'Use `kubectl apply -f` to deploy resources declared in a YAML file.', it: 'Usa `kubectl apply -f` per distribuire le risorse dichiarate in un file YAML.' },
@@ -89,7 +89,7 @@ spec:
           },
           {
             id: '2',
-            instruction: { en: 'Delete one of the pods (get the name first with `kubectl get pods`)', it: 'Elimina uno dei pod (prendi prima il nome con `kubectl get pods`)' },
+            instruction: { en: 'Delete one of the active pods', it: 'Elimina uno dei pod attivi' },
             condition: 'PODS_RUNNING:3',
             hints: [
               { en: 'First list running pods with `kubectl get pods` to see their names.', it: 'Per prima cosa elenca i pod attivi con `kubectl get pods` per vedere i loro nomi.' },
@@ -99,7 +99,7 @@ spec:
           },
           {
             id: '3',
-            instruction: { en: 'Scale the deployment to 6 replicas: `kubectl scale deployment/web-deployment --replicas=6`', it: 'Scala il deployment a 6 repliche: `kubectl scale deployment/web-deployment --replicas=6`' },
+            instruction: { en: 'Scale the `web-deployment` to 6 replicas', it: 'Scala il `web-deployment` a 6 repliche' },
             condition: 'REPLICAS:web-deployment:6',
             hints: [
               { en: 'Use `kubectl scale` to change the number of running replicas.', it: 'Usa `kubectl scale` per modificare il numero di repliche in esecuzione.' },

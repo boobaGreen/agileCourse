@@ -63,7 +63,7 @@ export const k8s8: Module = {
         tasks: [
           {
             id: '1',
-            instruction: { en: 'Deploy the nginx application: `kubectl apply -f nginx-deployment.yaml`', it: 'Distribuisci l\'applicazione nginx: `kubectl apply -f nginx-deployment.yaml`' },
+            instruction: { en: 'Deploy the nginx application manifest `nginx-deployment.yaml`', it: 'Distribuisci l\'applicazione nginx tramite `nginx-deployment.yaml`' },
             condition: 'PODS_RUNNING:2',
             hints: [
               { en: 'Use `kubectl apply -f` to create the nginx deployment resource.', it: 'Usa `kubectl apply -f` per creare la risorsa di deployment nginx.' },
@@ -73,7 +73,7 @@ export const k8s8: Module = {
           },
           {
             id: '2',
-            instruction: { en: 'Expose it to the world: `kubectl expose deployment nginx --type=LoadBalancer --port=80`', it: 'Esponila al mondo: `kubectl expose deployment nginx --type=LoadBalancer --port=80`' },
+            instruction: { en: 'Expose the `nginx` deployment to the world as a LoadBalancer on port 80', it: 'Esponi il deployment `nginx` al mondo come LoadBalancer sulla porta 80' },
             condition: 'SERVICE_EXISTS:nginx',
             hints: [
               { en: 'Use `kubectl expose deployment` to create a service for `nginx`.', it: 'Usa `kubectl expose deployment` per creare un servizio per `nginx`.' },

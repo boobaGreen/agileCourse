@@ -75,7 +75,7 @@ spec:
         tasks: [
           {
             id: '1',
-            instruction: { en: 'Apply the application configuration: `kubectl apply -f app-config.yaml`', it: 'Applica la configurazione dell\'applicazione: `kubectl apply -f app-config.yaml`' },
+            instruction: { en: 'Apply the application configuration manifest `app-config.yaml`', it: 'Applica il manifest di configurazione `app-config.yaml`' },
             condition: 'CONFIGMAP_EXISTS:app-config',
             hints: [
               { en: 'Use `kubectl apply -f` to create cluster resources from manifest files.', it: 'Usa `kubectl apply -f` per creare risorse nel cluster da file manifesto.' },
@@ -85,7 +85,7 @@ spec:
           },
           {
             id: '2',
-            instruction: { en: 'Verify the ConfigMap exists in the cluster: `kubectl get cm`', it: 'Verifica che la ConfigMap esista nel cluster: `kubectl get cm`' },
+            instruction: { en: 'Verify that the ConfigMap exists in the cluster', it: 'Verifica che la ConfigMap esista nel cluster' },
             condition: 'CMD_RAN:get cm',
             hints: [
               { en: 'Use `kubectl get` to list configuration resources.', it: 'Usa `kubectl get` per elencare le risorse di configurazione.' },

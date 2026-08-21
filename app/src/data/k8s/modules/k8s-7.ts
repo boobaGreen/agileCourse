@@ -57,7 +57,7 @@ export const k8s7: Module = {
         tasks: [
           {
             id: '1',
-            instruction: { en: 'Apply the persistent volume claim: `kubectl apply -f web-pvc.yaml`', it: 'Applica il PersistentVolumeClaim: `kubectl apply -f web-pvc.yaml`' },
+            instruction: { en: 'Apply the persistent volume claim manifest `web-pvc.yaml`', it: 'Applica il manifest PersistentVolumeClaim `web-pvc.yaml`' },
             condition: 'PVC_EXISTS:web-pvc',
             hints: [
               { en: 'Use `kubectl apply -f` to create the storage claim resource.', it: 'Usa `kubectl apply -f` per creare la risorsa di richiesta storage.' },
@@ -67,7 +67,7 @@ export const k8s7: Module = {
           },
           {
             id: '2',
-            instruction: { en: 'Check the status of your claims: `kubectl get pvc`', it: 'Controlla lo stato delle tue richieste: `kubectl get pvc`' },
+            instruction: { en: 'Check the status of your persistent volume claims', it: 'Controlla lo stato delle tue richieste PersistentVolumeClaim' },
             condition: 'CMD_RAN:get pvc',
             hints: [
               { en: 'Use `kubectl get` to check storage claim statuses.', it: 'Usa `kubectl get` per verificare gli stati delle richieste di storage.' },
