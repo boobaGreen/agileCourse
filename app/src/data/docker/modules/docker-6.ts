@@ -24,18 +24,6 @@ export const docker6: Module = {
       }
     },
     {
-      type: 'video',
-      title: {
-        en: '📺 Docker Port Mapping & Networking Explained (4 min)',
-        it: '📺 Mappatura Porte & Networking Docker in 4 Minuti'
-      },
-      content: {
-        en: 'A concise 4-minute visual guide explaining how Docker isolates containers and bridges ports to your host.',
-        it: 'Una guida visiva concisa di 4 minuti che spiega come Docker isola i container e collega le porte al tuo host.'
-      },
-      videoUrl: 'https://www.youtube.com/watch?v=Fj7wO591z3U'
-    },
-    {
       type: 'concept',
       title: {
         en: '🚪 Port Mapping (`-p`)',
