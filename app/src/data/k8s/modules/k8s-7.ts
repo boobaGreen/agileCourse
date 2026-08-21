@@ -41,6 +41,16 @@ export const k8s7: Module = {
       ]
     },
     {
+      type: 'tip',
+      title: { en: '💡 Remote Storage vs Local Disks', it: '💡 Storage Remoto vs Dischi Locali' },
+      content: {
+        en: 'Why is cloud-attached remote storage (like AWS EBS or Azure Disk) strongly recommended over local node hard drives for stateful workloads?\n\n' +
+            'If a Worker Node crashes, Kubernetes will reschedule the Pod onto a different, healthy Worker Node. If your data was stored on the dead node\'s local hard drive, the new Pod cannot access it! With **remote cloud storage**, Kubernetes detaches the volume from the dead node and re-attaches it to the new node instantly.',
+        it: 'Perché lo storage remoto in cloud (come AWS EBS o Azure Disk) è fortemente consigliato rispetto ai dischi rigidi locali dei nodi per i carichi di lavoro stateful?\n\n' +
+            'Se un Nodo Worker crolla, Kubernetes ri-schedulerà il Pod su un nodo worker diverso e sano. Se i dati erano salvati sul disco fisicamente locale del vecchio nodo, il nuovo Pod non potrà più accedervi! Con lo **storage cloud remoto**, Kubernetes scollega il volume dal nodo morto e lo ricollega all\'istante al nuovo nodo!'
+      }
+    },
+    {
       type: 'game',
       title: { en: 'Lab: Reserving the Disk', it: 'Lab: Prenotare il disco' },
       content: { en: 'In this simulation, you will apply a PersistentVolumeClaim. Watch how Kubernetes automatically binds it to a physical volume!', it: 'In questa simulazione, applicherai un PersistentVolumeClaim. Guarda come Kubernetes lo collega automaticamente a un volume fisico!' },

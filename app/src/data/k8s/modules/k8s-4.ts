@@ -16,14 +16,50 @@ export const k8s4: Module = {
     },
     {
       type: 'video',
-      title: { en: '📺 Imperative vs Declarative', it: '📺 Imperativo vs Dichiarativo' },
-      content: { en: 'Understand why Kubernetes uses a Declarative system instead of a list of bash scripts.', it: 'Capisci perché Kubernetes usa un sistema Dichiarativo invece di una lista di script bash.' },
-      videoUrl: 'https://www.youtube.com/watch?v=pPQKAR1pA9U'
+      title: { en: '📺 Imperative vs Declarative in K8s', it: '📺 Imperativo vs Dichiarativo in K8s' },
+      content: { en: 'TechWorld with Nana explains the key difference between imperative kubectl commands and declarative YAML manifests.', it: 'TechWorld with Nana spiega la differenza chiave tra i comandi imperativi kubectl e i manifest YAML dichiarativi.' },
+      videoUrl: 'https://www.youtube.com/watch?v=X48VuDVv0do'
     },
     {
       type: 'concept',
       title: { en: '📄 The Deployment YAML', it: '📄 Il YAML del Deployment' },
       content: { en: 'A Deployment is a YAML file where you say: \n\n"I want a Deployment named *my-app*. I want exactly *3 replicas* (Pods). Use the container image *node:18*."\n\nKubernetes constantly reads this file. If it sees only 2 Pods running, it spins up a 3rd. If it sees 4, it assassinates 1. It is a tireless robot enforcing your will.', it: 'Un Deployment è un file YAML dove dici: \n\n"Voglio un Deployment chiamato *my-app*. Voglio esattamente *3 repliche* (Pod). Usa l\'immagine container *node:18*."\n\nKubernetes legge costantemente questo file. Se vede solo 2 Pod in esecuzione, ne avvia un terzo. Se ne vede 4, ne elimina 1. È un robot instancabile che impone la tua volontà.' }
+    },
+    {
+      type: 'concept',
+      title: { en: '📦 Stateless vs Stateful Workloads: Deployment vs StatefulSet', it: '📦 Carichi Stateless vs Stateful: Deployment vs StatefulSet' },
+      content: {
+        en: 'Not all containerized applications are structured the same way. Understanding the difference between **Stateless** and **Stateful** workloads is crucial:\n\n' +
+            '• **⚡ Stateless Applications (Deployments)**:\n' +
+            '  - Web APIs, microservices, and frontend apps that do NOT save data locally.\n' +
+            '  - Super easy to containerize and scale! Pods are 100% identical and interchangeable with random generated names (`web-7bb9x`).\n' +
+            '  - If a pod dies, any new pod handles traffic instantly without data loss.\n\n' +
+            '• **💾 Stateful Applications (StatefulSets)**:\n' +
+            '  - Databases (PostgreSQL, MySQL, MongoDB, Redis) requiring persistent data and continuous state.\n' +
+            '  - **Sticky Identity**: Pods get predictable ordinal names (`db-0`, `db-1`, `db-2`) preserved across restarts.\n' +
+            '  - **Dedicated Storage (PV/PVC)**: Each pod gets its OWN dedicated storage volume. Remote cloud storage (EBS/AzureDisk) is strongly recommended so if a pod is rescheduled to another node, it re-attaches its storage seamlessly.\n' +
+            '  - **Ordered Creation & Scale Down**: Pods are created sequentially (`db-0` -> `db-1` -> `db-2`) and deleted in reverse order (`db-2` -> `db-1`).\n' +
+            '  - **Headless Service (Individual DNS)**: Each pod gets its own fixed internal network DNS hostname.\n' +
+            '  - **Replication Complexity**: Replicating databases is complex (cloning, data sync, leader election, backups). K8s helps with StatefulSets, but stateless architecture is always preferred when possible!',
+        it: 'Non tutte le applicazioni containerizzate sono strutturate allo stesso modo. Capire la differenza tra carichi **Stateless** e **Stateful** è fondamentale:\n\n' +
+            '• **⚡ Applicazioni Stateless (Deployment)**:\n' +
+            '  - Web API, microservizi e frontend che NON salvano dati sul disco locale.\n' +
+            '  - Semplicissime da containerizzare e scalare! I Pod sono uguali al 100%, intercambiabili e hanno nomi casuali (`web-7bb9x`).\n' +
+            '  - Se un pod muore, qualsiasi altro pod gestisce il traffico al suo posto senza alcuna perdita.\n\n' +
+            '• **💾 Applicazioni Stateful (StatefulSet)**:\n' +
+            '  - Database (PostgreSQL, MySQL, MongoDB, Redis) che richiedono stato e persistenza dei dati.\n' +
+            '  - **Sticky Identity (Identità Fissa)**: I Pod ricevono nomi ordinali mantenuti ai riavvii (`db-0`, `db-1`, `db-2`).\n' +
+            '  - **Storage Dedicato (PV/PVC per Pod)**: Ogni pod ha il PROPRIO volume di storage indipendente. Lo storage remoto (AWS EBS / Azure Disk) è consigliato: se il pod viene ri-schedulato su un altro nodo, ritroverà i suoi dati montando lo stesso disco remoto!\n' +
+            '  - **Ordine di Creazione & Eliminazione**: I pod vengono creati in sequenza (`db-0` -> `db-1` -> `db-2`) e cancellati in ordine inverso (`db-2` -> `db-1`).\n' +
+            '  - **Headless Service (DNS Individuale)**: Ogni pod ha un proprio indirizzo DNS fisso individuale.\n' +
+            '  - **Complessità di Replicazione**: Replicare database è complesso (richiede clonazione dati, sincronizzazione leader/replica, backup). K8s aiuta con i StatefulSet, ma l\'architettura stateless è sempre da preferire quando possibile!'
+      }
+    },
+    {
+      type: 'video',
+      title: { en: '📺 Stateful vs Stateless (Deployment vs StatefulSet)', it: '📺 Applicazioni Stateful vs Stateless (Deployment vs StatefulSet)' },
+      content: { en: 'TechWorld with Nana explains why StatefulSets exist, how storage is attached to individual pods, and why stateless apps are so much easier to run in Kubernetes.', it: 'TechWorld with Nana spiega perché esistono i StatefulSet, come viene collegato lo storage ai singoli pod e perché le app stateless sono molto più semplici da gestire.' },
+      videoUrl: 'https://www.youtube.com/watch?v=pPQKAR1pA9U'
     },
     {
       type: 'code',
@@ -147,6 +183,18 @@ spec:
       ],
       correct: 0,
       explanation: { en: 'The command `kubectl scale deployment/[name] --replicas=[N]` directly updates the Deployment replica count in etcd.', it: 'Il comando `kubectl scale deployment/[nome] --replicas=[N]` aggiorna direttamente il numero di repliche del Deployment in etcd.' }
+    },
+    {
+      id: 'k8s-4-q4',
+      question: { en: 'Why are StatefulSets used instead of Deployments for running database clusters like PostgreSQL or MongoDB?', it: 'Perché vengono usati i StatefulSet al posto dei Deployment per eseguire cluster di database come PostgreSQL o MongoDB?' },
+      options: [
+        { en: 'StatefulSets provide sticky pod identities (db-0, db-1) and dedicated persistent storage per pod', it: 'I StatefulSet forniscono identità fisse per i pod (db-0, db-1) e storage persistente dedicato per ciascun pod' },
+        { en: 'StatefulSets execute container code up to 10x faster than standard Deployments', it: 'I StatefulSet eseguono il codice nei container fino a 10 volte più velocemente dei Deployment standard' },
+        { en: 'Deployments are strictly forbidden from running container images larger than 100MB', it: 'Ai Deployment è severamente vietato eseguire immagini container superiori a 100MB' },
+        { en: 'StatefulSets do not require any worker node hardware to function', it: 'I StatefulSet non richiedono alcun hardware di nodo worker per funzionare' }
+      ],
+      correct: 0,
+      explanation: { en: 'Databases require sticky identities, predictable ordinal DNS names, and individual persistent volume claims for each replica node, which StatefulSets manage automatically.', it: 'I database richiedono identità fisse, nomi DNS ordinali prevedibili e claim di volume persistente individuali per ciascuna replica, che i StatefulSet gestiscono automaticamente.' }
     }
   ]
 }
