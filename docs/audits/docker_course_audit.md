@@ -71,7 +71,7 @@ Revisione eseguita riga per riga su tutti i file da [docker-1.ts](file:///c:/Use
 |:--|:--|:--|
 | **Titolo** | ✅ | `Networking & Ports` — "Bridging containers to the outside world" |
 | **Teoria** | ✅ | Port Mapping -p, flowchart, Custom Networks + DNS automatico, connection string anatomy, flowchart DNS resolution, perché localhost fallisce tra container, tabella 3 reti built-in, tip combinare flag |
-| **Video** | ⚪ Rimesso a solo testo | Video rimosso su richiesta utente (la spiegazione teorica dettagliata è sufficiente) |
+| **Video** | ✅ | `zJD7QYQtiKc` — "Docker Networking in 5 Minutes" |
 | **Lab** | ✅ 2 task | docker network create frontend-net + docker run con --network e -p |
 | **Quiz** | ✅ 3 domande | q1 (port mapping -p 5000:3000), q2 (DNS per nomi container), q3 (sintassi -p) |
 

@@ -24,6 +24,18 @@ export const docker6: Module = {
       }
     },
     {
+      type: 'video',
+      title: {
+        en: '📺 Docker Networking in 5 Minutes',
+        it: '📺 Docker Networking in 5 Minuti'
+      },
+      content: {
+        en: 'A quick 5-minute visual guide to understanding Docker container networking, port mapping, and custom bridges.',
+        it: 'Una guida visiva rapida di 5 minuti per comprendere la rete tra container Docker, la mappatura delle porte e i bridge personalizzati.'
+      },
+      videoUrl: 'https://www.youtube.com/watch?v=zJD7QYQtiKc'
+    },
+    {
       type: 'concept',
       title: {
         en: '🚪 Port Mapping (`-p`)',
