@@ -16,6 +16,44 @@ export const docker9: Module = {
         en: 'Time to prove your container mastery. 13 comprehensive questions covering builds, lifecycle, volumes, networking, and Docker Compose. Take your time. Good luck!',
         it: 'È il momento di dimostrare la tua maestria con i container. 13 domande approfondite su build, ciclo di vita, volumi, reti e Docker Compose. Prenditi il tuo tempo. Buona fortuna!'
       }
+    },
+    {
+      type: 'tip',
+      title: {
+        en: '🎓 Congratulations! You Have Mastered Docker Fundamentals!',
+        it: '🎓 Complimenti! Hai Dominato i Fondamentali di Docker!'
+      },
+      content: {
+        en: 'You now possess a complete, professional foundation in containerization! You know how to build custom images with Dockerfiles, leverage layer caching, manage persistent data with Volumes, configure isolated networks, and orchestrate complex multi-container stacks with Docker Compose.\n\n' +
+            'This knowledge empowers you to containerize virtually any modern web application. Below are the advanced topics that await you in future deep-dive modules! 🚀',
+        it: 'Ora possiedi una base professionale e completa sulla containerizzazione! Sai creare immagini custom con i Dockerfile, sfruttare la cache dei layer, gestire i dati persistenti con i Volumi, configurare reti isolate e orchestrare stack multi-container complessi con Docker Compose.\n\n' +
+            'Queste competenze ti permettono di containerizzare qualsiasi applicazione web moderna. Qui sotto trovi gli argomenti avanzati che ti aspettano nei prossimi moduli di approfondimento! 🚀'
+      }
+    },
+    {
+      type: 'concept',
+      title: {
+        en: '🔮 What\'s Next? Advanced Docker Topics for Your Next Step',
+        it: '🔮 Cosa Viene Dopo? Argomenti Docker Avanzati per il Prossimo Passo'
+      },
+      content: {
+        en: 'These advanced concepts take your container skills to enterprise production level:\n\n' +
+            '• **🏗️ Multi-stage Builds**: Compile your code in a heavy build image and copy ONLY the binary artifact into a tiny runtime image (e.g. reducing Go/Node images from 1GB to 15MB!).\n\n' +
+            '• **⚙️ ENTRYPOINT vs CMD**: Combine `ENTRYPOINT` (the fixed executable) with `CMD` (default arguments) to turn containers into flexible CLI tools.\n\n' +
+            '• **🙈 `.dockerignore`**: Exclude local `node_modules`, secret `.env` files, and `.git` folders from the build context to keep builds fast and secure.\n\n' +
+            '• **🛡️ Docker Scout & Security Scanning**: Scan images for OS and package vulnerabilities (CVEs) before deploying to production.\n\n' +
+            '• **🩺 Healthchecks in Dockerfile**: Define internal health commands (`HEALTHCHECK --interval=30s CMD curl -f http://localhost/ || exit 1`) so Docker knows when a container is unhealthy.\n\n' +
+            '• **🌱 Environment Variables & Secrets**: Best practices for passing sensitive credentials dynamically (`.env` files & environment injection).\n\n' +
+            '• **🚢 Transition to Kubernetes**: Scale beyond a single server! Learn how Kubernetes orchestrates thousands of Docker containers automatically.',
+        it: 'Questi concetti avanzati portano le tue competenze sui container al livello di produzione enterprise:\n\n' +
+            '• **🏗️ Multi-stage Builds**: Compila il codice in un\'immagine di build pesante e copia SOLO l\'artefatto finale in un\'immagine runtime minuscola (es. riducendo immagini Go/Node da 1GB a 15MB!).\n\n' +
+            '• **⚙️ ENTRYPOINT vs CMD**: Combina `ENTRYPOINT` (l\'eseguibile fisso) con `CMD` (gli argomenti di default) per trasformare i container in veri e propri strumenti CLI flessibili.\n\n' +
+            '• **🙈 `.dockerignore`**: Escludi i `node_modules` locali, i file segreti `.env` e le cartelle `.git` dal contesto di build per mantenere le build veloci e sicure.\n\n' +
+            '• **🛡️ Docker Scout & Security Scanning**: Scansiona le immagini alla ricerca di vulnerabilità di sistema e pacchetti (CVE) prima del rilascio in produzione.\n\n' +
+            '• **🩺 Healthcheck nel Dockerfile**: Definisci comandi di controllo dello stato interno (`HEALTHCHECK --interval=30s CMD curl -f http://localhost/ || exit 1`) così Docker rileva quando un container è guasto.\n\n' +
+            '• **🌱 Variabili d\'Ambiente & Secret**: Le migliori pratiche per passare credenziali sensibili in modo dinamico (file `.env` e injection d\'ambiente).\n\n' +
+            '• **🚢 Passaggio a Kubernetes**: Scala oltre il singolo server! Scopri come Kubernetes orchestra automaticamente migliaia di container Docker.'
+      }
     }
   ],
   quiz: [

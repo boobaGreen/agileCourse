@@ -24,6 +24,18 @@ export const docker6: Module = {
       }
     },
     {
+      type: 'video',
+      title: {
+        en: '📺 Docker Networking Explained (Bridge, Host & Ports)',
+        it: '📺 Il Networking in Docker Spiegato (Bridge, Host & Porte)'
+      },
+      content: {
+        en: 'A clear visual walkthrough of how Docker manages internal bridge networks and forwards host ports to containers.',
+        it: 'Una guida visiva su come Docker gestisce le reti bridge interne e inoltra le porte dall\'host ai container.'
+      },
+      videoUrl: 'https://www.youtube.com/watch?v=bKFMS5C4CG0'
+    },
+    {
       type: 'concept',
       title: {
         en: '🚪 Port Mapping (`-p`)',
