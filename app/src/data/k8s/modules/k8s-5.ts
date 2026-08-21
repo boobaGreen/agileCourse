@@ -53,6 +53,30 @@ export const k8s5: Module = {
       content: { en: 'A `LoadBalancer` service is expensive. If you have 5 web apps, you don\'t want to pay for 5 AWS Load Balancers. \n\nInstead, you deploy ONE **Ingress Controller**. It is a smart router (like Nginx) that sits at the front door. It looks at the URL requested (e.g. `myapp.com/api`) and routes the traffic to the correct internal ClusterIP service.', it: 'Un servizio `LoadBalancer` è costoso. Se hai 5 app web, non vuoi pagare per 5 Load Balancer AWS. \n\nInvece, distribuisci UN SOLO **Ingress Controller**. È un router intelligente (come Nginx) che sta alla porta d\'ingresso. Controlla l\'URL richiesto (es. `myapp.com/api`) e instrada il traffico al corretto servizio ClusterIP interno.' }
     },
     {
+      type: 'concept',
+      title: { en: '🏷️ Kubernetes Namespaces: Isolating Workloads', it: '🏷️ Namespace Kubernetes: Isolamento dei Carichi' },
+      content: {
+        en: 'A **Namespace** is a virtual cluster inside your physical Kubernetes cluster. It lets you partition resources for multi-tenancy or environment isolation:\n\n' +
+            '• **`default`**: Where resources go if you don\'t specify a namespace.\n' +
+            '• **`kube-system`**: Reserved for Control Plane components (API server, CoreDNS, Kube-Proxy).\n' +
+            '• **Custom Namespaces (`dev`, `staging`, `prod`)**: Allows multiple teams to run identically named services (`backend-service`) in the same cluster without collisions!\n\n' +
+            '💡 **Cross-Namespace DNS Routing**:\n' +
+            'Pods in the same namespace talk to `backend-service`. To reach a service in another namespace, use the full FQDN: `backend-service.staging.svc.cluster.local`.\n\n' +
+            '⌨️ **CLI Commands**:\n' +
+            '- List namespaces: `kubectl get namespaces` (or `kubectl get ns`)\n' +
+            '- Deploy to a namespace: `kubectl apply -f app.yaml -n staging`',
+        it: 'Un **Namespace** è un cluster virtuale all\'interno del tuo cluster Kubernetes fisico. Permette di partizionare le risorse per isolare team o ambienti di lavoro:\n\n' +
+            '• **`default`**: Il namespace predefinito dove finiscono le risorse se non ne specifichi uno.\n' +
+            '• **`kube-system`**: Riservato ai componenti del Control Plane (API server, CoreDNS, Kube-Proxy).\n' +
+            '• **Namespace Personalizzati (`dev`, `staging`, `prod`)**: Permettono a più team di eseguire servizi con lo stesso nome (`backend-service`) nello stesso cluster senza collisioni!\n\n' +
+            '💡 **Routing DNS tra Namespace**:\n' +
+            'I pod nello stesso namespace comunicano via `backend-service`. Per contattare un servizio in un altro namespace, usa il nome DNS completo: `backend-service.staging.svc.cluster.local`.\n\n' +
+            '⌨️ **Comandi CLI**:\n' +
+            '- Elenca namespace: `kubectl get namespaces` (o `kubectl get ns`)\n' +
+            '- Distribuisci in un namespace: `kubectl apply -f app.yaml -n staging` '
+      }
+    },
+    {
       type: 'game',
       title: { en: 'Lab: The Front Door', it: 'Lab: La porta d\'ingresso' },
       content: { en: 'Expose your application to the network. Watch the LoadBalancer provision an IP and route traffic to your pods.', it: 'Esponi la tua applicazione alla rete. Guarda il LoadBalancer fornire un IP e instradare il traffico ai tuoi pod.' },
@@ -130,6 +154,18 @@ export const k8s5: Module = {
       ],
       correct: 0,
       explanation: { en: 'If `type` is omitted in a Service YAML file, Kubernetes defaults to `ClusterIP` for secure internal-only communication.', it: 'Se il campo `type` viene omesso in un file YAML di un Service, Kubernetes imposta di default `ClusterIP` per garantire la comunicazione interna sicura.' }
+    },
+    {
+      id: 'k8s-5-q4',
+      question: { en: 'How can a Frontend pod in the "dev" namespace reach a Backend service located in the "staging" namespace?', it: 'Come può un pod Frontend nel namespace "dev" raggiungere un servizio Backend situato nel namespace "staging"?' },
+      options: [
+        { en: 'Using the Fully Qualified Domain Name (FQDN): backend-service.staging.svc.cluster.local', it: 'Usando il nome DNS completo (FQDN): backend-service.staging.svc.cluster.local' },
+        { en: 'Cross-namespace communication is strictly impossible in Kubernetes', it: 'La comunicazione tra namespace diversi è rigorosamente impossibile in Kubernetes' },
+        { en: 'By rebooting the worker node using kubectl restart node', it: 'Riavviando il nodo worker con kubectl restart node' },
+        { en: 'By changing the Docker image tag to staging-v1', it: 'Modificando il tag dell\'immagine Docker in staging-v1' }
+      ],
+      correct: 0,
+      explanation: { en: 'Kubernetes CoreDNS automatically resolves cross-namespace service traffic using the format <service-name>.<namespace>.svc.cluster.local.', it: 'Il CoreDNS di Kubernetes risolve automaticamente il traffico tra namespace usando la forma <nome-servizio>.<namespace>.svc.cluster.local.' }
     }
   ]
 }

@@ -15,6 +15,42 @@ export const k8s9: Module = {
       content: { en: 'So you think you understand the orchestrator? Prove it. In this final challenge, you must use **Helm**, the Kubernetes package manager, to deploy a complete stack.', it: 'Quindi pensi di aver capito l\'orchestratore? Dimostralo. In questa sfida finale, dovrai usare **Helm**, il package manager di Kubernetes, per distribuire uno stack completo.' }
     },
     {
+      type: 'concept',
+      title: { en: '⎈ What is Helm? The Kubernetes Package Manager', it: '⎈ Cos\'è Helm? Il Package Manager di Kubernetes' },
+      content: {
+        en: 'Deploying a production stack (e.g. WordPress + MySQL + Redis + Ingress) requires managing dozens of separate YAML files. **Helm** solves this by packaging everything into a single reusable bundle called a **Helm Chart** (like `npm` packages or `apt` on Linux):\n\n' +
+            '• **Helm Chart Structure**:\n' +
+            '  - `Chart.yaml`: Metadata (name, version, description).\n' +
+            '  - `values.yaml`: Default configuration variables (e.g. `replicaCount: 3`, `databasePort: 5432`).\n' +
+            '  - `templates/`: Dynamic YAML manifest templates populated by values.\n\n' +
+            '⌨️ **Essential Helm CLI Commands**:\n' +
+            '- Add repository: `helm repo add bitnami https://charts.bitnami.com/bitnami` \n' +
+            '- Install stack: `helm install my-release bitnami/wordpress` \n' +
+            '- List releases: `helm list` \n' +
+            '- Upgrade release: `helm upgrade my-release ./my-chart` \n' +
+            '- Rollback on failure: `helm rollback my-release 1` \n' +
+            '- Uninstall stack: `helm uninstall my-release`',
+        it: 'Distribuire uno stack di produzione (es. WordPress + MySQL + Redis + Ingress) richiede di gestire decine di file YAML separati. **Helm** risolve questo problema impacchettando tutto in un unico bundle riutilizzabile chiamato **Helm Chart** (proprio come i pacchetti `npm` o `apt` su Linux):\n\n' +
+            '• **Struttura di un Helm Chart**:\n' +
+            '  - `Chart.yaml`: Metadati del pacchetto (nome, versione, descrizione).\n' +
+            '  - `values.yaml`: Variabili di configurazione predefinite (es. `replicaCount: 3`, `databasePort: 5432`).\n' +
+            '  - `templates/`: Template dinamici YAML popolati dalle variabili di values.\n\n' +
+            '⌨️ **Comandi CLI Essenziali di Helm**:\n' +
+            '- Aggiungi repository: `helm repo add bitnami https://charts.bitnami.com/bitnami` \n' +
+            '- Installa stack: `helm install my-release bitnami/wordpress` \n' +
+            '- Elenca release: `helm list` \n' +
+            '- Aggiorna release: `helm upgrade my-release ./my-chart` \n' +
+            '- Rollback in caso di errori: `helm rollback my-release 1` \n' +
+            '- Disinstalla stack: `helm uninstall my-release` '
+      }
+    },
+    {
+      type: 'video',
+      title: { en: '📺 What is Helm in Kubernetes? Helm & Charts Explained', it: '📺 Cos\'è Helm in Kubernetes? Helm e gli Helm Chart spiegati' },
+      content: { en: 'TechWorld with Nana visually explains how Helm charts simplify complex deployments, templating, and release management.', it: 'TechWorld with Nana spiega visivamente come gli Helm Chart semplificano deployment complessi, templatizzazione e gestione delle release.' },
+      videoUrl: 'https://www.youtube.com/watch?v=yOb1s9-N1s4'
+    },
+    {
       type: 'game',
       title: { en: 'Certification Lab: The Helm Master', it: 'Lab di Certificazione: Il Maestro di Helm' },
       content: { en: 'Install the "enterprise-stack" chart using Helm. It will provision everything: Redis, the backend, and secrets.', it: 'Installa l\'helm chart "enterprise-stack". Configurerà tutto: Redis, il backend e i secret.' },

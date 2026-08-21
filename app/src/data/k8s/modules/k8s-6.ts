@@ -15,6 +15,12 @@ export const k8s6: Module = {
       content: { en: 'You should never hardcode passwords, API keys, or environment settings (like `NODE_ENV=production`) directly into your Docker images. If you do, anyone with the image has the password. Furthermore, a single image should be deployable to Dev, Staging, and Prod without modification. We need K8s objects to inject these vars dynamically.', it: 'Non dovresti mai inserire password, chiavi API o impostazioni di ambiente (come `NODE_ENV=production`) direttamente nelle tue immagini Docker. Se lo fai, chiunque abbia l\'immagine ha la password. Inoltre, una singola immagine dovrebbe essere distribuibile in Dev, Staging e Prod senza modifiche. Abbiamo bisogno degli oggetti K8s per iniettare queste variabili dinamicamente.' }
     },
     {
+      type: 'video',
+      title: { en: '📺 ConfigMaps and Secrets Explained', it: '📺 ConfigMap e Secret spiegati' },
+      content: { en: 'TechWorld with Nana provides a visual walkthrough of how ConfigMaps and Secrets decouple configuration data from container images.', it: 'TechWorld with Nana fornisce un\'analisi visiva di come ConfigMap e Secret disaccoppiano i dati di configurazione dalle immagini container.' },
+      videoUrl: 'https://www.youtube.com/watch?v=kYJ402X319A'
+    },
+    {
       type: 'concept',
       title: { en: '🗺️ ConfigMaps (The Safe Stuff)', it: '🗺️ ConfigMap (Le cose sicure)' },
       content: { en: 'A **ConfigMap** is a dictionary of plain-text key-value pairs. You use them to store non-sensitive data:\n- Language toggle: `LANG=en_US`\n- Application Port: `PORT=8080`\n- UI Theme: `THEME=dark`\n\nThese can be injected into your pods as Environment Variables or mounted as physical configuration files.', it: 'Una **ConfigMap** è un dizionario di coppie chiave-valore in chiaro. Le usi per memorizzare dati non sensibili:\n- Lingua: `LANG=it_IT`\n- Porta dell\'applicazione: `PORT=8080`\n- Tema UI: `THEME=dark`\n\nQueste possono essere iniettate nei tuoi pod come Variabili d\'Ambiente o montate come file di configurazione fisici.' }
@@ -23,6 +29,36 @@ export const k8s6: Module = {
       type: 'concept',
       title: { en: '🤫 Secrets (The Dangerous Stuff)', it: '🤫 Secret (Le cose pericolose)' },
       content: { en: 'A **Secret** is conceptually identical to a ConfigMap, but it is explicitly designed for sensitive data (Passwords, SSH keys, TLS certificates). \n\nBy default, secrets are stored as base64-encoded strings and are loaded only into the RAM (tmpfs) of the Worker Node, ensuring they aren\'t accidentally logged or saved to a physical hard drive.', it: 'Un **Secret** è concettualmente identico a una ConfigMap, ma è progettato esplicitamente per dati sensibili (password, chiavi SSH, certificati TLS). \n\nPer impostazione predefinita, i secret sono memorizzati come stringhe codificate in base64 e vengono caricati solo nella RAM (tmpfs) del Nodo Worker, assicurando che non vengano loggati accidentalmente o salvati su un disco rigido fisico.' }
+    },
+    {
+      type: 'code',
+      title: { en: 'Injecting a Secret into a Deployment', it: 'Iniettare un Secret in un Deployment' },
+      content: { en: 'Notice how sensitive data is stored in Base64 encoding in the Secret YAML manifest and referenced using `secretKeyRef`.', it: 'Nota come i dati sensibili sono codificati in Base64 nel manifesto YAML del Secret e richiamati con `secretKeyRef`.' },
+      code: `apiVersion: v1
+kind: Secret
+metadata:
+  name: db-secret
+type: Opaque
+data:
+  DB_PASSWORD: cGFzc3dvcmQxMjM= # Base64 for "password123"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  template:
+    spec:
+      containers:
+      - name: my-app
+        image: my-app:v1
+        env:
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: DB_PASSWORD`,
+      language: 'yaml'
     },
     {
       type: 'code',
