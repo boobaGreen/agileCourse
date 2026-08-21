@@ -26,14 +26,14 @@ export const docker6: Module = {
     {
       type: 'video',
       title: {
-        en: '📺 Docker Networking Explained (Bridge, Host & Ports)',
-        it: '📺 Il Networking in Docker Spiegato (Bridge, Host & Porte)'
+        en: '📺 Docker Port Mapping & Networking Explained (4 min)',
+        it: '📺 Mappatura Porte & Networking Docker in 4 Minuti'
       },
       content: {
-        en: 'A clear visual walkthrough of how Docker manages internal bridge networks and forwards host ports to containers.',
-        it: 'Una guida visiva su come Docker gestisce le reti bridge interne e inoltra le porte dall\'host ai container.'
+        en: 'A concise 4-minute visual guide explaining how Docker isolates containers and bridges ports to your host.',
+        it: 'Una guida visiva concisa di 4 minuti che spiega come Docker isola i container e collega le porte al tuo host.'
       },
-      videoUrl: 'https://www.youtube.com/watch?v=bKFMS5C4CG0'
+      videoUrl: 'https://www.youtube.com/watch?v=Fj7wO591z3U'
     },
     {
       type: 'concept',
