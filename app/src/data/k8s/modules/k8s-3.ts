@@ -102,17 +102,17 @@ export const k8s3: Module = {
           },
           {
             id: '3',
-            instruction: { en: 'Scale the `payment-api` deployment to 3 replicas to handle load', it: 'Scala il deployment `payment-api` a 3 repliche per gestire il carico' },
-            condition: 'REPLICAS:payment-api:3',
+            instruction: { en: 'Scale the `payment-api` deployment to 4 replicas to handle load', it: 'Scala il deployment `payment-api` a 4 repliche per gestire il carico' },
+            condition: 'REPLICAS:payment-api:4',
             hints: [
               { en: 'Use the `kubectl scale` command to change replica counts dynamically.', it: 'Usa il comando `kubectl scale` per modificare dinamicamente il numero di repliche.' },
-              { en: 'Specify `deployment/payment-api` with the `--replicas=3` flag.', it: 'Specifica `deployment/payment-api` con il flag `--replicas=3`.' },
-              { en: 'Run: `kubectl scale deployment/payment-api --replicas=3`', it: 'Esegui: `kubectl scale deployment/payment-api --replicas=3`' }
+              { en: 'Specify `deployment/payment-api` with the `--replicas=4` flag.', it: 'Specifica `deployment/payment-api` con il flag `--replicas=4`.' },
+              { en: 'Run: `kubectl scale deployment/payment-api --replicas=4`', it: 'Esegui: `kubectl scale deployment/payment-api --replicas=4`' }
             ]
           },
           {
             id: '4',
-            instruction: { en: 'Verify that 3 replicas are running in the cluster', it: 'Verifica che ci siano 3 pod attivi nel cluster' },
+            instruction: { en: 'Verify that 4 replicas are running in the cluster', it: 'Verifica che ci siano 4 pod attivi nel cluster' },
             condition: 'CMD_RAN:get pod',
             hints: [
               { en: 'Use `kubectl get` to list all running workloads in the cluster.', it: 'Usa `kubectl get` per elencare tutti i carichi di lavoro in esecuzione nel cluster.' },
