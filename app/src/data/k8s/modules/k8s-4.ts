@@ -15,10 +15,34 @@ export const k8s4: Module = {
       content: { en: 'As we saw, you should never create individual Pods manually. If a naked Pod crashes, it\'s gone forever. We want K8s to maintain a **desired state** (e.g. "I always want 3 copies of this app running"). We achieve this using a **Deployment**.', it: 'Come abbiamo visto, non dovresti mai creare singoli Pod manualmente. Se un Pod "nudo" crasha, è perso per sempre. Vogliamo che K8s mantenga uno **stato desiderato** (es. "Voglio sempre 3 copie di questa app in esecuzione"). Otteniamo questo risultato usando un **Deployment**.' }
     },
     {
-      type: 'video',
-      title: { en: '📺 Imperative vs Declarative in K8s', it: '📺 Imperativo vs Dichiarativo in K8s' },
-      content: { en: 'TechWorld with Nana provides a visual walkthrough of imperative kubectl commands vs declarative YAML manifests.', it: 'TechWorld with Nana fornisce un\'analisi visiva tra i comandi imperativi kubectl e i manifest dichiarativi YAML.' },
-      videoUrl: 'https://www.youtube.com/watch?v=F0f18tE9j1U'
+      type: 'concept',
+      title: { en: '⌨️ Imperative vs Declarative: Two Ways to Command K8s', it: '⌨️ Imperativo vs Dichiarativo: Due Modi per Comandare K8s' },
+      content: {
+        en: 'In Kubernetes, there are two distinct ways to manage your cluster workloads:\n\n' +
+            '• **🏃 Imperative Approach ("Tell K8s HOW to do it step-by-step")**:\n' +
+            '  - You execute direct terminal commands on the fly: `kubectl create deployment web --image=nginx`.\n' +
+            '  - **Pros**: Fast, great for ad-hoc tests, debugging, or quick experiments.\n' +
+            '  - **Cons**: Not version-controlled, non-repeatable, and hard to track in teams.\n\n' +
+            '• **📄 Declarative Approach ("Tell K8s WHAT you want in a YAML file")**:\n' +
+            '  - You declare the desired end-state in a YAML manifest and run: `kubectl apply -f deployment.yaml`.\n' +
+            '  - **Pros**: Version-controlled (GitOps), repeatable, self-documenting, and enforced 24/7 by K8s Controllers.\n' +
+            '  - **Cons**: Requires writing YAML files.\n\n' +
+            '💡 **The Pro "Dry-Run" Trick (Best of Both Worlds!)**:\n' +
+            'DevOps engineers don\'t write YAML from scratch! They use an imperative command to generate declarative YAML instantly:\n' +
+            '`kubectl create deployment web --image=nginx:1.24 --dry-run=client -o yaml > web-deployment.yaml`',
+        it: 'In Kubernetes esistono due modi distinti per gestire i carichi di lavoro del cluster:\n\n' +
+            '• **🏃 Approccio Imperativo ("Di\' a K8s COME fare le cose passo-passo")**:\n' +
+            '  - Esegui comandi diretti nel terminale al volo: `kubectl create deployment web --image=nginx`.\n' +
+            '  - **Vantaggi**: Velocissimo, ottimo per test estemporanei, debugging o esperimenti rapidi.\n' +
+            '  - **Svantaggi**: Non tracciato in Git, non ripetibile e difficile da gestire nei team.\n\n' +
+            '• **📄 Approccio Dichiarativo ("Di\' a K8s COSA vuoi in un file YAML")**:\n' +
+            '  - Dichiari lo stato finale desiderato in un manifesto YAML ed esegui: `kubectl apply -f deployment.yaml`.\n' +
+            '  - **Vantaggi**: Tracciato su Git (GitOps), ripetibile, auto-documentato e applicato 24/7 dai Controller di K8s.\n' +
+            '  - **Svantaggi**: Richiede di scrivere file YAML.\n\n' +
+            '💡 **Il Trucco del "Dry-Run" (Il meglio dei due mondi!)**:\n' +
+            'Gli ingegneri DevOps non scrivono il YAML da zero! Usano un comando imperativo per generare il YAML dichiarativo all\'istante:\n' +
+            '`kubectl create deployment web --image=nginx:1.24 --dry-run=client -o yaml > web-deployment.yaml`'
+      }
     },
     {
       type: 'concept',
