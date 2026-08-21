@@ -85,6 +85,40 @@ export const k8s9: Module = {
           }
         ]
       }
+    },
+    {
+      type: 'tip',
+      title: { en: '🎓 Congratulations! You Have Completed the Kubernetes Fundamentals!', it: '🎓 Complimenti! Hai Completato i Fondamentali di Kubernetes!' },
+      content: {
+        en: 'You now have a **solid, production-ready understanding** of Kubernetes. You can deploy apps with Deployments, expose them with Services, store config in ConfigMaps & Secrets, persist data with PV/PVC, debug with the K8s Debugging Trinity, and manage releases with Helm.\n\n' +
+            'This is more than enough to work effectively in any DevOps team. But the Kubernetes universe is vast — below are the advanced topics that await you in a **future deep-dive course**! 🚀',
+        it: 'Ora hai una **comprensione solida e pronta per la produzione** di Kubernetes. Sai distribuire app con i Deployment, esporle con i Service, gestire la configurazione con ConfigMap e Secret, persistere i dati con PV/PVC, fare debugging con la Trinità del Debug K8s e gestire le release con Helm.\n\n' +
+            'Questo è più che sufficiente per lavorare efficacemente in qualsiasi team DevOps. Ma l\'universo Kubernetes è vasto — qui sotto trovi gli argomenti avanzati che ti aspettano in un **futuro corso di approfondimento**! 🚀'
+      }
+    },
+    {
+      type: 'concept',
+      title: { en: '🔮 What\'s Next? Advanced K8s Topics for Your Next Course', it: '🔮 Cosa Viene Dopo? Argomenti K8s Avanzati per il Prossimo Corso' },
+      content: {
+        en: 'These topics go beyond the fundamentals and are typically required for the **CKA (Certified Kubernetes Administrator)** exam and enterprise-scale production clusters:\n\n' +
+            '• **🤖 HPA (Horizontal Pod Autoscaler)**: Automatically scale your replicas up/down based on real-time CPU/RAM metrics — no manual `kubectl scale` needed!\n\n' +
+            '• **👹 DaemonSets**: Guarantee that exactly ONE pod runs on EVERY worker node (used for log collectors like Fluentd or monitoring agents like Prometheus Node Exporter).\n\n' +
+            '• **⏰ Jobs & CronJobs**: Run one-shot tasks (database migrations, batch exports) or recurring scheduled tasks (nightly backups at 3 AM) inside the cluster.\n\n' +
+            '• **🔐 RBAC (Role-Based Access Control)**: Fine-grained security rules defining WHO can do WHAT on WHICH resources (e.g., "Developer X can only read pods in the `staging` namespace").\n\n' +
+            '• **🛡️ Network Policies**: The cluster\'s internal firewall. Block or allow traffic between specific pods/namespaces (e.g., "Only the `backend` pods can talk to the `database` pods").\n\n' +
+            '• **📦 Operators & Custom Resources (CRDs)**: Extend Kubernetes with your own custom object types and automated logic controllers.\n\n' +
+            '• **🔄 GitOps (ArgoCD / Flux)**: Automatically sync your cluster state from a Git repository — the gold standard for production CI/CD.\n\n' +
+            '• **📊 Monitoring Stack (Prometheus + Grafana)**: Real-time dashboards, alerting, and metrics collection for your entire cluster.',
+        it: 'Questi argomenti vanno oltre i fondamentali e sono tipicamente richiesti per l\'esame **CKA (Certified Kubernetes Administrator)** e per i cluster di produzione enterprise:\n\n' +
+            '• **🤖 HPA (Horizontal Pod Autoscaler)**: Scala automaticamente le repliche in base alle metriche CPU/RAM in tempo reale — senza bisogno di `kubectl scale` manuale!\n\n' +
+            '• **👹 DaemonSet**: Garantisce che esattamente UN pod giri su OGNI nodo worker (usato per log collector come Fluentd o agenti di monitoraggio come Prometheus Node Exporter).\n\n' +
+            '• **⏰ Jobs e CronJobs**: Esegui task singoli (migrazioni database, export batch) o task ricorrenti schedulati (backup notturni alle 3 di notte) dentro al cluster.\n\n' +
+            '• **🔐 RBAC (Role-Based Access Control)**: Regole di sicurezza granulari che definiscono CHI può fare COSA su QUALI risorse (es. "Lo sviluppatore X può solo leggere i pod nel namespace `staging`").\n\n' +
+            '• **🛡️ Network Policies**: Il firewall interno del cluster. Blocca o consenti il traffico tra pod/namespace specifici (es. "Solo i pod `backend` possono parlare con i pod `database`").\n\n' +
+            '• **📦 Operators e Custom Resources (CRDs)**: Estendi Kubernetes con i tuoi tipi di oggetti personalizzati e controller di logica automatizzati.\n\n' +
+            '• **🔄 GitOps (ArgoCD / Flux)**: Sincronizza automaticamente lo stato del cluster da un repository Git — lo standard di riferimento per CI/CD in produzione.\n\n' +
+            '• **📊 Stack di Monitoraggio (Prometheus + Grafana)**: Dashboard in tempo reale, alerting e raccolta metriche per l\'intero cluster.'
+      }
     }
   ],
   quiz: [
