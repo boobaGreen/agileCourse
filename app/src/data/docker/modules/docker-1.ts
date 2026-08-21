@@ -89,7 +89,7 @@ export const docker1: Module = {
       diagramSteps: [
         { label: { en: 'Dev Laptop\n(Messy Code)', it: 'Laptop Sviluppatore\n(Codice disordinato)' }, icon: '💻', color: '#118ab2' },
         { label: { en: 'Standard Docker Image\n(The Container)', it: 'Immagine Docker Standard\n(Il Container)' }, icon: '📦', color: '#ffb703' },
-        { label: { en: 'Cloud Servers\n(The Ship)', icon: '☁️', color: '#06d6a0' }, label_it: 'Server Cloud\n(La Nave)' },
+        { label: { en: 'Cloud Servers\n(The Ship)', it: 'Server Cloud\n(La Nave)' }, icon: '☁️', color: '#06d6a0' },
         { label: { en: 'Runs Exactly the Same\n(Delivery)', it: 'Esecuzione Identica\n(Consegna)' }, icon: '✅', color: '#118ab2' }
       ]
     },
