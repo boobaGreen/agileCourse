@@ -17,8 +17,8 @@ export const k8s4: Module = {
     {
       type: 'video',
       title: { en: '📺 Imperative vs Declarative in K8s', it: '📺 Imperativo vs Dichiarativo in K8s' },
-      content: { en: 'A concise visual breakdown comparing imperative kubectl commands (create/run) with declarative YAML manifests (apply).', it: 'Una sintetica spiegazione visiva del confronto tra i comandi imperativi kubectl (create/run) e i manifest dichiarativi YAML (apply).' },
-      videoUrl: 'https://www.youtube.com/watch?v=F01y4f8u-vE'
+      content: { en: 'TechWorld with Nana provides a visual walkthrough of imperative kubectl commands vs declarative YAML manifests.', it: 'TechWorld with Nana fornisce un\'analisi visiva tra i comandi imperativi kubectl e i manifest dichiarativi YAML.' },
+      videoUrl: 'https://www.youtube.com/watch?v=F0f18tE9j1U'
     },
     {
       type: 'concept',

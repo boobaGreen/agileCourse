@@ -179,20 +179,32 @@ export function SectionCard({ section, onCompleteGame }: { section: Section, onC
 
       {/* Video Content */}
       {section.type === 'video' && section.videoUrl && (
-        <div className="mt-4 aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl">
-          <iframe
-            className="w-full h-full"
-            src={(() => {
-              if (section.videoUrl.includes('playlist?list=')) {
-                return section.videoUrl.replace('youtube.com/playlist?list=', 'youtube.com/embed/videoseries?list=');
-              }
-              const match = section.videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
-              return match ? `https://www.youtube.com/embed/${match[1]}` : section.videoUrl;
-            })()}
-            title={resolveString(section.title) || 'Educational Video'}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+        <div className="mt-4 flex flex-col gap-2">
+          <div className="aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
+            <iframe
+              className="w-full h-full"
+              src={(() => {
+                if (section.videoUrl.includes('playlist?list=')) {
+                  return section.videoUrl.replace('youtube.com/playlist?list=', 'youtube.com/embed/videoseries?list=');
+                }
+                const match = section.videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+                return match ? `https://www.youtube.com/embed/${match[1]}` : section.videoUrl;
+              })()}
+              title={resolveString(section.title) || 'Educational Video'}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+          <div className="flex justify-end">
+            <a
+              href={section.videoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-red-500/20 text-white/70 hover:text-red-300 border border-white/10 hover:border-red-500/30 transition-all text-xs font-semibold"
+            >
+              ▶️ {resolveString({ en: 'Watch directly on YouTube', it: 'Guarda direttamente su YouTube' })} ↗
+            </a>
+          </div>
         </div>
       )}
 
