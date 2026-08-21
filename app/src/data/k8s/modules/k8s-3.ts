@@ -31,15 +31,19 @@ export const k8s3: Module = {
     },
     {
       type: 'concept',
-      title: { en: '⌨️ The kubectl CLI & Pod Naming', it: '⌨️ La CLI kubectl e i Nomi dei Pod' },
+      title: { en: '⌨️ The kubectl CLI & Key Flags', it: '⌨️ La CLI kubectl e i Flag Chiave' },
       content: {
         en: '`kubectl` (pronounced "kube-control") is the command line tool used to communicate with the API Server.\n\n' +
+            '📄 **What does the `-f` flag mean in `kubectl apply -f`?**\n' +
+            '`-f` stands for **filename** (or file). It tells `kubectl` to read and apply the Kubernetes configuration declared inside a specific YAML or JSON manifest file (e.g. `-f payment-api-deployment.yaml`).\n\n' +
             '💡 **Why names like `auth-service-7f9`?**\n' +
             'When Kubernetes creates Pods via a Deployment, it automatically appends a random unique hash suffix to the deployment name to distinguish individual Pod replicas (e.g., `auth-service-7f9` or `payment-api-89fbc`).\n\n' +
             'To run `describe`, `logs`, or `delete` on a specific pod:\n' +
             '1. Run `kubectl get pods` to see the active pod names.\n' +
             '2. Copy the exact generated pod name (e.g., `auth-service-7f9`) and use it in your command.',
         it: '`kubectl` (pronunciato "kube-control") è lo strumento a riga di comando usato per comunicare con l\'API Server.\n\n' +
+            '📄 **Cosa significa il flag `-f` in `kubectl apply -f`?**\n' +
+            '`-f` sta per **filename** (nome del file). Indica a `kubectl` di leggere ed applicare la configurazione dichiarata all\'interno di un file manifesto YAML o JSON specifico (es. `-f payment-api-deployment.yaml`).\n\n' +
             '💡 **Perché nomi come `auth-service-7f9`?**\n' +
             'Quando Kubernetes crea i Pod tramite un Deployment, aggiunge automaticamente un suffisso univoco casuale (hash) al nome del deployment per distinguere le singole istanze di Pod (es. `auth-service-7f9` o `payment-api-89fbc`).\n\n' +
             'Per eseguire `describe`, `logs` o `delete` su uno specifico pod:\n' +
@@ -57,7 +61,7 @@ export const k8s3: Module = {
           ['`kubectl get pods`', '`kubectl get pods`', { en: 'List all active pods with status and exact generated names', it: 'Elenca tutti i pod attivi con il loro stato e i nomi esatti generati' }],
           ['`kubectl describe pod [name]`', '`kubectl describe pod auth-service-7f9`', { en: 'Show detailed specs, IP, container images, and lifecycle events (replace with your pod name from `kubectl get pods`)', it: 'Mostra specifiche dettagliate, IP ed eventi di ciclo di vita (sostituisci col nome del tuo pod da `kubectl get pods`)' }],
           ['`kubectl logs [name]`', '`kubectl logs auth-service-7f9`', { en: 'View internal console stdout/stderr logs of the pod (replace with your pod name from `kubectl get pods`)', it: 'Visualizza i log di console stdout/stderr generati dal pod (sostituisci col nome del tuo pod da `kubectl get pods`)' }],
-          ['`kubectl apply -f [file.yaml]`', '`kubectl apply -f payment-api-deployment.yaml`', { en: 'Create or update resources specified inside a YAML manifest file', it: 'Crea o aggiorna le risorse definite all\'interno di un manifesto YAML' }],
+          ['`kubectl apply -f [file.yaml]`', '`kubectl apply -f payment-api-deployment.yaml`', { en: 'Create or update resources specified inside a YAML manifest file (-f = filename)', it: 'Crea o aggiorna le risorse definite in un file manifesto YAML (-f = filename / nome del file)' }],
           ['`kubectl scale deployment/[name] --replicas=[N]`', '`kubectl scale deployment/payment-api --replicas=3`', { en: 'Dynamically scale the number of running pod instances for a deployment', it: 'Scala dinamicamente il numero di istanze pod in esecuzione per un deployment' }],
           ['`kubectl delete pod [name]`', '`kubectl delete pod payment-api-89fbc`', { en: 'Destroy a specific pod (If managed by a Deployment, a replacement is automatically created!)', it: 'Elimina uno specifico pod (Se gestito da un Deployment, verrà ricreato automaticamente!)' }]
         ]
