@@ -5,7 +5,9 @@ export class DockerParser {
     // Sanitize input to remove accidental surrounding or trailing backticks/quotes
     const sanitizedCommand = command.trim().replace(/^[`'"]+|[`'"]+$/g, '');
     const parts = sanitizedCommand.split(/\s+/).map(p => p.replace(/^[`'"]+|[`'"]+$/g, ''));
-    const isCompose = parts[0] === 'docker-compose';
+    const isComposeHyphen = parts[0] === 'docker-compose';
+    const isComposeSpace = parts[0] === 'docker' && parts[1] === 'compose';
+    const isCompose = isComposeHyphen || isComposeSpace;
     const first = parts[0]?.toLowerCase();
 
     if (first === 'ls' || first === 'dir') {
@@ -42,8 +44,8 @@ export class DockerParser {
       return { success: false, out: `command not found: ${parts[0]}` };
     }
 
-    const subCommand = parts[1];
-    const args = parts.slice(2);
+    const subCommand = isComposeSpace ? parts[2] : parts[1];
+    const args = isComposeSpace ? parts.slice(3) : parts.slice(2);
 
     if (isCompose) {
         if (subCommand === 'up') {
@@ -59,7 +61,7 @@ export class DockerParser {
             engine.remove('db');
             return { success: true, out: 'Stopping web ... done\nStopping db ... done\nRemoving web ... done\nRemoving db ... done\nRemoving network default' };
         }
-        return { success: false, out: `Unknown compose command: ${subCommand}` };
+        return { success: false, out: `Unknown compose command: ${subCommand || ''}` };
     }
 
     switch (subCommand) {

@@ -39,8 +39,14 @@ export const docker2: Module = {
     },
     {
       type: 'concept',
-      title: '🍰 The Layer Cake Architecture',
-      content: 'Docker images are made of **layers**. Every command in a build process creates a new small layer. If you change your code but not your libraries, Docker only updates the code layer. This makes images incredibly fast to build and share over the network!'
+      title: {
+        en: '🍰 The Layer Cake Architecture',
+        it: '🍰 L\'Architettura a Layer'
+      },
+      content: {
+        en: 'Docker images are made of **layers**. Every command in a build process creates a new small layer. If you change your app code but not your dependencies, Docker only updates the code layer (assuming a well-structured Dockerfile where dependencies are cached first — detailed in Chapter 3!). This makes images incredibly fast to build and share over the network.',
+        it: 'Le immagini Docker sono composte da **layer**. Ogni comando in una build crea un nuovo layer. Se modifichi il codice dell\'app ma non le sue dipendenze, Docker aggiorna solo il layer del codice (assumendo una struttura ottimizzata dove le dipendenze sono in cache — approfondito nel Modulo 3!). Questo rende le build estremamente veloci.'
+      }
     },
     {
       type: 'animation',
@@ -234,31 +240,31 @@ export const docker2: Module = {
     {
       id: 'docker-2-q1',
       question: {
-        en: 'An Image is to a Container as a...',
-        it: 'Un\'Immagine sta a un Container come...'
+        en: 'Which software analogy best represents the fundamental relationship between a Docker Image and a Container?',
+        it: 'Quale analogia software rappresenta meglio la relazione fondamentale tra un\'Immagine Docker e un Container?'
       },
       options: [
         {
-          en: 'Physical computer is to a peripheral mouse',
-          it: 'Un computer fisico sta a un mouse periferico'
+          en: 'A physical network router is to a connected Ethernet cable',
+          it: 'Un router di rete fisico sta a un cavo Ethernet collegato'
         },
         {
-          en: 'Recipe is to a baked and ready-to-eat Pizza',
-          it: 'Una ricetta sta a una pizza sfornata e pronta da mangiare'
+          en: 'A Class definition (static blueprint) is to an instantiated Object (running instance) in OOP',
+          it: 'La definizione di una Classe (blueprint statico) sta a un Oggetto istanziato (istanza in esecuzione) in OOP'
         },
         {
-          en: 'Single file is to a nested project folder',
-          it: 'Un singolo file sta a una cartella di progetto nidificata'
+          en: 'A single text file is to a nested project directory',
+          it: 'Un singolo file di testo sta a una cartella di progetto nidificata'
         },
         {
-          en: 'Logged-in user is to an encrypted password',
-          it: 'Un utente connesso sta a una password crittografata'
+          en: 'An encrypted password is to a logged-in user profile',
+          it: 'Una password crittografata sta a un profilo utente connesso'
         }
       ],
       correct: 1,
       explanation: {
-        en: 'An image is a static template (recipe). A container is a live, running instance of that template (pizza).',
-        it: 'Un\'immagine è un template statico (ricetta). Un container è un\'istanza attiva e funzionante di quel template (pizza).'
+        en: 'Just like a Class defines the blueprint and properties of an Object, an Image is an immutable template. A Container is a live, executable instance of that Image.',
+        it: 'Proprio come una Classe definisce il blueprint e le proprietà di un Oggetto, un\'Immagine è un modello immutabile. Un Container è un\'istanza attiva ed eseguibile di quell\'Immagine.'
       }
     },
     {

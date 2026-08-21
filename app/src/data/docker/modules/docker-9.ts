@@ -90,8 +90,8 @@ export const docker9: Module = {
     {
       id: 'docker-9-q2',
       question: {
-        en: 'What is the correct instruction to copy a local file named "server.js" into the "/app" directory of the image during build?',
-        it: 'Qual è l\'istruzione corretta per copiare un file locale chiamato "server.js" nella directory "/app" dell\'immagine durante la build?'
+        en: 'What is the recommended best-practice instruction to copy simple local files (like "server.js") into the "/app" directory of the image during build?',
+        it: 'Qual è l\'istruzione consigliata (best practice) per copiare semplici file locali (come "server.js") nella directory "/app" dell\'immagine durante la build?'
       },
       options: [
         { en: 'ADD server.js /app', it: 'ADD server.js /app' },

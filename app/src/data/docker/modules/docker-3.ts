@@ -49,6 +49,17 @@ export const docker3: Module = {
       language: 'dockerfile'
     },
     {
+      type: 'tip',
+      title: {
+        en: '💡 Notice something about the Video Example?',
+        it: '💡 Hai notato un dettaglio nell\'esempio del Video?'
+      },
+      content: {
+        en: 'In this legacy example, the video copies the code (`ADD flask-app ...`) BEFORE running `npm install`. This works, but it means any code edit invalidates the cache for `npm install`! In the next section, we will learn how optimizing this order makes your builds 100x faster.',
+        it: 'In questo esempio di riferimento del video, il codice viene copiato (`ADD flask-app ...`) PRIMA dell\'esecuzione di `npm install`. Funziona, ma significa che qualsiasi modifica al codice annulla la cache di `npm install`! Nella sezione seguente impareremo come ottimizzare questo ordine per rendere le build 100 volte più veloci.'
+      }
+    },
+    {
       type: 'table',
       title: {
         en: '🛠️ Core Instructions Reference',
@@ -126,8 +137,8 @@ export const docker3: Module = {
         it: '⚡ Capire la Cache di Build (L\'Analogia dei LEGO)'
       },
       content: {
-        en: 'Docker builds images sequentially. To save time, it **caches** each layer. If you change a file, Docker cannot reuse the cache for that step and must rebuild it **AND all steps after it** (the cascade effect).\n\n🧱 **The LEGO Tower Analogy:**\nImagine building a LEGO tower. Each line in your `Dockerfile` is a brick. If you need to swap a brick in the *middle* of the tower, you have to take off and rebuild every single brick *above it*.\n\nTo make builds fast, we place bricks that change often (like source code) at the **very top** of the tower, and bricks that change rarely (like library installation) at the **bottom**.',
-        it: 'Docker compila le immagini in sequenza. Per risparmiare tempo, salva ogni layer in **cache**. Se modifichi un file, Docker non può riutilizzare la cache per quel passaggio ed è costretto a ricostruire da zero quel passaggio **E tutti quelli successivi** (effetto a cascata).\n\n🧱 **L\'Analogia della Torre LEGO:**\nImmagina di costruire una torre LEGO. Ogni istruzione nel tuo `Dockerfile` è un mattoncino. Se devi sostituire un mattoncino nel *mezzo* della torre, devi rimuovere e ricostruire ogni singolo mattoncino posizionato *sopra di esso*.\n\nPer velocizzare la build, posizioniamo i mattoncini che cambiano spesso (come il codice sorgente) in **cima** alla torre, e i mattoncini che cambiano raramente (come l\'installazione delle librerie) in **basso**.'
+        en: 'Docker builds images sequentially from line 1 to the end. To save time, it **caches** each layer. If you change a file, Docker cannot reuse the cache for that step and must rebuild it **AND all steps after it** (the cascade effect).\n\n🧱 **The LEGO Tower Analogy:**\nImagine building a LEGO tower from the ground up. Each line in your `Dockerfile` is a brick laid in sequence. If you need to swap a brick in the *middle* of the tower, you have to take off and rebuild every single brick *above/after it*.\n\nTo make builds fast in a `Dockerfile`, we place instructions that change rarely (like base OS and library installation) at the **top/beginning of the file** (the foundation bricks), and instructions that change often (like source code) at the **bottom/end of the file** (the top bricks).',
+        it: 'Docker compila le immagini in sequenza dalla prima riga fino alla fine. Per risparmiare tempo, salva ogni layer in **cache**. Se modifichi un file, Docker non può riutilizzare la cache per quel passaggio ed è costretto a ricostruire da zero quel passaggio **E tutti quelli successivi** (effetto a cascata).\n\n🧱 **L\'Analogia della Torre LEGO:**\nImmagina di costruire una torre LEGO dal basso verso l\'alto. Ogni riga del `Dockerfile` è un mattoncino posizionato in sequenza. Se devi sostituire un mattoncino nel *mezzo* della torre, devi rimuovere e ricostruire ogni singolo mattoncino posizionato *sopra/dopo di esso*.\n\nPer velocizzare le build nel `Dockerfile`, posizioniamo le istruzioni che cambiano raramente (come l\'OS di base e le librerie) in **alto/all\'inizio del file** (i mattoncini di base), e le istruzioni che cambiano spesso (come il codice sorgente) in **basso/alla fine del file** (i mattoncini in cima).'
       }
     },
     {

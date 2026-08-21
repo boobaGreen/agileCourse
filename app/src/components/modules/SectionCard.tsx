@@ -15,6 +15,42 @@ import { GitLabs } from './simulations/GitLabs'
 
 import { useLanguage } from '../../contexts/LanguageContext'
 
+function renderInlineMarkdown(text: string, keyPrefix: string = 'md') {
+  if (!text) return text
+  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\)|https?:\/\/[^\s)]+)/g)
+  return parts.map((part, pi) => {
+    const key = `${keyPrefix}-${pi}`
+    const codeMatch = part.match(/^`(.*?)`$/)
+    if (codeMatch) {
+      return (
+        <code key={key} className="mono text-xp bg-white/10 px-1.5 py-0.5 rounded text-[0.85em] font-semibold border border-white/10">
+          {codeMatch[1]}
+        </code>
+      )
+    }
+    const boldMatch = part.match(/^\*\*(.*?)\*\*$/)
+    if (boldMatch) {
+      return <strong key={key} className="text-white fw-black">{boldMatch[1]}</strong>
+    }
+    const mdMatch = part.match(/^\[(.*?)\]\((.*?)\)$/)
+    if (mdMatch) {
+      return (
+        <a key={key} href={mdMatch[2]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1 font-semibold">
+          {mdMatch[1]} ↗
+        </a>
+      )
+    }
+    if (/^https?:\/\//.test(part)) {
+      return (
+        <a key={key} href={part} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline break-all">
+          {part}
+        </a>
+      )
+    }
+    return <Fragment key={key}>{part}</Fragment>
+  })
+}
+
 export function SectionCard({ section, onCompleteGame }: { section: Section, onCompleteGame: (title: string) => void }) {
   const { resolveString } = useLanguage()
   const icons: Record<string, ElementType> = {
@@ -38,7 +74,7 @@ export function SectionCard({ section, onCompleteGame }: { section: Section, onC
       {section.title && (
         <div className="flex items-center gap-2 mb-3">
           <Icon size={16} className={`text-${section.type === 'code' ? 'git' : section.type === 'intro' ? 'blue-400' : 'purple-400'}`} />
-          <h3 className="fw-bold text-white text-sm">{resolveString(section.title)}</h3>
+          <h3 className="fw-bold text-white text-sm">{renderInlineMarkdown(resolveString(section.title), 'stitle')}</h3>
         </div>
       )}
       
@@ -66,22 +102,10 @@ export function SectionCard({ section, onCompleteGame }: { section: Section, onC
                             </a>
                          )
                       }
-                      return <span key={pi}>{part}</span>;
+                      return <span key={pi}>{renderInlineMarkdown(part, `p-${i}-${pi}`)}</span>;
                    })}
                 </div>
-             ) : cleanLine.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\)|https?:\/\/[^\s)]+)/g).map((part: string, pi: number) => {
-                 const boldMatch = part.match(/^\*\*(.*?)\*\*$/)
-                 if (boldMatch) return <strong key={`${pi}-${i}`} className="text-white fw-black">{boldMatch[1]}</strong>
-                 
-                 const mdMatch = part.match(/^\[(.*?)\]\((.*?)\)$/)
-                 if (mdMatch) {
-                    return <a key={`${pi}-${i}`} href={mdMatch[2]} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">{mdMatch[1]} ↗</a>
-                 }
-                 if (/^https?:\/\//.test(part)) {
-                    return <a key={`${pi}-${i}`} href={part} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline break-all">{part}</a>
-                 }
-                 return <Fragment key={`${pi}-${i}`}>{part}</Fragment>
-             })}
+             ) : renderInlineMarkdown(cleanLine, `line-${i}`)}
           </div>
         )
       })}
@@ -120,7 +144,7 @@ export function SectionCard({ section, onCompleteGame }: { section: Section, onC
               <thead>
                 <tr className="border-b border-white/10 bg-white/5">
                   {section.tableData.headers.map((h, i) => (
-                    <th key={i} className="p-3 text-[10px] fw-black text-white uppercase tracking-wider">{resolveString(h)}</th>
+                    <th key={i} className="p-3 text-[10px] fw-black text-white uppercase tracking-wider">{renderInlineMarkdown(resolveString(h), `th-${i}`)}</th>
                   ))}
                 </tr>
               </thead>
@@ -128,7 +152,7 @@ export function SectionCard({ section, onCompleteGame }: { section: Section, onC
                 {section.tableData.rows.map((row, ri) => (
                   <tr key={ri} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors last:border-0">
                     {row.map((cell, ci) => (
-                      <td key={ci} className="p-3 text-xs text-sub leading-relaxed">{resolveString(cell)}</td>
+                      <td key={ci} className="p-3 text-xs text-sub leading-relaxed">{renderInlineMarkdown(resolveString(cell), `td-${ri}-${ci}`)}</td>
                     ))}
                   </tr>
                 ))}

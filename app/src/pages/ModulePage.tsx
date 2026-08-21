@@ -298,7 +298,7 @@ export default function ModulePage() {
         )}
 
         {view === 'result' && quizData.length > 0 && (
-          <motion.div key="result" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="w-full max-w-3xl mx-auto">
+          <motion.div key="result" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="w-full">
             <div className="score-banner mb-8">
               <div className="text-6xl mb-4">{scorePct === 100 ? '👑' : scorePct >= 70 ? '🌟' : '📚'}</div>
               <h2 className="text-4xl fw-black text-white mb-2">{scorePct}% Score</h2>
