@@ -16,8 +16,8 @@ export const k8s7: Module = {
     },
     {
       type: 'video',
-      title: { en: '📺 Kubernetes Storage Explained', it: '📺 L\'archiviazione in Kubernetes spiegata' },
-      content: { en: 'Understand why the PV and PVC objects are intentionally separated.', it: 'Capisci perché gli oggetti PV e PVC sono intenzionalmente separati.' },
+      title: { en: '📺 Kubernetes Storage Explained: PV, PVC & StorageClass', it: '📺 L\'archiviazione in Kubernetes spiegata: PV, PVC e StorageClass' },
+      content: { en: 'Understand why PV, PVC, and StorageClass objects are intentionally separated.', it: 'Capisci perché gli oggetti PV, PVC e StorageClass sono intenzionalmente separati.' },
       videoUrl: 'https://www.youtube.com/watch?v=0swOh5C3OVM'
     },
     {
@@ -34,11 +34,88 @@ export const k8s7: Module = {
       type: 'flowchart',
       content: { en: '**Separation of Concerns: DevOps vs Devs**', it: '**Separazione delle responsabilità: DevOps vs Dev**' },
       diagramSteps: [
-        { label: { en: 'Cloud Admin\nCreates PV (100GB Disk)', it: 'Cloud Admin\nCrea PV (Disco 100GB)' }, icon: '☁️', color: '#118ab2' },
-        { label: { en: 'Kubernetes\n(Binding Layer)', it: 'Kubernetes\n(Livello di Binding)' }, icon: '🤝', color: '#ffb703' },
+        { label: { en: 'Cloud Admin\nCreates StorageClass / PV', it: 'Cloud Admin\nCrea StorageClass / PV' }, icon: '☁️', color: '#118ab2' },
+        { label: { en: 'Kubernetes\n(Binding & Provisioning)', it: 'Kubernetes\n(Binding e Provisioning)' }, icon: '🤝', color: '#ffb703' },
         { label: { en: 'Developer\nRequests PVC (10GB)', it: 'Sviluppatore\nRichiede PVC (10GB)' }, icon: '📝', color: '#06d6a0' },
         { label: { en: 'Pod\nMounts PVC', it: 'Pod\nMonta PVC' }, icon: '🫛', color: '#06d6a0' }
       ]
+    },
+    {
+      type: 'concept',
+      title: { en: '🏷️ StorageClass & Dynamic Provisioning', it: '🏷️ StorageClass e Provisioning Dinamico' },
+      content: {
+        en: `Creating physical Persistent Volumes (PVs) manually in advance is called **Static Provisioning**. But what if 100 developers request storage at midnight? The cluster admin would have to manually create 100 cloud disks!\n\n` +
+            `This is where **StorageClass** comes in:\n` +
+            `• A **StorageClass** defines a "profile" or template for storage (e.g. \`fast-ssd\`, \`slow-hdd\`, \`gp3-aws\`).\n` +
+            `• **Dynamic Provisioning**: When a developer creates a PVC specifying a \`storageClassName\`, Kubernetes automatically calls the Cloud Provider API (AWS, Azure, GCP) to create a new physical PV on-the-fly and binds it immediately!\n\n` +
+            `💡 **Analogy**: If PV is a pre-built hotel room, a **StorageClass is an automated building contractor** that constructs a custom room automatically the moment a guest makes a reservation!`,
+        it: `Creare i Persistent Volume (PV) fisici manualmente in anticipo si chiama **Provisioning Statico**. Ma cosa succede se 100 sviluppatori richiedono storage a mezzanotte? L'amministratore dovrebbe creare 100 dischi cloud a mano!\n\n` +
+            `Ecco a cosa serve la **StorageClass**:\n` +
+            `• Una **StorageClass** definisce un "profilo" o modello di storage (es. \`fast-ssd\`, \`slow-hdd\`, \`gp3-aws\`).\n` +
+            `• **Provisioning Dinamico**: Quando uno sviluppatore crea un PVC specificando una \`storageClassName\`, Kubernetes chiama automaticamente le API del Cloud Provider (AWS, Azure, GCP) per creare un nuovo PV fisico sul momento e collegarlo all'istante!\n\n` +
+            `💡 **Analogia**: Se il PV è una stanza d'albergo già costruita, la **StorageClass è un'impresa edile automatizzata** che costruisce una stanza su misura all'istante non appena il cliente effettua la prenotazione!`
+      }
+    },
+    {
+      type: 'code',
+      title: { en: 'YAML Manifest: StorageClass & Dynamic PVC Request', it: 'Manifesto YAML: StorageClass e Richiesta PVC Dinamica' },
+      language: 'yaml',
+      code: `apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: fast-ssd
+provisioner: kubernetes.io/aws-ebs  # Cloud infrastructure driver
+parameters:
+  type: gp3
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: database-pvc
+spec:
+  storageClassName: fast-ssd  # Triggers dynamic creation of a 20GB gp3 disk
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi`,
+      content: {
+        en: `When this PVC is applied, Kubernetes communicates with AWS to provision a 20Gi gp3 disk automatically without any admin intervention.`,
+        it: `Quando questo PVC viene applicato, Kubernetes comunica con AWS per allocare automaticamente un disco gp3 da 20Gi senza alcun intervento manuale dell'amministratore.`
+      }
+    },
+    {
+      type: 'table',
+      title: { en: '📊 Storage Trio: PV vs PVC vs StorageClass', it: '📊 Il Trio dello Storage: PV vs PVC vs StorageClass' },
+      content: { en: 'Summary comparison of Kubernetes storage primitives:', it: 'Sintesi comparativa delle primitive di storage in Kubernetes:' },
+      tableData: {
+        headers: [
+          { en: 'Resource', it: 'Risorsa' },
+          { en: 'Role & Responsibility', it: 'Ruolo e Responsabilità' },
+          { en: 'Who Creates It?', it: 'Chi lo Crea?' },
+          { en: 'Real-World Analogy', it: 'Analogia nel Mondo Reale' }
+        ],
+        rows: [
+          [
+            { en: '**PersistentVolume (PV)**', it: '**PersistentVolume (PV)**' },
+            { en: 'The actual physical cloud storage disk', it: 'Il disco di storage cloud fisico reale' },
+            { en: 'Cloud Admin or StorageClass', it: 'Cloud Admin o StorageClass' },
+            { en: 'Hotel Room', it: 'Stanza d\'Albergo' }
+          ],
+          [
+            { en: '**PersistentVolumeClaim (PVC)**', it: '**PersistentVolumeClaim (PVC)**' },
+            { en: 'Request ticket for storage by a Pod', it: 'Ticket di richiesta storage da parte di un Pod' },
+            { en: 'Application Developer', it: 'Sviluppatore App' },
+            { en: 'Reservation Ticket', it: 'Biglietto di Prenotazione' }
+          ],
+          [
+            { en: '**StorageClass**', it: '**StorageClass**' },
+            { en: 'Blueprint for dynamic on-demand volume creation', it: 'Modello per la creazione dinamica di volumi su richiesta' },
+            { en: 'Infrastructure Admin', it: 'Amministratore Infrastruttura' },
+            { en: 'Automated Building Contractor', it: 'Impresa Edile Automatizzata' }
+          ]
+        ]
+      }
     },
     {
       type: 'tip',
@@ -125,6 +202,18 @@ export const k8s7: Module = {
       ],
       correct: 0,
       explanation: { en: 'The PersistentVolumeClaim (PVC) is the abstract request ticket submitted by the developer. The PersistentVolume (PV) is the actual storage volume provided by cluster administrators.', it: 'Il PersistentVolumeClaim (PVC) è il ticket di richiesta astratto inviato dallo sviluppatore. Il PersistentVolume (PV) è il volume di storage reale fornito dagli amministratori del cluster.' }
+    },
+    {
+      id: 'k8s-7-q4',
+      question: { en: 'What is the main role of a StorageClass in Kubernetes storage architecture?', it: 'Qual è il ruolo principale di una StorageClass nell\'architettura di storage di Kubernetes?' },
+      options: [
+        { en: 'It automatically encrypts all database passwords before saving them to disk', it: 'Cifra automaticamente tutte le password del database prima di salvarle su disco' },
+        { en: 'It enables Dynamic Provisioning, allowing Kubernetes to automatically create physical PV volumes on-demand when a PVC is requested.', it: 'Abilita il Provisioning Dinamico, permettendo a Kubernetes di creare automaticamente volumi PV fisici su richiesta quando viene creato un PVC.' },
+        { en: 'It compresses raw video files before uploading them to Amazon S3 buckets', it: 'Comprime i file video prima di caricarli su bucket Amazon S3' },
+        { en: 'It replaces Docker images with lightweight WebAssembly binaries', it: 'Sostituisce le immagini Docker con binari WebAssembly leggeri' }
+      ],
+      correct: 1,
+      explanation: { en: 'StorageClass acts as a blueprint for storage. With dynamic provisioning, administrators do not need to pre-create Persistent Volumes (PVs) manually; Kubernetes creates them on-the-fly via cloud provider APIs.', it: 'La StorageClass agisce come modello per lo storage. Con il provisioning dinamico, gli amministratori non devono creare i Persistent Volume (PV) a mano in anticipo; Kubernetes li crea al volo tramite le API dei cloud provider.' }
     }
   ]
 }
