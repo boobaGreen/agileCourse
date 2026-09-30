@@ -3,6 +3,8 @@ import type { LocalizedString } from '../types';
 export interface CheatsheetCommand {
   command: string;
   description: LocalizedString;
+  visualType?: string;
+  visualHighlight?: string;
   example?: string;
   output?: string;
 }

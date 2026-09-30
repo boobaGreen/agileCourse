@@ -12,52 +12,39 @@ Experience the platform here: **[https://agile.claudiodallara.it/](https://agile
 
 Custom-built state engines that track infrastructure changes:
 
-- **Git Simulator**: Visualizes the DAG (Directed Acyclic Graph), branching, and merging logic in real-time.
+- **Git Simulator**: Visualizes the DAG (Directed Acyclic Graph), branching, merging, and rebase logic in real-time.
 - **Docker Simulator**: Tracks image layers, container lifecycles, named volumes, and virtual bridge networks.
-- **Kubernetes Simulator**: Simulates a live cluster topology including Nodes, Pods, Deployments, Services (LoadBalancers), ConfigMaps, and Persistent Storage.
+- **Kubernetes Simulator**: Simulates a live cluster topology including Nodes, Pods, Deployments, Services (LoadBalancers), ConfigMaps, Secrets, Persistent Storage (PV/PVC/StorageClass), and Helm.
 
-### 🎨 Premium Visualizers
+### 📚 Dedicated Interactive Cheat Sheets
+
+Complete CLI quick-reference guides for all three DevOps tracks:
+
+- **Git Cheat Sheet**: Interactive visual diagrams (DAG, area flow, remote sync, timeline), usage examples, and expected terminal outputs.
+- **Docker Cheat Sheet**: Command reference covering containers, image building, volume storage, bridge networks, Compose, and system maintenance.
+- **Kubernetes Cheat Sheet**: Comprehensive `kubectl` cheat sheet covering Pods, Deployments, Services, ConfigMaps, Secrets, PV/PVCs, and cluster diagnostics.
+- **Multi-Track Navigation**: Seamlessly switch between Git, Docker, and K8s cheatsheets via top tabs or dedicated sidebar shortcuts.
+
+### 🎨 Premium Visualizers & UI
 
 State-of-the-art UI components that react to every command:
 
-- **Cluster Topology**: See Pods being scheduled, scaled, and auto-healed.
+- **Cluster Topology**: See Pods being scheduled, scaled, auto-healed, and exposed.
 - **Infrastructure Overlays**: View networking connections and storage bindings with modern iconography and smooth animations (Framer Motion).
-- **Gamified Feedback**: An integrated XP system that rewards students for completing tasks and conquering certification challenges.
+- **Gamified Feedback & Stats**: An integrated XP system, unlocked badges, career roadmap milestones, interactive radar chart analytics, and 1-year activity heatmap.
 
 ### 🌍 Multi-language Support (i18n)
 
-The platform is fully localized to support a global audience:
+The platform is fully localized:
 - **English**: Default international language for DevOps professionals.
-- **Italiano**: Native support for Italian students and teams.
+- **Italiano**: Full native support for Italian students and teams.
 - **Dynamic Switching**: Toggle languages instantly without page reloads using the integrated language switcher.
+
+---
 
 ## 🚀 Detailed Curriculum (Modules)
 
-### 🐳 Docker Track (9 Modules)
-
-1. **L'Inizio del Viaggio**: Basi di Docker e containerizzazione.
-2. **Primi Passi**: Terminale e gestione dei container (start/stop/rm).
-3. **Build & Run**: Creazione di Dockerfile e gestione dei cicli di vita.
-4. **Immagini & Registry**: Tagging, versionamento e push su Docker Hub.
-5. **Persistenza & Volumi**: Gestione dei dati oltre il ciclo di vita del container.
-6. **Network & Orchestrazione**: Reti bridge e comunicazione tra container.
-7. **Docker Compose**: Orchestrazione multi-container (Web + DB).
-8. **Lab Arena**: Playground libero per esercitarsi in sicurezza.
-9. **Sicurezza & Best Practices**: Ottimizzazione immagini e final quiz.
-
-### ☸️ Kubernetes Track (9 Modules)
-
-1. **Benvenuti su K8s**: Storia e utilità dell'orchestratore.
-2. **Il Cervello (Architecture)**: Control Plane, Nodi e Kubelet.
-3. **Deploy & Scaling**: Scheduling di Pod e replica sets.
-4. **Self-Healing**: Auto-ripristino dei pod e strategie di rollout.
-5. **Networking (Services)**: Ingress, LoadBalancer e DNS interno.
-6. **Config & Secrets**: ConfigMaps e gestione dati sensibili.
-7. **Persistence (PV/PVC)**: Binding dinamico dello storage.
-8. **Cluster Playground**: Sandbox per testare scenari reali.
-9. **Helm & Certification**: Package management e sfida finale.
-
-### 🌿 Git Track (11 Modules)
+### 🔴 Git Track (11 Modules)
 
 1. **L'Origine**: Installazione e workflow locale.
 2. **Commit & History**: La macchina del tempo di Git.
@@ -71,6 +58,30 @@ The platform is fully localized to support a global audience:
 10. **Games Hub**: Mini-giochi interattivi ispirati a "Oh My Git!".
 11. **Final Challenge**: Sfida di certificazione per il comando Git.
 
+### 🐳 Docker Track (7 Modules)
+
+1. **L'Inizio del Viaggio**: Basi di Docker e containerizzazione.
+2. **Primi Passi**: Terminale e gestione dei container (`start`/`stop`/`rm`).
+3. **Build & Run**: Creazione di Dockerfile e gestione dei cicli di vita.
+4. **Immagini & Registry**: Tagging, versionamento e push su Docker Hub.
+5. **Persistenza & Volumi**: Gestione dei dati oltre il ciclo di vita del container.
+6. **Network & Orchestrazione**: Reti bridge e comunicazione tra container.
+7. **Docker Compose**: Orchestrazione multi-container (Web + DB).
+
+### ☸️ Kubernetes Track (9 Modules)
+
+1. **Benvenuti su K8s**: Storia e utilità dell'orchestratore.
+2. **Il Cervello (Architecture)**: Control Plane, Nodi e Kubelet.
+3. **Deploy & Scaling**: Scheduling di Pod e replica sets.
+4. **Self-Healing**: Auto-ripristino dei pod e strategie di rollout.
+5. **Networking (Services)**: Ingress, LoadBalancer e DNS interno.
+6. **Config & Secrets**: ConfigMaps (Volume live reload vs ENV) e dati sensibili.
+7. **Persistence (PV/PVC)**: Binding dinamico dello storage e StorageClass.
+8. **Hands-on Labs: Playground**: Sandbox per testare scenari reali e Debugging Trinity.
+9. **Final K8s Challenge**: Package management con Helm e Certificazione finale.
+
+---
+
 ## 💻 Technology Stack
 
 - **Framework**: [React 19](https://react.dev/) with [TypeScript](https://www.typescriptlang.org/)
@@ -80,6 +91,8 @@ The platform is fully localized to support a global audience:
 - **State Management**: [Zustand](https://github.com/pmndrs/zustand)
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **Deployment**: [Vercel](https://vercel.com/) / Static Hosting
+
+---
 
 ## 🚀 Getting Started
 
@@ -118,6 +131,8 @@ Generate the optimized production bundle:
 ```bash
 npm run build
 ```
+
+---
 
 ## 📖 License
 

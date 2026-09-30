@@ -1,6 +1,6 @@
 import type { LocalizedString } from '../types';
 
-export type VisualType = 'area-flow' | 'branch-graph' | 'remote-sync' | 'timeline' | 'undo-op';
+export type VisualType = 'area-flow' | 'branch-graph' | 'remote-sync' | 'timeline' | 'undo-op' | string;
 
 export interface CheatsheetCommand {
   command: string;
