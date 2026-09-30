@@ -19,7 +19,7 @@ export default function ModulePage() {
   const { resolveString } = useLanguage()
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { completedModules, completeModule, saveQuizScore, addXP, awardBadge } = useAppStore()
+  const { completedModules, completedMissions, completeModule, saveQuizScore, completeLab, claimMission, awardBadge } = useAppStore()
 
   // --- STATE HOOKS (Must be at top level) ---
   const [view, setView] = useState<'theory' | 'quiz' | 'result'>('theory')
@@ -63,11 +63,9 @@ export default function ModulePage() {
     if (!mod || quizData.length === 0) return
     const correctCount = quizData.filter((q) => quizAnswers[q.id] === q.shuffledCorrect).length
     const scorePct = Math.round((correctCount / quizData.length) * 100)
-    const bonus = scorePct === 100 ? 100 : 0
-    const earned = correctCount * 10 + bonus
     
-    saveQuizScore(mod.id, correctCount)
-    addXP(earned)
+    // saveQuizScore awards XP ONCE and returns the actual XP earned
+    const earned = saveQuizScore(mod.id, correctCount, quizData.length)
     setXpEarned(earned)
     setSubmitted(true)
     setView('result')
@@ -80,10 +78,11 @@ export default function ModulePage() {
         colors: ['#06d6a0', '#ffb703', '#118ab2', '#ff4b4b']
       })
     }
-  }, [mod, quizData, quizAnswers, saveQuizScore, addXP])
+  }, [mod, quizData, quizAnswers, saveQuizScore])
 
   const handleInternalGameComplete = useCallback((moduleId: string, gameTitle: string) => {
-    addXP(50)
+    const labId = `${moduleId}:${gameTitle}`
+    completeLab(labId, 25)
     
     // Dynamic badges for specific lab completions
     if (moduleId === 'git-6') {
@@ -92,9 +91,7 @@ export default function ModulePage() {
     if (moduleId === 'git-8') {
       awardBadge({ id: 'git-destructive', emoji: '🛡️', title: 'Safety First', description: 'Mastered Reset and Revert safety' })
     }
-    
-    console.log(`Lab Completed: ${gameTitle} in ${moduleId}`)
-  }, [addXP, awardBadge])
+  }, [completeLab, awardBadge])
 
   const handleCompleteTheory = () => {
     if (!mod) return
@@ -116,7 +113,7 @@ export default function ModulePage() {
     }
 
     if (!completedModules.includes(mod.id)) {
-      completeModule(mod.id)
+      completeModule(mod.id, mod.xpReward)
       
       // Track milestones and Badges
       if (mod.id === 'git-1') awardBadge({ id: 'git-seedling', emoji: '🌱', title: 'Git Seedling', description: 'Completed your first Git module' })
@@ -127,7 +124,7 @@ export default function ModulePage() {
       if (mod.id === 'docker-9') awardBadge({ id: 'docker-harbor', emoji: '⚓', title: 'Harbor Master', description: 'Completed all Docker modules' })
       
       if (mod.id === 'k8s-1') awardBadge({ id: 'k8s-deck', emoji: '☸️', title: 'Deck Hand', description: 'Completed your first K8s module' })
-      if (mod.id === 'k8s-11') awardBadge({ id: 'k8s-helmsman', emoji: '🎖️', title: 'The Helmsman', description: 'Completed all K8s modules' })
+      if (mod.id === 'k8s-9') awardBadge({ id: 'k8s-helmsman', emoji: '🎖️', title: 'The Helmsman', description: 'Completed all K8s modules' })
     }
 
     const trackModules = mod.track === 'git' ? GIT_MODULES : mod.track === 'docker' ? DOCKER_MODULES : K8S_MODULES
@@ -230,8 +227,20 @@ export default function ModulePage() {
                     Launch {resolveString(mod.externalLink.label)} <ExternalLink size={14} />
                   </a>
                   <div className="flex gap-2 flex-1">
-                    <input type="number" placeholder="Report level achieved..." value={xpImport} onChange={(e) => setXpImport(e.target.value)} className="flex-1 bg-surface2 border border-border p-3 rounded-xl text-white outline-none" />
-                    <button onClick={() => { if(xpImport) { addXP(parseInt(xpImport)*5); setXpImport('') } }} className="btn btn-primary">Claim</button>
+                    <input type="number" placeholder="Report level achieved..." value={xpImport} onChange={(e) => setXpImport(e.target.value)} disabled={completedMissions?.includes(mod.id)} className="flex-1 bg-surface2 border border-border p-3 rounded-xl text-white outline-none disabled:opacity-40" />
+                    <button 
+                      onClick={() => { 
+                        if (xpImport && !completedMissions?.includes(mod.id)) { 
+                          const amt = Math.min(200, Math.max(25, parseInt(xpImport) * 5))
+                          const success = claimMission(mod.id, amt)
+                          if (success) setXpImport('') 
+                        } 
+                      }} 
+                      disabled={completedMissions?.includes(mod.id)}
+                      className="btn btn-primary disabled:opacity-40"
+                    >
+                      {completedMissions?.includes(mod.id) ? 'Claimed ✓' : 'Claim'}
+                    </button>
                   </div>
                 </div>
               </div>

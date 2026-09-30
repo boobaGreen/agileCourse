@@ -1,8 +1,9 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Sparkles, CheckCircle, Trash2, Lock, Edit2, Activity, AlertCircle, Plus, Check, MousePointerClick,
-  Server, Cpu, Database, Network, Play, RefreshCw, Zap, Shield, Layers, Terminal, Box, Radio
+  Server, Cpu, Database, Network, Play, RefreshCw, Zap, Shield, Layers, Terminal, Box, Radio,
+  Pause, SkipBack, SkipForward, RotateCcw, Gauge
 } from 'lucide-react'
 import { useLanguage } from '../../contexts/LanguageContext'
 
@@ -976,53 +977,99 @@ export function EducationAnimation({ type }: { type: string }) {
     const [selectedComp, setSelectedComp] = useState<string | null>('api')
     const [activeFilter, setActiveFilter] = useState<'all' | 'master' | 'worker'>('all')
     const [isSimulating, setIsSimulating] = useState(false)
+    const [isPaused, setIsPaused] = useState(false)
     const [simStep, setSimStep] = useState<number>(0)
+    const [simSpeed, setSimSpeed] = useState<number>(1)
 
     const dict = k8sArchDict[isIt ? 'it' : 'en']
 
-    const runSimulation = () => {
-      if (isSimulating) return
-      setIsSimulating(true)
+    const sequences: Record<'all' | 'master' | 'worker', { step: number; comp: string }[]> = useMemo(() => ({
+      all: [
+        { step: 1, comp: 'api' },
+        { step: 2, comp: 'etcd' },
+        { step: 3, comp: 'scheduler' },
+        { step: 4, comp: 'kubelet' },
+        { step: 5, comp: 'runtime' },
+        { step: 6, comp: 'pods' }
+      ],
+      master: [
+        { step: 1, comp: 'controller' },
+        { step: 2, comp: 'api' },
+        { step: 3, comp: 'etcd' },
+        { step: 4, comp: 'scheduler' }
+      ],
+      worker: [
+        { step: 1, comp: 'kubelet' },
+        { step: 2, comp: 'runtime' },
+        { step: 3, comp: 'pods' },
+        { step: 4, comp: 'proxy' }
+      ]
+    }), [])
 
-      const sequences = {
-        all: [
-          { step: 1, comp: 'api', delay: 600 },
-          { step: 2, comp: 'etcd', delay: 1600 },
-          { step: 3, comp: 'scheduler', delay: 2600 },
-          { step: 4, comp: 'kubelet', delay: 3600 },
-          { step: 5, comp: 'runtime', delay: 4600 },
-          { step: 6, comp: 'pods', delay: 5600 }
-        ],
-        master: [
-          { step: 1, comp: 'controller', delay: 600 },
-          { step: 2, comp: 'api', delay: 1600 },
-          { step: 3, comp: 'etcd', delay: 2600 },
-          { step: 4, comp: 'scheduler', delay: 3600 }
-        ],
-        worker: [
-          { step: 1, comp: 'kubelet', delay: 600 },
-          { step: 2, comp: 'runtime', delay: 1600 },
-          { step: 3, comp: 'pods', delay: 2600 },
-          { step: 4, comp: 'proxy', delay: 3600 }
-        ]
+    const currentSeq = sequences[activeFilter]
+
+    useEffect(() => {
+      if (!isSimulating || isPaused) return
+
+      const baseDelay = 1600
+      const delay = baseDelay / simSpeed
+
+      const timer = setTimeout(() => {
+        if (simStep < currentSeq.length) {
+          const nextStep = simStep + 1
+          setSimStep(nextStep)
+          setSelectedComp(currentSeq[nextStep - 1].comp)
+        } else {
+          setIsSimulating(false)
+          setIsPaused(false)
+        }
+      }, delay)
+
+      return () => clearTimeout(timer)
+    }, [isSimulating, isPaused, simStep, simSpeed, activeFilter, currentSeq])
+
+    const handlePlayPause = () => {
+      if (!isSimulating) {
+        if (simStep === 0 || simStep >= currentSeq.length) {
+          setSimStep(1)
+          setSelectedComp(currentSeq[0].comp)
+        }
+        setIsSimulating(true)
+        setIsPaused(false)
+      } else {
+        setIsPaused(!isPaused)
       }
+    }
 
-      const currentSeq = sequences[activeFilter]
-      setSimStep(1)
-      setSelectedComp(currentSeq[0].comp)
+    const handleReset = () => {
+      setIsSimulating(false)
+      setIsPaused(false)
+      setSimStep(0)
+    }
 
-      currentSeq.forEach(({ step, comp, delay }, idx) => {
-        setTimeout(() => {
-          setSimStep(step)
-          setSelectedComp(comp)
-          if (idx === currentSeq.length - 1) {
-            setTimeout(() => {
-              setIsSimulating(false)
-              setSimStep(0)
-            }, 2000)
-          }
-        }, delay)
-      })
+    const handleStepPrev = () => {
+      if (simStep > 1) {
+        const prevStep = simStep - 1
+        setSimStep(prevStep)
+        setSelectedComp(currentSeq[prevStep - 1].comp)
+      }
+    }
+
+    const handleStepNext = () => {
+      if (simStep < currentSeq.length) {
+        const nextStep = simStep + 1
+        setSimStep(nextStep)
+        setSelectedComp(currentSeq[nextStep - 1].comp)
+      }
+    }
+
+    const handleJumpStep = (stepNum: number) => {
+      setSimStep(stepNum)
+      setSelectedComp(currentSeq[stepNum - 1].comp)
+      if (!isSimulating) {
+        setIsSimulating(true)
+        setIsPaused(true)
+      }
     }
 
     const currentDetails = selectedComp ? dict.components[selectedComp as keyof typeof dict.components] : null
@@ -1032,7 +1079,7 @@ export function EducationAnimation({ type }: { type: string }) {
         {/* Prominent Mode Selection Tab Bar */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 w-full">
           <button
-            onClick={() => { setActiveFilter('all'); setSelectedComp('api'); }}
+            onClick={() => { setActiveFilter('all'); setSelectedComp('api'); setSimStep(0); setIsSimulating(false); setIsPaused(false); }}
             className={`p-4 rounded-2xl border text-left flex flex-col justify-between transition-all cursor-pointer relative overflow-hidden box-border ${
               activeFilter === 'all'
                 ? 'bg-gradient-to-br from-blue-600/30 to-indigo-600/20 border-blue-400 text-white shadow-xl ring-2 ring-blue-400/50 scale-[1.02]'
@@ -1056,7 +1103,7 @@ export function EducationAnimation({ type }: { type: string }) {
           </button>
 
           <button
-            onClick={() => { setActiveFilter('master'); setSelectedComp('controller'); }}
+            onClick={() => { setActiveFilter('master'); setSelectedComp('controller'); setSimStep(0); setIsSimulating(false); setIsPaused(false); }}
             className={`p-4 rounded-2xl border text-left flex flex-col justify-between transition-all cursor-pointer relative overflow-hidden box-border ${
               activeFilter === 'master'
                 ? 'bg-gradient-to-br from-purple-600/30 to-indigo-600/20 border-purple-400 text-white shadow-xl ring-2 ring-purple-400/50 scale-[1.02]'
@@ -1080,7 +1127,7 @@ export function EducationAnimation({ type }: { type: string }) {
           </button>
 
           <button
-            onClick={() => { setActiveFilter('worker'); setSelectedComp('kubelet'); }}
+            onClick={() => { setActiveFilter('worker'); setSelectedComp('kubelet'); setSimStep(0); setIsSimulating(false); setIsPaused(false); }}
             className={`p-4 rounded-2xl border text-left flex flex-col justify-between transition-all cursor-pointer relative overflow-hidden box-border ${
               activeFilter === 'worker'
                 ? 'bg-gradient-to-br from-emerald-600/30 to-teal-600/20 border-emerald-400 text-white shadow-xl ring-2 ring-emerald-400/50 scale-[1.02]'
@@ -1117,18 +1164,165 @@ export function EducationAnimation({ type }: { type: string }) {
             <span>{dict.banners[activeFilter]}</span>
           </div>
 
-          <button
-            onClick={runSimulation}
-            disabled={isSimulating}
-            className={`w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer shadow-lg ${
-              isSimulating
-                ? 'bg-amber-500/20 border border-amber-500/40 text-amber-300 animate-pulse'
-                : 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-black shadow-orange-500/20 hover:scale-105 active:scale-95'
-            }`}
-          >
-            <Play size={14} className={isSimulating ? 'animate-spin' : ''} />
-            {isSimulating ? dict.simulating : dict.simButtons[activeFilter]}
-          </button>
+          <div className="flex items-center gap-2 w-full sm:w-auto shrink-0 justify-end">
+            <button
+              onClick={handlePlayPause}
+              className={`w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer shadow-lg ${
+                isSimulating && !isPaused
+                  ? 'bg-amber-500 hover:bg-amber-400 text-black shadow-amber-500/20'
+                  : isPaused
+                  ? 'bg-emerald-500 hover:bg-emerald-400 text-black shadow-emerald-500/20'
+                  : 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-black shadow-orange-500/20 hover:scale-105 active:scale-95'
+              }`}
+            >
+              {isSimulating && !isPaused ? (
+                <>
+                  <Pause size={14} className="fill-current" />
+                  <span>{isIt ? 'Pausa' : 'Pause'}</span>
+                </>
+              ) : isPaused ? (
+                <>
+                  <Play size={14} className="fill-current" />
+                  <span>{isIt ? 'Riprendi' : 'Resume'}</span>
+                </>
+              ) : (
+                <>
+                  <Play size={14} className="fill-current" />
+                  <span>{dict.simButtons[activeFilter]}</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Full Player Controls Toolbar & Speed Slider */}
+        <div className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xl backdrop-blur-md">
+          {/* Play / Step / Reset Group */}
+          <div className="flex items-center gap-2 w-full md:w-auto justify-between md:justify-start">
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={handleStepPrev}
+                disabled={simStep <= 1}
+                title={isIt ? "Passo Precedente" : "Previous Step"}
+                className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/15 disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer"
+              >
+                <SkipBack size={15} />
+              </button>
+
+              <button
+                onClick={handlePlayPause}
+                className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md ${
+                  isSimulating && !isPaused
+                    ? 'bg-amber-500 text-black'
+                    : isPaused
+                    ? 'bg-emerald-500 text-black'
+                    : 'bg-white/10 text-white hover:bg-white/20'
+                }`}
+              >
+                {isSimulating && !isPaused ? (
+                  <Pause size={14} className="fill-current" />
+                ) : (
+                  <Play size={14} className="fill-current" />
+                )}
+                <span>
+                  {isSimulating && !isPaused
+                    ? (isIt ? 'Pausa' : 'Pause')
+                    : isPaused
+                    ? (isIt ? 'Riprendi' : 'Resume')
+                    : (isIt ? 'Avvia' : 'Start')}
+                </span>
+              </button>
+
+              <button
+                onClick={handleStepNext}
+                disabled={simStep >= currentSeq.length}
+                title={isIt ? "Passo Successivo" : "Next Step"}
+                className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/15 disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer"
+              >
+                <SkipForward size={15} />
+              </button>
+
+              <button
+                onClick={handleReset}
+                title={isIt ? "Reset Simulazione" : "Reset Simulation"}
+                className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-muted hover:text-white hover:bg-white/15 transition-all cursor-pointer"
+              >
+                <RotateCcw size={15} />
+              </button>
+            </div>
+
+            {/* Status indicator badge */}
+            <div className="md:hidden">
+              <span className={`px-2.5 py-1 rounded-full text-[10px] font-mono font-bold border ${
+                isSimulating && !isPaused
+                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 animate-pulse'
+                  : isPaused
+                  ? 'bg-blue-500/20 text-blue-300 border-blue-500/40'
+                  : 'bg-white/5 text-muted border-white/10'
+              }`}>
+                {isSimulating && !isPaused ? (isIt ? '▶️ IN CORSO' : '▶️ RUNNING') : isPaused ? (isIt ? '⏸️ IN PAUSA' : '⏸️ PAUSED') : (isIt ? '⏹️ PRONTO' : '⏹️ READY')}
+              </span>
+            </div>
+          </div>
+
+          {/* Interactive Step Scrubber Pills */}
+          <div className="flex items-center gap-1.5 overflow-x-auto max-w-full py-1">
+            {currentSeq.map((item, idx) => {
+              const stepNum = idx + 1
+              const isActive = simStep === stepNum
+              const isCompleted = simStep > stepNum
+              return (
+                <button
+                  key={item.comp}
+                  onClick={() => handleJumpStep(stepNum)}
+                  className={`px-3 py-1.5 rounded-xl text-[10px] font-mono font-bold transition-all cursor-pointer border flex items-center gap-1.5 whitespace-nowrap ${
+                    isActive
+                      ? 'bg-gradient-to-r from-amber-400 to-orange-400 border-amber-300 text-black shadow-lg shadow-amber-400/30 scale-105 font-black'
+                      : isCompleted
+                      ? 'bg-blue-500/20 border-blue-400/40 text-blue-300'
+                      : 'bg-white/5 border-white/10 text-muted hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  <span>Step {stepNum}</span>
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Speed Slider & Multipliers */}
+          <div className="flex items-center gap-3 bg-white/5 border border-white/10 px-3.5 py-2 rounded-xl shrink-0 w-full md:w-auto justify-between md:justify-start">
+            <div className="flex items-center gap-1.5 text-xs text-muted font-bold shrink-0">
+              <Gauge size={14} className="text-amber-400" />
+              <span>{isIt ? 'Velocità' : 'Speed'}:</span>
+              <span className="text-amber-400 mono font-black w-8 text-right">{simSpeed}x</span>
+            </div>
+
+            <input
+              type="range"
+              min="0.25"
+              max="2"
+              step="0.25"
+              value={simSpeed}
+              onChange={(e) => setSimSpeed(parseFloat(e.target.value))}
+              className="w-24 sm:w-28 accent-amber-400 cursor-pointer h-1.5 bg-black/40 rounded-lg"
+            />
+
+            <div className="hidden lg:flex flex-wrap gap-1">
+              {[0.25, 0.5, 0.75, 1, 1.25, 1.5, 2].map((spd) => (
+                <button
+                  key={spd}
+                  onClick={() => setSimSpeed(spd)}
+                  className={`px-1.5 py-0.5 rounded text-[9px] font-mono font-bold transition-all cursor-pointer ${
+                    simSpeed === spd
+                      ? 'bg-amber-400 text-black font-black shadow-sm'
+                      : 'bg-white/5 text-muted hover:text-white'
+                  }`}
+                >
+                  {spd}x
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Interactive Diagram Area */}
@@ -1381,10 +1575,18 @@ export function EducationAnimation({ type }: { type: string }) {
               </div>
             )}
 
-            {isSimulating && (
-              <div className="mt-4 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-medium flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-amber-400 animate-ping shrink-0" />
-                <span>
+            {simStep > 0 && (
+              <div className="mt-4 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-medium flex flex-col gap-1.5 shadow-lg">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className={`w-2 h-2 rounded-full ${isPaused ? 'bg-blue-400' : 'bg-amber-400 animate-ping'} shrink-0`} />
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-400">
+                      {isPaused ? (isIt ? '⏸️ IN PAUSA' : '⏸️ PAUSED') : (isIt ? '⚡ ESECUZIONE STEP' : '⚡ RUNNING STEP')}
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono opacity-60">Step {simStep}/{currentSeq.length}</span>
+                </div>
+                <span className="leading-relaxed">
                   {activeFilter === 'all' && (
                     <>
                       {simStep === 1 && (isIt ? 'Step 1: kubectl invia il manifesto YAML all\'API Server (6443)' : 'Step 1: kubectl sends YAML spec to API Server (6443)')}

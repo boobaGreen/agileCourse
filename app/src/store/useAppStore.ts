@@ -16,6 +16,9 @@ export interface UserProgress {
   userName: string
   xp: number
   completedModules: string[]   // e.g. ['git-1', 'git-2', ...]
+  completedLabs: string[]      // e.g. ['git-6:workflow', ...]
+  completedQuizzes: string[]   // e.g. ['git-1', 'docker-2', ...]
+  completedMissions: string[]  // e.g. ['docker-8', ...]
   quizScores: Record<string, number>  // moduleId -> score
   badges: Badge[]
   streakDays: number
@@ -26,8 +29,10 @@ export interface UserProgress {
 interface AppStore extends UserProgress {
   setUserName: (name: string) => void
   addXP: (amount: number) => void
-  completeModule: (moduleId: string) => void
-  saveQuizScore: (moduleId: string, score: number) => void
+  completeModule: (moduleId: string, rewardXp?: number) => void
+  saveQuizScore: (moduleId: string, score: number, totalQuestions: number) => number
+  completeLab: (labId: string, rewardXp?: number) => boolean
+  claimMission: (moduleId: string, amount: number) => boolean
   awardBadge: (badge: Badge) => void
   resetProgress: () => void
   totalXP: () => number
@@ -103,6 +108,9 @@ const defaultState: UserProgress = {
   userName: '',
   xp: 0,
   completedModules: [],
+  completedLabs: [],
+  completedQuizzes: [],
+  completedMissions: [],
   quizScores: {},
   badges: [],
   streakDays: 0,
@@ -126,30 +134,86 @@ export const useAppStore = create<AppStore>()(
         }
       }),
 
-      completeModule: (moduleId) =>
+      completeModule: (moduleId, rewardXp) =>
         set((s) => {
-          if (s.completedModules.includes(moduleId)) return s
+          const completed = s.completedModules || []
+          if (completed.includes(moduleId)) return s
           const today = new Date().toISOString().split('T')[0]
           const currentActivity = s.activityLog[today] || 0
-          const updated = [...s.completedModules, moduleId]
+          const earned = rewardXp && rewardXp > 0 ? rewardXp : 100
+          const updated = [...completed, moduleId]
           return { 
             completedModules: updated, 
-            xp: s.xp + 50,
-            activityLog: { ...s.activityLog, [today]: currentActivity + 50 }
+            xp: s.xp + earned,
+            activityLog: { ...s.activityLog, [today]: currentActivity + earned }
           }
         }),
 
-      saveQuizScore: (moduleId, score) =>
-        set((s) => {
-          const today = new Date().toISOString().split('T')[0]
-          const currentActivity = s.activityLog[today] || 0
-          const reward = score * 10
-          return {
-            quizScores: { ...s.quizScores, [moduleId]: score },
-            xp: s.xp + reward,
-            activityLog: { ...s.activityLog, [today]: currentActivity + reward }
-          }
-        }),
+      saveQuizScore: (moduleId, score, totalQuestions) => {
+        const state = get()
+        const completed = state.completedQuizzes || []
+        const isFirstTime = !completed.includes(moduleId)
+        
+        const today = new Date().toISOString().split('T')[0]
+        const currentActivity = state.activityLog[today] || 0
+
+        if (!isFirstTime) {
+          // If retaking, only update quiz score record if better, but do NOT award XP again
+          const prevScore = state.quizScores[moduleId] || 0
+          set({
+            quizScores: { ...state.quizScores, [moduleId]: Math.max(prevScore, score) }
+          })
+          return 0
+        }
+
+        // First time completing quiz: calculate XP
+        const scorePct = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0
+        const bonus = scorePct === 100 ? 100 : 0
+        const earned = score * 10 + bonus
+
+        set({
+          completedQuizzes: [...completed, moduleId],
+          quizScores: { ...state.quizScores, [moduleId]: score },
+          xp: state.xp + earned,
+          activityLog: { ...state.activityLog, [today]: currentActivity + earned }
+        })
+
+        return earned
+      },
+
+      completeLab: (labId, rewardXp = 25) => {
+        const state = get()
+        const completed = state.completedLabs || []
+        if (completed.includes(labId)) return false
+
+        const today = new Date().toISOString().split('T')[0]
+        const currentActivity = state.activityLog[today] || 0
+
+        set({
+          completedLabs: [...completed, labId],
+          xp: state.xp + rewardXp,
+          activityLog: { ...state.activityLog, [today]: currentActivity + rewardXp }
+        })
+
+        return true
+      },
+
+      claimMission: (moduleId, amount) => {
+        const state = get()
+        const completed = state.completedMissions || []
+        if (completed.includes(moduleId)) return false
+
+        const today = new Date().toISOString().split('T')[0]
+        const currentActivity = state.activityLog[today] || 0
+
+        set({
+          completedMissions: [...completed, moduleId],
+          xp: state.xp + amount,
+          activityLog: { ...state.activityLog, [today]: currentActivity + amount }
+        })
+
+        return true
+      },
 
       awardBadge: (badge) =>
         set((s) => {
@@ -163,9 +227,9 @@ export const useAppStore = create<AppStore>()(
 
       trackXP: (track) => {
         const s = get()
-        return s.completedModules
+        return (s.completedModules || [])
           .filter((id) => id.startsWith(track))
-          .length * 50
+          .length * 100
       },
     }),
     { name: 'learning-platform-v1' }
