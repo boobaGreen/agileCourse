@@ -37,6 +37,12 @@ export function K8sSimulator({ data, onComplete }: Props) {
         isDone = !!d && d.replicas === parseInt(arg2);
       } else if (type === 'SERVICE_EXISTS') {
         isDone = !!currentState.services.find(s => s.name === arg1);
+      } else if (type === 'CONFIGMAP_EXISTS') {
+        isDone = !!currentState.configMaps?.find(c => c.name === arg1);
+      } else if (type === 'SECRET_EXISTS') {
+        isDone = !!currentState.secrets?.find(s => s.name === arg1);
+      } else if (type === 'PVC_EXISTS') {
+        isDone = !!currentState.pvc?.find(p => p.name === arg1);
       } else if (type === 'PODS_RUNNING') {
         const count = currentState.pods.filter(p => p.status === 'Running').length;
         isDone = count >= parseInt(arg1);
