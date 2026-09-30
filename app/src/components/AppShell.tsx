@@ -156,7 +156,12 @@ function SidebarContent({ collapsed, location, userName, xp, badges, onNavigate,
           <div className={`brand-logo-container transition-all duration-300 ${collapsed ? 'w-10 h-10 p-1.5' : 'w-12 h-12 p-2'}`}>
             <img src="/agilelab.jpg" alt="Logo" className="brand-logo w-full h-full" />
           </div>
-          {!collapsed && <span className="fw-black text-white text-base tracking-tight">Agile Training</span>}
+          {!collapsed && (
+            <div className="flex flex-col">
+              <span className="fw-black text-white text-base tracking-tight leading-tight">Agile Training</span>
+              <span className="text-[10px] text-muted mono font-bold tracking-wider">v1.0.0</span>
+            </div>
+          )}
         </div>
         {!collapsed && <LanguageSwitcher />}
       </div>
