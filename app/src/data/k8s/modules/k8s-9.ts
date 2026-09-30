@@ -45,12 +45,6 @@ export const k8s9: Module = {
       }
     },
     {
-      type: 'video',
-      title: { en: '📺 What is Helm in Kubernetes? Helm & Charts Explained', it: '📺 Cos\'è Helm in Kubernetes? Helm e gli Helm Chart spiegati' },
-      content: { en: 'TechWorld with Nana visually explains how Helm charts simplify complex deployments, templating, and release management.', it: 'TechWorld with Nana spiega visivamente come gli Helm Chart semplificano deployment complessi, templatizzazione e gestione delle release.' },
-      videoUrl: 'https://www.youtube.com/watch?v=-ykwb1d0dXU'
-    },
-    {
       type: 'game',
       title: { en: 'Certification Lab: The Helm Master', it: 'Lab di Certificazione: Il Maestro di Helm' },
       content: { en: 'Install the "enterprise-stack" chart using Helm. It will provision everything: Redis, the backend, and secrets.', it: 'Installa l\'helm chart "enterprise-stack". Configurerà tutto: Redis, il backend e i secret.' },
