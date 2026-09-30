@@ -48,7 +48,7 @@ export const k8s9: Module = {
       type: 'video',
       title: { en: '📺 What is Helm in Kubernetes? Helm & Charts Explained', it: '📺 Cos\'è Helm in Kubernetes? Helm e gli Helm Chart spiegati' },
       content: { en: 'TechWorld with Nana visually explains how Helm charts simplify complex deployments, templating, and release management.', it: 'TechWorld with Nana spiega visivamente come gli Helm Chart semplificano deployment complessi, templatizzazione e gestione delle release.' },
-      videoUrl: 'https://www.youtube.com/watch?v=yOb1s9-N1s4'
+      videoUrl: 'https://www.youtube.com/watch?v=-ykwb1d0dXU'
     },
     {
       type: 'game',
