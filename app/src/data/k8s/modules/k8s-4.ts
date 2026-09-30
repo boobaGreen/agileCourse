@@ -121,7 +121,7 @@ spec:
             '3. **Traffic Shift & Old Pod Removal**: Only when the new `v2` Pod is 100% ready to accept traffic, K8s terminates **one old `v1` Pod**.\n' +
             '4. **Repeat 1-by-1**: K8s repeats this process one Pod at a time until all replicas are safely updated to `v2` without a single dropped user request!\n\n' +
             '🛡️ **Emergency Rollback (`kubectl rollout undo`)**:\n' +
-            'If your new `v2` code has a critical bug and crashes on boot, K8s immediately halts the rollout! The remaining `v1` Pods stay alive and continue serving traffic. You can instantly revert to `v1` with a single command:\n' +
+            'If your new `v2` code has a critical bug and crashes on boot, K8s immediately halts the rollout indefinitely until human intervention! The remaining `v1` Pods stay alive and continue serving traffic. You can fix the code or instantly revert to `v1` with a single command:\n' +
             '`kubectl rollout undo deployment/web-deployment`',
         it: 'Nei deployment tradizionali sui server fisici, aggiornare un\'app richiedeva di spegnere il server, caricare il nuovo codice e riavviarlo. Questo causava minuti di disservizio (downtime) ed errori per gli utenti.\n\n' +
             'Kubernetes risolve questo problema con i **Rolling Update** (aggiornamenti progressivi a caldo):\n\n' +
@@ -130,7 +130,7 @@ spec:
             '3. **Instradamento Traffico e Spegnimento**: Solo quando il nuovo Pod `v2` è pronto al 100% a ricevere traffico, K8s spegne **un vecchio Pod `v1`**.\n' +
             '4. **Ripetizione 1 a 1**: K8s ripete questo processo un Pod alla volta finché tutte le repliche sono aggiornate a `v2`, senza che gli utenti si accorgano di nulla!\n\n' +
             '🛡️ **Rollback di Emergenza (`kubectl rollout undo`)**:\n' +
-            'Se la nuova versione `v2` contiene un bug critico e va in crash all\'avvio, K8s blocca immediatamente il rollout! I vecchi Pod `v1` rimangono attivi per servire il traffico. Puoi annullare il rilascio all\'istante con un singolo comando:\n' +
+            'Se la nuova versione `v2` contiene un bug critico e va in crash all\'avvio, K8s blocca ed interrompe il rollout a tempo indeterminato (rimane congelato fino all\'intervento umano)! I vecchi Pod `v1` rimangono attivi per servire il traffico. Puoi correggere l\'errore o annullare il rilascio all\'istante con un singolo comando:\n' +
             '`kubectl rollout undo deployment/web-deployment` '
       }
     },
@@ -144,7 +144,7 @@ spec:
           [{ en: '1. Update image to v2', it: '1. Aggiornamento immagine a v2' }, { en: 'Spins up 1 new v2 pod alongside active v1 pods. Waits for readiness probe.', it: 'Avvia 1 nuovo pod v2 affiancandolo ai pod v1 attivi. Attende il controllo di salute.' }, { en: '✅ Zero downtime (v1 pods keep serving)', it: '✅ Zero downtime (i pod v1 continuano a servire)' }],
           [{ en: '2. v2 Pod is Ready', it: '2. Il Pod v2 è Pronto' }, { en: 'Routes live traffic to new v2 pod and terminates 1 old v1 pod.', it: 'Instrada il traffico reale al nuovo pod v2 e spegne 1 vecchio pod v1.' }, { en: '✅ Smooth traffic transition', it: '✅ Transizione fluida del traffico' }],
           [{ en: '3. Repeat process', it: '3. Ripetizione processo' }, { en: 'Replaces remaining v1 pods one-by-one until 100% are running v2.', it: 'Sostituisce i restanti pod v1 uno alla volta finché il 100% esegue v2.' }, { en: '✅ 100% updated safely', it: '✅ Aggiornamento completato in sicurezza' }],
-          [{ en: '⚠️ What if v2 crashes?', it: '⚠️ E se la v2 va in crash?' }, { en: 'Deployment halts rollout automatically! Old stable v1 pods stay alive.', it: 'Il Deployment blocca il rollout in automatico! I vecchi pod v1 stabili restano attivi.' }, { en: '🛡️ Revert with `kubectl rollout undo`', it: '🛡️ Annulla con `kubectl rollout undo`' }]
+          [{ en: '⚠️ What if v2 crashes?', it: '⚠️ E se la v2 va in crash?' }, { en: 'Deployment halts rollout indefinitely until human intervention! Old stable v1 pods stay alive.', it: 'Il Deployment congela il rollout a tempo indeterminato in attesa di intervento umano! I vecchi pod v1 stabili restano attivi.' }, { en: '🛡️ Revert with `kubectl rollout undo`', it: '🛡️ Annulla con `kubectl rollout undo`' }]
         ]
       }
     },
@@ -174,7 +174,7 @@ spec:
           {
             id: '2',
             instruction: { en: 'Delete one of the active pods', it: 'Elimina uno dei pod attivi' },
-            condition: 'PODS_RUNNING:3',
+            condition: 'CMD_RAN:delete pod',
             hints: [
               { en: 'First list running pods with `kubectl get pods` to see their names.', it: 'Per prima cosa elenca i pod attivi con `kubectl get pods` per vedere i loro nomi.' },
               { en: 'Use `kubectl delete pod <pod-name>` specifying one of the active pod names.', it: 'Usa `kubectl delete pod <nome-pod>` specificando uno dei nomi dei pod attivi.' },
