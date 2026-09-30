@@ -24,6 +24,15 @@ export const k8s1: Module = {
       }
     },
     {
+      type: 'infographic',
+      title: { en: '🖖 Star Trek Origin: Seven of Nine (Project 7)', it: '🖖 L\'Origine da Star Trek: Sette di Nove (Project 7)' },
+      content: {
+        en: 'Jeri Ryan as Seven of Nine (Star Trek: Voyager). Google codenamed the open-source version of Borg as "Project Seven of Nine", which is why the original Kubernetes logo wheel has 7 spokes!',
+        it: 'Jeri Ryan nei panni di "Sette di Nove" (Star Trek: Voyager). Google chiamò la versione open-source di Borg "Project Seven of Nine", motivo per cui il logo originale di Kubernetes ha 7 raggi sul timone!'
+      },
+      imageUrl: '/seven_of_nine.jpg'
+    },
+    {
       type: 'video',
       title: { en: '📺 Kubernetes in 5 Minutes', it: '📺 Kubernetes in 5 minuti' },
       content: { en: 'A brilliant, high-level animated breakdown of exactly what problem Kubernetes solves in modern architecture.', it: 'Una brillante analisi animata di alto livello su quale problema risolve esattamente Kubernetes nell\'architettura moderna.' },

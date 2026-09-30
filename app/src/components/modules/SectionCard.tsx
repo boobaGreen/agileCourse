@@ -234,11 +234,15 @@ export function SectionCard({ section, onCompleteGame }: { section: Section, onC
 
       {/* Infographic / Image */}
       {section.type === 'infographic' && section.imageUrl && (
-        <div className="mt-4 rounded-xl overflow-hidden border border-white/10 bg-surface2 relative group">
-           <img src={section.imageUrl} alt="Module Infographic" className="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform duration-500" />
-           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-              <span className="text-xs text-white fw-bold">Click to expand</span>
-           </div>
+        <div className="mt-4 flex flex-col items-center">
+          <div className="rounded-xl overflow-hidden border border-white/10 bg-surface2 relative group max-w-[220px] sm:max-w-[260px] shadow-xl">
+             <img 
+               src={section.imageUrl} 
+               alt="Module Infographic" 
+               referrerPolicy="no-referrer"
+               className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 rounded-xl" 
+             />
+          </div>
         </div>
       )}
 
