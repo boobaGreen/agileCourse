@@ -1,16 +1,62 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
 import { GIT_CHEATSHEET, type CheatsheetCommand } from '../data/git/cheatsheet';
+import { DOCKER_CHEATSHEET } from '../data/docker/cheatsheet';
+import { K8S_CHEATSHEET } from '../data/k8s/cheatsheet';
 import { CommandVisual } from '../components/cheatsheet/CommandVisual';
 import { Copy, Check, Search, Filter, Eye, X, Terminal } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 export default function CheatsheetPage() {
+  const { track: routeTrack } = useParams<{ track?: string }>();
+  const navigate = useNavigate();
   const { resolveString } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [copiedCommand, setCopiedCommand] = useState<string | null>(null);
   const [selectedCommand, setSelectedCommand] = useState<CheatsheetCommand | null>(null);
+
+  const activeTrack = (routeTrack === 'docker' || routeTrack === 'k8s') ? routeTrack : 'git';
+
+  const cheatsheetData = activeTrack === 'docker' 
+    ? DOCKER_CHEATSHEET 
+    : activeTrack === 'k8s' 
+      ? K8S_CHEATSHEET 
+      : GIT_CHEATSHEET;
+
+  const trackConfig = {
+    git: {
+      name: 'Git',
+      title: 'Git Quick Reference',
+      subtitle: { en: 'Click any command to see an interactive visual diagram of how it works.', it: 'Clicca un comando per vedere un diagramma visivo interattivo di come funziona.' },
+      colorClass: 'text-git',
+      bgClass: 'bg-git/10',
+      borderClass: 'border-git/20',
+      hoverBgClass: 'group-hover:bg-git/15',
+      badgeColor: '#f97316'
+    },
+    docker: {
+      name: 'Docker',
+      title: 'Docker Command Reference',
+      subtitle: { en: 'Essential commands for container runtime, volume persistence, and Compose workflows.', it: 'Comandi essenziali per container runtime, volumi persistenti e workflow Compose.' },
+      colorClass: 'text-docker',
+      bgClass: 'bg-docker/10',
+      borderClass: 'border-docker/20',
+      hoverBgClass: 'group-hover:bg-docker/15',
+      badgeColor: '#0284c7'
+    },
+    k8s: {
+      name: 'Kubernetes',
+      title: 'kubectl & Cluster Reference',
+      subtitle: { en: 'Comprehensive CLI commands for Pods, Services, Deployments, ConfigMaps, and Storage.', it: 'Comandi CLI completi per Pod, Servizi, Deployment, ConfigMap e Storage.' },
+      colorClass: 'text-k8s',
+      bgClass: 'bg-k8s/10',
+      borderClass: 'border-k8s/20',
+      hoverBgClass: 'group-hover:bg-k8s/15',
+      badgeColor: '#38bdf8'
+    }
+  }[activeTrack];
 
   const copyToClipboard = (text: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -28,7 +74,7 @@ export default function CheatsheetPage() {
     return () => window.removeEventListener('keydown', handleEsc);
   }, []);
 
-  const filteredCheatsheet = GIT_CHEATSHEET.map(category => ({
+  const filteredCheatsheet = cheatsheetData.map(category => ({
     ...category,
     commands: category.commands.filter(cmd => 
       cmd.command.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -38,26 +84,47 @@ export default function CheatsheetPage() {
 
   return (
     <div className="animate-fade-up flex flex-col items-start gap-8 pt-4 md:pt-8 pb-12">
+      {/* Track Selector Switcher Tabs */}
+      <div className="flex items-center gap-2 bg-surface2/60 p-1.5 rounded-2xl border border-white/10 w-full sm:w-auto">
+        <button
+          onClick={() => navigate('/cheatsheet/git')}
+          className={`flex-1 sm:flex-initial px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 ${activeTrack === 'git' ? 'bg-git text-white shadow-lg' : 'text-muted hover:text-white hover:bg-white/5'}`}
+        >
+          <span>🟧</span> Git
+        </button>
+        <button
+          onClick={() => navigate('/cheatsheet/docker')}
+          className={`flex-1 sm:flex-initial px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 ${activeTrack === 'docker' ? 'bg-docker text-white shadow-lg' : 'text-muted hover:text-white hover:bg-white/5'}`}
+        >
+          <span>🐳</span> Docker
+        </button>
+        <button
+          onClick={() => navigate('/cheatsheet/k8s')}
+          className={`flex-1 sm:flex-initial px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 ${activeTrack === 'k8s' ? 'bg-k8s text-white shadow-lg' : 'text-muted hover:text-white hover:bg-white/5'}`}
+        >
+          <span>☸️</span> Kubernetes
+        </button>
+      </div>
+
       <header className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 w-full">
         <div className="flex flex-col gap-2">
           <motion.h1 
+            key={activeTrack}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-5xl font-black text-white mb-2"
           >
-            Git Quick <span className="text-git">Reference</span>
+            {trackConfig.name} <span className={trackConfig.colorClass}>Cheat Sheet</span>
           </motion.h1>
           <motion.p 
+            key={`${activeTrack}-sub`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             className="text-muted text-lg max-w-2xl"
           >
-            {resolveString({
-              en: 'Click any command to see an interactive visual diagram of how it works.',
-              it: 'Clicca un comando per vedere un diagramma visivo interattivo di come funziona.'
-            })}
+            {resolveString(trackConfig.subtitle)}
           </motion.p>
         </div>
 
@@ -65,9 +132,9 @@ export default function CheatsheetPage() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3 }}
-          className="flex items-center gap-3 bg-surface2/50 border border-white/10 rounded-2xl px-4 py-3 w-full md:w-80 focus-within:border-git/50 focus-within:bg-surface2 transition-all shadow-xl group"
+          className="flex items-center gap-3 bg-surface2/50 border border-white/10 rounded-2xl px-4 py-3 w-full md:w-80 focus-within:border-white/30 focus-within:bg-surface2 transition-all shadow-xl group"
         >
-          <Search className="text-muted group-focus-within:text-git transition-colors shrink-0" size={18} />
+          <Search className="text-muted group-focus-within:text-white transition-colors shrink-0" size={18} />
           <input 
             type="text"
             placeholder={resolveString({ en: 'Search commands...', it: 'Cerca comandi...' })}
@@ -81,7 +148,7 @@ export default function CheatsheetPage() {
       <div className="grid grid-cols-1 gap-12 w-full">
         {filteredCheatsheet.map((category, catIndex) => (
           <motion.section 
-            key={catIndex}
+            key={`${activeTrack}-${catIndex}`}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 * catIndex }}
@@ -105,16 +172,16 @@ export default function CheatsheetPage() {
                   <motion.div 
                     key={cmdIndex}
                     whileHover={{ y: -4, scale: 1.02 }}
-                    onClick={() => hasVisual && setSelectedCommand(cmd)}
-                    className={`group bg-surface/40 backdrop-blur-sm border border-white/5 rounded-2xl p-5 flex flex-col gap-3 hover:bg-surface/60 hover:border-white/20 transition-all ${hasVisual ? 'cursor-pointer' : 'cursor-default'}`}
+                    onClick={() => (hasVisual || cmd.example || cmd.output) && setSelectedCommand(cmd)}
+                    className={`group bg-surface/40 backdrop-blur-sm border border-white/5 rounded-2xl p-5 flex flex-col gap-3 hover:bg-surface/60 hover:border-white/20 transition-all ${(hasVisual || cmd.example || cmd.output) ? 'cursor-pointer' : 'cursor-default'}`}
                   >
                     <div className="flex justify-between items-start gap-2">
-                      <code className="text-git font-black text-sm bg-git/5 px-4 py-2 rounded-xl border border-git/10 group-hover:bg-git/10 transition-all shadow-sm">
+                      <code className={`${trackConfig.colorClass} font-black text-sm ${trackConfig.bgClass} px-4 py-2 rounded-xl border ${trackConfig.borderClass} ${trackConfig.hoverBgClass} transition-all shadow-sm break-all`}>
                         {cmd.command}
                       </code>
-                      <div className="flex items-center gap-1">
-                        {hasVisual && (
-                          <div className="p-1 text-muted/30 group-hover:text-git transition-colors">
+                      <div className="flex items-center gap-1 shrink-0">
+                        {(hasVisual || cmd.example || cmd.output) && (
+                          <div className={`p-1 text-muted/30 group-hover:${trackConfig.colorClass} transition-colors`}>
                             <Eye size={13} />
                           </div>
                         )}
@@ -130,11 +197,11 @@ export default function CheatsheetPage() {
                     <p className="text-muted text-sm leading-relaxed">
                       {resolveString(cmd.description)}
                     </p>
-                    {hasVisual && (
+                    {(hasVisual || cmd.example || cmd.output) && (
                       <div className="flex items-center gap-1.5 text-[10px] text-muted/30 group-hover:text-muted/60 transition-colors mt-auto pt-1">
                         <Eye size={9} />
                         <span className="font-medium uppercase tracking-wider">
-                          {resolveString({ en: 'click to visualize', it: 'clicca per visualizzare' })}
+                          {resolveString({ en: 'click to inspect', it: 'clicca per ispezionare' })}
                         </span>
                       </div>
                     )}
@@ -153,10 +220,10 @@ export default function CheatsheetPage() {
         </div>
       )}
 
-      {/* ── Full-screen Modal for Visual Diagram (Portal) ── */}
+      {/* ── Full-screen Modal for Visual Diagram / Example Detail (Portal) ── */}
       {createPortal(
         <AnimatePresence>
-          {selectedCommand && selectedCommand.visualType && selectedCommand.visualHighlight && (
+          {selectedCommand && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -175,15 +242,15 @@ export default function CheatsheetPage() {
                 exit={{ opacity: 0, scale: 0.95, y: 10 }}
                 transition={{ duration: 0.3, type: 'spring', stiffness: 300, damping: 30 }}
                 onClick={(e) => e.stopPropagation()}
-                style={{ position: 'relative', width: '100%', maxWidth: '768px', background: 'rgba(17,24,39,0.97)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '1.5rem', boxShadow: '0 0 60px rgba(249,115,22,0.12)', overflow: 'hidden' }}
+                style={{ position: 'relative', width: '100%', maxWidth: '768px', background: 'rgba(17,24,39,0.97)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '1.5rem', boxShadow: `0 0 60px ${trackConfig.badgeColor}20`, overflow: 'hidden' }}
               >
                 {/* Glow top accent */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-git/60 to-transparent" />
+                <div className="absolute top-0 left-0 w-full h-1" style={{ background: `linear-gradient(to right, transparent, ${trackConfig.badgeColor}, transparent)` }} />
 
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 pb-4 border-b border-white/5">
                   <div className="flex flex-col gap-2">
-                    <code className="text-git font-black text-lg md:text-xl bg-git/8 px-5 py-2.5 rounded-xl border border-git/15 inline-block">
+                    <code className={`${trackConfig.colorClass} font-black text-lg md:text-xl ${trackConfig.bgClass} px-5 py-2.5 rounded-xl border ${trackConfig.borderClass} inline-block`}>
                       {selectedCommand.command}
                     </code>
                     <p className="text-muted text-sm md:text-base">
@@ -198,18 +265,20 @@ export default function CheatsheetPage() {
                   </button>
                 </div>
 
-                  {/* Diagram - large and prominent */}
-                <div className="p-6 md:p-10 border-b border-white/5">
-                  <CommandVisual
-                    type={selectedCommand.visualType}
-                    highlight={selectedCommand.visualHighlight}
-                  />
-                </div>
+                {/* Diagram - if available */}
+                {selectedCommand.visualType && selectedCommand.visualHighlight && (
+                  <div className="p-6 md:p-10 border-b border-white/5">
+                    <CommandVisual
+                      type={selectedCommand.visualType}
+                      highlight={selectedCommand.visualHighlight}
+                    />
+                  </div>
+                )}
 
                 {/* Example and Output section */}
                 {(selectedCommand.example || selectedCommand.output) && (
                   <div className="p-6 bg-black/30 flex flex-col gap-4">
-                    <div className="flex items-center gap-2 text-git/80">
+                    <div className="flex items-center gap-2" style={{ color: trackConfig.badgeColor }}>
                       <Terminal size={16} />
                       <span className="text-xs font-bold uppercase tracking-widest">{resolveString({ en: 'Usage Example', it: 'Esempio di Utilizzo' })}</span>
                     </div>

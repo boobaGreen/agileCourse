@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '../store/useAppStore'
-import { LayoutDashboard, User, Award, ChevronLeft, ChevronRight, Zap, Menu, X, BookOpen } from 'lucide-react'
+import { LayoutDashboard, User, Award, ChevronLeft, ChevronRight, Zap, Menu, X, BookOpen, Box, Cpu } from 'lucide-react'
 import { matchPath } from 'react-router-dom'
 import { GIT_MODULES } from '../data/git/modules/index'
 import { DOCKER_MODULES } from '../data/docker/modules/index'
@@ -134,7 +134,9 @@ function SidebarContent({ collapsed, location, userName, xp, badges, onNavigate,
   const { t } = useLanguage()
   const navItems = [
     { path: '/dashboard', label: t('nav.dashboard'), icon: LayoutDashboard },
-    { path: '/cheatsheet', label: t('nav.cheatsheet'), icon: BookOpen },
+    { path: '/cheatsheet/git', label: t('nav.gitCheatsheet'), icon: BookOpen },
+    { path: '/cheatsheet/docker', label: t('nav.dockerCheatsheet'), icon: Box },
+    { path: '/cheatsheet/k8s', label: t('nav.k8sCheatsheet'), icon: Cpu },
     { path: '/profile', label: t('nav.profile'), icon: User },
   ]
 
@@ -180,7 +182,7 @@ function SidebarContent({ collapsed, location, userName, xp, badges, onNavigate,
       <nav className={`${modules.length > 0 ? 'pb-4 border-b mb-4' : 'flex-1'} flex flex-col gap-1 px-2 mt-2`} style={{ borderColor: 'var(--color-border)' }}>
         {navItems.map((item) => {
           const Icon = item.icon
-          const isActive = location.pathname === item.path || (item.path !== '/dashboard' && location.pathname.startsWith(item.path))
+          const isActive = location.pathname === item.path || (item.path === '/cheatsheet/git' && location.pathname === '/cheatsheet')
           return (
             <button
               key={item.path}

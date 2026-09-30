@@ -27,6 +27,7 @@ function App() {
                   <Routes>
                     <Route path="/dashboard" element={<CourseDashboard />} />
                     <Route path="/cheatsheet" element={<CheatsheetPage />} />
+                    <Route path="/cheatsheet/:track" element={<CheatsheetPage />} />
                     <Route path="/:track/module/:id" element={<ModulePage />} />
                     <Route path="/profile" element={<ProfilePage />} />
                     <Route path="*" element={<Navigate to="/dashboard" />} />
