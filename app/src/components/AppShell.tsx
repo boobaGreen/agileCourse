@@ -218,14 +218,6 @@ function SidebarContent({ collapsed, location, userName, xp, badges, onNavigate,
         </div>
       )}
 
-      {/* Sidebar Footer */}
-      {!collapsed && (
-        <div className="mt-auto px-4 py-6 border-t" style={{ borderColor: 'var(--color-border)' }}>
-          <div className="text-[10px] text-muted text-center uppercase tracking-widest opacity-40">
-            Agile Training v1.1
-          </div>
-        </div>
-      )}
     </div>
   )
 }
