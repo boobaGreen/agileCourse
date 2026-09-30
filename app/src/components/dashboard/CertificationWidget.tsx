@@ -25,11 +25,21 @@ export function CertificationWidget({ tracks, completedModules, onNavigate }: {
   if (activeMilestones.length === 0) return null
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-    >
+    <div className="mt-12 md:mt-16 mb-8">
+      <div className="flex items-center gap-2 mb-8">
+        <div className="h-[1px] flex-1 bg-primary/20" />
+        <div className="flex items-center gap-2 px-6">
+          <span className="text-[10px] text-muted uppercase fw-black tracking-[0.2em]">{t('cert.goal')}</span>
+          <span className="text-xs fw-black uppercase tracking-[0.1em] text-white">Career Milestones</span>
+        </div>
+        <div className="h-[1px] flex-1 bg-primary/20" />
+      </div>
+
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
       {activeMilestones.map((m) => (
         <div 
           key={m.trackId}
@@ -63,5 +73,6 @@ export function CertificationWidget({ tracks, completedModules, onNavigate }: {
         </div>
       ))}
     </motion.div>
+    </div>
   )
 }
