@@ -66,11 +66,17 @@ export const k8s6: Module = {
         en: `A **ConfigMap** is a dictionary of plain-text key-value pairs.\n\n` +
             `### Two Ways to Inject ConfigMaps into a Pod:\n` +
             `1. **As Environment Variables**: Values are injected as standard environment variables (\`process.env.PORT\` in Node.js, \`os.Getenv\` in Go).\n` +
-            `2. **As Mounted Files in a Volume**: ConfigMaps can be mounted as physical files inside a directory (e.g. mounting an \`nginx.conf\` or \`application.properties\` file).`,
+            `2. **As Mounted Files in a Volume**: ConfigMaps can be mounted as physical files inside a directory (e.g. mounting an \`nginx.conf\` or \`application.properties\` file).\n\n` +
+            `🔄 **Live Updates Behavior (Crucial for Production!)**:\n` +
+            `• **Environment Variables**: Values are loaded **only once at container startup**. If you edit the ConfigMap, running containers **will NOT see the new values** unless you restart the Pod (\`kubectl rollout restart deployment\`).\n` +
+            `• **Volume Mounted Files**: Files in mounted volumes are **automatically updated in real-time** by the Kubelet when the ConfigMap is modified. Applications that support hot-reloading can pick up new settings without downtime or container restarts!`,
         it: `Una **ConfigMap** è un dizionario di coppie chiave-valore in chiaro.\n\n` +
             `### Due Modi per Iniettare una ConfigMap in un Pod:\n` +
             `1. **Come Variabili d'Ambiente**: I valori vengono iniettati come normali variabili d'ambiente (\`process.env.PORT\` in Node.js, \`os.Getenv\` in Go).\n` +
-            `2. **Come File Montati in un Volume**: Le ConfigMap possono essere montate come file fisici all'interno di una cartella (es. montare un file \`nginx.conf\` o \`application.properties\`).`
+            `2. **Come File Montati in un Volume**: Le ConfigMap possono essere montate come file fisici all'interno di una cartella (es. montare un file \`nginx.conf\` o \`application.properties\`).\n\n` +
+            `🔄 **Comportamento degli Aggiornamenti in Tempo Reale (Fondamentale!)**:\n` +
+            `• **Variabili d'Ambiente**: I valori vengono letti **solo una volta all'avvio del container**. Se aggiorni la ConfigMap, i container in esecuzione **NON vedranno i nuovi valori** a meno di riavviare il Pod (\`kubectl rollout restart deployment\`).\n` +
+            `• **File Montati in un Volume**: I file montati nei volumi vengono **sincronizzati automaticamente in tempo reale** da Kubelet quando la ConfigMap viene modificata. Le applicazioni con supporto al ricaricamento a caldo (hot-reload) possono leggere la nuova configurazione senza alcun riavvio o downtime!`
       }
     },
     {
