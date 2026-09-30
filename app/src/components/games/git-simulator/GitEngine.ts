@@ -152,7 +152,7 @@ export class GitEngine {
 
   public revert(target: string): { success: boolean, msg: string } {
     // Resolve target (HEAD or commit hash)
-    let resolvedTarget = target.toUpperCase() === 'HEAD' ? this.getCurrentCommitId() : (target.match(/^c\d+$/i) ? target.toUpperCase() : target);
+    const resolvedTarget = target.toUpperCase() === 'HEAD' ? this.getCurrentCommitId() : (target.match(/^c\d+$/i) ? target.toUpperCase() : target);
     
     const targetCommit = this.state.commits[resolvedTarget];
     if (!targetCommit) {
