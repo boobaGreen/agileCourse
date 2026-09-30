@@ -52,13 +52,38 @@ export class K8sParser {
 
       case 'get': {
         const state = engine.getState();
+        const isWide = command.includes('-o wide') || command.includes('-o=wide');
+
         if (type === 'pods' || type === 'pod' || type === 'po') {
           if (state.pods.length === 0) return { success: true, out: 'No resources found in default namespace.' };
-          let out = 'NAME                          READY   STATUS    RESTARTS   AGE\n';
-          state.pods.forEach(p => {
-            out += `${p.name.padEnd(30)} 1/1     ${p.status.padEnd(9)} 0          1m\n`;
+          if (isWide) {
+            let out = 'NAME                          READY   STATUS    RESTARTS   AGE   IP           NODE\n';
+            state.pods.forEach((p, idx) => {
+              const podIp = p.env?.IP || `10.244.0.${10 + idx * 3}`;
+              out += `${p.name.padEnd(30)} 1/1     ${p.status.padEnd(9)} 0          1m    ${podIp.padEnd(12)} ${p.node}\n`;
+            });
+            return { success: true, out };
+          } else {
+            let out = 'NAME                          READY   STATUS    RESTARTS   AGE\n';
+            state.pods.forEach(p => {
+              out += `${p.name.padEnd(30)} 1/1     ${p.status.padEnd(9)} 0          1m\n`;
+            });
+            return { success: true, out };
+          }
+        }
+        if (type === 'svc' || type === 'service' || type === 'services') {
+          if (state.services.length === 0) return { success: true, out: 'No resources found in default namespace.' };
+          let outString = 'NAME               TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE\n';
+          state.services.forEach(s => {
+            const ext = s.externalIP || '<none>';
+            const typeStr = s.type || 'ClusterIP';
+            let portStr = '80/TCP';
+            if (s.type === 'NodePort') portStr = '80:30123/TCP';
+            if (s.type === 'Headless' || s.clusterIP === 'None') portStr = '80/TCP (Headless)';
+            if (s.type === 'LoadBalancer') portStr = '80:31982/TCP';
+            outString += `${s.name.padEnd(18)} ${typeStr.padEnd(14)} ${s.clusterIP.padEnd(15)} ${ext.padEnd(13)} ${portStr.padEnd(16)} 2m\n`;
           });
-          return { success: true, out };
+          return { success: true, out: outString };
         }
         if (type === 'nodes' || type === 'node' || type === 'no') {
           let outString = 'NAME       STATUS   ROLES    AGE   VERSION\n';
@@ -206,7 +231,15 @@ export class K8sParser {
 
       case 'expose': {
           // kubectl expose deployment web-deployment --type=LoadBalancer --port=80
-          const depName = parts[2];
+          // kubectl expose deployment/web-deployment --type=LoadBalancer --port=80
+          // kubectl expose web-deployment --type=LoadBalancer --port=80
+          let depName = parts[3];
+          if (parts[2] && parts[2].includes('/')) {
+            depName = parts[2].split('/')[1];
+          } else if (parts[2] && parts[2] !== 'deployment' && parts[2] !== 'deploy' && parts[2] !== 'deployments' && !parts[2].startsWith('--')) {
+            depName = parts[2];
+          }
+
           const typeArg = parts.find(p => p.startsWith('--type='));
           const portArg = parts.find(p => p.startsWith('--port='));
           
