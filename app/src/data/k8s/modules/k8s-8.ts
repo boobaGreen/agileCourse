@@ -65,6 +65,7 @@ export const k8s8: Module = {
             '• **`readinessProbe`**: Verifica se l\'app è pronta a ricevere traffico (es. connessione al DB pronta). Se fallisce, Kubernetes **rimuove il pod dagli endpoint del Service** senza ucciderlo.\n' +
             '• **`startupProbe`**: Disabilita temporaneamente le altre probe durante l\'avvio iniziale per app legacy lente da avviare.'
       }
+    },
     {
       type: 'table',
       title: { en: '🚩 Common Pod Statuses & Fixes', it: '🚩 Stati Comuni dei Pod e Soluzioni' },
