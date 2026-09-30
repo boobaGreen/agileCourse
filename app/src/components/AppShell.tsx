@@ -9,6 +9,7 @@ import { DOCKER_MODULES } from '../data/docker/modules/index'
 import { K8S_MODULES } from '../data/k8s/modules/index'
 import ModuleSidebar from './ModuleSidebar'
 import { useLanguage } from '../contexts/LanguageContext'
+import packageJson from '../../package.json'
 import { LanguageSwitcher } from './LanguageSwitcher.tsx'
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
@@ -157,9 +158,12 @@ function SidebarContent({ collapsed, location, userName, xp, badges, onNavigate,
             <img src="/agilelab.jpg" alt="Logo" className="brand-logo w-full h-full" />
           </div>
           {!collapsed && (
-            <div className="flex flex-col">
+            <div className="flex flex-col justify-center">
               <span className="fw-black text-white text-base tracking-tight leading-tight">Agile Training</span>
-              <span className="text-[10px] text-muted mono font-bold tracking-wider">v1.0.0</span>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#06d6a0] animate-pulse" />
+                <span className="text-[10px] text-muted mono font-bold tracking-wider">v{packageJson.version}</span>
+              </div>
             </div>
           )}
         </div>
