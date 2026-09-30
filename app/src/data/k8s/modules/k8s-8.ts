@@ -65,13 +65,6 @@ export const k8s8: Module = {
             '• **`readinessProbe`**: Verifica se l\'app è pronta a ricevere traffico (es. connessione al DB pronta). Se fallisce, Kubernetes **rimuove il pod dagli endpoint del Service** senza ucciderlo.\n' +
             '• **`startupProbe`**: Disabilita temporaneamente le altre probe durante l\'avvio iniziale per app legacy lente da avviare.'
       }
-    },
-    {
-      type: 'video',
-      title: { en: '📺 Master Kubernetes Probes (Liveness, Readiness, Startup)', it: '📺 Padroneggiare le Probe Kubernetes (Liveness, Readiness, Startup)' },
-      content: { en: 'TechWorld with Nana demonstrates how to configure probes to prevent cluster downtime and avoid routing traffic to unready pods.', it: 'TechWorld with Nana mostra come configurare le probe per prevenire downtime nel cluster ed evitare di inviare traffico a pod non pronti.' },
-      videoUrl: 'https://www.youtube.com/watch?v=s41p7F_2T8g'
-    },
     {
       type: 'table',
       title: { en: '🚩 Common Pod Statuses & Fixes', it: '🚩 Stati Comuni dei Pod e Soluzioni' },
