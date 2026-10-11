@@ -5,7 +5,7 @@ import { ArrowRight, Sun, Moon, Terminal, Gamepad2, Award } from 'lucide-react'
 import { useAppStore } from '../store/useAppStore'
 import { useUI } from '../lib/ui'
 import { useTheme } from '../lib/theme'
-import { TRACK_LIST } from '../lib/tracks'
+import { TRACK_LIST, COURSE_STATS } from '../lib/tracks'
 import { useLanguage } from '../contexts/LanguageContext'
 
 export default function LandingPage() {
@@ -96,7 +96,7 @@ export default function LandingPage() {
             )
           })}
           <div className="rounded-2xl p-4 text-sm flex items-center justify-between gap-3 grid-dots border" style={{ borderColor: 'var(--t-border)' }}>
-            <span style={{ color: 'var(--t-sub)' }}>29 {ui('modules')} · 134 quiz · 25 lab</span>
+            <span style={{ color: 'var(--t-sub)' }}>{COURSE_STATS.modules} {ui('modules')} · {COURSE_STATS.quiz} quiz · {COURSE_STATS.labs} lab</span>
             <span className="font-mono text-xs" style={{ color: 'var(--t-muted)' }}>git · docker · kubectl</span>
           </div>
         </div>

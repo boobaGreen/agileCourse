@@ -64,6 +64,12 @@ export function getTrack(id: string | undefined): TrackMeta | undefined {
 
 export const ALL_MODULES: Module[] = [...GIT_MODULES, ...DOCKER_MODULES, ...K8S_MODULES]
 
+export const COURSE_STATS = {
+  modules: ALL_MODULES.length,
+  quiz: ALL_MODULES.reduce((a, m) => a + (m.quiz?.length ?? 0), 0),
+  labs: ALL_MODULES.reduce((a, m) => a + m.sections.filter((s) => s.type === 'game' || s.type === 'animation').length, 0),
+}
+
 export function findModule(id: string | undefined): Module | undefined {
   return ALL_MODULES.find((m) => m.id === id)
 }
