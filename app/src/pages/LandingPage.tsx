@@ -6,6 +6,7 @@ import { useAppStore } from '../store/useAppStore'
 import { useUI } from '../lib/ui'
 import { useTheme } from '../lib/theme'
 import { TRACK_LIST, COURSE_STATS } from '../lib/tracks'
+import { TrackArt } from '../components/illustrations/TrackArt'
 import { useLanguage } from '../contexts/LanguageContext'
 
 export default function LandingPage() {
@@ -78,19 +79,15 @@ export default function LandingPage() {
             const Icon = t.icon
             return (
               <motion.div key={t.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 * i + 0.1 }}
-                className="panel p-5 flex items-center gap-4" style={{ ['--track' as string]: t.color }}>
-                <span className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'color-mix(in oklab, var(--track) 12%, transparent)', color: 'var(--track)' }}>
-                  <Icon size={22} />
-                </span>
+                className="panel p-3 flex items-center gap-4" style={{ ['--track' as string]: t.color }}>
+                <TrackArt track={t.id} className="w-32 sm:w-40 h-auto shrink-0" />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-baseline gap-2">
+                    <Icon size={16} style={{ color: 'var(--track)' }} className="self-center" />
                     <span className="font-extrabold text-lg tracking-tight">{t.name}</span>
                     <span className="text-xs font-semibold" style={{ color: 'var(--t-muted)' }}>{t.modules.length} {ui('modules')}</span>
                   </div>
                   <p className="text-sm mt-0.5" style={{ color: 'var(--t-sub)' }}>{r(t.tagline)}</p>
-                </div>
-                <div className="hidden sm:flex gap-1">
-                  {t.modules.slice(0, 11).map((_, j) => <span key={j} className="w-1.5 h-5 rounded-full" style={{ background: 'color-mix(in oklab, var(--track) 35%, var(--t-surface3))' }} />)}
                 </div>
               </motion.div>
             )

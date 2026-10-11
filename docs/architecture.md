@@ -35,7 +35,9 @@ src/
     content/                 SectionBlock, Markdown, CodeBlock, LabFrame
     quiz/QuizRunner.tsx      one-question-at-a-time quiz with review
     ui/ProgressRing.tsx      circular progress indicator
+    illustrations/TrackArt   theme-aware SVG art for Git, Docker and Kubernetes
     games/                   Git, Docker and Kubernetes simulators (engine, parser, UI, visualizer)
+    games/shared/            TerminalOutput (colourised output) and Objectives (task panel)
     modules/                 EducationAnimation and Git labs
     cheatsheet/              command diagrams shown in the cheat-sheet drawer
   data/
@@ -97,13 +99,15 @@ Each simulator has the same four parts.
 | Engine | Holds an immutable-by-copy state object and exposes mutations. |
 | Parser | Turns a command string into engine calls and terminal output. |
 | Simulator component | Terminal, command history, task checklist, hints, completion callback. |
-| Visualizer | Renders the engine state (commit graph, Docker host, cluster). |
+| Visualizer | Renders the engine state (commit graph, Docker host, cluster). The Kubernetes visualizer measures the DOM and draws SVG lines from each Service to the Pods its selector matches. |
 
 | Track | Folder | State type |
 |---|---|---|
 | Git | `components/games/git-simulator` | `GitGraphState` |
 | Docker | `components/games/docker-simulator` | `DockerState` |
 | Kubernetes | `components/games/k8s-simulator` | `K8sState` |
+
+All three simulators share `TerminalOutput`, which colours errors, state words, hashes and resource names, and `Objectives`, which numbers the tasks and highlights the current one.
 
 Tasks are checked in order after each successful command. A task's `condition` string is evaluated against the new state; see [content authoring](content-authoring.md#lab-conditions) for the full list.
 

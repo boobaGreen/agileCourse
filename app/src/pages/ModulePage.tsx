@@ -56,6 +56,7 @@ export default function ModulePage() {
   const toc = useMemo(() => (mod?.sections ?? []).map((s, i) => ({ i, title: s.title ? r(s.title).replace(/^[^\p{L}\p{N}]+/u, '') : '', type: s.type })).filter((s) => s.title), [mod, r])
 
   if (!track || !mod || mod.track !== track.id) return <Navigate to="/dashboard" replace />
+  const TrackIcon = track.icon
 
   const goNext = () => navigate(nextMod ? `/${track.id}/module/${nextMod.id}` : `/track/${track.id}`)
   const nextLabel = nextMod ? `${ui('next_module')}: ${r(nextMod.title)}` : ui('back_to_track')
@@ -102,7 +103,13 @@ export default function ModulePage() {
                   <span className="tag">{ui('module')} {mod.order} / {trackModules.length}</span>
                   {done && <span className="tag" style={{ color: 'var(--t-green)' }}><CheckCircle2 size={12} /> {ui('completed')}</span>}
                 </div>
-                <h1 className="h1 flex items-start gap-3"><span className="text-3xl sm:text-4xl leading-none mt-1">{mod.emoji}</span><span>{r(mod.title)}</span></h1>
+                <h1 className="h1 flex items-start gap-4">
+                  <span className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 mt-1 rounded-2xl flex flex-col items-center justify-center" style={{ background: 'color-mix(in oklab, var(--track) 12%, transparent)', color: 'var(--track)' }} aria-hidden>
+                    <TrackIcon size={20} />
+                    <span className="text-[10px] font-mono font-bold leading-none mt-1">{String(mod.order).padStart(2, '0')}</span>
+                  </span>
+                  <span>{r(mod.title)}</span>
+                </h1>
                 <p className="lead mt-3">{r(mod.subtitle)}</p>
                 <div className="flex items-center gap-4 mt-4 text-xs font-semibold" style={{ color: 'var(--t-muted)' }}>
                   <span className="inline-flex items-center gap-1"><Clock size={13} /> {mod.duration}</span>

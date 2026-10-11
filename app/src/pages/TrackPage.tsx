@@ -4,6 +4,7 @@ import { useAppStore } from '../store/useAppStore'
 import { getTrack, trackProgress } from '../lib/tracks'
 import { useUI } from '../lib/ui'
 import { ProgressRing } from '../components/ui/ProgressRing'
+import { TrackArt } from '../components/illustrations/TrackArt'
 
 export default function TrackPage() {
   const { track: id } = useParams()
@@ -42,9 +43,12 @@ export default function TrackPage() {
               <Link to={`/cheatsheet/${track.id}`} className="btn btn-ghost btn-lg">{r(track.cheatsheetLabel)}</Link>
             </div>
           </div>
-          <div className="flex items-center gap-5 lg:flex-col lg:items-end">
-            <ProgressRing value={p.pct} size={112} stroke={9}><div className="text-center"><div className="text-2xl font-extrabold tabular-nums">{p.pct}%</div><div className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--t-muted)' }}>{ui('track_stats')}</div></div></ProgressRing>
+          <div className="flex flex-col gap-5 items-start lg:items-end">
+            <TrackArt track={track.id} className="w-full max-w-[400px] h-auto hidden sm:block" />
+            <div className="flex items-center gap-5">
+            <ProgressRing value={p.pct} size={84} stroke={7}><div className="text-center"><div className="text-lg font-extrabold tabular-nums">{p.pct}%</div></div></ProgressRing>
             <div className="text-sm" style={{ color: 'var(--t-sub)' }}>{p.done}/{p.total} {ui('modules')} · {p.xpEarned}/{p.xpTotal} XP</div>
+            </div>
           </div>
         </div>
       </div>

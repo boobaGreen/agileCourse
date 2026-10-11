@@ -16,6 +16,9 @@ Complete redesign of the interface and a correctness pass on all content.
 - Profile with level, track progress, six-month activity heatmap, skill radar, achievements and certification roadmap.
 - YouTube videos load on click from the privacy-enhanced domain.
 - Text renderer now supports headings, lists and code blocks inside module text; v1 showed these as raw characters.
+- Theme-aware SVG illustrations for each track on the landing and track pages; module titles show a track badge with the module number instead of an emoji.
+- Simulators: coloured terminal output (errors in red, state changes in green, dimmed table headers), numbered objectives with the current step highlighted and a progress bar, terminal and objectives stacked full width.
+- Kubernetes visualizer rewritten: animated connection lines from each Service to the Pods it selects, endpoint counts, hover to focus one Service.
 - Responsive layout tested at phone width (375 px). Visible focus states. Reduced-motion support.
 
 ### Content

@@ -79,6 +79,10 @@ Add the `console` class to any container that must stay dark. It redefines every
 | `.input` | Text inputs. |
 | `.lab-frame` | Dark frame around simulators (`LabFrame`). |
 
+## Illustrations
+
+`src/components/illustrations/TrackArt.tsx` draws one SVG per track (commit graph, image layers to containers, Service routing to Pods). They use only colour tokens, so they adapt to both themes and to the track accent. Prefer extending these over adding raster images: they stay sharp, weigh a few kilobytes and need no licence review.
+
 ## Layout
 
 - `.container-x` caps content at 1200 px with 16 / 24 / 32 px side padding.
