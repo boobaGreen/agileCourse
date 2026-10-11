@@ -6,7 +6,7 @@ import { useAppStore } from '../../store/useAppStore'
 import { useTheme } from '../../lib/theme'
 import { useUI } from '../../lib/ui'
 import { useLanguage } from '../../contexts/LanguageContext'
-import { levelFor } from '../../lib/tracks'
+import { levelFor } from '../../lib/trackMeta'
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false)

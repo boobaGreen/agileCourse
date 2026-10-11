@@ -9,7 +9,7 @@ All course content is TypeScript data in `src/data`. There is no CMS. A content 
 3. Run `npm run dev`, open `/<track>/module/<id>`, and check both languages and both themes.
 4. Run `npm run build` before opening a pull request. The type-checker catches most data mistakes.
 
-Track pages, the dashboard, the landing counters and the syllabus rail pick the module up automatically.
+Track pages, the dashboard and the syllabus rail pick the module up automatically. The landing counters do not: update `COURSE_STATS` and `moduleCount` in `src/lib/trackMeta.ts`. The development console warns you if you forget.
 
 ## Module fields
 

@@ -5,7 +5,7 @@ import { ArrowRight, Sun, Moon, Terminal, Gamepad2, Award } from 'lucide-react'
 import { useAppStore } from '../store/useAppStore'
 import { useUI } from '../lib/ui'
 import { useTheme } from '../lib/theme'
-import { TRACK_LIST, COURSE_STATS } from '../lib/tracks'
+import { TRACK_INFO_LIST as TRACK_LIST, COURSE_STATS } from '../lib/trackMeta'
 import { TrackArt } from '../components/illustrations/TrackArt'
 import { useLanguage } from '../contexts/LanguageContext'
 
@@ -85,7 +85,7 @@ export default function LandingPage() {
                   <div className="flex items-baseline gap-2">
                     <Icon size={16} style={{ color: 'var(--track)' }} className="self-center" />
                     <span className="font-extrabold text-lg tracking-tight">{t.name}</span>
-                    <span className="text-xs font-semibold" style={{ color: 'var(--t-muted)' }}>{t.modules.length} {ui('modules')}</span>
+                    <span className="text-xs font-semibold" style={{ color: 'var(--t-muted)' }}>{t.moduleCount} {ui('modules')}</span>
                   </div>
                   <p className="text-sm mt-0.5" style={{ color: 'var(--t-sub)' }}>{r(t.tagline)}</p>
                 </div>

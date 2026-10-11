@@ -1,6 +1,6 @@
 # Design system
 
-The visual language is editorial and calm: light by default, generous whitespace, strong type, one accent colour per track. Interactive consoles are always dark, so terminals look like terminals in both themes.
+The visual language is editorial and calm: dark by default with a light alternative, generous whitespace, strong type, one accent colour per track. Interactive consoles are always dark, so terminals look like terminals in both themes.
 
 All tokens live in `src/index.css`.
 
@@ -8,9 +8,8 @@ All tokens live in `src/index.css`.
 
 | Theme | How it is selected |
 |---|---|
-| Light | Default. |
-| Dark | `data-theme="dark"` on `<html>`. |
-| System | No stored preference. Follows `prefers-color-scheme`. |
+| Dark | Default. `data-theme="dark"` on `<html>`. |
+| Light | Chosen with the header toggle; stored as `theme=light`. |
 
 `ThemeProvider` in `src/lib/theme.tsx` manages the preference and stores it under `theme`. A small inline script in `index.html` applies the dark attribute before React loads, which avoids a flash of the wrong theme.
 

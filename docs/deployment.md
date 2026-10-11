@@ -28,6 +28,24 @@ The site is a static build hosted on Vercel through the GitHub integration of `b
 4. Update `CHANGELOG.md` and the `version` field in `app/package.json`.
 5. Merge to `main`. Vercel promotes the build to production.
 
+## Going back to version 1
+
+Version 1 is preserved in two places:
+
+| Reference | Points to |
+|---|---|
+| Tag `v1.1.0` | The last v1 commit, frozen |
+| Branch `v1-legacy` | Same commit; Vercel keeps a preview deployment of it online |
+
+To put version 1 back in production quickly, use the Vercel rollback below and promote the last v1 production deployment. To make it permanent, reset `main` to the tag with a revert or merge, never with a force push to a shared branch:
+
+```bash
+git checkout main
+git revert --no-commit v1.1.0..HEAD
+git commit -m "revert: back to v1.1.0"
+git push origin main
+```
+
 ## Rollback
 
 In the Vercel dashboard, open the project, go to Deployments, pick the last good production deployment and choose "Promote to Production". The rollback is instant and does not require a new commit. Revert the offending commit on `main` afterwards so the next deployment does not reintroduce it.

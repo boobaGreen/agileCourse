@@ -25,7 +25,8 @@ src/
   index.css                  design tokens, base styles, shared component classes
   lib/
     theme.tsx                light / dark / system theme provider
-    tracks.ts                track metadata, progress and level helpers, course totals
+    trackMeta.ts             lightweight track metadata, course totals, level curve (no content)
+    tracks.ts                metadata joined with module content, progress helpers
     ui.ts                    interface copy in English and Italian
   contexts/                  language provider and resolveString helper
   store/useAppStore.ts       progress store: XP, modules, quizzes, labs, badges, activity
@@ -121,4 +122,17 @@ Interface copy for version 2 screens lives in `src/lib/ui.ts`. Legacy strings us
 
 ## Performance notes
 
-The production bundle is a single chunk of about 1.4 MB (about 440 kB gzipped). Most of it is module content and the large `EducationAnimation` component. Route-level code splitting with `React.lazy` is the obvious next step if load time becomes a concern.
+Code is split so the first visit downloads as little as possible.
+
+| Chunk | Loaded when | Size (gzip) |
+|---|---|---|
+| Entry: React, router, store, shell, landing | First visit | about 136 kB |
+| Course content and track helpers | Any page after the landing | shared lazy chunk |
+| `ModulePage`, `TrackPage`, `DashboardPage`, `CheatsheetPage` | On navigation | 2 to 15 kB each |
+| `ProfilePage` with Recharts | Opening the profile | about 84 kB |
+| Labs, simulators, `EducationAnimation` | When a module section needs them | 14 to 24 kB each |
+
+Two rules keep it that way:
+
+- The landing page and `AppShell` import only `src/lib/trackMeta.ts`, never `src/lib/tracks.ts` or anything under `src/data/*/modules`.
+- `COURSE_STATS` and `moduleCount` in `trackMeta.ts` are written by hand. In development, `tracks.ts` logs a warning in the console when they no longer match the content. Update them when you add modules, quizzes or labs.

@@ -8,7 +8,7 @@ Complete redesign of the interface and a correctness pass on all content.
 
 ### Interface
 
-- New design system: light theme by default, dark theme toggle that follows the system preference until changed, Manrope and JetBrains Mono, one accent colour per track.
+- New design system with dark and light themes, Manrope and JetBrains Mono, one accent colour per track.
 - New navigation: top header with track links, dedicated track pages with syllabus and stats, module pages with a syllabus rail and an in-page index.
 - Simulators, labs and games now sit in a consistent dark console frame, readable in both themes.
 - Quiz rebuilt: one question at a time, explanation right after each answer, review screen at the end. The 15-minute timer is gone.
@@ -19,6 +19,8 @@ Complete redesign of the interface and a correctness pass on all content.
 - Theme-aware SVG illustrations for each track on the landing and track pages; module titles show a track badge with the module number instead of an emoji.
 - Simulators: coloured terminal output (errors in red, state changes in green, dimmed table headers), numbered objectives with the current step highlighted and a progress bar, terminal and objectives stacked full width.
 - Kubernetes visualizer rewritten: animated connection lines from each Service to the Pods it selects, endpoint counts, hover to focus one Service.
+- Dark theme by default; light theme one click away and remembered.
+- Code splitting: the first visit downloads about 136 kB gzipped instead of 436 kB; pages, labs and charts load on demand.
 - Responsive layout tested at phone width (375 px). Visible focus states. Reduced-motion support.
 
 ### Content
@@ -41,4 +43,4 @@ Learner progress is preserved: the store key and data shape are unchanged.
 
 ## 1.1.0 — 2026-09-30
 
-Last release of the original interface. See [docs/archive](docs/archive/README.md) for audits and feedback collected during version 1.
+Last release of the original interface, kept as tag `v1.1.0` and branch `v1-legacy`. See [docs/archive](docs/archive/README.md) for audits and feedback collected during version 1.

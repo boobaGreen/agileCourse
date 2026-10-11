@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { ArrowRight, Lightbulb, Quote, Play, ExternalLink } from 'lucide-react'
 import type { Section } from '../../data/types'
 import { useLanguage } from '../../contexts/LanguageContext'
@@ -6,9 +6,13 @@ import { useUI } from '../../lib/ui'
 import { Markdown, renderInline } from './Markdown'
 import { CodeBlock } from './CodeBlock'
 import { LabFrame } from './LabFrame'
-import { EducationAnimation } from '../modules/EducationAnimation'
-import { MiniGame } from '../modules/simulations/Games'
-import { GitLabs } from '../modules/simulations/GitLabs'
+const EducationAnimation = lazy(() => import('../modules/EducationAnimation').then((m) => ({ default: m.EducationAnimation })))
+const MiniGame = lazy(() => import('../modules/simulations/Games').then((m) => ({ default: m.MiniGame })))
+const GitLabs = lazy(() => import('../modules/simulations/GitLabs').then((m) => ({ default: m.GitLabs })))
+
+function LabFallback() {
+  return <div className="min-h-[160px] flex items-center justify-center text-xs font-mono" style={{ color: '#76818e' }}>loading lab…</div>
+}
 
 interface Props {
   section: Section
@@ -184,8 +188,10 @@ export function SectionBlock({ section, index, completedLabs, moduleId, onComple
           {content && content !== type && <Markdown text={content} className="text-sm mb-3" />}
           <LabFrame label={ui('lab')} done={completedLabs.includes(labKey)}>
             <div className="flex items-center justify-center min-h-[140px]">
-              <GitLabs type={type} onComplete={() => onCompleteGame(title || 'Lab')} />
-              <EducationAnimation type={type} />
+              <Suspense fallback={<LabFallback />}>
+                <GitLabs type={type} onComplete={() => onCompleteGame(title || 'Lab')} />
+                <EducationAnimation type={type} />
+              </Suspense>
             </div>
           </LabFrame>
         </section>
@@ -199,7 +205,9 @@ export function SectionBlock({ section, index, completedLabs, moduleId, onComple
           {content && <Markdown text={content} className="text-sm mb-3" />}
           {section.gameType && (
             <LabFrame label={section.gameType.includes('sim') ? ui('lab') : 'Challenge'} done={completedLabs.includes(labKey)}>
-              <MiniGame gameType={section.gameType} gameData={section.gameData} onComplete={() => onCompleteGame(title || 'Challenge')} />
+              <Suspense fallback={<LabFallback />}>
+                <MiniGame gameType={section.gameType} gameData={section.gameData} onComplete={() => onCompleteGame(title || 'Challenge')} />
+              </Suspense>
             </LabFrame>
           )}
         </section>

@@ -1,15 +1,21 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { useAppStore } from './store/useAppStore'
 import { LanguageProvider } from './contexts/LanguageProvider'
 import { ThemeProvider } from './lib/theme'
 import AppShell from './components/layout/AppShell'
 import LandingPage from './pages/LandingPage'
-import DashboardPage from './pages/DashboardPage'
-import TrackPage from './pages/TrackPage'
-import ModulePage from './pages/ModulePage'
-import CheatsheetPage from './pages/CheatsheetPage'
-import ProfilePage from './pages/ProfilePage'
+
+// Every page except the landing is loaded on demand.
+const DashboardPage = lazy(() => import('./pages/DashboardPage'))
+const TrackPage = lazy(() => import('./pages/TrackPage'))
+const ModulePage = lazy(() => import('./pages/ModulePage'))
+const CheatsheetPage = lazy(() => import('./pages/CheatsheetPage'))
+const ProfilePage = lazy(() => import('./pages/ProfilePage'))
+
+function PageFallback() {
+  return <div className="container-x py-16"><div className="h-8 w-48 rounded-lg animate-pulse" style={{ background: 'var(--t-surface2)' }} /></div>
+}
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -20,7 +26,7 @@ function ScrollToTop() {
 function Protected({ children }: { children: React.ReactNode }) {
   const userName = useAppStore((s) => s.userName)
   if (!userName) return <Navigate to="/" replace />
-  return <AppShell>{children}</AppShell>
+  return <AppShell><Suspense fallback={<PageFallback />}>{children}</Suspense></AppShell>
 }
 
 export default function App() {

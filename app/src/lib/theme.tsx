@@ -17,7 +17,7 @@ function readPref(): ThemePref {
     const v = localStorage.getItem('theme')
     if (v === 'light' || v === 'dark') return v
   } catch { /* storage unavailable */ }
-  return 'system'
+  return 'dark'
 }
 
 function systemTheme(): Resolved {
