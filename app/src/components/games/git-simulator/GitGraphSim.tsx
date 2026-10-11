@@ -6,6 +6,8 @@ import { GitVisualGraph } from './GitVisualGraph';
 import { CheckCircle, TerminalSquare, RotateCcw } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../../../contexts/LanguageContext';
+import { TerminalOutput, type TermLine } from '../shared/TerminalOutput';
+import { Objectives } from '../shared/Objectives';
 
 interface Props {
   data: GitGraphGameData;
@@ -15,7 +17,7 @@ interface Props {
 export function GitGraphSim({ data, onComplete }: Props) {
   const { t, resolveString } = useLanguage();
   const [state, setState] = useState<GitGraphState>(data.startState);
-  const [history, setHistory] = useState<{type: 'cmd'|'out', text: string}[]>([]);
+  const [history, setHistory] = useState<TermLine[]>([]);
   const [input, setInput] = useState('');
   // Funzione pura per calcolare quali task sono soddisfatti da uno stato
   const checkTasksSatisfied = React.useCallback((currentState: GitGraphState, currentCompleted: Set<string>) => {
@@ -133,7 +135,7 @@ export function GitGraphSim({ data, onComplete }: Props) {
       const engine = new GitEngine(state);
       const result = GitParser.execute(engine, cmd);
       
-      newHistory.push({ type: 'out' as const, text: resolveString(result.out) });
+      newHistory.push({ type: 'out' as const, text: resolveString(result.out), ok: result.success });
       
       if (result.success) {
         const newState = engine.getState();
@@ -188,20 +190,12 @@ export function GitGraphSim({ data, onComplete }: Props) {
          </div>
 
          {/* Tasks & Terminal Area (Grouped together below) */}
-         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+         <div className="grid grid-cols-1 gap-4">
             
             {/* Task List */}
             <div className="flex flex-col gap-3">
-              <div className="bg-black/40 border border-white/10 rounded-xl p-5 flex flex-col gap-3 h-full">
-                <span className="text-[10px] text-muted font-black uppercase tracking-widest border-b border-white/5 pb-2">Mission Objectives</span>
-                {tasks.map(t => (
-                  <div key={t.id} className="flex gap-3 items-center">
-                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${t.completed ? 'bg-git border-git' : 'border-danger/50 bg-black'}`}>
-                      {t.completed && <CheckCircle className="text-white" size={10} />}
-                    </div>
-                    <span className={`text-xs font-bold transition-colors ${t.completed ? 'text-white/50 line-through' : 'text-white'}`}>{resolveString(t.instruction)}</span>
-                  </div>
-                ))}
+              <div className="bg-black/40 border border-white/10 rounded-xl p-4 h-full">
+                <Objectives tasks={tasks} />
               </div>
             </div>
 
@@ -227,11 +221,7 @@ export function GitGraphSim({ data, onComplete }: Props) {
               </div>
 
               <div ref={scrollRef} className="flex-1 overflow-y-auto flex flex-col gap-1.5 pb-2 scrollbar-thin">
-                {history.map((h, i) => (
-                  <div key={i} className={`${h.type === 'cmd' ? "text-primary font-bold" : "text-muted whitespace-pre-wrap pl-2"} mb-1`}>
-                    {h.text}
-                  </div>
-                ))}
+                <TerminalOutput lines={history} />
                 {!allCompleted && (
                   <div className="flex items-center mt-3 gap-2 bg-black/50 border border-white/10 focus-within:border-[#06d6a0]/50 focus-within:bg-black/80 rounded-md p-2 transition-all shadow-inner">
                     <span className="text-[#06d6a0] font-black">$</span>

@@ -6,6 +6,8 @@ import { DockerVisualizer } from './DockerVisualizer';
 import { CheckCircle, TerminalSquare, RotateCcw, Folder, FileCode, FileText, X, Lightbulb } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../../../contexts/LanguageContext';
+import { TerminalOutput, type TermLine } from '../shared/TerminalOutput';
+import { Objectives } from '../shared/Objectives';
 
 interface Props {
   data: DockerGameData;
@@ -15,7 +17,7 @@ interface Props {
 export function DockerSimulator({ data, onComplete }: Props) {
   const { t, resolveString } = useLanguage();
   const [state, setState] = useState<DockerState>(data.startState);
-  const [history, setHistory] = useState<{type: 'cmd'|'out', text: string}[]>([]);
+  const [history, setHistory] = useState<TermLine[]>([]);
   const [input, setInput] = useState('');
   const [inspectFile, setInspectFile] = useState<string | null>(null);
   const [taskHintLevels, setTaskHintLevels] = useState<Record<string, number>>({});
@@ -82,7 +84,7 @@ export function DockerSimulator({ data, onComplete }: Props) {
       const engine = new DockerEngine(state);
       const result = DockerParser.execute(engine, cmd);
       
-      setHistory(prev => [...prev, { type: 'out', text: resolveString(result.out) }]);
+      setHistory(prev => [...prev, { type: 'out', text: resolveString(result.out), ok: result.success }]);
       
       if (result.success) {
         const newState = engine.getState();
@@ -236,25 +238,10 @@ export function DockerSimulator({ data, onComplete }: Props) {
             <DockerVisualizer state={state} />
          </div>
 
-         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+         <div className="grid grid-cols-1 gap-4">
             <div className="bg-black/40 border border-white/10 rounded-xl p-5 flex flex-col justify-between gap-4 h-full">
               <div className="flex flex-col gap-3">
-                <div className="flex justify-between items-center border-b border-white/5 pb-2">
-                  <span className="text-[10px] text-muted font-black uppercase tracking-widest">{resolveString({ en: 'Mission Objectives', it: 'Obiettivi Missione' })}</span>
-                  {currentHintLevel > 0 && (
-                    <span className="text-[10px] text-yellow-400/80 font-mono font-bold">
-                      XP: {getXpPercent()}%
-                    </span>
-                  )}
-                </div>
-                {tasks.map(t => (
-                  <div key={t.id} className="flex gap-3 items-center">
-                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${t.completed ? 'bg-[#06d6a0] border-[#06d6a0]' : 'border-white/20 bg-black'}`}>
-                      {t.completed && <CheckCircle className="text-white" size={10} />}
-                    </div>
-                    <span className={`text-xs font-bold transition-colors ${t.completed ? 'text-[#06d6a0] font-mono' : 'text-white'}`}>{resolveString(t.instruction)}</span>
-                  </div>
-                ))}
+                <Objectives tasks={tasks} right={currentHintLevel > 0 ? <span className="text-[10px] text-yellow-400/80 font-mono font-bold">XP {getXpPercent()}%</span> : undefined} />
               </div>
 
               {!allCompleted && currentUncompletedTask?.hints && (
@@ -328,11 +315,7 @@ export function DockerSimulator({ data, onComplete }: Props) {
               </div>
 
               <div ref={scrollRef} className="flex-1 overflow-y-auto flex flex-col gap-1.5 pb-2 scrollbar-hide">
-                {history.map((h, i) => (
-                  <div key={i} className={`${h.type === 'cmd' ? "text-primary font-bold" : "text-muted whitespace-pre-wrap pl-2"} mb-1`}>
-                    {h.text}
-                  </div>
-                ))}
+                <TerminalOutput lines={history} />
                 {!allCompleted && (
                   <div className="flex items-center mt-3 gap-2 bg-black/50 border border-white/10 focus-within:border-primary/50 focus-within:bg-black/80 rounded-md p-2 transition-all">
                     <span className="text-primary font-black">$</span>
