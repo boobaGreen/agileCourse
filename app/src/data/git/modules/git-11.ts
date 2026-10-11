@@ -8,7 +8,7 @@ export const git11: Module = {
   subtitle: { en: 'The ultimate knowledge test', it: 'Il test di conoscenza definitivo' },
   emoji: '🏆',
   duration: '15 min',
-  xpReward: 100,
+  xpReward: 200,
   sections: [
     {
       type: 'intro',
@@ -31,12 +31,7 @@ export const git11: Module = {
     {
       id: 'git-11-q2',
       question: { en: 'Which command creates a local copy of a remote repository?', it: 'Quale comando crea una copia locale di un repository remoto?' },
-      options: [
-        { en: 'git init (initializes new)', it: 'git init (inizializza nuovo)' },
-        { en: 'git fetch (downloads updates)', it: 'git fetch (scarica aggiornamenti)' },
-        { en: 'git clone (copies everything)', it: 'git clone (copia tutto)' },
-        { en: 'git pull (fetches and merges)', it: 'git pull (scarica e unisce)' }
-      ],
+      options: ['git init', 'git fetch', 'git clone', 'git pull'],
       correct: 2,
       explanation: { en: '`git clone <url>` downloads the entire repository (all history, all branches) to your machine.', it: '`git clone <url>` scarica l\'intero repository (tutta la cronologia, tutti i branch) sulla tua macchina.' }
     },
@@ -154,13 +149,8 @@ export const git11: Module = {
     },
     {
       id: 'git-11-q14',
-      question: { en: 'Which command shows unstaged local changes?', it: 'Quale comando mostra le modifiche locali non in stage?' },
-      options: [
-        { en: 'git status (shows file states)', it: 'git status (mostra gli stati dei file)' },
-        { en: 'git diff (shows line-by-line)', it: 'git diff (mostra riga per riga)' },
-        { en: 'git log (shows commit history)', it: 'git log (mostra la cronologia dei commit)' },
-        { en: 'git show (shows specific commit)', it: 'git show (mostra uno specifico commit)' }
-      ],
+      question: { en: 'Which command shows the exact line-by-line differences between your working directory and the staging area?', it: 'Quale comando mostra le differenze esatte, riga per riga, tra la working directory e la staging area?' },
+      options: ['git status', 'git diff', 'git log', 'git show'],
       correct: 1,
       explanation: { en: '`git diff` shows the delta between your work and the staging area.', it: '`git diff` mostra la differenza tra il tuo lavoro e la staging area.' }
     },

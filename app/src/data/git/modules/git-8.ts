@@ -8,7 +8,7 @@ export const git8: Module = {
   subtitle: { en: 'Undoing mistakes and managing the HEAD pointer', it: 'Annullare gli errori e gestire il puntatore HEAD' },
   emoji: '⏩',
   duration: '10 min',
-  xpReward: 80,
+  xpReward: 120,
   sections: [
     {
       type: 'intro',
@@ -28,6 +28,17 @@ export const git8: Module = {
       type: 'concept',
       title: { en: '🔌 Detached HEAD — Lost in Time', it: '🔌 HEAD Distaccata — Persi nel Tempo' },
       content: { en: 'Normally, **HEAD** is a pointer that points to your current branch. However, if you checkout a specific commit hash directly (e.g., `git checkout a1b2c3d`), HEAD points directly to that commit instead of a branch. This is the **detached HEAD** state. Any new commits here are not on a branch and may get lost!', it: 'Normalmente, l\'**HEAD** è un puntatore che punta al tuo branch attuale. Tuttavia, se fai il checkout di uno specifico hash di commit direttamente (es. `git checkout a1b2c3d`), l\'HEAD punta direttamente a quel commit invece che a un branch. Questo è lo stato di **HEAD distaccata**. Ogni nuovo commit fatto qui non appartiene a un branch e potrebbe andare perso!' }
+    },
+    {
+      type: 'concept',
+      title: { en: '📦 Stash: park your work for a moment', it: '📦 Stash: parcheggia il lavoro per un momento' },
+      content: { en: 'You are halfway through a change and must switch branch right now, but you do not want to commit half-done work. `git stash` takes every uncommitted change, stores it on a stack and leaves a clean working directory. Later, `git stash pop` brings the changes back and removes the entry; `git stash list` shows what is parked.\n\n💡 Stash is a local, temporary shelf. It is not a substitute for a commit and it is never pushed.', it: 'Sei a metà di una modifica e devi cambiare branch subito, ma non vuoi committare lavoro a metà. `git stash` prende tutte le modifiche non committate, le mette su una pila e lascia la working directory pulita. Più tardi, `git stash pop` le riporta indietro e rimuove la voce; `git stash list` mostra cosa è parcheggiato.\n\n💡 Lo stash è uno scaffale locale e temporaneo. Non sostituisce un commit e non viene mai inviato con il push.' }
+    },
+    {
+      type: 'animation',
+      title: { en: '🧪 Stash Lab', it: '🧪 Lab Stash' },
+      content: { en: 'Stash your work, switch context, then pop it back.', it: 'Metti da parte il lavoro, cambia contesto, poi recuperalo.' },
+      animationType: 'git-stash-lab'
     },
     {
       type: 'game',

@@ -5,7 +5,7 @@ import { Zap } from 'lucide-react'
 export function ManualVsGitLab() {
   const [count, setCount] = useState(1)
   return (
-    <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/5">
+    <div className="w-full flex flex-col gap-4">
        <div className="flex justify-between items-center px-4">
           <h4 className="text-[10px] fw-black text-muted uppercase tracking-widest">Scaling to {count} changes</h4>
           <button 

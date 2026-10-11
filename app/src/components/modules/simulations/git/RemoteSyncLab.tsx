@@ -57,7 +57,7 @@ export function RemoteSyncLab() {
   const current = steps[step]
 
   return (
-    <div className="w-full flex flex-col gap-4 sm:gap-6 p-3 sm:p-8 bg-surface/40 rounded-[1.5rem] sm:rounded-[2.5rem] border border-white/10 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] backdrop-blur-md relative overflow-hidden">
+    <div className="w-full flex flex-col gap-4 relative overflow-hidden">
        <div className="absolute top-0 right-0 w-64 h-64 bg-git/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
        
        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-0 sm:mb-2 z-10 gap-2 sm:gap-6">

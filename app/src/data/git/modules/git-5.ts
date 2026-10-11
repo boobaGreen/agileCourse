@@ -8,7 +8,7 @@ export const git5: Module = {
   subtitle: { en: 'Push, pull, fetch — and the magic of Pull Requests', it: 'Push, pull, fetch — e la magia delle Pull Request' },
   emoji: '🌐',
   duration: '12 min',
-  xpReward: 50,
+  xpReward: 100,
   funFact: { en: 'GitHub was launched in 2008. In 2018, Microsoft acquired it for $7.5 billion — the largest acquisition in Microsoft\'s history at the time.', it: 'GitHub è stato lanciato nel 2008. Nel 2018, Microsoft lo ha acquisito per 7,5 miliardi di dollari — la più grande acquisizione nella storia di Microsoft all\'epoca.' },
   sections: [
     {
@@ -131,7 +131,7 @@ git push -u origin main`,
       options: [
         { en: 'The cryptographic identifier of the first commit ever made in the project history', it: 'L\'identificatore crittografico del primo commit mai fatto nella storia del progetto' },
         { en: 'The default name for the remote repository URL your local repo was cloned from', it: 'Il nome predefinito per l\'URL del repository remoto da cui è stato clonato il tuo repo locale' },
-        { en: 'The primary production branch used for all stable releases of the application', it: 'Il branch principale di produzione usato per tutti i rilascini stabili dell\'applicazione' },
+        { en: 'The primary production branch used for all stable releases of the application', it: 'Il branch principale di produzione usato per tutti i rilasci stabili dell\'applicazione' },
         { en: 'A local configuration file used to store user credentials and environment settings', it: 'Un file di configurazione locale usato per memorizzare le credenziali utente e le impostazioni di ambiente' }
       ],
       correct: 1,
@@ -165,10 +165,10 @@ git push -u origin main`,
       id: 'git-5-q4',
       question: { en: 'Which command is "safer" because it downloads remote data but does not modify your local code until you are ready?', it: 'Quale comando è più "sicuro" perché scarica i dati remoti ma non modifica il tuo codice locale finché non sei pronto?' },
       options: [
-        { en: 'git pull (downloads and merges automatically)', it: 'git pull (scarica e unisce automaticamente)' },
-        { en: 'git fetch (downloads only for your inspection)', it: 'git fetch (scarica solo per la tua ispezione)' },
-        { en: 'git push (uploads your local work to remote)', it: 'git push (carica il tuo lavoro locale sul remote)' },
-        { en: 'git update (a generic command for refreshing)', it: 'git update (un comando generico per aggiornare)' }
+        'git pull',
+        'git fetch',
+        'git push',
+        'git update'
       ],
       correct: 1,
       explanation: { en: '`git fetch` downloads the latest data from the remote server so you can inspect it. It doesn\'t force a merge, so it won\'t create conflicts or change your files until you manually run merge or rebase.', it: '`git fetch` scarica gli ultimi dati dal server remoto in modo che tu possa ispezionarli. Non forza un merge, quindi non creerà conflitti né cambierà i tuoi file finché non eseguirai manualmente merge o rebase.' }

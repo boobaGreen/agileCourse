@@ -8,7 +8,7 @@ export const git6: Module = {
   subtitle: { en: 'Gitflow, trunk-based, and choosing what fits your team', it: 'Gitflow, trunk-based e come scegliere quello adatto al tuo team' },
   emoji: '🗺️',
   duration: '10 min',
-  xpReward: 50,
+  xpReward: 100,
   funFact: { en: 'Trunk-based development is used by Google, Facebook, and Netflix. The Google monorepo (single giant repository) contains over 2 billion lines of code.', it: 'Il trunk-based development è usato da Google, Facebook e Netflix. Il monorepo di Google (un singolo repository gigante) contiene oltre 2 miliardi di righe di codice.' },
   sections: [
     {
@@ -110,7 +110,7 @@ export const git6: Module = {
     {
       id: 'git-6-q3',
       question: { en: 'Which workflow is most suitable for a team releasing updates multiple times a day (Continuous Deployment)?', it: 'Quale flusso di lavoro è più adatto per un team che rilascia aggiornamenti più volte al giorno (Continuous Deployment)?' },
-      options: ['Gitflow', 'Trunk-Based Development', 'A single-branch model without PRs', 'Sequential Waterfall'],
+      options: ['Gitflow', 'Trunk-Based Development', { en: 'Feature branches that live for several months', it: 'Feature branch che vivono per mesi' }, 'Sequential Waterfall'],
       correct: 1,
       explanation: { en: 'Trunk-based development is the standard for high-performance teams practicing CI/CD, as it minimizes merge complexity and keeps the trunk always ready for deployment.', it: 'Il trunk-based development è lo standard per i team ad alte prestazioni che praticano la CI/CD, poiché riduce al minimo la complessità dei merge e mantiene il trunk sempre pronto per il rilascio.' }
     },

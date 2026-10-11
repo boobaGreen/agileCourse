@@ -133,7 +133,7 @@ export const k8s9: Module = {
         { en: 'Manually provision exactly 4 more worker nodes to handle the load', it: 'Configurare manualmente esattamente 4 nodi worker in più per gestire il carico' }
       ],
       correct: 2,
-      explanation: { en: 'Kubernetes relies on declarative Deployments. Altering the `replicas` field in the file and reapplying it is the standard GitOps way.', it: 'Kubernetes si basa sui Deployment dichiarativi. Modificare il campo `replicas` nel file e riapplicarlo è il modo standard in ambito GitOps.' }
+      explanation: { en: 'Kubernetes relies on declarative Deployments. Altering the `replicas` field in the file and reapplying it is the standard GitOps way. `kubectl scale` works too and is handy for quick tests, but the change is not tracked in your YAML.', it: 'Kubernetes si basa sui Deployment dichiarativi. Modificare il campo `replicas` nel file e riapplicarlo è il modo standard in ambito GitOps. Anche `kubectl scale` funziona ed è comodo per test rapidi, ma la modifica non resta tracciata nello YAML.' }
     },
     {
       id: 'k8s-9-q3',
@@ -208,11 +208,11 @@ export const k8s9: Module = {
       options: [
         { en: 'Hardcoded directly into the Docker Image layers', it: 'Inserito direttamente nei layer dell\'immagine Docker' },
         { en: 'As a standard plain-text Kubernetes ConfigMap', it: 'Come una normale ConfigMap Kubernetes in chiaro' },
-        { en: 'As a secure and encrypted Kubernetes Secret', it: 'Come un Secret Kubernetes sicuro e criptato' },
+        { en: 'As a Kubernetes Secret, protected by RBAC and encrypted at rest in etcd', it: 'Come Secret Kubernetes, protetto da RBAC e cifrato a riposo in etcd' },
         { en: 'Inside the Deployment YAML manifest as plaintext', it: 'All\'interno del manifest YAML del Deployment in chiaro' }
       ],
       correct: 2,
-      explanation: { en: 'You must use a K8s Secret. While it\'s technically similar to a ConfigMap, Secrets are mounted securely into RAM (tmpfs) on worker nodes to prevent them from landing on physical disk drives.', it: 'Devi usare un Secret di K8s. Anche se è tecnicamente simile a una ConfigMap, i Secret vengono montati in modo sicuro nella RAM (tmpfs) sui nodi worker per evitare che finiscano sui dischi rigidi fisici.' }
+      explanation: { en: 'Use a K8s Secret. It is structurally similar to a ConfigMap, but it is meant for sensitive data: restrict it with RBAC, enable encryption at rest in etcd, and it is mounted from tmpfs on worker nodes.', it: 'Usa un Secret di K8s. È strutturalmente simile a una ConfigMap, ma è pensato per dati sensibili: limitalo con RBAC, abilita la cifratura a riposo in etcd, e viene montato da tmpfs sui nodi worker.' }
     },
     {
       id: 'k8s-9-q10',

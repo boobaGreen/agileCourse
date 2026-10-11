@@ -7,14 +7,14 @@ export const certPaths = [
       {
         name: 'GitHub Foundations',
         level: 'Entry',
-        url: 'https://examregistration.github.com',
+        url: 'https://learn.github.com/',
         description: { en: 'Covers core GitHub concepts: repositories, pull requests, issues, and basic team collaboration.', it: 'Copre i concetti base di GitHub: repository, pull request, issue e collaborazione base del team.' },
         topics: ['History', 'Workflow', 'Branching', 'PRs'],
       },
       {
         name: 'GitLab Fundamentals',
         level: 'Associate',
-        url: 'https://about.gitlab.com/learn/certifications/',
+        url: 'https://university.gitlab.com/pages/certifications',
         description: { en: 'Focuses on the GitLab ecosystem, CI/CD basic pipelines, and DevSecOps fundamentals.', it: 'Si concentra sull\'ecosistema GitLab, pipeline CI/CD di base e fondamentali DevSecOps.' },
         topics: ['Pipelines', 'MRs', 'Registry', 'Security'],
       },
@@ -28,7 +28,7 @@ export const certPaths = [
       {
         name: 'Docker Certified Associate',
         level: 'Professional',
-        url: 'https://training.mirantis.com/dca-certification-exam/',
+        url: 'https://training.mirantis.com/certification/dca-certification-exam/',
         description: { en: 'The definitive recognition for Docker experts. Significant hands-on experience required.', it: 'Il riconoscimento definitivo per gli esperti Docker. Richiesta una significativa esperienza pratica.' },
         topics: ['Dockerfile', 'Orchestration', 'Net/Vol', 'Security'],
       },

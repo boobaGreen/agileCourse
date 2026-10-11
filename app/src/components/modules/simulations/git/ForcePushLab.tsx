@@ -127,7 +127,7 @@ export function ForcePushLab() {
            <div className="flex flex-col gap-4">
               <div className="flex flex-col">
                  <span className="text-[11px] text-danger font-black uppercase tracking-widest leading-none mb-2">Warning Simulation • Step {step + 1} of {steps.length}</span>
-                 <h3 className="text-xl font-black text-white">{steps[step].title}</h3>
+                 <h3 className="text-sm font-bold text-white">{steps[step].title}</h3>
               </div>
               
               <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">

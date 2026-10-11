@@ -26,8 +26,8 @@ export const docker7: Module = {
     {
       type: 'video',
       title: {
-        en: '📺 Docker Compose in 6 Minutes',
-        it: '📺 Docker Compose in 6 Minuti'
+        en: '📺 Docker Compose explained (NetworkChuck)',
+        it: '📺 Docker Compose spiegato (NetworkChuck)'
       },
       content: {
         en: 'See exactly how to transition from tedious CLI commands to an elegant, declarative YAML configuration file.',
@@ -106,7 +106,7 @@ export const docker7: Module = {
           ],
           [
             { en: '`depends_on:`', it: '`depends_on:`' },
-            { en: '*(Startup ordering)*', it: '*(Ordine di avvio)*' },
+            { en: '*(Startup order only; add `condition: service_healthy` to wait for readiness)*', it: '*(Solo ordine di avvio; aggiungi `condition: service_healthy` per attendere che sia pronto)*' },
             { en: '`depends_on:\n  - db-store`', it: '`depends_on:\n  - db-store`' }
           ]
         ]
@@ -133,8 +133,7 @@ export const docker7: Module = {
         en: 'This single file spins up an API server and a PostgreSQL database on a shared internal network:',
         it: 'Questo singolo file avvia un server API e un database PostgreSQL su una rete interna condivisa:'
       },
-      code: `version: '3.8'
-services:
+      code: `services:
   api:
     build: .
     ports:
@@ -194,7 +193,7 @@ services:
           [
             { en: '**docker compose down**', it: '**docker compose down**' },
             { en: 'Stops and REMOVES containers and custom networks', it: 'Stoppa e RIMUOVE container e reti' },
-            { en: '❌ Removed', it: '❌ Riscossi/Rimossi' },
+            { en: '❌ Removed', it: '❌ Rimossi' },
             { en: '⚠️ Networks removed, Volumes kept', it: '⚠️ Reti rimosse, Volumi salvati' }
           ]
         ]
@@ -247,8 +246,8 @@ services:
                 it: '💡 Aiuto 2/3 (Sintassi): Aggiungi il flag `-d` per eseguire in modalità detached.'
               },
               {
-                en: '💡 Hint 3/3 (Full Solution): Type `docker-compose up -d` in the CLI terminal.',
-                it: '💡 Aiuto 3/3 (Soluzione Completa): Digita `docker-compose up -d` nel terminale CLI.'
+                en: '💡 Hint 3/3 (Full Solution): Type `docker compose up -d` in the CLI terminal.',
+                it: '💡 Aiuto 3/3 (Soluzione Completa): Digita `docker compose up -d` nel terminale CLI.'
               }
             ]
           },
@@ -269,8 +268,8 @@ services:
                 it: '💡 Aiuto 2/3 (Sintassi): Ricorda la differenza tra `stop` (pausa) e `down` (rimozione).'
               },
               {
-                en: '💡 Hint 3/3 (Full Solution): Type `docker-compose down` in the CLI terminal.',
-                it: '💡 Aiuto 3/3 (Soluzione Completa): Digita `docker-compose down` nel terminale CLI.'
+                en: '💡 Hint 3/3 (Full Solution): Type `docker compose down` in the CLI terminal.',
+                it: '💡 Aiuto 3/3 (Soluzione Completa): Digita `docker compose down` nel terminale CLI.'
               }
             ]
           }
@@ -312,8 +311,8 @@ services:
     {
       id: 'docker-7-q2',
       question: {
-        en: 'If you run `docker-compose down`, what happens to your Named Volumes?',
-        it: 'Se esegui `docker-compose down`, cosa succede ai tuoi Named Volumes?'
+        en: 'If you run `docker compose down`, what happens to your Named Volumes?',
+        it: 'Se esegui `docker compose down`, cosa succede ai tuoi Named Volumes?'
       },
       options: [
         {
@@ -335,8 +334,8 @@ services:
       ],
       correct: 2,
       explanation: {
-        en: 'By default, `docker-compose down` removes containers and networks, but PRESERVES volumes to prevent accidental data loss. You must append `-v` to explicitly delete volumes.',
-        it: 'Per impostazione predefinita, `docker-compose down` rimuove i container e le reti, ma PRESERVA i volumi per evitare la perdita accidentale di dati. È necessario aggiungere `-v` per eliminare esplicitamente i volumi.'
+        en: 'By default, `docker compose down` removes containers and networks, but PRESERVES volumes to prevent accidental data loss. You must append `-v` to explicitly delete volumes.',
+        it: 'Per impostazione predefinita, `docker compose down` rimuove i container e le reti, ma PRESERVA i volumi per evitare la perdita accidentale di dati. È necessario aggiungere `-v` per eliminare esplicitamente i volumi.'
       }
     },
     {

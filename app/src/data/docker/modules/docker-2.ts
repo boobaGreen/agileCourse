@@ -4,26 +4,26 @@ export const docker2: Module = {
   id: 'docker-2',
   track: 'docker',
   order: 2,
-  title: 'Images vs Containers',
-  subtitle: 'Blueprint vs Live Instance',
+  title: { en: 'Images vs Containers', it: 'Immagini e Container' },
+  subtitle: { en: 'Blueprint vs Live Instance', it: 'Il progetto e l\'istanza in esecuzione' },
   emoji: '🖼️',
   duration: '20 min',
   xpReward: 120,
-  funFact: 'Docker Images are read-only. When you run one, Docker puts a tiny read-write layer on top of it. This is why you can run 10 containers from a 1GB image without using 10GB of disk space!',
+  funFact: { en: 'Docker Images are read-only. When you run one, Docker puts a tiny read-write layer on top of it. This is why you can run 10 containers from a 1GB image without using 10GB of disk space!', it: 'Le immagini Docker sono in sola lettura. Quando ne avvii una, Docker aggiunge sopra un sottile layer in lettura/scrittura. Per questo puoi eseguire 10 container da un\'immagine di 1GB senza occupare 10GB di disco!' },
   sections: [
     {
       type: 'intro',
-      content: 'This is the most critical concept to master: the difference between an Image and a Container. If you understand this, everything else in Docker makes sense.'
+      content: { en: 'This is the most critical concept to master: the difference between an Image and a Container. If you understand this, everything else in Docker makes sense.', it: 'Questo è il concetto più importante da padroneggiare: la differenza tra un\'Immagine e un Container. Se capisci questo, tutto il resto di Docker ha senso.' }
     },
     {
       type: 'concept',
-      title: '🖼️ The Image (The Blueprint)',
-      content: 'An image is a **read-only** template. It contains the OS libraries, the app code, and the runtime. It doesn\'t "run" — it just sits on your disk. Think of it as a recipe in a cookbook, or an ISO file.'
+      title: { en: '🖼️ The Image (The Blueprint)', it: '🖼️ L\'Immagine (Il Progetto)' },
+      content: { en: 'An image is a **read-only** template. It contains the OS libraries, the app code, and the runtime. It doesn\'t "run" — it just sits on your disk. Think of it as a recipe in a cookbook, or an ISO file.', it: 'Un\'immagine è un modello in **sola lettura**. Contiene le librerie di sistema, il codice dell\'app e il runtime. Non "gira": resta semplicemente sul disco. Pensala come una ricetta in un libro di cucina, o un file ISO.' }
     },
     {
       type: 'concept',
-      title: '📦 The Container (The Running Instance)',
-      content: 'A container is a **runnable instance** of an image. When you "run" an image, it becomes a container. You can have 100 isolated containers independently running from the same 1 image. Think of the container as the actual pizza baked using the recipe. Deleting a container does not affect the read-only image it was built from.'
+      title: { en: '📦 The Container (The Running Instance)', it: '📦 Il Container (L\'Istanza in Esecuzione)' },
+      content: { en: 'A container is a **runnable instance** of an image. When you "run" an image, it becomes a container. You can have 100 isolated containers independently running from the same 1 image. Think of the container as the actual pizza baked using the recipe. Deleting a container does not affect the read-only image it was built from.', it: 'Un container è un\'**istanza eseguibile** di un\'immagine. Quando "esegui" un\'immagine, diventa un container. Puoi avere 100 container isolati in esecuzione dalla stessa identica immagine. Pensa al container come alla pizza vera sfornata seguendo la ricetta. Eliminare un container non tocca l\'immagine in sola lettura da cui è nato.' }
     },
     {
       type: 'animation',

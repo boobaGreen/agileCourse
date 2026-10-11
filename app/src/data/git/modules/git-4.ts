@@ -8,7 +8,7 @@ export const git4: Module = {
   subtitle: { en: 'Branch fast, merge confidently, rebase wisely', it: 'Crea branch velocemente, fai merge con sicurezza, usa il rebase con saggezza' },
   emoji: '🌿',
   duration: '15 min',
-  xpReward: 50,
+  xpReward: 100,
   funFact: { en: 'GitHub processes over 100 million pull requests per year. Each PR is essentially a branch waiting to be merged.', it: 'GitHub elabora oltre 100 milioni di pull request all\'anno. Ogni PR è essenzialmente un branch in attesa di essere unito.' },
   sections: [
     {

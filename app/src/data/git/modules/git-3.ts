@@ -8,8 +8,8 @@ export const git3: Module = {
   subtitle: { en: 'Repository, commit, branch, merge — the four pillars', it: 'Repository, commit, branch, merge — i quattro pilastri' },
   emoji: '🧱',
   duration: '12 min',
-  xpReward: 50,
-  funFact: { en: 'The average Git repository on GitHub has 6.7 branches. The Linux kernel repo has over 700 active branches.', it: 'Il repository Git medio su GitHub ha 6,7 branch. Il repository del kernel Linux ne ha oltre 700 attivi.' },
+  xpReward: 100,
+  funFact: { en: 'The very first Git commit, made by Linus Torvalds on 7 April 2005, carries the message: "Initial revision of git, the information manager from hell".', it: 'Il primissimo commit di Git, fatto da Linus Torvalds il 7 aprile 2005, ha come messaggio: "Initial revision of git, the information manager from hell".' },
   sections: [
     {
       type: 'intro',
@@ -32,7 +32,7 @@ export const git3: Module = {
     {
       type: 'concept',
       title: { en: '📸 The Snapshot (Commit)', it: '📸 L\'Istantanea (Commit)' },
-      content: { en: 'A commit isn\'t just a list of changes; it\'s a **complete snapshot** of every file in your project. Each commit has a unique **SHA identifier** (e.g., `a1b2c3d`) — a digital fingerprint. A full Git hash is exactly **40 hexadecimal characters** long, ensuring your history can never be tampered with.', it: 'Un commit non è solo un elenco di modifiche; è un\'**istantanea completa** di ogni file nel tuo progetto. Ogni commit ha un **identificatore SHA** unico (es. `a1b2c3d`) — un\'impronta digitale. Un hash Git completo è lungo esattamente **40 caratteri esadecimali**, garantendo che la tua cronologia non possa mai essere manomessa.' }
+      content: { en: 'A commit isn\'t just a list of changes; it\'s a **complete snapshot** of every file in your project. Each commit has a unique **SHA identifier** (e.g., `a1b2c3d`) — a digital fingerprint. A full Git hash is exactly **40 hexadecimal characters** long, so any tampering with history is immediately detectable.', it: 'Un commit non è solo un elenco di modifiche; è un\'**istantanea completa** di ogni file nel tuo progetto. Ogni commit ha un **identificatore SHA** unico (es. `a1b2c3d`) — un\'impronta digitale. Un hash Git completo è lungo esattamente **40 caratteri esadecimali**, così qualsiasi manomissione della cronologia è immediatamente rilevabile.' }
     },
     {
       type: 'concept',

@@ -90,7 +90,7 @@ export const DOCKER_CHEATSHEET: CheatsheetCategory[] = [
         command: 'docker build -t <name:tag> .',
         description: { en: 'Build a custom container image from a Dockerfile in current directory', it: 'Crea un\'immagine personalizzata da un Dockerfile nella cartella corrente' },
         example: 'docker build -t my-app:v1.0 .',
-        output: '[+] Building 3.2s (8/8) FINISHED\n => [internal] load build definition from Dockerfile\n => [1/3] FROM docker.io/library/node:18-alpine\n => [2/3] COPY . /app\n => [3/3] RUN npm install --omit=dev\n => exporting to image my-app:v1.0'
+        output: '[+] Building 3.2s (9/9) FINISHED\n => [internal] load build definition from Dockerfile\n => [1/4] FROM docker.io/library/node:18-alpine\n => [2/4] COPY package*.json ./\n => [3/4] RUN npm install --omit=dev\n => [4/4] COPY . .\n => exporting to image my-app:v1.0'
       },
       {
         command: 'docker inspect <container|image>',
@@ -141,8 +141,8 @@ export const DOCKER_CHEATSHEET: CheatsheetCategory[] = [
         output: 'api-1  | [INFO] Server started on port 3000\ndb-1   | 2026-04-27 10:30:00.123 UTC [1] LOG: database system is ready'
       },
       {
-        command: 'docker system prune -a --volumes',
-        description: { en: 'Clean up unused containers, networks, dangling images, and build cache', it: 'Pulisci tutti i container fermi, le reti non usate, le immagini orfane e la cache' },
+        command: 'docker system prune -a',
+        description: { en: 'Clean up stopped containers, unused networks and images, and build cache (add --volumes to also delete unused volumes: irreversible)', it: 'Pulisci container fermi, reti e immagini non usate e la cache di build (aggiungi --volumes per cancellare anche i volumi inutilizzati: irreversibile)' },
         example: 'docker system prune -a',
         output: 'WARNING! This will remove all stopped containers, networks, and unused images.\nTotal reclaimed space: 1.45GB'
       },

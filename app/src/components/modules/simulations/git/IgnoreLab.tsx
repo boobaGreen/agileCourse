@@ -43,11 +43,11 @@ export function IgnoreLab({ onComplete }: { onComplete?: () => void }) {
   const score = files.filter(f => (f.shouldIgnore && ignored.includes(f.name)) || (!f.shouldIgnore && !ignored.includes(f.name))).length;
 
   return (
-    <div className="w-full flex flex-col gap-6 p-6 bg-[#0d1117]/80 rounded-3xl border border-white/10 shadow-2xl backdrop-blur-xl">
+    <div className="w-full flex flex-col gap-4">
        <div className="flex justify-between items-center mb-2">
           <div className="flex flex-col">
              <span className="text-xs text-secondary font-black uppercase tracking-widest leading-none mb-2">Security Lab • .gitignore</span>
-             <h3 className="text-xl font-black text-white">The Filtering Game</h3>
+             <h3 className="text-sm font-bold text-white">The Filtering Game</h3>
           </div>
           <div className="px-4 py-2 rounded-xl bg-black/40 border border-white/10 text-[10px] font-black text-muted">
              ACCURACY: <span className={score === files.length ? 'text-[#06d6a0]' : 'text-primary'}>{Math.round((score/files.length)*100)}%</span>

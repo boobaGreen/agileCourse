@@ -11,7 +11,7 @@ export const docker1: Module = {
   xpReward: 100,
   funFact: {
     en: 'The word "Docker" refers to a dock worker who loads and unloads ships. A perfect metaphor for moving software containers!',
-    it: 'La parola "Docker" indica il scaricatore di porto che carica e scarica le navi. Una metafora perfetta per lo spostamento dei container software!'
+    it: 'La parola "Docker" indica lo scaricatore di porto che carica e scarica le navi. Una metafora perfetta per lo spostamento dei container software!'
   },
   sections: [
     {
@@ -65,7 +65,7 @@ export const docker1: Module = {
           [
             { en: '**Startup Time**', it: '**Tempo di Avvio**' },
             { en: 'Minutes (Booting a full OS)', it: 'Minuti (Avvio di un intero OS)' },
-            { en: 'Seconds (Just starting a process)', it: 'Secondi (Avvio di un singolo processo)' }
+            { en: 'Milliseconds to seconds (just a process)', it: 'Da millisecondi a secondi (solo un processo)' }
           ],
           [
             { en: '**Isolation**', it: '**Isolamento**' },

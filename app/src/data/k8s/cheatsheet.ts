@@ -142,7 +142,7 @@ export const K8S_CHEATSHEET: CheatsheetCategory[] = [
       },
       {
         command: 'kubectl get pvc',
-        description: { en: 'List all PersistentVolumeClaims and their binding status', it: 'Elenca tutte le richieste PersistentVolumeClaim ed il loro stato di collegameto' },
+        description: { en: 'List all PersistentVolumeClaims and their binding status', it: 'Elenca tutte le richieste PersistentVolumeClaim ed il loro stato di collegamento' },
         example: 'kubectl get pvc',
         output: 'NAME           STATUS   VOLUME                                     CAPACITY   ACCESS MODES   AGE\ndatabase-pvc   Bound    pvc-1f2e3d4c-5b6a-7f8e-9d0c-1a2b3c4d5e6f   20Gi       RWO            1h'
       },

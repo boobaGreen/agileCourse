@@ -1,328 +1,138 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { useLanguage } from '../contexts/LanguageContext';
-import { GIT_CHEATSHEET, type CheatsheetCommand } from '../data/git/cheatsheet';
-import { DOCKER_CHEATSHEET } from '../data/docker/cheatsheet';
-import { K8S_CHEATSHEET } from '../data/k8s/cheatsheet';
-import { CommandVisual } from '../components/cheatsheet/CommandVisual';
-import { Copy, Check, Search, Filter, Eye, X, Terminal } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { createPortal } from 'react-dom';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react'
+import { Link, Navigate, useParams } from 'react-router-dom'
+import { createPortal } from 'react-dom'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Check, Copy, Search, X, Eye, Terminal } from 'lucide-react'
+import { GIT_CHEATSHEET, type CheatsheetCommand } from '../data/git/cheatsheet'
+import { DOCKER_CHEATSHEET } from '../data/docker/cheatsheet'
+import { K8S_CHEATSHEET } from '../data/k8s/cheatsheet'
+import { CommandVisual } from '../components/cheatsheet/CommandVisual'
+import { getTrack, TRACK_LIST } from '../lib/tracks'
+import { useUI } from '../lib/ui'
+
+const LEVEL_COLOR: Record<string, string> = { beginner: 'var(--t-green)', intermediate: 'var(--t-warning)', advanced: 'var(--t-danger)' }
 
 export default function CheatsheetPage() {
-  const { track: routeTrack } = useParams<{ track?: string }>();
-  const navigate = useNavigate();
-  const { resolveString } = useLanguage();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [copiedCommand, setCopiedCommand] = useState<string | null>(null);
-  const [selectedCommand, setSelectedCommand] = useState<CheatsheetCommand | null>(null);
+  const { track: id } = useParams()
+  const track = getTrack(id)
+  const { ui, r } = useUI()
+  const [q, setQ] = useState('')
+  const [copied, setCopied] = useState<string | null>(null)
+  const [sel, setSel] = useState<CheatsheetCommand | null>(null)
 
-  const activeTrack = (routeTrack === 'docker' || routeTrack === 'k8s') ? routeTrack : 'git';
-
-  const cheatsheetData = activeTrack === 'docker' 
-    ? DOCKER_CHEATSHEET 
-    : activeTrack === 'k8s' 
-      ? K8S_CHEATSHEET 
-      : GIT_CHEATSHEET;
-
-  const trackConfig = {
-    git: {
-      name: 'Git',
-      title: 'Git Quick Reference',
-      subtitle: { en: 'Click any command to see an interactive visual diagram of how it works.', it: 'Clicca un comando per vedere un diagramma visivo interattivo di come funziona.' },
-      colorClass: 'text-git',
-      bgClass: 'bg-git/10',
-      borderClass: 'border-git/20',
-      hoverBgClass: 'group-hover:bg-git/15',
-      badgeColor: '#f97316'
-    },
-    docker: {
-      name: 'Docker',
-      title: 'Docker Command Reference',
-      subtitle: { en: 'Essential commands for container runtime, volume persistence, and Compose workflows.', it: 'Comandi essenziali per container runtime, volumi persistenti e workflow Compose.' },
-      colorClass: 'text-docker',
-      bgClass: 'bg-docker/10',
-      borderClass: 'border-docker/20',
-      hoverBgClass: 'group-hover:bg-docker/15',
-      badgeColor: '#0284c7'
-    },
-    k8s: {
-      name: 'Kubernetes',
-      title: 'kubectl & Cluster Reference',
-      subtitle: { en: 'Comprehensive CLI commands for Pods, Services, Deployments, ConfigMaps, and Storage.', it: 'Comandi CLI completi per Pod, Servizi, Deployment, ConfigMap e Storage.' },
-      colorClass: 'text-k8s',
-      bgClass: 'bg-k8s/10',
-      borderClass: 'border-k8s/20',
-      hoverBgClass: 'group-hover:bg-k8s/15',
-      badgeColor: '#38bdf8'
-    }
-  }[activeTrack];
-
-  const copyToClipboard = (text: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    navigator.clipboard.writeText(text);
-    setCopiedCommand(text);
-    setTimeout(() => setCopiedCommand(null), 2000);
-  };
-
-  // Close modal on Escape
   useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setSelectedCommand(null);
-    };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, []);
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setSel(null) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
-  const filteredCheatsheet = cheatsheetData.map(category => ({
-    ...category,
-    commands: category.commands.filter(cmd => 
-      cmd.command.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      resolveString(cmd.description).toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  })).filter(category => category.commands.length > 0);
+  const data = useMemo(() => {
+    const src = track?.id === 'docker' ? DOCKER_CHEATSHEET : track?.id === 'k8s' ? K8S_CHEATSHEET : GIT_CHEATSHEET
+    const needle = q.trim().toLowerCase()
+    if (!needle) return src
+    return src.map((c) => ({ ...c, commands: c.commands.filter((cmd) => cmd.command.toLowerCase().includes(needle) || r(cmd.description).toLowerCase().includes(needle)) })).filter((c) => c.commands.length)
+  }, [track, q, r])
+
+  if (!track) return <Navigate to="/cheatsheet/git" replace />
+
+  const copy = async (text: string, e?: React.MouseEvent) => {
+    e?.stopPropagation()
+    try { await navigator.clipboard.writeText(text); setCopied(text); setTimeout(() => setCopied(null), 1500) } catch { /* ignore */ }
+  }
 
   return (
-    <div className="animate-fade-up flex flex-col items-start gap-8 pt-4 md:pt-8 pb-12">
-      {/* Track Selector Switcher Tabs */}
-      <div className="flex items-center gap-2 bg-surface2/60 p-1.5 rounded-2xl border border-white/10 w-full sm:w-auto">
-        <button
-          onClick={() => navigate('/cheatsheet/git')}
-          className={`flex-1 sm:flex-initial px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 ${activeTrack === 'git' ? 'bg-git text-white shadow-lg' : 'text-muted hover:text-white hover:bg-white/5'}`}
-        >
-          <span>🟧</span> Git
-        </button>
-        <button
-          onClick={() => navigate('/cheatsheet/docker')}
-          className={`flex-1 sm:flex-initial px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 ${activeTrack === 'docker' ? 'bg-docker text-white shadow-lg' : 'text-muted hover:text-white hover:bg-white/5'}`}
-        >
-          <span>🐳</span> Docker
-        </button>
-        <button
-          onClick={() => navigate('/cheatsheet/k8s')}
-          className={`flex-1 sm:flex-initial px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 ${activeTrack === 'k8s' ? 'bg-k8s text-white shadow-lg' : 'text-muted hover:text-white hover:bg-white/5'}`}
-        >
-          <span>☸️</span> Kubernetes
-        </button>
+    <div className="container-x py-8 sm:py-10" style={{ ['--track' as string]: track.color }}>
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5 mb-8">
+        <div>
+          <div className="eyebrow mb-2">{ui('nav_cheatsheets')}</div>
+          <h1 className="h1">{r(track.cheatsheetLabel)}</h1>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex rounded-xl border p-1 gap-1" style={{ borderColor: 'var(--t-border)', background: 'var(--t-surface)' }}>
+            {TRACK_LIST.map((t) => (
+              <Link key={t.id} to={`/cheatsheet/${t.id}`} className="px-3.5 py-1.5 rounded-lg text-sm font-bold no-underline transition-colors"
+                style={t.id === track.id ? { background: t.color, color: '#fff' } : { color: 'var(--t-sub)' }}>{t.name}</Link>
+            ))}
+          </div>
+          <label className="relative block sm:w-72">
+            <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--t-muted)' }} />
+            <input className="input pl-9" placeholder={ui('search_commands')} value={q} onChange={(e) => setQ(e.target.value)} />
+          </label>
+        </div>
       </div>
 
-      <header className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 w-full">
-        <div className="flex flex-col gap-2">
-          <motion.h1 
-            key={activeTrack}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-black text-white mb-2"
-          >
-            {trackConfig.name} <span className={trackConfig.colorClass}>Cheat Sheet</span>
-          </motion.h1>
-          <motion.p 
-            key={`${activeTrack}-sub`}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-muted text-lg max-w-2xl"
-          >
-            {resolveString(trackConfig.subtitle)}
-          </motion.p>
-        </div>
+      {data.length === 0 && <p className="py-16 text-center" style={{ color: 'var(--t-muted)' }}>{ui('no_results')} “{q}”.</p>}
 
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3 }}
-          className="flex items-center gap-3 bg-surface2/50 border border-white/10 rounded-2xl px-4 py-3 w-full md:w-80 focus-within:border-white/30 focus-within:bg-surface2 transition-all shadow-xl group"
-        >
-          <Search className="text-muted group-focus-within:text-white transition-colors shrink-0" size={18} />
-          <input 
-            type="text"
-            placeholder={resolveString({ en: 'Search commands...', it: 'Cerca comandi...' })}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="bg-transparent border-none outline-none text-white placeholder:text-muted w-full font-medium"
-          />
-        </motion.div>
-      </header>
-
-      <div className="grid grid-cols-1 gap-12 w-full">
-        {filteredCheatsheet.map((category, catIndex) => (
-          <motion.section 
-            key={`${activeTrack}-${catIndex}`}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 * catIndex }}
-            className="flex flex-col gap-6"
-          >
-            <div className="flex items-center gap-4">
-              <div className={`w-3 h-3 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.5)] ${
-                category.level === 'beginner' ? 'bg-[#06d6a0] shadow-[#06d6a0]/40' : 
-                category.level === 'intermediate' ? 'bg-[#ffd166] shadow-[#ffd166]/40' : 
-                'bg-[#ff4b4b] shadow-[#ff4b4b]/40'
-              }`} />
-              <h2 className="text-2xl font-black text-white uppercase tracking-wider">{resolveString(category.title)}</h2>
-              <div className="h-[1px] flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+      <div className="flex flex-col gap-10">
+        {data.map((cat) => (
+          <section key={cat.level}>
+            <div className="flex items-center gap-3 mb-3">
+              <span className="w-2.5 h-2.5 rounded-full" style={{ background: LEVEL_COLOR[cat.level] }} />
+              <h2 className="h3">{r(cat.title)}</h2>
+              <span className="text-xs font-semibold" style={{ color: 'var(--t-muted)' }}>{cat.commands.length}</span>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {category.commands.map((cmd, cmdIndex) => {
-                const hasVisual = !!cmd.visualType;
-
+            <div className="panel overflow-hidden divide-y" style={{ borderColor: 'var(--t-border)' }}>
+              {cat.commands.map((cmd) => {
+                const inspectable = !!(cmd.visualType || cmd.example || cmd.output)
                 return (
-                  <motion.div 
-                    key={cmdIndex}
-                    whileHover={{ y: -4, scale: 1.02 }}
-                    onClick={() => (hasVisual || cmd.example || cmd.output) && setSelectedCommand(cmd)}
-                    className={`group bg-surface/40 backdrop-blur-sm border border-white/5 rounded-2xl p-5 flex flex-col gap-3 hover:bg-surface/60 hover:border-white/20 transition-all ${(hasVisual || cmd.example || cmd.output) ? 'cursor-pointer' : 'cursor-default'}`}
-                  >
-                    <div className="flex justify-between items-start gap-2">
-                      <code className={`${trackConfig.colorClass} font-black text-sm ${trackConfig.bgClass} px-4 py-2 rounded-xl border ${trackConfig.borderClass} ${trackConfig.hoverBgClass} transition-all shadow-sm break-all`}>
-                        {cmd.command}
-                      </code>
-                      <div className="flex items-center gap-1 shrink-0">
-                        {(hasVisual || cmd.example || cmd.output) && (
-                          <div className={`p-1 text-muted/30 group-hover:${trackConfig.colorClass} transition-colors`}>
-                            <Eye size={13} />
-                          </div>
-                        )}
-                        <button 
-                          onClick={(e) => copyToClipboard(cmd.command, e)}
-                          className="text-muted hover:text-white transition-colors p-1"
-                          title="Copy to clipboard"
-                        >
-                          {copiedCommand === cmd.command ? <Check size={14} className="text-[#06d6a0]" /> : <Copy size={14} />}
-                        </button>
-                      </div>
+                  <div key={cmd.command} className="grid sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)_auto] items-center gap-2 sm:gap-4 px-4 py-3 hover:bg-[var(--t-surface2)] transition-colors" style={{ borderColor: 'var(--t-border)' }}
+                    role={inspectable ? 'button' : undefined} onClick={() => inspectable && setSel(cmd)}>
+                    <code className="font-mono text-[13px] font-semibold break-all" style={{ color: 'var(--track)' }}>{cmd.command}</code>
+                    <span className="text-sm" style={{ color: 'var(--t-sub)' }}>{r(cmd.description)}</span>
+                    <div className="flex items-center gap-1 justify-end">
+                      {inspectable && <span className="icon-btn w-8 h-8" title={ui('inspect')}><Eye size={14} /></span>}
+                      <button className="icon-btn w-8 h-8" onClick={(e) => copy(cmd.command, e)} title={ui('copy')}>{copied === cmd.command ? <Check size={14} style={{ color: 'var(--t-green)' }} /> : <Copy size={14} />}</button>
                     </div>
-                    <p className="text-muted text-sm leading-relaxed">
-                      {resolveString(cmd.description)}
-                    </p>
-                    {(hasVisual || cmd.example || cmd.output) && (
-                      <div className="flex items-center gap-1.5 text-[10px] text-muted/30 group-hover:text-muted/60 transition-colors mt-auto pt-1">
-                        <Eye size={9} />
-                        <span className="font-medium uppercase tracking-wider">
-                          {resolveString({ en: 'click to inspect', it: 'clicca per ispezionare' })}
-                        </span>
-                      </div>
-                    )}
-                  </motion.div>
-                );
+                  </div>
+                )
               })}
             </div>
-          </motion.section>
+          </section>
         ))}
       </div>
 
-      {filteredCheatsheet.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-20 gap-4 text-muted">
-          <Filter size={48} className="opacity-20" />
-          <p className="text-lg">No commands found matching "{searchTerm}"</p>
-        </div>
-      )}
-
-      {/* ── Full-screen Modal for Visual Diagram / Example Detail (Portal) ── */}
       {createPortal(
         <AnimatePresence>
-          {selectedCommand && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}
-              onClick={() => setSelectedCommand(null)}
-            >
-              {/* Backdrop */}
-              <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)' }} />
-
-              {/* Modal Content */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                transition={{ duration: 0.3, type: 'spring', stiffness: 300, damping: 30 }}
-                onClick={(e) => e.stopPropagation()}
-                style={{ position: 'relative', width: '100%', maxWidth: '768px', background: 'rgba(17,24,39,0.97)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '1.5rem', boxShadow: `0 0 60px ${trackConfig.badgeColor}20`, overflow: 'hidden' }}
-              >
-                {/* Glow top accent */}
-                <div className="absolute top-0 left-0 w-full h-1" style={{ background: `linear-gradient(to right, transparent, ${trackConfig.badgeColor}, transparent)` }} />
-
-                {/* Header */}
-                <div className="flex items-center justify-between p-6 pb-4 border-b border-white/5">
-                  <div className="flex flex-col gap-2">
-                    <code className={`${trackConfig.colorClass} font-black text-lg md:text-xl ${trackConfig.bgClass} px-5 py-2.5 rounded-xl border ${trackConfig.borderClass} inline-block`}>
-                      {selectedCommand.command}
-                    </code>
-                    <p className="text-muted text-sm md:text-base">
-                      {resolveString(selectedCommand.description)}
-                    </p>
+          {sel && (
+            <motion.div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSel(null)}>
+              <div className="absolute inset-0" style={{ background: 'rgba(10,12,14,0.55)', backdropFilter: 'blur(4px)' }} />
+              <motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 20, opacity: 0 }} transition={{ type: 'spring', stiffness: 320, damping: 30 }}
+                onClick={(e) => e.stopPropagation()} className="relative w-full sm:max-w-3xl max-h-[92vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl border" style={{ background: 'var(--t-surface)', borderColor: 'var(--t-border)', ['--track' as string]: track.color }}>
+                <div className="flex items-start justify-between gap-4 p-5 border-b" style={{ borderColor: 'var(--t-border)' }}>
+                  <div className="min-w-0">
+                    <code className="font-mono text-base sm:text-lg font-bold break-all" style={{ color: 'var(--track)' }}>{sel.command}</code>
+                    <p className="text-sm mt-1" style={{ color: 'var(--t-sub)' }}>{r(sel.description)}</p>
                   </div>
-                  <button
-                    onClick={() => setSelectedCommand(null)}
-                    className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-muted hover:text-white transition-colors shrink-0 ml-4"
-                  >
-                    <X size={18} />
-                  </button>
+                  <button className="icon-btn shrink-0" onClick={() => setSel(null)} aria-label={ui('close')}><X size={16} /></button>
                 </div>
-
-                {/* Diagram - if available */}
-                {selectedCommand.visualType && selectedCommand.visualHighlight && (
-                  <div className="p-6 md:p-10 border-b border-white/5">
-                    <CommandVisual
-                      type={selectedCommand.visualType}
-                      highlight={selectedCommand.visualHighlight}
-                    />
+                {sel.visualType && sel.visualHighlight && (
+                  <div className="console p-4 sm:p-8 border-b" style={{ borderColor: 'var(--t-border)' }}>
+                    <CommandVisual type={sel.visualType} highlight={sel.visualHighlight} />
                   </div>
                 )}
-
-                {/* Example and Output section */}
-                {(selectedCommand.example || selectedCommand.output) && (
-                  <div className="p-6 bg-black/30 flex flex-col gap-4">
-                    <div className="flex items-center gap-2" style={{ color: trackConfig.badgeColor }}>
-                      <Terminal size={16} />
-                      <span className="text-xs font-bold uppercase tracking-widest">{resolveString({ en: 'Usage Example', it: 'Esempio di Utilizzo' })}</span>
-                    </div>
-                    
-                    <div className="flex flex-col gap-3">
-                      {selectedCommand.example && (
-                        <div className="flex flex-col gap-1.5">
-                          <span className="text-[10px] text-muted/50 uppercase font-medium ml-1">{resolveString({ en: 'Command', it: 'Comando' })}</span>
-                          <div className="bg-surface2/50 rounded-lg p-3 border border-white/5 font-mono text-sm text-white flex justify-between items-center group/code">
-                            <code>$ {selectedCommand.example}</code>
-                            <button 
-                              onClick={(e) => copyToClipboard(selectedCommand.example!, e)}
-                              className="text-muted/30 hover:text-white transition-colors p-1"
-                            >
-                              {copiedCommand === selectedCommand.example ? <Check size={14} className="text-[#06d6a0]" /> : <Copy size={14} />}
-                            </button>
-                          </div>
-                        </div>
-                      )}
-                      
-                      {selectedCommand.output && (
-                        <div className="flex flex-col gap-1.5">
-                          <span className="text-[10px] text-muted/50 uppercase font-medium ml-1">{resolveString({ en: 'Expected Output', it: 'Output Atteso' })}</span>
-                          <div className="bg-[#0c0c0c] rounded-lg p-3 border border-white/5 font-mono text-xs text-[#a0a0a0] leading-relaxed whitespace-pre-wrap">
-                            {selectedCommand.output}
-                          </div>
-                        </div>
-                      )}
-                    </div>
+                {(sel.example || sel.output) && (
+                  <div className="p-5 flex flex-col gap-4">
+                    <div className="flex items-center gap-2 eyebrow" style={{ color: 'var(--track)' }}><Terminal size={13} /> {ui('example')}</div>
+                    {sel.example && (
+                      <div className="code-frame">
+                        <div className="code-frame-head"><span>shell</span><button onClick={() => copy(sel.example!)} className="inline-flex items-center gap-1 text-[11px] font-bold normal-case tracking-normal" style={{ color: copied === sel.example ? '#3ccf7a' : '#a7b1bd' }}>{copied === sel.example ? <Check size={12} /> : <Copy size={12} />} {ui('copy')}</button></div>
+                        <pre><code>{sel.example.split('\n').map((l, i) => <div key={i}><span className="c-comment">$ </span>{l}</div>)}</code></pre>
+                      </div>
+                    )}
+                    {sel.output && (
+                      <div>
+                        <div className="eyebrow mb-2">{ui('output')}</div>
+                        <pre className="rounded-xl p-4 text-xs leading-relaxed whitespace-pre-wrap font-mono" style={{ background: '#0b0e12', color: '#a7b1bd', border: '1px solid #1f2630' }}>{sel.output}</pre>
+                      </div>
+                    )}
                   </div>
                 )}
-
-                {/* Footer hint */}
-                <div className="px-6 py-4 flex justify-center bg-black/20">
-                  <span className="text-[10px] text-muted/40 uppercase tracking-widest font-medium">
-                    {resolveString({ en: 'Press ESC or click outside to close', it: 'Premi ESC o clicca fuori per chiudere' })}
-                  </span>
-                </div>
               </motion.div>
             </motion.div>
           )}
         </AnimatePresence>,
-        document.body
+        document.body,
       )}
     </div>
-  );
+  )
 }

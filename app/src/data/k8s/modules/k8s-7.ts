@@ -64,7 +64,7 @@ export const k8s7: Module = {
 kind: StorageClass
 metadata:
   name: fast-ssd
-provisioner: kubernetes.io/aws-ebs  # Cloud infrastructure driver
+provisioner: ebs.csi.aws.com  # AWS EBS CSI driver
 parameters:
   type: gp3
 ---

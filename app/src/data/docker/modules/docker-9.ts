@@ -4,8 +4,8 @@ export const docker9: Module = {
   id: 'docker-9',
   track: 'docker',
   order: 9,
-  title: 'Final Docker Challenge',
-  subtitle: 'The Whale Master Certification',
+  title: { en: 'Final Docker Challenge', it: 'Sfida Finale Docker' },
+  subtitle: { en: 'The Whale Master Certification', it: 'La certificazione Whale Master' },
   emoji: '🏆',
   duration: '20 min',
   xpReward: 200,
@@ -239,8 +239,8 @@ export const docker9: Module = {
       ],
       correct: 1,
       explanation: {
-        en: 'It controls the absolute startup order. If `web` depends on `db`, compose starts `db` first.',
-        it: 'Controlla l\'ordine assoluto di avvio. Se web dipende da db, compose avvia prima db.'
+        en: 'It controls startup order: if `web` depends on `db`, Compose starts `db` first. It does not wait for `db` to be ready unless you add `condition: service_healthy`.',
+        it: 'Controlla l\'ordine di avvio: se web dipende da db, Compose avvia prima db. Non attende che db sia pronto, a meno di aggiungere `condition: service_healthy`.'
       }
     },
     {
@@ -264,14 +264,14 @@ export const docker9: Module = {
     {
       id: 'docker-9-q9',
       question: {
-        en: 'Which command cleanly removes all containers, networks, and images created by `docker-compose up` (without touching volumes)?',
-        it: 'Quale comando rimuove in modo pulito tutti i container, le reti e le immagini creati da `docker-compose up` (senza toccare i volumi)?'
+        en: 'Which command stops and removes the containers and networks created by `docker compose up`, without touching volumes?',
+        it: 'Quale comando ferma e rimuove i container e le reti creati da `docker compose up`, senza toccare i volumi?'
       },
       options: [
-        { en: 'docker-compose stop', it: 'docker-compose stop' },
-        { en: 'docker-compose kill', it: 'docker-compose kill' },
-        { en: 'docker-compose clean', it: 'docker-compose clean' },
-        { en: 'docker-compose down', it: 'docker-compose down' }
+        { en: 'docker compose stop', it: 'docker compose stop' },
+        { en: 'docker compose kill', it: 'docker compose kill' },
+        { en: 'docker compose clean', it: 'docker compose clean' },
+        { en: 'docker compose down', it: 'docker compose down' }
       ],
       correct: 3,
       explanation: {

@@ -16,7 +16,7 @@ const k8sArchDict = {
     modeWorker: 'Worker Node (Muscle)',
     banners: {
       all: '🌐 Full Cluster View: Visualizes end-to-end communication from developer CLI (kubectl) down to Master & Worker nodes.',
-      master: '🧠 Control Plane Focus (Master Node): Isolates the 4 decision-making components. Simulates continuous self-healing control loops (etcd, API Server, Scheduler, Controller Manager).',
+      master: '🧠 Control Plane Focus: Isolates the 4 decision-making components. Simulates continuous self-healing control loops (etcd, API Server, Scheduler, Controller Manager).',
       worker: '💪 Worker Node Focus (Compute Machine): Isolates the execution machine. Simulates Kubelet execution and Kube-Proxy network routing.'
     },
     simButtons: {
@@ -25,7 +25,7 @@ const k8sArchDict = {
       worker: '💪 Simulate Worker Container & Net Routing'
     },
     simulating: 'Simulating Flow...',
-    controlPlaneTitle: 'Control Plane (Master Node)',
+    controlPlaneTitle: 'Control Plane',
     workerNodeTitle: 'Worker Node (Compute Machine)',
     cliTitle: 'Developer Workstation',
     clickPrompt: 'Click on any component above to view its specs',
@@ -88,7 +88,7 @@ const k8sArchDict = {
     modeWorker: 'Worker Node (Muscoli)',
     banners: {
       all: '🌐 Vista Cluster Completo: Visualizza la comunicazione end-to-end dalla CLI dello sviluppatore (kubectl) fino ai nodi Master e Worker.',
-      master: '🧠 Focus Control Plane (Nodo Master): Isola i 4 componenti decisionali. Simula i cicli continui di auto-riparazione (etcd, API Server, Scheduler, Controller Manager).',
+      master: '🧠 Focus Control Plane: Isola i 4 componenti decisionali. Simula i cicli continui di auto-riparazione (etcd, API Server, Scheduler, Controller Manager).',
       worker: '💪 Focus Worker Node (Macchina Esecutiva): Isola la macchina di calcolo. Simula l\'avvio di Kubelet e il routing di rete tramite Kube-Proxy.'
     },
     simButtons: {
@@ -97,7 +97,7 @@ const k8sArchDict = {
       worker: '💪 Simula Routing Rete & Avvio Container'
     },
     simulating: 'Simulazione Flusso in corso...',
-    controlPlaneTitle: 'Control Plane (Nodo Master)',
+    controlPlaneTitle: 'Control Plane',
     workerNodeTitle: 'Worker Node (Nodo di Calcolo)',
     cliTitle: 'Postazione Sviluppatore',
     clickPrompt: 'Clicca su uno dei componenti sopra per vederne i dettagli',

@@ -8,8 +8,8 @@ export const git2: Module = {
   subtitle: { en: 'Why Linus named it something rude on purpose', it: 'Perché Linus gli ha dato un nome volutamente scortese' },
   emoji: '🎭',
   duration: '5 min',
-  xpReward: 50,
-  funFact: { en: 'Linus Torvalds famously said: "I\'m an egotistical bastard, and I name all my projects after myself. First Linux, now Git."', it: 'Linus Torvalds ha detto famosamente: "Sono un bastardo egoista e do a tutti i miei progetti il mio nome. Prima Linux, ora Git."' },
+  xpReward: 100,
+  funFact: { en: 'Linus Torvalds famously said: "I\'m an egotistical bastard, and I name all my projects after myself. First Linux, now Git."', it: 'È celebre la frase di Linus Torvalds: "Sono un bastardo egoista e do a tutti i miei progetti il mio nome. Prima Linux, ora Git."' },
   sections: [
     {
       type: 'intro',

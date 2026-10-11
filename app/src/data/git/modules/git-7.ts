@@ -8,7 +8,7 @@ export const git7: Module = {
   subtitle: { en: 'Master the core loop: Init, Stage, Commit', it: 'Domina il ciclo principale: Init, Stage, Commit' },
   emoji: '⚙️',
   duration: '8 min',
-  xpReward: 60,
+  xpReward: 100,
   sections: [
     {
       type: 'intro',

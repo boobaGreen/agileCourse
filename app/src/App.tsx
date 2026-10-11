@@ -1,47 +1,46 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import { useAppStore } from './store/useAppStore'
-import LandingPage from './pages/LandingPage.tsx'
-import CourseDashboard from './pages/CourseDashboard.tsx'
-import ModulePage from './pages/ModulePage.tsx'
-import ProfilePage from './pages/ProfilePage.tsx'
-import CheatsheetPage from './pages/CheatsheetPage.tsx'
-import AppShell from './components/AppShell.tsx'
-import ScrollToTop from './components/ScrollToTop.tsx'
+import { LanguageProvider } from './contexts/LanguageProvider'
+import { ThemeProvider } from './lib/theme'
+import AppShell from './components/layout/AppShell'
+import LandingPage from './pages/LandingPage'
+import DashboardPage from './pages/DashboardPage'
+import TrackPage from './pages/TrackPage'
+import ModulePage from './pages/ModulePage'
+import CheatsheetPage from './pages/CheatsheetPage'
+import ProfilePage from './pages/ProfilePage'
 
-import { LanguageProvider } from './contexts/LanguageProvider.tsx'
-
-function App() {
-  const userName = useAppStore((s) => s.userName)
-
-  return (
-    <LanguageProvider>
-      <BrowserRouter>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route
-            path="/*"
-            element={
-              userName ? (
-                <AppShell>
-                  <Routes>
-                    <Route path="/dashboard" element={<CourseDashboard />} />
-                    <Route path="/cheatsheet" element={<CheatsheetPage />} />
-                    <Route path="/cheatsheet/:track" element={<CheatsheetPage />} />
-                    <Route path="/:track/module/:id" element={<ModulePage />} />
-                    <Route path="/profile" element={<ProfilePage />} />
-                    <Route path="*" element={<Navigate to="/dashboard" />} />
-                  </Routes>
-                </AppShell>
-              ) : (
-                <Navigate to="/" />
-              )
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </LanguageProvider>
-  )
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => { window.scrollTo({ top: 0 }) }, [pathname])
+  return null
 }
 
-export default App
+function Protected({ children }: { children: React.ReactNode }) {
+  const userName = useAppStore((s) => s.userName)
+  if (!userName) return <Navigate to="/" replace />
+  return <AppShell>{children}</AppShell>
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <LanguageProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/dashboard" element={<Protected><DashboardPage /></Protected>} />
+            <Route path="/track/:track" element={<Protected><TrackPage /></Protected>} />
+            <Route path="/:track/module/:id" element={<Protected><ModulePage /></Protected>} />
+            <Route path="/cheatsheet" element={<Navigate to="/cheatsheet/git" replace />} />
+            <Route path="/cheatsheet/:track" element={<Protected><CheatsheetPage /></Protected>} />
+            <Route path="/profile" element={<Protected><ProfilePage /></Protected>} />
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </LanguageProvider>
+    </ThemeProvider>
+  )
+}

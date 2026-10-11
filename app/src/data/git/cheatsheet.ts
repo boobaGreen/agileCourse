@@ -76,7 +76,7 @@ export const GIT_CHEATSHEET: CheatsheetCategory[] = [
         visualType: 'timeline', 
         visualHighlight: 'log',
         example: 'git log --oneline -n 5',
-        output: '380a1b2 (HEAD -> main) refactor\n300c4d5 feat B\n220e6f7 fix bug\n140g8h9 feat A\n060i0j1 init'
+        output: '380a1b2 (HEAD -> main) refactor\n300c4d5 feat B\n220e6f7 fix bug\n140a8b9 feat A\n060e0f1 init'
       },
       { 
         command: 'git diff', 
@@ -115,6 +115,22 @@ export const GIT_CHEATSHEET: CheatsheetCategory[] = [
         visualHighlight: 'checkout',
         example: 'git checkout feature',
         output: 'Switched to branch \'feature\''
+      },
+      {
+        command: 'git switch <name>',
+        description: { en: 'switch branch (modern syntax, Git 2.23+)', it: 'cambia branch (sintassi moderna, Git 2.23+)' },
+        visualType: 'branch-graph',
+        visualHighlight: 'checkout',
+        example: 'git switch -c feature/login',
+        output: 'Switched to a new branch \'feature/login\''
+      },
+      {
+        command: 'git restore <file>',
+        description: { en: 'discard unstaged changes in a file', it: 'scarta le modifiche non in stage di un file' },
+        visualType: 'area-flow',
+        visualHighlight: 'diff',
+        example: 'git restore index.html',
+        output: ''
       },
       { 
         command: 'git merge <branch>', 
@@ -224,7 +240,7 @@ export const GIT_CHEATSHEET: CheatsheetCategory[] = [
         visualType: 'timeline', 
         visualHighlight: 'blame',
         example: 'git blame app.js',
-        output: '140g8h91 (Alice 2026-04-27 17:30:00 +0200 1) const app = express();\n220e6f72 (Bob   2026-04-27 17:35:00 +0200 2) app.use(cors());\n300c4d53 (Alice 2026-04-27 17:40:00 +0200 3) app.get("/", handler);\n380a1b24 (Carol 2026-04-27 17:45:00 +0200 4) app.listen(3000);'
+        output: '140a8b91 (Alice 2026-04-27 17:30:00 +0200 1) const app = express();\n220e6f72 (Bob   2026-04-27 17:35:00 +0200 2) app.use(cors());\n300c4d53 (Alice 2026-04-27 17:40:00 +0200 3) app.get("/", handler);\n380a1b24 (Carol 2026-04-27 17:45:00 +0200 4) app.listen(3000);'
       },
       { 
         command: 'git tag <tag_name>', 

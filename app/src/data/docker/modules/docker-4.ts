@@ -30,8 +30,8 @@ export const docker4: Module = {
         it: '🏠 Registri Pubblici vs Privati'
       },
       content: {
-        en: 'Docker Hub is the default, public registry. But companies usually use **Private Registries** (like AWS ECR, Google GCR, or GitHub Container Registry) to keep their proprietary app images safe and secret.',
-        it: 'Docker Hub è il registro pubblico predefinito. Le aziende usano solitamente **Registri Privati** (come AWS ECR, Google GCR o GitHub Container Registry) per mantenere riservate le proprie immagini applicative.'
+        en: 'Docker Hub is the default, public registry. But companies usually use **Private Registries** (like AWS ECR, Google Artifact Registry, or GitHub Container Registry) to keep their proprietary app images safe and secret.',
+        it: 'Docker Hub è il registro pubblico predefinito. Le aziende usano solitamente **Registri Privati** (come AWS ECR, Google Artifact Registry o GitHub Container Registry) per mantenere riservate le proprie immagini applicative.'
       }
     },
     {
@@ -71,7 +71,7 @@ export const docker4: Module = {
             { en: '🟢 Lowest', it: '🟢 Minimo' }
           ],
           [
-            { en: '**Minor Version**', it: '**Versione Minor**' },
+            { en: '**Major Version**', it: '**Versione Major**' },
             { en: '`node:18`', it: '`node:18`' },
             { en: 'Development, accepting small updates', it: 'Sviluppo locale, accetta piccoli update' },
             { en: '🟡 Medium', it: '🟡 Medio' }

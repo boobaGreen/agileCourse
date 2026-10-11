@@ -137,7 +137,7 @@ spec:
       content: {
         en: `### 3. NodePort\n` +
             `Exposes the service on **every Worker Node's IP address** on a static port allocated from the range **30000 - 32767**.\n\n` +
-            `⚠️ **Why NodePort is NOT SECURE for Production!**:\n` +
+            `⚠️ **Why NodePort is not recommended for production**:\n` +
             `1. **Direct Infrastructure Exposure**: External traffic hits physical/virtual worker node IP addresses directly.\n` +
             `2. **Weird High Ports**: End-users must append weird port numbers in browser URLs (e.g. \`http://198.51.100.5:30452\`).\n` +
             `3. **No Native SSL/TLS Management**: Managing HTTPS certificates at node level is dangerous and complex.\n` +
@@ -147,7 +147,7 @@ spec:
             `💰 **Drawback**: Creating a cloud \`LoadBalancer\` for every single internal microservice is extremely expensive!`,
         it: `### 3. NodePort\n` +
             `Espone il servizio sull'**IP di ogni Nodo Worker** su una porta statica scelta nel range **30000 - 32767**.\n\n` +
-            `⚠️ **Perché NodePort NON è SICURO per la Produzione!**:\n` +
+            `⚠️ **Perché NodePort è sconsigliato in produzione**:\n` +
             `1. **Esposizione Diretta dell'Infrastruttura**: Il traffico esterno colpisce direttamente gli IP dei nodi worker.\n` +
             `2. **Porte Alte Non Standard**: Gli utenti devono digitare porte strane nel browser (es. \`http://198.51.100.5:30452\`).\n` +
             `3. **Nessuna Gestione SSL/TLS Nativa**: Gestire i certificati HTTPS a livello di porta del nodo è rischioso e complesso.\n` +
@@ -250,7 +250,7 @@ spec:
             { en: `**NodePort**`, it: `**NodePort**` },
             { en: `Node IP + Port (30000-32767)`, it: `IP del Nodo + Porta (30000-32767)` },
             { en: `Quick local dev tests`, it: `Test veloci locali in dev` },
-            { en: `🔴 **UNSECURE** / Exposes Nodes`, it: `🔴 **NON SICURO** / Espone Nodi` }
+            { en: `🟠 Not for production / Exposes nodes`, it: `🟠 Non per la produzione / Espone i nodi` }
           ],
           [
             { en: `**LoadBalancer**`, it: `**LoadBalancer**` },
@@ -360,12 +360,12 @@ spec:
     },
     {
       id: `k8s-5-q3`,
-      question: { en: `What is the valid port range allocated for Kubernetes NodePort services, and why is NodePort considered insecure for production?`, it: `Qual è l'intervallo di porte valido riservato ai servizi NodePort in Kubernetes, e perché NodePort è considerato non sicuro per la produzione?` },
+      question: { en: `What is the valid port range allocated for Kubernetes NodePort services, and why is NodePort discouraged in production?`, it: `Qual è l'intervallo di porte valido riservato ai servizi NodePort in Kubernetes, e perché NodePort è sconsigliato in produzione?` },
       options: [
-        { en: `Range 80-443; it is insecure because it blocks HTTPS traffic`, it: `Range 80-443; è non sicuro perché blocca il traffico HTTPS` },
-        { en: `Range 30000-32767; it is insecure because it exposes node infrastructure directly to the public internet on non-standard ports.`, it: `Range 30000-32767; è non sicuro perché espone direttamente l'infrastruttura dei nodi su internet pubblico usando porte non standard.` },
-        { en: `Range 1000-2000; it is insecure because it consumes high CPU memory`, it: `Range 1000-2000; è non sicuro perché consuma molta memoria CPU` },
-        { en: `Range 8080-8090; it is insecure because it requires SSH keys`, it: `Range 8080-8090; è non sicuro perché richiede chiavi SSH` }
+        { en: `Range 80-443; it is discouraged because it blocks HTTPS traffic`, it: `Range 80-443; è sconsigliato perché blocca il traffico HTTPS` },
+        { en: `Range 30000-32767; it is discouraged because it exposes node infrastructure directly to the public internet on non-standard ports.`, it: `Range 30000-32767; è sconsigliato perché espone direttamente l'infrastruttura dei nodi su internet pubblico usando porte non standard.` },
+        { en: `Range 1000-2000; it is discouraged because it consumes high CPU memory`, it: `Range 1000-2000; è sconsigliato perché consuma molta memoria CPU` },
+        { en: `Range 8080-8090; it is discouraged because it requires SSH keys`, it: `Range 8080-8090; è sconsigliato perché richiede chiavi SSH` }
       ],
       correct: 1,
       explanation: { en: `NodePort uses the 30000-32767 port range. It bypasses perimeter security, exposes node IPs directly to the internet, and lacks native TLS certificate management.`, it: `NodePort usa il range di porte 30000-32767. Bypassa la sicurezza perimetrale, espone gli IP dei nodi direttamente a internet e manca di una gestione nativa dei certificati TLS.` }

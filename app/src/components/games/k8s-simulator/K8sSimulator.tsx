@@ -138,12 +138,12 @@ export function K8sSimulator({ data, onComplete }: Props) {
   const currentHintLevel = currentTaskId ? (taskHintLevels[currentTaskId] || 0) : 0;
 
   return (
-    <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/10 shadow-2xl">
+    <div className="w-full flex flex-col gap-4">
       <div className="flex justify-between items-start mb-2">
          <div className="flex flex-col">
             <span className="text-xs text-purple-400 font-black uppercase tracking-widest leading-none mb-2">Kubernetes Cluster Simulator</span>
             <div className="flex items-center gap-4">
-              <h3 className="text-xl font-black text-white">{resolveString({ en: 'Interactive Cloud Lab', it: 'Laboratorio Cloud Interattivo' })}</h3>
+              <h3 className="text-sm font-bold text-white">{resolveString({ en: 'Interactive Cloud Lab', it: 'Laboratorio Cloud Interattivo' })}</h3>
               <button 
                 onClick={handleReset}
                 className="px-3 py-1 flex items-center gap-2 text-xs bg-white/5 hover:bg-danger/20 text-muted hover:text-danger rounded border border-white/10 hover:border-danger/30 transition-colors"

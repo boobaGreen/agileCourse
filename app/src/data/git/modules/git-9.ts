@@ -8,7 +8,7 @@ export const git9: Module = {
   subtitle: { en: 'Surgical fixes and specialized debugging', it: 'Correzioni chirurgiche e debugging specializzato' },
   emoji: '🍒',
   duration: '15 min',
-  xpReward: 90,
+  xpReward: 150,
   funFact: { en: 'Git Bisect is so fast it can find a bug in 100,000 commits in just 17 steps. It is the closest thing to real-life time travel debugging.', it: 'Git Bisect è così veloce che può trovare un bug in 100.000 commit in soli 17 passaggi. È quanto di più vicino esista al debugging con viaggio nel tempo nella vita reale.' },
   sections: [
     {
@@ -43,7 +43,7 @@ export const git9: Module = {
     {
       type: 'concept',
       title: { en: '🕹️ Bisect Logic', it: '🕹️ Logica di Bisect' },
-      content: { en: 'When debugging, `git bisect start` marks the "Bad" (broken) and "Good" (working) points. Git then checks out the point right in the middle for you to test.', it: 'Durante il debugging, `git bisect start` segna i punti "Bad" (rotto) e "Good" (funzionante). Git esegue quindi il checkout del punto proprio nel mezzo per permetterti di testarlo.' }
+      content: { en: '`git bisect start` opens the session; then `git bisect bad` and `git bisect good <commit>` mark the broken and the working points. Git checks out the commit in the middle for you to test, and you answer good or bad until the culprit is found.', it: '`git bisect start` apre la sessione; poi `git bisect bad` e `git bisect good <commit>` segnano il punto rotto e quello funzionante. Git fa il checkout del commit a metà strada per fartelo testare, e tu rispondi good o bad finché il colpevole non è trovato.' }
     },
     {
       type: 'concept',

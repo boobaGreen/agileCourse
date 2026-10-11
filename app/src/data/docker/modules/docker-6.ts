@@ -26,12 +26,12 @@ export const docker6: Module = {
     {
       type: 'video',
       title: {
-        en: '📺 Docker Networking in 5 Minutes',
-        it: '📺 Docker Networking in 5 Minuti'
+        en: '📺 Docker networking: modes and port exposure',
+        it: '📺 Docker networking: modalità e porte'
       },
       content: {
-        en: 'A quick 5-minute visual guide to understanding Docker container networking, port mapping, and custom bridges.',
-        it: 'Una guida visiva rapida di 5 minuti per comprendere la rete tra container Docker, la mappatura delle porte e i bridge personalizzati.'
+        en: 'A lesson from the free LearnCantrill Docker Fundamentals course: network modes, port exposure and custom bridges.',
+        it: 'Una lezione del corso gratuito Docker Fundamentals di LearnCantrill: modalità di rete, esposizione delle porte e bridge personalizzati.'
       },
       videoUrl: 'https://www.youtube.com/watch?v=zJD7QYQtiKc'
     },
@@ -280,7 +280,7 @@ export const docker6: Module = {
       },
       content: {
         en: 'In this simulation, you will create a custom isolated network and connect an Nginx web server exposing port 8080. Watch the visualizer connect the dots!',
-        it: 'In questa simulazione creerei una rete isolata personalizzata e vi collegherai un server web Nginx esponendo la porta 8080. Guarda il visualizzatore collegare i nodi!'
+        it: 'In questa simulazione creerai una rete isolata personalizzata e vi collegherai un server web Nginx esponendo la porta 8080. Guarda il visualizzatore collegare i nodi!'
       },
       gameType: 'docker-sim',
       gameData: {

@@ -28,7 +28,7 @@ export const k8s6: Module = {
     },
     {
       type: `concept`,
-      title: { en: `💡 Real-World Analogy: The Desk Notebook vs The Safe`, it: `💡 L'Analogia del Mondo Reale: L'Agenda ed la Cassaforte` },
+      title: { en: `💡 Real-World Analogy: The Desk Notebook vs The Safe`, it: `💡 L'Analogia del Mondo Reale: L'Agenda e la Cassaforte` },
       content: {
         en: `Kubernetes provides two specialized objects to inject configurations into running Pods:\n\n` +
             `• **🗺️ ConfigMap (The Open Agenda)**:\n` +
@@ -36,14 +36,14 @@ export const k8s6: Module = {
             `  - Visible to all developers and components in the cluster.\n\n` +
             `• **🤫 Secret (The Armored Safe)**:\n` +
             `  - Stores sensitive data (e.g. DB passwords, API tokens, SSH keys, TLS certificates).\n` +
-            `  - Protected by Role-Based Access Control (RBAC) and loaded only into volatile RAM (tmpfs) on worker nodes so it is never saved to physical disk storage.`,
+            `  - Protected by Role-Based Access Control (RBAC), stored in etcd (enable encryption at rest!) and mounted into Pods from volatile RAM (tmpfs), so it never touches the worker node's disk.`,
         it: `Kubernetes mette a disposizione due oggetti specializzati per iniettare le configurazioni nei Pod in esecuzione:\n\n` +
             `• **🗺️ ConfigMap (L'Agenda Aperta sulla Scrivania)**:\n` +
             `  - Memorizza impostazioni non sensibili in chiaro (es. \`PORT=8080\`, \`LOG_LEVEL=debug\`, \`THEME=dark\`).\n` +
             `  - Visibile a tutti gli sviluppatori e componenti del cluster.\n\n` +
             `• **🤫 Secret (La Cassaforte Blindata)**:\n` +
             `  - Memorizza dati riservati (es. password di DB, token API, chiavi SSH, certificati TLS).\n` +
-            `  - Protetti dal controllo degli accessi RBAC e caricati solo nella RAM volatile (tmpfs) dei nodi worker per evitare che vengano salvati su disco fisico.`
+            `  - Protetti dal controllo degli accessi RBAC, salvati in etcd (abilita la cifratura a riposo!) e montati nei Pod da RAM volatile (tmpfs), così non toccano mai il disco del nodo worker.`
       }
     },
     {
@@ -69,14 +69,14 @@ export const k8s6: Module = {
             `2. **As Mounted Files in a Volume**: ConfigMaps can be mounted as physical files inside a directory (e.g. mounting an \`nginx.conf\` or \`application.properties\` file).\n\n` +
             `🔄 **Live Updates Behavior (Crucial for Production!)**:\n` +
             `• **Environment Variables**: Values are loaded **only once at container startup**. If you edit the ConfigMap, running containers **will NOT see the new values** unless you restart the Pod (\`kubectl rollout restart deployment\`).\n` +
-            `• **Volume Mounted Files**: Files in mounted volumes are **automatically updated in real-time** by the Kubelet when the ConfigMap is modified. Applications that support hot-reloading can pick up new settings without downtime or container restarts!`,
+            `• **Volume Mounted Files**: Files in mounted volumes are **refreshed automatically** by the Kubelet when the ConfigMap changes (within its sync period, usually under a minute; not when mounted with \`subPath\`). Applications that support hot-reloading can pick up new settings without downtime or container restarts!`,
         it: `Una **ConfigMap** è un dizionario di coppie chiave-valore in chiaro.\n\n` +
             `### Due Modi per Iniettare una ConfigMap in un Pod:\n` +
             `1. **Come Variabili d'Ambiente**: I valori vengono iniettati come normali variabili d'ambiente (\`process.env.PORT\` in Node.js, \`os.Getenv\` in Go).\n` +
             `2. **Come File Montati in un Volume**: Le ConfigMap possono essere montate come file fisici all'interno di una cartella (es. montare un file \`nginx.conf\` o \`application.properties\`).\n\n` +
             `🔄 **Comportamento degli Aggiornamenti in Tempo Reale (Fondamentale!)**:\n` +
             `• **Variabili d'Ambiente**: I valori vengono letti **solo una volta all'avvio del container**. Se aggiorni la ConfigMap, i container in esecuzione **NON vedranno i nuovi valori** a meno di riavviare il Pod (\`kubectl rollout restart deployment\`).\n` +
-            `• **File Montati in un Volume**: I file montati nei volumi vengono **sincronizzati automaticamente in tempo reale** da Kubelet quando la ConfigMap viene modificata. Le applicazioni con supporto al ricaricamento a caldo (hot-reload) possono leggere la nuova configurazione senza alcun riavvio o downtime!`
+            `• **File Montati in un Volume**: I file montati nei volumi vengono **aggiornati automaticamente** da Kubelet quando la ConfigMap cambia (entro il suo periodo di sync, di solito meno di un minuto; non se montati con \`subPath\`). Le applicazioni con supporto al ricaricamento a caldo (hot-reload) possono leggere la nuova configurazione senza alcun riavvio o downtime!`
       }
     },
     {
@@ -128,13 +128,13 @@ spec:
             `In a Secret YAML file, values must be encoded in **Base64**. Base64 is only an encoding format, NOT encryption! Anyone who runs:\n` +
             `\`echo "cGFzc3dvcmQxMjM=" | base64 --decode\`\n` +
             `will see the plaintext string \`password123\` immediately!\n\n` +
-            `🔒 **How Kubernetes Protects Secrets**: Kubernetes ensures that Secrets are loaded exclusively into the **volatile RAM (tmpfs)** of the worker node running the Pod, preventing credentials from being saved to physical hard drives or log files.`,
+            `🔒 **How Kubernetes handles Secrets**: Secrets are persisted in **etcd** like any other object, in plain Base64 unless you enable **encryption at rest** (EncryptionConfiguration). On the worker node, Secret volumes are mounted from **volatile RAM (tmpfs)**, so credentials never land on the node's disk. Access is limited by **RBAC**.`,
         it: `Un **Secret** viene usato per credenziali riservate come password di database, token API o chiavi SSH.\n\n` +
             `⚠️ **AVVERTIMENTO FONDAMENTALE: Base64 NON è Crittografia!**\n` +
             `Nel file YAML di un Secret, i valori devono essere codificati in **Base64**. Base64 è solo un formato di codifica, NON crittografia! Chiunque esegua:\n` +
             `\`echo "cGFzc3dvcmQxMjM=" | base64 --decode\`\n` +
             `vedrà immediatamente la password in chiaro \`password123\`!\n\n` +
-            `🔒 **Come Kubernetes Protegge i Secret**: Kubernetes assicura che i Secret vengano caricati esclusivamente nella **RAM volatile (tmpfs)** del nodo worker su cui gira il Pod, impedendo che le credenziali vengano salvate su dischi rigidi fisici o log.`
+            `🔒 **Come Kubernetes gestisce i Secret**: i Secret sono persistiti in **etcd** come ogni altro oggetto, in semplice Base64 a meno che tu non abiliti la **cifratura a riposo** (EncryptionConfiguration). Sul nodo worker i volumi Secret sono montati da **RAM volatile (tmpfs)**, così le credenziali non finiscono sul disco del nodo. L'accesso è limitato da **RBAC**.`
       }
     },
     {
@@ -155,7 +155,13 @@ kind: Deployment
 metadata:
   name: backend-api
 spec:
+  selector:
+    matchLabels:
+      app: backend-api
   template:
+    metadata:
+      labels:
+        app: backend-api
     spec:
       containers:
       - name: api-container
@@ -210,7 +216,7 @@ spec:
           [
             { en: `**Security Level**`, it: `**Livello Sicurezza**` },
             { en: `Standard cluster access`, it: `Accesso standard nel cluster` },
-            { en: `RBAC protected + RAM tmpfs`, it: `Protetto da RBAC + RAM tmpfs` },
+            { en: `RBAC + tmpfs mount; encrypt etcd at rest`, it: `RBAC + mount tmpfs; cifra etcd a riposo` },
             { en: `Use Secrets for DB pass, OAuth, TLS`, it: `Usa Secret per DB, OAuth, certificati TLS` }
           ],
           [
@@ -308,7 +314,7 @@ spec:
         { en: `They require a paid enterprise license from the Linux Foundation`, it: `Richiedono una licenza enterprise a pagamento dalla Linux Foundation` }
       ],
       correct: 1,
-      explanation: { en: `Base64 is an encoding format, NOT encryption. Anyone running echo "bXlwYXNzd29yZA==" | base64 --decode gets the plaintext password. Kubernetes protects Secrets at runtime via RBAC and RAM tmpfs mounting.`, it: `Base64 è un formato di codifica, NON crittografia. Chiunque esegua echo "bWlhcGFzc3dvcmQ=" | base64 --decode legge la password. Kubernetes protegge i Secret a runtime tramite RBAC e montaggio in RAM volatile tmpfs.` }
+      explanation: { en: `Base64 is an encoding format, NOT encryption. Anyone running echo "bXlwYXNzd29yZA==" | base64 --decode gets the plaintext password. Enable encryption at rest for etcd and rely on RBAC and tmpfs mounts at runtime.`, it: `Base64 è un formato di codifica, NON crittografia. Chiunque esegua echo "bWlhcGFzc3dvcmQ=" | base64 --decode legge la password. Abilita la cifratura a riposo di etcd e affidati a RBAC e ai mount tmpfs a runtime.` }
     },
     {
       id: `k8s-6-q3`,

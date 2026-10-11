@@ -8,7 +8,7 @@ export const git1: Module = {
   subtitle: { en: 'Why "save as final_FINAL_v2.docx" is never the answer', it: 'Perché "salva come final_FINAL_v2.docx" non è mai la soluzione' },
   emoji: '⏱️',
   duration: '8 min',
-  xpReward: 50,
+  xpReward: 100,
   funFact: { en: 'Before version control, teams shared code by emailing ZIP files. Git was created in just 10 days by Linus Torvalds in 2005.', it: 'Prima del version control, i team condividevano il codice inviandosi file ZIP via email. Git è stato creato in soli 10 giorni da Linus Torvalds nel 2005.' },
   sections: [
     {
@@ -76,7 +76,7 @@ export const git1: Module = {
         headers: [{ en: 'Feature', it: 'Caratteristica' }, { en: 'Manual Backups', it: 'Backup Manuali' }, { en: 'Git Version Control', it: 'Version Control (Git)' }],
         rows: [
           [{ en: '**History**', it: '**Cronologia**' }, { en: 'Filenames like "v2_FINAL"', it: 'Nomi file come "v2_FINAL"' }, { en: 'Cryptographic SHA hashes', it: 'Hash SHA crittografici' }],
-          [{ en: '**Changes**', it: '**Modifiche**' }, { en: 'Full copies (wasteful)', it: 'Copie complete (spreco)' }, { en: 'Smart diffs (efficient)', it: 'Diff intelligenti (efficiente)' }],
+          [{ en: '**Changes**', it: '**Modifiche**' }, { en: 'Full copies of every file', it: 'Copie complete di ogni file' }, { en: 'Compressed, deduplicated snapshots', it: 'Snapshot compressi e deduplicati' }],
           [{ en: '**Undo**', it: '**Annulla**' }, { en: 'Hard to find right version', it: 'Difficile trovare la versione giusta' }, { en: 'Instant one-command revert', it: 'Ripristino istantaneo con un comando' }],
           [{ en: '**Collaboration**', it: '**Collaborazione**' }, { en: 'Impossible without ZIPs', it: 'Impossibile senza ZIP' }, { en: 'Seamless branching/merging', it: 'Branching/merging fluido' }]
         ]

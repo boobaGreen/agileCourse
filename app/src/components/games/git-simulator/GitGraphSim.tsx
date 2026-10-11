@@ -159,12 +159,12 @@ export function GitGraphSim({ data, onComplete }: Props) {
   };
 
   return (
-    <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/10 shadow-2xl">
+    <div className="w-full flex flex-col gap-4">
       <div className="flex justify-between items-start mb-2">
          <div className="flex flex-col">
             <span className="text-xs text-primary font-black uppercase tracking-widest leading-none mb-2">Git Graph Simulator</span>
             <div className="flex items-center gap-4">
-              <h3 className="text-xl font-black text-white">Interactive Environment</h3>
+              <h3 className="text-sm font-bold text-white">Interactive Environment</h3>
               <button 
                 onClick={handleReset}
                 className="px-3 py-1 flex items-center gap-2 text-xs bg-white/5 hover:bg-danger/20 text-muted hover:text-danger rounded border border-white/10 hover:border-danger/30 transition-colors"

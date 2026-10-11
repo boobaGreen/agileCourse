@@ -22,7 +22,7 @@ export const k8s2: Module = {
     },
     {
       type: 'concept',
-      title: { en: '🧠 The Control Plane (Master Node)', it: '🧠 Il Control Plane (Master Node)' },
+      title: { en: '🧠 The Control Plane', it: '🧠 Il Control Plane' },
       content: { en: 'The Control Plane makes global decisions about the cluster. It does not run your application code.\n\n- **API Server**: The only component you interact with directly. The front-door.\n- **etcd**: The cluster\'s memory. A highly-available key-value store containing the cluster state.\n- **Scheduler**: Watches for new unassigned containers and assigns them to an appropriate Worker node.\n- **Controller Manager**: The endless "loop" that ensures the current state matches your desired state.', it: 'Il Control Plane prende decisioni globali sul cluster. Non esegue il codice della tua applicazione.\n\n- **API Server**: L\'unico componente con cui interagisci direttamente. La porta d\'ingresso.\n- **etcd**: La memoria del cluster. Un archivio chiave-valore ad alta disponibilità che contiene lo stato del cluster.\n- **Scheduler**: Controlla i nuovi container non assegnati e li assegna a un nodo Worker appropriato.\n- **Controller Manager**: Il "ciclo" infinito che assicura che lo stato attuale corrisponda allo stato desiderato.' }
     },
     {
@@ -56,12 +56,12 @@ export const k8s2: Module = {
     },
     {
       type: 'game',
-      title: { en: 'Challenge: Master vs Worker', it: 'Sfida: Master vs Worker' },
+      title: { en: 'Challenge: Control Plane vs Worker', it: 'Sfida: Control Plane vs Worker' },
       content: { en: 'Drag the components to their correct architectural home.', it: 'Trascina i componenti nella loro corretta sede architettonica.' },
       gameType: 'drag-classify',
       gameData: {
         categories: [
-          { id: 'master', label: { en: 'Control Plane (Master)', it: 'Control Plane (Master)' } },
+          { id: 'master', label: { en: 'Control Plane', it: 'Control Plane' } },
           { id: 'worker', label: { en: 'Worker Node', it: 'Nodo Worker' } }
         ],
         items: [

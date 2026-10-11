@@ -28,7 +28,7 @@ export function MergeRebaseLab() {
   const currentStep = steps[step] || steps[0]
 
   return (
-    <div className="w-full flex flex-col gap-6 p-4 sm:p-6 bg-surface/30 rounded-3xl border border-white/10 shadow-2xl">
+    <div className="w-full flex flex-col gap-4">
        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2">
           <div className="flex flex-col">
              <span className="text-[10px] text-primary fw-black uppercase tracking-widest leading-none mb-2">Integration Lab • Step {step + 1}</span>

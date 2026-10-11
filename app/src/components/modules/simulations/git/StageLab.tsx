@@ -59,7 +59,7 @@ export function StageLab() {
     }
 
     return (
-      <div className="w-full flex flex-col gap-6 p-4 sm:p-6 bg-surface/30 rounded-3xl border border-white/5 shadow-2xl">
+      <div className="w-full flex flex-col gap-4">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:h-80">
            {/* Working Directory */}
            <div className="flex flex-col gap-3">

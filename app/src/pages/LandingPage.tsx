@@ -1,128 +1,106 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
+import { ArrowRight, Sun, Moon, Terminal, Gamepad2, Award } from 'lucide-react'
 import { useAppStore } from '../store/useAppStore'
-import { ArrowRight, Sparkles, GitBranch, Box, Workflow, Terminal, Database, Code2, type LucideIcon } from 'lucide-react'
+import { useUI } from '../lib/ui'
+import { useTheme } from '../lib/theme'
+import { TRACK_LIST } from '../lib/tracks'
 import { useLanguage } from '../contexts/LanguageContext'
 
-
-const PARTICLE_ICONS = [GitBranch, Box, Workflow, Terminal, Database, Code2]
-
-interface Particle {
-  Icon: LucideIcon
-  isOdd: boolean
-  left: string
-  top: string
-  color: string
-  duration: number
-  size: number
-}
-
-const STATIC_PARTICLES: Particle[] = [...Array(24)].map((_, i) => ({
-  Icon: PARTICLE_ICONS[i % 6],
-  isOdd: i % 2 === 0,
-  left: `${(i * 13) % 100}%`,
-  top: `${(i * 17) % 100}%`,
-  color: i % 3 === 0 ? 'var(--color-git)' : i % 3 === 1 ? 'var(--color-docker)' : 'var(--color-k8s)',
-  duration: 7 + Math.random() * 5,
-  size: 16 + Math.random() * 16,
-}))
-
 export default function LandingPage() {
-  const { t } = useLanguage()
-  const [name, setName] = useState('')
-  const setUserName = useAppStore((s) => s.setUserName)
-  const userName = useAppStore((s) => s.userName)
+  const { userName, setUserName } = useAppStore()
+  const [name, setName] = useState(userName || '')
   const navigate = useNavigate()
+  const { ui, r } = useUI()
+  const { resolved, toggle } = useTheme()
+  const { language, setLanguage } = useLanguage()
 
-  useEffect(() => {
-    if (userName) {
-      navigate('/dashboard', { replace: true })
-    }
-  }, [userName, navigate])
-
-  const handleNameSubmit = (e: React.FormEvent) => {
+  const submit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (name.trim().length < 2) return
-    setUserName(name.trim())
+    const n = name.trim()
+    if (!n) return
+    setUserName(n)
     navigate('/dashboard')
   }
 
-  const particles = STATIC_PARTICLES
+  const features = [
+    { icon: Terminal, en: 'Simulated Git, Docker and kubectl terminals that react to every command', it: 'Terminali simulati Git, Docker e kubectl che reagiscono a ogni comando' },
+    { icon: Gamepad2, en: 'Short modules, interactive labs, quizzes with explanations', it: 'Moduli brevi, laboratori interattivi, quiz con spiegazioni' },
+    { icon: Award, en: 'XP, badges and a roadmap towards real certifications', it: 'XP, badge e una roadmap verso certificazioni reali' },
+  ]
 
   return (
-    <div className="gradient-bg min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
-      
-      {/* Animated Tech Particles Background */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.08]">
-        {particles.map((p, i) => (
-          <motion.div
-            key={i}
-            className="absolute flex items-center justify-center p-2 rounded-xl bg-white/5 backdrop-blur-3xl"
-            style={{ left: p.left, top: p.top, color: p.color }}
-            animate={{ 
-              y: [0, p.isOdd ? -60 : 60, 0], 
-              rotate: [0, p.isOdd ? 45 : -45, 0],
-              opacity: [0.1, 0.6, 0.1]
-            }}
-            transition={{ duration: p.duration, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <p.Icon size={p.size} />
-          </motion.div>
-        ))}
-      </div>
+    <div className="min-h-screen flex flex-col">
+      <header className="container-x h-14 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <span className="w-8 h-8 rounded-lg overflow-hidden bg-white border flex items-center justify-center" style={{ borderColor: 'var(--t-border)' }}>
+            <img src="/agilelab.jpg" alt="" className="w-full h-full object-contain p-0.5" />
+          </span>
+          <span className="text-sm font-extrabold tracking-tight">{ui('brand')}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <button className="icon-btn" onClick={() => setLanguage(language === 'en' ? 'it' : 'en')} aria-label={ui('language')}><span className="text-[11px] font-extrabold">{language.toUpperCase()}</span></button>
+          <button className="icon-btn" onClick={toggle} aria-label="theme">{resolved === 'dark' ? <Sun size={16} /> : <Moon size={16} />}</button>
+        </div>
+      </header>
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key="name"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          className="w-full max-w-md"
-        >
-          <div className="text-center mb-10">
-            <div className="mb-6 flex justify-center">
-              <motion.div 
-                className="brand-logo-container p-2 shadow-2xl shadow-primary/20"
-                whileHover={{ scale: 1.05 }}
-              >
-                <img 
-                  src="/agilelab.jpg" 
-                  alt="Agile Lab Logo" 
-                  className="brand-logo w-48 h-auto"
-                />
-              </motion.div>
+      <main className="flex-1 container-x grid lg:grid-cols-12 gap-10 lg:gap-12 items-center py-10 lg:py-16">
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="lg:col-span-6 max-w-xl">
+          <div className="eyebrow mb-4">{ui('landing_eyebrow')}</div>
+          <h1 className="display" style={{ fontSize: 'clamp(2.4rem, 1.6rem + 3.4vw, 4.25rem)' }}>{ui('landing_title')}</h1>
+          <p className="lead mt-5">{ui('landing_sub')}</p>
+
+          <form onSubmit={submit} className="mt-8 flex flex-col gap-3 max-w-md">
+            <label className="text-sm font-bold" htmlFor="name">{ui('landing_name')}</label>
+            <div className="flex gap-2">
+              <input id="name" className="input" value={name} onChange={(e) => setName(e.target.value)} placeholder="Ada" autoComplete="given-name" maxLength={40} />
+              <button type="submit" className="btn btn-primary shrink-0" disabled={!name.trim()}>{ui('landing_cta')} <ArrowRight size={16} /></button>
             </div>
-            <h1 className="text-4xl fw-black text-white tracking-tight">
-              Agile <span className="text-docker">Learning</span>
-            </h1>
-            <p className="text-sub mt-2 fw-med">{t('landing.subtitle')}</p>
-          </div>
+            <p className="text-xs" style={{ color: 'var(--t-muted)' }}>{ui('landing_hint')}</p>
+          </form>
 
-          <div className="card p-8">
-            <h2 className="text-lg fw-bold text-white mb-6 flex items-center gap-2">
-              <Sparkles size={18} className="text-git" /> {t('landing.welcome')}
-            </h2>
-            <form onSubmit={handleNameSubmit} className="flex flex-col gap-4">
-              <input
-                type="text"
-                placeholder={t('landing.placeholder')}
-                autoFocus
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="bg-surface2 border border-border p-4 rounded-xl text-white outline-none focus:border-git transition-colors"
-              />
-              <button
-                type="submit"
-                disabled={name.trim().length < 2}
-                className={`btn btn-git py-4 text-lg justify-center ${name.trim().length < 2 ? 'opacity-30' : ''}`}
-              >
-                {t('landing.enter')} <ArrowRight size={18} />
-              </button>
-            </form>
-          </div>
+          <ul className="mt-10 flex flex-col gap-3">
+            {features.map((f, i) => {
+              const Icon = f.icon
+              return (
+                <li key={i} className="flex items-start gap-3 text-sm" style={{ color: 'var(--t-sub)' }}>
+                  <span className="w-7 h-7 rounded-md flex items-center justify-center shrink-0" style={{ background: 'var(--t-surface2)', color: 'var(--t-fg)' }}><Icon size={14} /></span>
+                  <span className="pt-1">{language === 'it' ? f.it : f.en}</span>
+                </li>
+              )
+            })}
+          </ul>
         </motion.div>
-      </AnimatePresence>
+
+        <div className="lg:col-span-6 flex flex-col gap-3">
+          {TRACK_LIST.map((t, i) => {
+            const Icon = t.icon
+            return (
+              <motion.div key={t.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 * i + 0.1 }}
+                className="panel p-5 flex items-center gap-4" style={{ ['--track' as string]: t.color }}>
+                <span className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'color-mix(in oklab, var(--track) 12%, transparent)', color: 'var(--track)' }}>
+                  <Icon size={22} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-baseline gap-2">
+                    <span className="font-extrabold text-lg tracking-tight">{t.name}</span>
+                    <span className="text-xs font-semibold" style={{ color: 'var(--t-muted)' }}>{t.modules.length} {ui('modules')}</span>
+                  </div>
+                  <p className="text-sm mt-0.5" style={{ color: 'var(--t-sub)' }}>{r(t.tagline)}</p>
+                </div>
+                <div className="hidden sm:flex gap-1">
+                  {t.modules.slice(0, 11).map((_, j) => <span key={j} className="w-1.5 h-5 rounded-full" style={{ background: 'color-mix(in oklab, var(--track) 35%, var(--t-surface3))' }} />)}
+                </div>
+              </motion.div>
+            )
+          })}
+          <div className="rounded-2xl p-4 text-sm flex items-center justify-between gap-3 grid-dots border" style={{ borderColor: 'var(--t-border)' }}>
+            <span style={{ color: 'var(--t-sub)' }}>29 {ui('modules')} · 134 quiz · 25 lab</span>
+            <span className="font-mono text-xs" style={{ color: 'var(--t-muted)' }}>git · docker · kubectl</span>
+          </div>
+        </div>
+      </main>
     </div>
   )
 }

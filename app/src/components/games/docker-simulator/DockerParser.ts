@@ -22,7 +22,7 @@ export class DockerParser {
       if (!fileName || fileName === 'Dockerfile') {
         return {
           success: true,
-          out: `FROM node:18-alpine\nWORKDIR /app\nCOPY package.json ./\nRUN npm install\nCOPY . .\nCMD ["node", "server.js"]`
+          out: `FROM node:18-alpine\nWORKDIR /app\nCOPY package*.json ./\nRUN npm install\nCOPY . .\nCMD ["node", "server.js"]`
         };
       }
       if (fileName === 'package.json') {

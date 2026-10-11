@@ -139,12 +139,12 @@ export function DockerSimulator({ data, onComplete }: Props) {
   const currentHintLevel = currentTaskId ? (taskHintLevels[currentTaskId] || 0) : 0;
 
   return (
-    <div className="w-full flex flex-col gap-6 p-6 bg-surface/30 rounded-3xl border border-white/10 shadow-2xl">
+    <div className="w-full flex flex-col gap-4">
       <div className="flex justify-between items-start mb-2">
          <div className="flex flex-col">
             <span className="text-xs text-primary font-black uppercase tracking-widest leading-none mb-2">Docker Engine Simulator</span>
             <div className="flex items-center gap-4">
-              <h3 className="text-xl font-black text-white">{resolveString({ en: 'Interactive Lab', it: 'Laboratorio Interattivo' })}</h3>
+              <h3 className="text-sm font-bold text-white">{resolveString({ en: 'Interactive Lab', it: 'Laboratorio Interattivo' })}</h3>
               <button 
                 onClick={handleReset}
                 className="px-3 py-1 flex items-center gap-2 text-xs bg-white/5 hover:bg-danger/20 text-muted hover:text-danger rounded border border-white/10 hover:border-danger/30 transition-colors"
@@ -223,7 +223,7 @@ export function DockerSimulator({ data, onComplete }: Props) {
                  </button>
                </div>
                <pre className="text-[#06d6a0] overflow-x-auto leading-relaxed">
-                 {inspectFile === 'Dockerfile' && `FROM node:18-alpine\nWORKDIR /app\nCOPY package.json ./\nRUN npm install\nCOPY . .\nCMD ["node", "server.js"]`}
+                 {inspectFile === 'Dockerfile' && `FROM node:18-alpine\nWORKDIR /app\nCOPY package*.json ./\nRUN npm install\nCOPY . .\nCMD ["node", "server.js"]`}
                  {inspectFile === 'package.json' && `{\n  "name": "backend-app",\n  "version": "1.0.0",\n  "scripts": { "start": "node server.js" },\n  "dependencies": { "express": "^4.18.2" }\n}`}
                  {inspectFile === 'server.js' && `const express = require('express');\nconst app = express();\n\napp.get('/', (req, res) => res.send('Hello from Container!'));\napp.listen(3000);`}
                </pre>

@@ -37,7 +37,7 @@ export const k8s3: Module = {
             '📄 **What does the `-f` flag mean in `kubectl apply -f`?**\n' +
             '`-f` stands for **filename** (or file). It tells `kubectl` to read and apply the Kubernetes configuration declared inside a specific YAML or JSON manifest file (e.g. `-f payment-api-deployment.yaml`).\n\n' +
             '💡 **Why names like `auth-service-7f9`?**\n' +
-            'When Kubernetes creates Pods via a Deployment, it automatically appends a random unique hash suffix to the deployment name to distinguish individual Pod replicas (e.g., `auth-service-7f9` or `payment-api-89fbc`).\n\n' +
+            'When Kubernetes creates Pods via a Deployment, it automatically appends a random unique hash suffix to the deployment name to distinguish individual Pod replicas (e.g., `auth-service-7f9` or `payment-api-89fbc`). In a real cluster the suffix is double, ReplicaSet hash plus Pod hash, e.g. `auth-service-7f9c6d8b5-x2k4p`; this simulator shortens it.\n\n' +
             'To run `describe`, `logs`, or `delete` on a specific pod:\n' +
             '1. Run `kubectl get pods` to see the active pod names.\n' +
             '2. Copy the exact generated pod name (e.g., `auth-service-7f9`) and use it in your command.',
@@ -45,7 +45,7 @@ export const k8s3: Module = {
             '📄 **Cosa significa il flag `-f` in `kubectl apply -f`?**\n' +
             '`-f` sta per **filename** (nome del file). Indica a `kubectl` di leggere ed applicare la configurazione dichiarata all\'interno di un file manifesto YAML o JSON specifico (es. `-f payment-api-deployment.yaml`).\n\n' +
             '💡 **Perché nomi come `auth-service-7f9`?**\n' +
-            'Quando Kubernetes crea i Pod tramite un Deployment, aggiunge automaticamente un suffisso univoco casuale (hash) al nome del deployment per distinguere le singole istanze di Pod (es. `auth-service-7f9` o `payment-api-89fbc`).\n\n' +
+            'Quando Kubernetes crea i Pod tramite un Deployment, aggiunge automaticamente un suffisso univoco casuale (hash) al nome del deployment per distinguere le singole istanze di Pod (es. `auth-service-7f9` o `payment-api-89fbc`). In un cluster reale il suffisso è doppio, hash del ReplicaSet più hash del Pod, es. `auth-service-7f9c6d8b5-x2k4p`; questo simulatore lo abbrevia.\n\n' +
             'Per eseguire `describe`, `logs` o `delete` su uno specifico pod:\n' +
             '1. Esegui `kubectl get pods` per vedere i nomi esatti dei pod attivi.\n' +
             '2. Copia il nome generato del pod (es. `auth-service-7f9`) e usalo nel comando.'
